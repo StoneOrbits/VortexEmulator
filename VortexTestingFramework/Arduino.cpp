@@ -3,6 +3,7 @@
 #include "TestFramework.h"
 
 #include <Windows.h>
+#include <chrono>
 #include <random>
 #include <time.h>
 
@@ -30,6 +31,12 @@ unsigned long digitalRead(uint32_t pin)
 unsigned long millis()
 {
     return GetTickCount();
+}
+
+uint64_t micros()
+{
+    typedef std::chrono::high_resolution_clock hiresclock;
+    return (uint64_t)hiresclock::now().time_since_epoch().count() / 1000;
 }
 
 unsigned long random(uint32_t low, uint32_t high)

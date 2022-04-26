@@ -6,7 +6,11 @@
 
 #include "TestFramework.h"
 
+#include "Log.h"
+
 #include "VortexGloveset.h"
+
+#pragma comment(lib, "Comctl32.lib")
 
 TestFramework *g_pTestFramework = nullptr;
 FILE *TestFramework::m_logHandle = nullptr;
@@ -86,16 +90,21 @@ void TestFramework::run()
             TranslateMessage(&msg);
             DispatchMessage(&msg);
         } else {
+            if (m_initialized && m_keepGoing) {
+                g_pTestFramework->arduino_loop();
+            }
+#if 0
             typedef std::chrono::high_resolution_clock hiresclock;
             static auto timer = hiresclock::now();
             auto milisec = (hiresclock::now() - timer).count() / 1000000;
-            if (milisec > 50) {
+            if (milisec > 1) {
                 timer = hiresclock::now();
                 if (m_initialized && m_keepGoing) {
                     g_pTestFramework->arduino_loop();
                 }
                 //... draw
             }
+#endif
         }
     }
 
@@ -108,23 +117,20 @@ void TestFramework::run()
     //}
 }
 
+WNDPROC oldWndProc;
 void TestFramework::create(HWND hwnd)
 {
     // create the server checkbox and ip textbox
-    //m_hwndButton = CreateWindow(WC_BUTTON, "Click",
-    //    WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON | WS_TABSTOP,
-    //    120, 160, 170, 32, hwnd, (HMENU)CLICK_BUTTON_ID, NULL, NULL);
+    m_hwndButton = CreateWindow(WC_BUTTON, "Click",
+        WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON | WS_TABSTOP,
+        120, 160, 170, 32, hwnd, (HMENU)CLICK_BUTTON_ID, NULL, NULL);
+
+    // sub-process the button to capture the press/release individually
+    oldWndProc = (WNDPROC)SetWindowLong(m_hwndButton, GWL_WNDPROC, 
+        (LONG_PTR)TestFramework::button_subproc);
 
     // do the arduino init/setup
     arduino_setup();
-
-#if 0
-    m_hLoopThread = CreateThread(NULL, 0, TestFramework::run_loop, this, 0, NULL);
-    if (!m_hLoopThread) {
-        // error?
-        return;
-    }
-#endif
 }
 
 void TestFramework::command(WPARAM wParam, LPARAM lParam)
@@ -138,15 +144,6 @@ void TestFramework::command(WPARAM wParam, LPARAM lParam)
         return;
     }
 
-    // button control
-    switch (HIWORD(wParam)) {
-    case BN_PUSHED:
-        m_buttonPressed = true;
-        break;
-    case BN_UNPUSHED:
-        m_buttonPressed = false;
-        break;
-    }
 }
 
 void TestFramework::paintbg(HWND hwnd)
@@ -174,7 +171,7 @@ void TestFramework::paint(HWND hwnd)
     // the first led is 5,5 to 25,25
     HBRUSH br;
     for (int i = 0; i < m_numLeds; ++i) {
-        COLORREF col = RGB(m_ledList[i].bRed, m_ledList[i].bGreen, m_ledList[i].bBlue);
+        COLORREF col = RGB(m_ledList[i].red, m_ledList[i].green, m_ledList[i].blue);
         if (brushmap.find(col) == brushmap.end()) {
             br = CreateSolidBrush(col);
             brushmap[col] = br;
@@ -205,15 +202,13 @@ void TestFramework::arduino_setup()
 
 void TestFramework::arduino_loop()
 {
-    static int i = 0;
-    //Debug("Tick: %u", i++);
     // run the tick
     m_gloveSet.tick();
 }
 
 void TestFramework::installLeds(CRGB *leds, uint32_t count)
 {
-    m_ledList = leds;
+    m_ledList = (RGBColor *)leds;
     m_numLeds = count;
 
     // initialize the positions of all the leds
@@ -226,6 +221,11 @@ void TestFramework::installLeds(CRGB *leds, uint32_t count)
         m_ledPos[i].right = base_left + d + (i - (i%2)) * d;
         m_ledPos[i].top = base_top + ((i % 2) * d);
         m_ledPos[i].bottom = base_top + d + ((i % 2) * d);
+        if (i == 0 || i == 1) {
+            // offset the thumb
+            m_ledPos[i].top += 10;
+            m_ledPos[i].bottom += 10;
+        }
     }
 
     m_initialized = true;;
@@ -253,15 +253,46 @@ void TestFramework::show()
     // redraw the leds
     RECT ledArea;
     ledArea.left = m_ledPos[0].left;
-    ledArea.top = m_ledPos[0].top;
+    ledArea.top = m_ledPos[2].top;
     ledArea.right = m_ledPos[LED_COUNT - 1].right;
-    ledArea.bottom = m_ledPos[LED_COUNT - 1].bottom;
+    ledArea.bottom = m_ledPos[1].bottom;
     InvalidateRect(m_hwnd, &ledArea, FALSE);
+}
+
+void TestFramework::pressButton()
+{
+    m_buttonPressed = true;
+}
+
+void TestFramework::releaseButton()
+{
+    m_buttonPressed = false;
 }
 
 bool TestFramework::isButtonPressed() const
 {
-    return (GetKeyState(VK_SPACE) & 0x100) != 0;
+#if 0
+    // either
+    return (((GetKeyState(VK_LBUTTON) & 0x100) != 0) ||
+             (GetKeyState(VK_SPACE) & 0x100) != 0);
+#endif
+    return m_buttonPressed || (GetKeyState(VK_SPACE) & 0x100) != 0;
+}
+
+
+LRESULT CALLBACK TestFramework::button_subproc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+{
+    switch (uMsg) {
+    case WM_LBUTTONDOWN:
+        g_pTestFramework->pressButton();
+        break;
+    case WM_LBUTTONUP:
+        g_pTestFramework->releaseButton();
+        break;
+    default:
+        break;
+    }
+    return CallWindowProcA(oldWndProc, hwnd, uMsg, wParam, lParam);
 }
 
 LRESULT CALLBACK TestFramework::window_proc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
@@ -293,19 +324,8 @@ LRESULT CALLBACK TestFramework::window_proc(HWND hwnd, UINT uMsg, WPARAM wParam,
     return DefWindowProc(hwnd, uMsg, wParam, lParam);
 }
 
-DWORD __stdcall TestFramework::run_loop(void *arg)
+void TestFramework::printlog(const char *file, const char *func, int line, const char *msg, va_list list)
 {
-    TestFramework *obj = (TestFramework *)arg;
-    while (obj->keepGoing()) {
-        obj->arduino_loop();
-    }
-    return 0;
-}
-
-void TestFramework::_printlog(const char *file, const char *func, int line, const char *msg, ...)
-{
-    va_list list;
-    va_start(list, msg);
     string strMsg = file;
     if (strMsg.find_last_of('\\') != string::npos) {
         strMsg = strMsg.substr(strMsg.find_last_of('\\') + 1);
@@ -318,5 +338,4 @@ void TestFramework::_printlog(const char *file, const char *func, int line, cons
     strMsg += msg;
     strMsg += "\n";
     vfprintf(m_logHandle, strMsg.c_str(), list);
-    va_end(list);
 }

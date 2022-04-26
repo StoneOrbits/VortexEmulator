@@ -150,6 +150,7 @@
     <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\Colorset.cpp" />
     <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\ColorTypes.cpp" />
     <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\LedControl.cpp" />
+    <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\Log.cpp" />
     <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\menus\ColorSelect.cpp" />
     <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\menus\FactoryReset.cpp" />
     <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\menus\GlobalBrightness.cpp" />
@@ -159,9 +160,11 @@
     <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\menus\Randomizer.cpp" />
     <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\Mode.cpp" />
     <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\ModeBuilder.cpp" />
+    <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\PatternBuilder.cpp" />
     <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\patterns\BasicPattern.cpp" />
     <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\patterns\Pattern.cpp" />
     <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\patterns\PatternFuncs.cpp" />
+    <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\patterns\TracerPattern.cpp" />
     <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\RingMenu.cpp" />
     <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\Settings.cpp" />
     <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\TimeControl.cpp" />
@@ -178,6 +181,7 @@
     <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\ColorTypes.h" />
     <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\LedConfig.h" />
     <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\LedControl.h" />
+    <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\Log.h" />
     <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\menus\ColorSelect.h" />
     <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\menus\FactoryReset.h" />
     <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\menus\GlobalBrightness.h" />
@@ -187,8 +191,11 @@
     <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\menus\Randomizer.h" />
     <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\Mode.h" />
     <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\ModeBuilder.h" />
+    <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\PatternBuilder.h" />
+    <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\Patterns.h" />
     <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\patterns\BasicPattern.h" />
     <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\patterns\Pattern.h" />
+    <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\patterns\TracerPattern.h" />
     <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\RingMenu.h" />
     <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\Settings.h" />
     <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\TimeControl.h" />

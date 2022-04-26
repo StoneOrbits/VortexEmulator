@@ -9,9 +9,6 @@
 // paint callback type
 typedef void (*paint_fn_t)(void *, HDC);
 
-#define Debug(msg, ...) \
-    TestFramework::_printlog(__FILE__, __FUNCTION__, __LINE__, msg, __VA_ARGS__)
-
 class TestFramework
 {
 public:
@@ -38,6 +35,8 @@ public:
     void show();
 
     // whether the button is pressed
+    void pressButton();
+    void releaseButton();
     bool isButtonPressed() const;
 
     // whether initialized
@@ -45,12 +44,13 @@ public:
     // whether to exit
     bool keepGoing() const { return m_keepGoing; }
 
+    // button subproc
+    static LRESULT CALLBACK button_subproc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+
     // main window procedure
     static LRESULT CALLBACK window_proc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
-    static DWORD __stdcall run_loop(void *arg);
-
-    static void _printlog(const char *file, const char *func, int line, const char *msg, ...);
+    static void printlog(const char *file, const char *func, int line, const char *msg, va_list list);
 
 private:
     static FILE *m_logHandle;
@@ -74,7 +74,7 @@ private:
 
     RECT m_ledPos[NUM_LEDS];
 
-    CRGB *m_ledList;
+    RGBColor *m_ledList;
     uint32_t m_numLeds;
 
     bool m_initialized;
