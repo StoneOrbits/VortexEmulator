@@ -4,85 +4,93 @@
 
 #include "VortexGloveset.h"
 
-#define NUM_LEDS 10
-
 // paint callback type
 typedef void (*paint_fn_t)(void *, HDC);
 
 class TestFramework
 {
 public:
-    TestFramework();
+  TestFramework();
 
-    // initialize the test framework
-    bool init(HINSTANCE hInstance);
-    // run the test framework
-    void run();
-    
-    // windows message handlers
-    void create(HWND hwnd);
-    void command(WPARAM wParam, LPARAM lParam);
-    void paintbg(HWND hwnd);
-    void paint(HWND hwnd);
-    void cleanup();
-    
-    // arduino setup/loop
-    void arduino_setup();
-    void arduino_loop();
+  // initialize the test framework
+  bool init(HINSTANCE hInstance);
+  // run the test framework
+  void run();
 
-    void installLeds(CRGB *leds, uint32_t count);
-    void setBrightness(int brightness);
-    void show();
+  // windows message handlers
+  void create(HWND hwnd);
+  void command(WPARAM wParam, LPARAM lParam);
+  void paint(HWND hwnd);
+  void cleanup();
 
-    // whether the button is pressed
-    void pressButton();
-    void releaseButton();
-    bool isButtonPressed() const;
+  // arduino setup/loop
+  void arduino_setup();
+  void arduino_loop();
 
-    // whether initialized
-    bool initialized() const { return m_initialized; }
-    // whether to exit
-    bool keepGoing() const { return m_keepGoing; }
+  // handlers for the arduino routines
+  void installLeds(CRGB *leds, uint32_t count);
+  void setBrightness(int brightness);
+  void show();
 
-    // button subproc
-    static LRESULT CALLBACK button_subproc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+  // control the button
+  void pressButton();
+  void releaseButton();
 
-    // main window procedure
-    static LRESULT CALLBACK window_proc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+  // whether the button is pressed
+  bool isButtonPressed() const;
 
-    static void printlog(const char *file, const char *func, int line, const char *msg, va_list list);
+  // change the tick rate based on slider (ticks per second)
+  void setTickrate();
+  // change the time offset based on the slider
+  void setTimeOffset();
+
+  // whether initialized
+  bool initialized() const { return m_initialized; }
+
+  // loop that runs arduino code
+  static DWORD __stdcall arduino_loop_thread(void *arg);
+
+  // button subproc
+  static LRESULT CALLBACK button_subproc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+  static LRESULT CALLBACK slider_subproc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+
+  // main window procedure
+  static LRESULT CALLBACK window_proc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+
+  static void printlog(const char *file, const char *func, int line, const char *msg, va_list list);
 
 private:
-    static FILE *m_logHandle;
+  const COLORREF bkcolor = RGB(40, 40, 40);
 
-    // these are in no particular order
-    VortexGloveset m_gloveSet;
+  // these are in no particular order
+  VortexGloveset m_gloveSet;
 
-    paint_fn_t m_paintCallback;
-    void *m_paintArg;
+  HANDLE m_loopThread;
 
-    bool *m_pButtonDown;
-    HWND m_hwndButton;
+  HBRUSH m_bkbrush;
+  FILE *m_logHandle;
+  WNDPROC m_oldButtonProc;
+  WNDPROC m_oldSliderProc;
 
-    HWND m_hwnd;
-    WNDCLASS m_wc;
+  HWND m_hwndClickButton;
+  HWND m_hwndTickrateSlider;
+  HWND m_hwndTimeOffsetSlider;
 
-    const COLORREF bkcolor = RGB(40, 40, 40);
-    HBRUSH bkbrush;
-    
-    int m_brightness;
+  HWND m_hwnd;
+  WNDCLASS m_wc;
 
-    RECT m_ledPos[NUM_LEDS];
+  int m_brightness;
 
-    RGBColor *m_ledList;
-    uint32_t m_numLeds;
+  RECT m_ledPos[LED_COUNT];
 
-    bool m_initialized;
+  RGBColor *m_ledList;
+  uint32_t m_numLeds;
 
-    bool m_buttonPressed;
+  bool m_initialized;
 
-    HANDLE m_hLoopThread;
-    bool m_keepGoing;
+  bool m_buttonPressed;
+
+  bool m_keepGoing;
 };
 
 extern TestFramework *g_pTestFramework;

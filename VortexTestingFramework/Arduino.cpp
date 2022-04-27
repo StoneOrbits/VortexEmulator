@@ -9,47 +9,59 @@
 
 SerialClass Serial;
 
+static LARGE_INTEGER start;
+static LARGE_INTEGER tps; //tps = ticks per second
+
+void init_arduino()
+{
+  QueryPerformanceFrequency(&tps);
+  QueryPerformanceCounter(&start);
+}
+
 // used for seeding randomSeed()
 unsigned long analogRead(uint32_t pin)
 {
-    return rand();
+  return rand();
 }
 
 // used to read button input
 unsigned long digitalRead(uint32_t pin)
 {
-    if (pin == 1) {
-        // get button state
-        if (g_pTestFramework->isButtonPressed()) {
-            return LOW;
-        }
-        return HIGH;
+  if (pin == 1) {
+    // get button state
+    if (g_pTestFramework->isButtonPressed()) {
+      return LOW;
     }
     return HIGH;
+  }
+  return HIGH;
 }
 
 unsigned long millis()
 {
-    return GetTickCount();
+  return GetTickCount();
 }
 
 uint64_t micros()
 {
-    typedef std::chrono::high_resolution_clock hiresclock;
-    return (uint64_t)hiresclock::now().time_since_epoch().count() / 1000;
+  typedef std::chrono::high_resolution_clock hiresclock;
+  //return (uint64_t)hiresclock::now().time_since_epoch().count() / 1000;
+  LARGE_INTEGER now;
+  QueryPerformanceCounter(&now);
+  return (now.QuadPart - start.QuadPart) * 1000000 / tps.QuadPart;
 }
 
 unsigned long random(uint32_t low, uint32_t high)
 {
-    return low + (rand() % high);
+  return low + (rand() % high);
 }
 
 void randomSeed(uint32_t seed)
 {
-    srand(seed);
+  srand(seed);
 }
 
 void pinMode(uint32_t pin, uint32_t mode)
 {
-    // ???
+  // ???
 }

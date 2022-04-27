@@ -9,6 +9,9 @@
 
 #define INPUT_PULLUP 1
 
+// init this drop-in framework
+void init_arduino();
+
 unsigned long analogRead(uint32_t pin);
 unsigned long digitalRead(uint32_t pin);
 unsigned long millis();
