@@ -5,6 +5,7 @@
 #include <map>
 
 #include "TestFramework.h"
+#include "Arduino.h"
 
 #include "Log.h"
 
@@ -25,7 +26,6 @@ using namespace std;
 #define TIME_OFFSET_SLIDER_ID 10003
 
 TestFramework::TestFramework() :
-  m_gloveSet(),
   m_loopThread(nullptr),
   m_bkbrush(nullptr),
   m_logHandle(NULL),
@@ -86,6 +86,7 @@ bool TestFramework::init(HINSTANCE hInstance)
 
 void TestFramework::run()
 {
+  // launch the 'loop' thread
   m_loopThread = CreateThread(NULL, 0, TestFramework::arduino_loop_thread, this, 0, NULL);
   if (!m_loopThread) {
     // error
@@ -181,7 +182,7 @@ void TestFramework::arduino_setup()
 {
   // init the drop-in arduino library replacement
   init_arduino();
-  if (!m_gloveSet.init()) {
+  if (!VortexGloveset::init()) {
     // uhoh
   }
 }
@@ -189,7 +190,7 @@ void TestFramework::arduino_setup()
 void TestFramework::arduino_loop()
 {
   // run the tick
-  m_gloveSet.tick();
+  VortexGloveset::tick();
 }
 
 void TestFramework::installLeds(CRGB *leds, uint32_t count)

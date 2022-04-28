@@ -3,6 +3,8 @@
 #include <stdio.h>
 
 #include "VortexGloveset.h"
+#include "ColorTypes.h"
+#include "LedConfig.h"
 
 // paint callback type
 typedef void (*paint_fn_t)(void *, HDC);
@@ -63,8 +65,6 @@ private:
   const COLORREF bkcolor = RGB(40, 40, 40);
 
   // these are in no particular order
-  VortexGloveset m_gloveSet;
-
   HANDLE m_loopThread;
 
   HBRUSH m_bkbrush;
