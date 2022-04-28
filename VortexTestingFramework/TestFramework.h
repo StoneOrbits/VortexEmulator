@@ -42,7 +42,7 @@ public:
   // change the tick rate based on slider (ticks per second)
   void setTickrate();
   // change the time offset based on the slider
-  void setTimeOffset();
+  void setTickOffset();
 
   // whether initialized
   bool initialized() const { return m_initialized; }
@@ -74,7 +74,7 @@ private:
 
   HWND m_hwndClickButton;
   HWND m_hwndTickrateSlider;
-  HWND m_hwndTimeOffsetSlider;
+  HWND m_hwndTickOffsetSlider;
 
   HWND m_hwnd;
   WNDCLASS m_wc;

@@ -46,7 +46,8 @@ struct CHSV
   };
 
   /// default values are UNITIALIZED
-  inline CHSV() __attribute__((always_inline))
+  inline CHSV() __attribute__((always_inline)) :
+    h(0), s(0), v(0)
   {
   }
 

@@ -199,6 +199,7 @@
     <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\RingMenu.h" />
     <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\Settings.h" />
     <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\TimeControl.h" />
+    <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\Timings.h" />
     <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\VortexGloveset.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

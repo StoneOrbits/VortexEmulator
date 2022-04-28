@@ -33,7 +33,7 @@ TestFramework::TestFramework() :
   m_oldSliderProc(nullptr),
   m_hwndClickButton(nullptr),
   m_hwndTickrateSlider(nullptr),
-  m_hwndTimeOffsetSlider(nullptr),
+  m_hwndTickOffsetSlider(nullptr),
   m_hwnd(nullptr),
   m_wc(),
   m_brightness(255),
@@ -117,7 +117,7 @@ void TestFramework::create(HWND hwnd)
     WS_VISIBLE | WS_CHILD | WS_TABSTOP | TBS_VERT,
     20, 30, 36, 160, hwnd, (HMENU)TICKRATE_SLIDER_ID, nullptr, nullptr);
 
-  m_hwndTimeOffsetSlider = CreateWindow(TRACKBAR_CLASS, "Time Offset",
+  m_hwndTickOffsetSlider = CreateWindow(TRACKBAR_CLASS, "Time Offset",
     WS_VISIBLE | WS_CHILD | WS_TABSTOP | TBS_VERT,
     360, 30, 36, 160, hwnd, (HMENU)TIME_OFFSET_SLIDER_ID, nullptr, nullptr);
 
@@ -126,7 +126,7 @@ void TestFramework::create(HWND hwnd)
 
   // init tickrate and time offset to match the sliders
   setTickrate();
-  setTimeOffset();
+  setTickOffset();
 }
 
 void TestFramework::command(WPARAM wParam, LPARAM lParam)
@@ -155,7 +155,7 @@ void TestFramework::paint(HWND hwnd)
 
   // the first led is 5,5 to 25,25
   HBRUSH br;
-  for (int i = 0; i < m_numLeds; ++i) {
+  for (uint32_t i = 0; i < m_numLeds; ++i) {
     COLORREF col = RGB(m_ledList[i].red, m_ledList[i].green, m_ledList[i].blue);
     if (brushmap.find(col) == brushmap.end()) {
       br = CreateSolidBrush(col);
@@ -174,7 +174,6 @@ void TestFramework::cleanup()
 {
   m_keepGoing = false;
   WaitForSingleObject(m_loopThread, 3000);
-  TerminateThread(m_loopThread, 0);
   DeleteObject(m_bkbrush);
 }
 
@@ -274,14 +273,14 @@ void TestFramework::setTickrate()
   if (tickrate > 1000000) {
     tickrate = 1000000;
   }
-  m_gloveSet.m_timeControl.setTickrate(tickrate);
+  Time::setTickrate(tickrate);
   DEBUG("Set tickrate: %u", tickrate);
 }
 
-void TestFramework::setTimeOffset()
+void TestFramework::setTickOffset()
 {
-  uint32_t offset = TrackBar_GetPos(g_pTestFramework->m_hwndTimeOffsetSlider);
-  m_gloveSet.m_timeControl.setTimeOffset(offset);
+  uint32_t offset = TrackBar_GetPos(g_pTestFramework->m_hwndTickOffsetSlider);
+  Time::setTickOffset(offset);
   DEBUG("Set time offset: %u", offset);
 }
 
@@ -309,15 +308,6 @@ LRESULT CALLBACK TestFramework::button_subproc(HWND hwnd, UINT uMsg, WPARAM wPar
   return CallWindowProcA(g_pTestFramework->m_oldButtonProc, hwnd, uMsg, wParam, lParam);
 }
 
-LRESULT CALLBACK TestFramework::slider_subproc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
-{
-  switch (uMsg) {
-  default:
-    break;
-  }
-  return CallWindowProcA(g_pTestFramework->m_oldSliderProc, hwnd, uMsg, wParam, lParam);
-}
-
 LRESULT CALLBACK TestFramework::window_proc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
   switch (uMsg) {
@@ -326,8 +316,8 @@ LRESULT CALLBACK TestFramework::window_proc(HWND hwnd, UINT uMsg, WPARAM wParam,
     case TB_THUMBTRACK:
     case TB_ENDTRACK:
       // lazy
-      if ((HWND)lParam == g_pTestFramework->m_hwndTimeOffsetSlider) {
-        g_pTestFramework->setTimeOffset();
+      if ((HWND)lParam == g_pTestFramework->m_hwndTickOffsetSlider) {
+        g_pTestFramework->setTickOffset();
       }
       if ((HWND)lParam == g_pTestFramework->m_hwndTickrateSlider) {
         g_pTestFramework->setTickrate();
