@@ -42,13 +42,12 @@ unsigned long millis()
   return GetTickCount();
 }
 
-uint64_t micros()
+unsigned long micros()
 {
-  typedef std::chrono::high_resolution_clock hiresclock;
-  //return (uint64_t)hiresclock::now().time_since_epoch().count() / 1000;
   LARGE_INTEGER now;
   QueryPerformanceCounter(&now);
-  return (now.QuadPart - start.QuadPart) * 1000000 / tps.QuadPart;
+  // yes, this will overflow, that's how arduino micros() works *shrug*
+  return (unsigned long)((now.QuadPart - start.QuadPart) * 1000000 / tps.QuadPart);
 }
 
 unsigned long random(uint32_t low, uint32_t high)

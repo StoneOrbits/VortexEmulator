@@ -1,7 +1,11 @@
 #include <Windows.h>
 #include <CommCtrl.h>
 
+#include <iostream>
+#include <sstream>
+#include <iomanip>
 #include <string>
+#include <ctime>
 #include <map>
 
 #include "TestFramework.h"
@@ -11,6 +15,11 @@
 
 #include "VortexGloveset.h"
 #include "TimeControl.h"
+#include "Colorset.h"
+#include "Modes.h"
+#include "Mode.h"
+
+#include "patterns/Pattern.h"
 
 #pragma comment(lib, "Comctl32.lib")
 
@@ -21,6 +30,9 @@ using namespace std;
 #define TrackBar_GetPos(hwnd) \
     (LONG)SendMessage((hwnd), TBM_GETPOS, 0, 0)
 
+#define TrackBar_SetPos(hwnd, pos) \
+    (LONG)SendMessage((hwnd), TBM_SETPOS, TRUE, pos)
+
 #define CLICK_BUTTON_ID 10001
 #define TICKRATE_SLIDER_ID 10002
 #define TIME_OFFSET_SLIDER_ID 10003
@@ -28,6 +40,7 @@ using namespace std;
 TestFramework::TestFramework() :
   m_loopThread(nullptr),
   m_bkbrush(nullptr),
+  m_consoleHandle(NULL),
   m_logHandle(NULL),
   m_oldButtonProc(nullptr),
   m_oldSliderProc(nullptr),
@@ -53,9 +66,18 @@ bool TestFramework::init(HINSTANCE hInstance)
   }
   g_pTestFramework = this;
   
-  if (!m_logHandle) {
+  if (!m_consoleHandle) {
     AllocConsole();
-    freopen_s(&m_logHandle, "CONOUT$", "w", stdout);
+    freopen_s(&m_consoleHandle, "CONOUT$", "w", stdout);
+  }
+  if (!m_logHandle) {
+    time_t t = time(nullptr);
+    tm tm;
+    localtime_s(&tm, &t);
+    ostringstream oss;
+    oss << std::put_time(&tm, "%d-%m-%Y-%H-%M-%S");
+    string filename = "vortex-test-framework-log." + oss.str() + ".txt";
+    fopen_s(&m_logHandle, filename.c_str(), "w");
   }
 
   m_bkbrush = CreateSolidBrush(bkcolor);
@@ -167,7 +189,7 @@ void TestFramework::paint(HWND hwnd)
     Ellipse(hdc, m_ledPos[i].left, m_ledPos[i].top, m_ledPos[i].right, m_ledPos[i].bottom);
     SelectObject(hdc, oldbrush);
   }
-
+  
   EndPaint(hwnd, &ps);
 }
 
@@ -282,6 +304,7 @@ void TestFramework::setTickOffset()
 {
   uint32_t offset = TrackBar_GetPos(g_pTestFramework->m_hwndTickOffsetSlider);
   Time::setTickOffset(offset);
+  Modes::curMode()->reset();
   DEBUG("Set time offset: %u", offset);
 }
 
@@ -360,5 +383,6 @@ void TestFramework::printlog(const char *file, const char *func, int line, const
   strMsg += "(): ";
   strMsg += msg;
   strMsg += "\n";
+  vfprintf(g_pTestFramework->m_consoleHandle, strMsg.c_str(), list);
   vfprintf(g_pTestFramework->m_logHandle, strMsg.c_str(), list);
 }

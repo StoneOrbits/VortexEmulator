@@ -68,6 +68,7 @@ private:
   HANDLE m_loopThread;
 
   HBRUSH m_bkbrush;
+  FILE *m_consoleHandle;
   FILE *m_logHandle;
   WNDPROC m_oldButtonProc;
   WNDPROC m_oldSliderProc;

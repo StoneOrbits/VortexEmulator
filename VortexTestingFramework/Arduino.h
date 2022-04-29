@@ -15,7 +15,7 @@ void init_arduino();
 unsigned long analogRead(uint32_t pin);
 unsigned long digitalRead(uint32_t pin);
 unsigned long millis();
-uint64_t micros();
+unsigned long micros();
 unsigned long random(uint32_t low = 0, uint32_t high = 0);
 void randomSeed(uint32_t seed);
 void pinMode(uint32_t pin, uint32_t mode);
