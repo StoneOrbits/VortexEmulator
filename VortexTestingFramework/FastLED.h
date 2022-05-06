@@ -92,6 +92,9 @@ public:
     init(cl, count);
   }
 
+  // set refresh rate (does nothing)
+  void setMaxRefreshRate(uint32_t rate, bool constrain) {}
+
   // internal 'init' function that is called when addLeds is called
   void init(CRGB *cl, int count);
 

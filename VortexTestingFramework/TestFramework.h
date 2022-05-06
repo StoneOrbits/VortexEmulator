@@ -49,6 +49,10 @@ public:
   // whether initialized
   bool initialized() const { return m_initialized; }
 
+  // pause and unpause the main arduino loop
+  void pause();
+  void unpause();
+
   // loop that runs arduino code
   static DWORD __stdcall arduino_loop_thread(void *arg);
 
@@ -92,6 +96,10 @@ private:
   bool m_buttonPressed;
 
   bool m_keepGoing;
+
+  volatile bool m_isPaused;
+
+  HANDLE m_pauseMutex;
 };
 
 extern TestFramework *g_pTestFramework;

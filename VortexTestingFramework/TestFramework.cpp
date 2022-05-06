@@ -55,7 +55,9 @@ TestFramework::TestFramework() :
   m_numLeds(0),
   m_initialized(false),
   m_buttonPressed(false),
-  m_keepGoing(true)
+  m_keepGoing(true),
+  m_isPaused(true),
+  m_pauseMutex(nullptr)
 {
 }
 
@@ -65,7 +67,7 @@ bool TestFramework::init(HINSTANCE hInstance)
     return false;
   }
   g_pTestFramework = this;
-  
+
   if (!m_consoleHandle) {
     AllocConsole();
     freopen_s(&m_consoleHandle, "CONOUT$", "w", stdout);
@@ -78,6 +80,12 @@ bool TestFramework::init(HINSTANCE hInstance)
     oss << std::put_time(&tm, "%d-%m-%Y-%H-%M-%S");
     string filename = "vortex-test-framework-log." + oss.str() + ".txt";
     fopen_s(&m_logHandle, filename.c_str(), "w");
+  }
+
+  // create the pause mutex
+  m_pauseMutex = CreateMutex(NULL, false, NULL);
+  if (!m_pauseMutex) {
+    return false;
   }
 
   m_bkbrush = CreateSolidBrush(bkcolor);
@@ -147,6 +155,9 @@ void TestFramework::create(HWND hwnd)
   // do the arduino init/setup
   arduino_setup();
 
+  TrackBar_SetPos(m_hwndTickrateSlider, 20);
+  TrackBar_SetPos(m_hwndTickOffsetSlider, 0);
+
   // init tickrate and time offset to match the sliders
   setTickrate();
   setTickOffset();
@@ -176,6 +187,9 @@ void TestFramework::paint(HWND hwnd)
 
   static map<COLORREF, HBRUSH> brushmap;
 
+  SetBkMode(hdc, TRANSPARENT);
+  SetTextColor(hdc, RGB(200, 200, 200));
+
   // the first led is 5,5 to 25,25
   HBRUSH br;
   for (uint32_t i = 0; i < m_numLeds; ++i) {
@@ -188,14 +202,62 @@ void TestFramework::paint(HWND hwnd)
     HBRUSH oldbrush = (HBRUSH)SelectObject(hdc, br);
     Ellipse(hdc, m_ledPos[i].left, m_ledPos[i].top, m_ledPos[i].right, m_ledPos[i].bottom);
     SelectObject(hdc, oldbrush);
+
+
+    RECT idRect = m_ledPos[i];
+    // 1 if even, -1 if odd, this makes the evens go down and odds go up
+    int signEven = 1 - (2 * (i % 2));
+    // shift it up/down 30 with a static offset of 8
+    idRect.top += (30 * signEven) + 8;
+    idRect.bottom += (30 * signEven) + 8;
+    char text[4] = {0};
+    // The text is in reverse (LED_LAST - i) because that's the order of the enums
+    // in LedConfig.h -- the actual hardware is reversed too and should be flipped in v2
+    snprintf(text, sizeof(text), "%d", LED_LAST - i);
+    DrawText(hdc, text, -1, &idRect, DT_CENTER);
   }
-  
+
+  // Tip:
+  RECT tipRect = m_ledPos[1];
+  tipRect.top += 8;
+  tipRect.bottom += 10;
+  tipRect.left -= 44;
+  tipRect.right -= 38;
+  DrawText(hdc, "Tip", 3, &tipRect, DT_RIGHT);
+
+  // Top:
+  RECT topRect = m_ledPos[0];
+  topRect.top += 8;
+  topRect.bottom += 10;
+  topRect.left -= 44;
+  topRect.right -= 38;
+  DrawText(hdc, "Top", 3, &topRect, DT_RIGHT);
+
+  // Tickspeed
+  string tickspeedStr = "Tickrate: " + to_string(Time::getTickrate());
+  RECT rateRect;
+  rateRect.top = 200;
+  rateRect.bottom = 240;
+  rateRect.left = 20;
+  rateRect.right = 200;
+  DrawText(hdc, tickspeedStr.c_str(), -1, &rateRect, 0);
+
+  // Tick offset
+  string tickoffsetStr = "Tick Offset: " + to_string(Time::getTickOffset((LedPos)1));
+  RECT offsetRect;
+  offsetRect.top = 200;
+  offsetRect.bottom = 240;
+  offsetRect.left = 280;
+  offsetRect.right = 400;
+  DrawText(hdc, tickoffsetStr.c_str(), -1, &offsetRect, DT_RIGHT);
+
   EndPaint(hwnd, &ps);
 }
 
 void TestFramework::cleanup()
 {
   m_keepGoing = false;
+  m_isPaused = false;
   WaitForSingleObject(m_loopThread, 3000);
   DeleteObject(m_bkbrush);
 }
@@ -221,15 +283,20 @@ void TestFramework::installLeds(CRGB *leds, uint32_t count)
   m_numLeds = count;
 
   // initialize the positions of all the leds
-  uint32_t base_left = 70;
+  uint32_t base_left = 92;
   uint32_t base_top = 50;
   uint32_t radius = 15;
-  uint32_t d = radius * 2;
+  uint32_t dx = 24;
+  uint32_t dy = 30;
   for (int i = 0; i < LED_COUNT; ++i) {
-    m_ledPos[i].left = base_left + (i - (i % 2)) * d;
-    m_ledPos[i].right = base_left + d + (i - (i % 2)) * d;
-    m_ledPos[i].top = base_top + ((i % 2) * d);
-    m_ledPos[i].bottom = base_top + d + ((i % 2) * d);
+    // bottom to top, left to right is the true order of the hardware
+    int even = i % 2; // whether i is even
+    int odd = (even == 0); // whether i is odd
+    int rDown = i - even; // i rounded down to even
+    m_ledPos[i].left = base_left + (rDown * dx);
+    m_ledPos[i].right = base_left + dy + (rDown * dx);
+    m_ledPos[i].top = base_top + (odd * dy);
+    m_ledPos[i].bottom = base_top + dy + (odd * dy);
     if (i == 0 || i == 1) {
       // offset the thumb
       m_ledPos[i].top += 10;
@@ -260,12 +327,9 @@ void TestFramework::show()
 #endif
 
   // redraw the leds
-  RECT ledArea;
-  ledArea.left = m_ledPos[0].left;
-  ledArea.top = m_ledPos[2].top;
-  ledArea.right = m_ledPos[LED_COUNT - 1].right;
-  ledArea.bottom = m_ledPos[1].bottom;
-  InvalidateRect(m_hwnd, &ledArea, FALSE);
+  for (int i = 0; i < LED_COUNT; ++i) {
+    InvalidateRect(m_hwnd, m_ledPos + i, FALSE);
+  }
 }
 
 void TestFramework::pressButton()
@@ -287,8 +351,8 @@ bool TestFramework::isButtonPressed() const
 void TestFramework::setTickrate()
 {
   uint32_t tickrate = TrackBar_GetPos(g_pTestFramework->m_hwndTickrateSlider);
-  if (tickrate > 50) {
-    tickrate *= (tickrate / 10);
+  if (tickrate > 75) {
+    tickrate *= (tickrate / 20);
   }
   if (tickrate < 1) {
     tickrate = 1;
@@ -296,23 +360,67 @@ void TestFramework::setTickrate()
   if (tickrate > 1000000) {
     tickrate = 1000000;
   }
+  pause();
   Time::setTickrate(tickrate);
-  DEBUG("Set tickrate: %u", tickrate);
+  unpause();
+  RECT rateRect;
+  rateRect.top = 200;
+  rateRect.bottom = 240;
+  rateRect.left = 20;
+  rateRect.right = 200;
+  InvalidateRect(m_hwnd, &rateRect, TRUE);
+  DEBUGF("Set tickrate: %u", tickrate);
 }
 
 void TestFramework::setTickOffset()
 {
   uint32_t offset = TrackBar_GetPos(g_pTestFramework->m_hwndTickOffsetSlider);
+  // mom can we get a synchronization lock?
+  // mom: We have a synchronization lock at home
+  // the synchronization lock at home:
+  pause();
   Time::setTickOffset(offset);
-  Modes::curMode()->reset();
-  DEBUG("Set time offset: %u", offset);
+  Modes::curMode()->init();
+  unpause();
+  RECT offsetRect;
+  offsetRect.top = 200;
+  offsetRect.bottom = 240;
+  offsetRect.left = 280;
+  offsetRect.right = 400;
+  InvalidateRect(m_hwnd, &offsetRect, TRUE);
+  DEBUGF("Set time offset: %u", offset);
+}
+
+
+void TestFramework::pause()
+{
+  if (m_isPaused) {
+    return;
+  }
+  if (WaitForSingleObject(m_pauseMutex, INFINITE) != WAIT_OBJECT_0) {
+    return;
+  }
+  m_isPaused = true;
+}
+
+void TestFramework::unpause()
+{
+  if (!m_isPaused) {
+    return;
+  }
+  ReleaseMutex(m_pauseMutex);
+  m_isPaused = false;
 }
 
 DWORD __stdcall TestFramework::arduino_loop_thread(void *arg)
 {
   TestFramework *framework = (TestFramework *)arg;
   while (framework->m_initialized && framework->m_keepGoing) {
-    framework->arduino_loop();
+    DWORD dwWaitResult = WaitForSingleObject(framework->m_pauseMutex, INFINITE);  // no time-out interval
+    if (dwWaitResult == WAIT_OBJECT_0) {
+      framework->arduino_loop();
+      ReleaseMutex(framework->m_pauseMutex);
+    }
   }
   return 0;
 }
