@@ -1,0 +1,231 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\src">
+      <UniqueIdentifier>{3c2d1a83-94e7-48e6-a91d-0c4b42ba4eb0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\src\menus">
+      <UniqueIdentifier>{570f38f1-68b8-4e5c-b864-3b2dcbe7afe8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\src\patterns">
+      <UniqueIdentifier>{40ed0aa7-2772-449b-9ace-c26a19d0937b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\src">
+      <UniqueIdentifier>{d9ca222a-dfc0-4003-b9e7-8c9bd8e5e98c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\src\menus">
+      <UniqueIdentifier>{8035a6b8-0a27-459c-b23f-9a9ed1720ac7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\src\patterns">
+      <UniqueIdentifier>{267b3904-eb2a-4a02-8872-088d8377618b}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="WinMain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\Button.cpp">
+      <Filter>Source Files\src</Filter>
+    </ClCompile>
+    <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\Colorset.cpp">
+      <Filter>Source Files\src</Filter>
+    </ClCompile>
+    <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\ColorTypes.cpp">
+      <Filter>Source Files\src</Filter>
+    </ClCompile>
+    <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\LedControl.cpp">
+      <Filter>Source Files\src</Filter>
+    </ClCompile>
+    <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\Mode.cpp">
+      <Filter>Source Files\src</Filter>
+    </ClCompile>
+    <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\ModeBuilder.cpp">
+      <Filter>Source Files\src</Filter>
+    </ClCompile>
+    <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\TimeControl.cpp">
+      <Filter>Source Files\src</Filter>
+    </ClCompile>
+    <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\VortexGloveset.cpp">
+      <Filter>Source Files\src</Filter>
+    </ClCompile>
+    <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\menus\GlobalBrightness.cpp">
+      <Filter>Source Files\src\menus</Filter>
+    </ClCompile>
+    <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\menus\FactoryReset.cpp">
+      <Filter>Source Files\src\menus</Filter>
+    </ClCompile>
+    <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\menus\ColorSelect.cpp">
+      <Filter>Source Files\src\menus</Filter>
+    </ClCompile>
+    <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\menus\ModeSharing.cpp">
+      <Filter>Source Files\src\menus</Filter>
+    </ClCompile>
+    <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\menus\Randomizer.cpp">
+      <Filter>Source Files\src\menus</Filter>
+    </ClCompile>
+    <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\menus\PatternSelect.cpp">
+      <Filter>Source Files\src\menus</Filter>
+    </ClCompile>
+    <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\patterns\Pattern.cpp">
+      <Filter>Source Files\src\patterns</Filter>
+    </ClCompile>
+    <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\patterns\PatternFuncs.cpp">
+      <Filter>Source Files\src\patterns</Filter>
+    </ClCompile>
+    <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\patterns\BasicPattern.cpp">
+      <Filter>Source Files\src\patterns</Filter>
+    </ClCompile>
+    <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\menus\Menu.cpp">
+      <Filter>Source Files\src\menus</Filter>
+    </ClCompile>
+    <ClCompile Include="Arduino.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FastLED.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TestFramework.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\Log.cpp">
+      <Filter>Source Files\src</Filter>
+    </ClCompile>
+    <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\patterns\TracerPattern.cpp">
+      <Filter>Source Files\src\patterns</Filter>
+    </ClCompile>
+    <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\PatternBuilder.cpp">
+      <Filter>Source Files\src</Filter>
+    </ClCompile>
+    <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\Buttons.cpp">
+      <Filter>Source Files\src</Filter>
+    </ClCompile>
+    <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\Menus.cpp">
+      <Filter>Source Files\src</Filter>
+    </ClCompile>
+    <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\Timer.cpp">
+      <Filter>Source Files\src</Filter>
+    </ClCompile>
+    <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\Modes.cpp">
+      <Filter>Source Files\src</Filter>
+    </ClCompile>
+    <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\patterns\AdvancedPattern.cpp">
+      <Filter>Source Files\src\patterns</Filter>
+    </ClCompile>
+    <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\patterns\GapPattern.cpp">
+      <Filter>Source Files\src\patterns</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\patterns\BasicPattern.h">
+      <Filter>Header Files\src\patterns</Filter>
+    </ClInclude>
+    <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\patterns\Pattern.h">
+      <Filter>Header Files\src\patterns</Filter>
+    </ClInclude>
+    <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\menus\FactoryReset.h">
+      <Filter>Header Files\src\menus</Filter>
+    </ClInclude>
+    <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\menus\ColorSelect.h">
+      <Filter>Header Files\src\menus</Filter>
+    </ClInclude>
+    <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\menus\GlobalBrightness.h">
+      <Filter>Header Files\src\menus</Filter>
+    </ClInclude>
+    <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\menus\ModeSharing.h">
+      <Filter>Header Files\src\menus</Filter>
+    </ClInclude>
+    <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\menus\Randomizer.h">
+      <Filter>Header Files\src\menus</Filter>
+    </ClInclude>
+    <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\menus\Menu.h">
+      <Filter>Header Files\src\menus</Filter>
+    </ClInclude>
+    <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\Button.h">
+      <Filter>Header Files\src</Filter>
+    </ClInclude>
+    <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\Colorset.h">
+      <Filter>Header Files\src</Filter>
+    </ClInclude>
+    <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\ColorTypes.h">
+      <Filter>Header Files\src</Filter>
+    </ClInclude>
+    <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\LedConfig.h">
+      <Filter>Header Files\src</Filter>
+    </ClInclude>
+    <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\LedControl.h">
+      <Filter>Header Files\src</Filter>
+    </ClInclude>
+    <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\Mode.h">
+      <Filter>Header Files\src</Filter>
+    </ClInclude>
+    <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\ModeBuilder.h">
+      <Filter>Header Files\src</Filter>
+    </ClInclude>
+    <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\TimeControl.h">
+      <Filter>Header Files\src</Filter>
+    </ClInclude>
+    <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\VortexGloveset.h">
+      <Filter>Header Files\src</Filter>
+    </ClInclude>
+    <ClInclude Include="Arduino.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FastLED.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Adafruit_Dotstar.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TestFramework.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\Log.h">
+      <Filter>Header Files\src</Filter>
+    </ClInclude>
+    <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\menus\PatternSelect.h">
+      <Filter>Header Files\src\menus</Filter>
+    </ClInclude>
+    <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\patterns\TracerPattern.h">
+      <Filter>Header Files\src\patterns</Filter>
+    </ClInclude>
+    <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\Patterns.h">
+      <Filter>Header Files\src</Filter>
+    </ClInclude>
+    <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\PatternBuilder.h">
+      <Filter>Header Files\src</Filter>
+    </ClInclude>
+    <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\Timings.h">
+      <Filter>Header Files\src</Filter>
+    </ClInclude>
+    <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\Buttons.h">
+      <Filter>Header Files\src</Filter>
+    </ClInclude>
+    <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\Menus.h">
+      <Filter>Header Files\src</Filter>
+    </ClInclude>
+    <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\Modes.h">
+      <Filter>Header Files\src</Filter>
+    </ClInclude>
+    <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\Timer.h">
+      <Filter>Header Files\src</Filter>
+    </ClInclude>
+    <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\patterns\AdvancedPattern.h">
+      <Filter>Header Files\src\patterns</Filter>
+    </ClInclude>
+    <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\patterns\GapPattern.h">
+      <Filter>Header Files\src\patterns</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
