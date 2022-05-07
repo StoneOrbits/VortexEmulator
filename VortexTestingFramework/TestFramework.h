@@ -5,6 +5,11 @@
 #include "VortexGloveset.h"
 #include "ColorTypes.h"
 #include "LedConfig.h"
+#include "Patterns.h"
+#include "Colorset.h"
+
+#include <vector>
+#include <map>
 
 // paint callback type
 typedef void (*paint_fn_t)(void *, HDC);
@@ -53,6 +58,12 @@ public:
   void pause();
   void unpause();
 
+  // reload the pattern strip with the new patternID
+  void handlePatternChange();
+    
+  // lookup a brush by rgbcolor
+  HBRUSH getBrushCol(RGBColor col);
+
   // loop that runs arduino code
   static DWORD __stdcall arduino_loop_thread(void *arg);
 
@@ -100,6 +111,16 @@ private:
   volatile bool m_isPaused;
 
   HANDLE m_pauseMutex;
+
+  PatternID m_curPattern;
+  Colorset m_curColorset;
+
+  // one color per pixel of strip
+  std::vector<RGBColor> m_patternStrip;
+
+  bool m_redrawStrip;
+
+  std::map<COLORREF, HBRUSH> m_brushmap;
 };
 
 extern TestFramework *g_pTestFramework;

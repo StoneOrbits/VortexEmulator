@@ -6,7 +6,6 @@
 #include <iomanip>
 #include <string>
 #include <ctime>
-#include <map>
 
 #include "TestFramework.h"
 #include "Arduino.h"
@@ -14,6 +13,8 @@
 #include "Log.h"
 
 #include "VortexGloveset.h"
+#include "PatternBuilder.h"
+#include "ModeBuilder.h"
 #include "TimeControl.h"
 #include "Colorset.h"
 #include "Modes.h"
@@ -57,7 +58,11 @@ TestFramework::TestFramework() :
   m_buttonPressed(false),
   m_keepGoing(true),
   m_isPaused(true),
-  m_pauseMutex(nullptr)
+  m_pauseMutex(nullptr),
+  m_curPattern(PATTERN_STROBE),
+  m_curColorset(),
+  m_patternStrip(),
+  m_redrawStrip(false)
 {
 }
 
@@ -106,7 +111,7 @@ bool TestFramework::init(HINSTANCE hInstance)
   m_hwnd = CreateWindow(m_wc.lpszClassName, "Vortex Test Framework",
     WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX,
     (desktop.right / 2) - 240, (desktop.bottom / 2) - 84,
-    420, 269, nullptr, nullptr, hInstance, nullptr);
+    420, 310, nullptr, nullptr, hInstance, nullptr);
   if (!m_hwnd) {
     MessageBox(nullptr, "Failed to open window", "Error", 0);
     return 0;
@@ -185,25 +190,18 @@ void TestFramework::paint(HWND hwnd)
   PAINTSTRUCT ps;
   HDC hdc = BeginPaint(hwnd, &ps);
 
-  static map<COLORREF, HBRUSH> brushmap;
-
+  // transparent background for text
   SetBkMode(hdc, TRANSPARENT);
   SetTextColor(hdc, RGB(200, 200, 200));
 
   // the first led is 5,5 to 25,25
-  HBRUSH br;
   for (uint32_t i = 0; i < m_numLeds; ++i) {
-    COLORREF col = RGB(m_ledList[i].red, m_ledList[i].green, m_ledList[i].blue);
-    if (brushmap.find(col) == brushmap.end()) {
-      br = CreateSolidBrush(col);
-      brushmap[col] = br;
-    }
-    br = brushmap[col];
-    HBRUSH oldbrush = (HBRUSH)SelectObject(hdc, br);
+    // draw the LED ellipsed
+    HBRUSH oldbrush = (HBRUSH)SelectObject(hdc, getBrushCol(m_ledList[i]));
     Ellipse(hdc, m_ledPos[i].left, m_ledPos[i].top, m_ledPos[i].right, m_ledPos[i].bottom);
     SelectObject(hdc, oldbrush);
 
-
+    // Draw the numbers above/below the LEDs
     RECT idRect = m_ledPos[i];
     // 1 if even, -1 if odd, this makes the evens go down and odds go up
     int signEven = 1 - (2 * (i % 2));
@@ -250,6 +248,17 @@ void TestFramework::paint(HWND hwnd)
   offsetRect.left = 280;
   offsetRect.right = 400;
   DrawText(hdc, tickoffsetStr.c_str(), -1, &offsetRect, DT_RIGHT);
+
+  // pattern strip
+  if (m_redrawStrip) {
+    m_redrawStrip = false;
+    RECT backPos = { 0, 229, 420, 251 };
+    FillRect(hdc, &backPos, getBrushCol(0));
+    for (int i = 0; i < m_patternStrip.size(); ++i) {
+      RECT stripPos = { i, 230, i + 1, 250 };
+      FillRect(hdc, &stripPos, getBrushCol(m_patternStrip[i]));
+    }
+  }
 
   EndPaint(hwnd, &ps);
 }
@@ -365,7 +374,7 @@ void TestFramework::setTickrate()
   unpause();
   RECT rateRect;
   rateRect.top = 200;
-  rateRect.bottom = 240;
+  rateRect.bottom = 220;
   rateRect.left = 20;
   rateRect.right = 200;
   InvalidateRect(m_hwnd, &rateRect, TRUE);
@@ -412,6 +421,85 @@ void TestFramework::unpause()
   m_isPaused = false;
 }
 
+void TestFramework::handlePatternChange()
+{
+  // don't want to create a callback mechanism just for the test framework to be
+  // notified of pattern changes, I'll just watch the patternID each tick
+  PatternID curPattern = Modes::curMode()->getPattern()->getPatternID();
+  Colorset curColorset = *Modes::curMode()->getColorset();
+  // check to see if the pattern or colorset changed
+  if (curPattern == m_curPattern && curColorset == m_curColorset) {
+    return;
+  }
+  // update current pattern and colorset
+  m_curPattern = curPattern;
+  m_curColorset = curColorset;
+  // would use the mode builder but it's not quite suited for this
+  // create the new mode object
+  Mode *newMode = new Mode();
+  if (!newMode) { 
+    return; 
+  }
+  // create a new pattern from the id
+  Pattern *newPat = PatternBuilder::make(m_curPattern);
+  if (!newPat) {
+    // allocation error
+    delete newMode;
+    return;
+  }
+  // unfortunately need to create an entirely new colorset object
+  // because the mode object will free it when it's deleted
+  Colorset *colorset = new Colorset(m_curColorset);
+  if (!colorset) {
+    delete newPat;
+    delete newMode;
+    return;
+  }
+  LedPos targetPos = LED_FIRST;
+  // TODO: The hardware is flipped so the 'real' led position is reversed
+  LedPos realPos = (LedPos)(LED_LAST - targetPos);
+  // bind the pattern and colorset to the mode
+  if (!newMode->bind(newPat, colorset, LED_FIRST)) {
+    delete newPat;
+    delete newMode;
+    delete colorset;
+    return;
+  }
+  // backup the current LED 0 color
+  RGBColor curLed0Col = m_ledList[realPos];
+  newMode->init();
+  Time::startSimulation();
+  m_patternStrip.clear();
+  for (int i = 0; i < 420; ++i) {
+    newMode->play();
+    Time::tickSimulation();
+    RGBColor c = m_ledList[realPos];
+    m_patternStrip.push_back(c);
+  }
+  Time::endSimulation();
+  Sleep(100);
+  // restore original color on Led0
+  m_ledList[realPos] = curLed0Col;
+  // clean up the temp mode object and the pattern/colorset it contains
+  delete newMode;
+  // redraw the pattern strip
+  m_redrawStrip = true;
+  RECT stripRect = { 0, 200, 420, 260 };
+  InvalidateRect(m_hwnd, &stripRect, TRUE);
+}
+
+HBRUSH TestFramework::getBrushCol(RGBColor rgbcol)
+{
+  HBRUSH br;
+  COLORREF col = RGB(rgbcol.red, rgbcol.green, rgbcol.blue);
+  if (m_brushmap.find(col) == m_brushmap.end()) {
+    br = CreateSolidBrush(col);
+    m_brushmap[col] = br;
+  }
+  br = m_brushmap[col];
+  return br;
+}
+
 DWORD __stdcall TestFramework::arduino_loop_thread(void *arg)
 {
   TestFramework *framework = (TestFramework *)arg;
@@ -419,6 +507,7 @@ DWORD __stdcall TestFramework::arduino_loop_thread(void *arg)
     DWORD dwWaitResult = WaitForSingleObject(framework->m_pauseMutex, INFINITE);  // no time-out interval
     if (dwWaitResult == WAIT_OBJECT_0) {
       framework->arduino_loop();
+      framework->handlePatternChange();
       ReleaseMutex(framework->m_pauseMutex);
     }
   }
