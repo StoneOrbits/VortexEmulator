@@ -1,0 +1,3 @@
+[submodule "VortexTestingFramework/Vortex-Gloves"]
+	path = VortexTestingFramework/Vortex-Gloves
+	url = https://github.com/Unreal-Dan/Vortex-Gloves.git
