@@ -393,7 +393,7 @@ void TestFramework::setTickOffset()
   unpause();
   RECT offsetRect;
   offsetRect.top = 200;
-  offsetRect.bottom = 240;
+  offsetRect.bottom = 220;
   offsetRect.left = 280;
   offsetRect.right = 400;
   InvalidateRect(m_hwnd, &offsetRect, TRUE);
