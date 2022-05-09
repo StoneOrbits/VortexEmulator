@@ -126,6 +126,18 @@
     <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\patterns\GapPattern.cpp">
       <Filter>Source Files\src\patterns</Filter>
     </ClCompile>
+    <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\patterns\MultiLedPattern.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\patterns\SingleLedPattern.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\patterns\HybridPattern.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\patterns\RabbitPattern.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\patterns\BasicPattern.h">
@@ -226,6 +238,18 @@
     </ClInclude>
     <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\patterns\GapPattern.h">
       <Filter>Header Files\src\patterns</Filter>
+    </ClInclude>
+    <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\patterns\MultiLedPattern.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\patterns\SingleLedPattern.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\patterns\HybridPattern.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\patterns\RabbitPattern.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

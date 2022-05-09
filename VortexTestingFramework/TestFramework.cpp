@@ -59,7 +59,7 @@ TestFramework::TestFramework() :
   m_keepGoing(true),
   m_isPaused(true),
   m_pauseMutex(nullptr),
-  m_curPattern(PATTERN_STROBE),
+  m_curPattern(PATTERN_NONE),
   m_curColorset(),
   m_patternStrip(),
   m_redrawStrip(false)
@@ -477,9 +477,10 @@ void TestFramework::handlePatternChange()
     m_patternStrip.push_back(c);
   }
   Time::endSimulation();
-  Sleep(100);
   // restore original color on Led0
   m_ledList[realPos] = curLed0Col;
+  // idk why this sleep is necessary, bad synchronization
+  Sleep(100);
   // clean up the temp mode object and the pattern/colorset it contains
   delete newMode;
   // redraw the pattern strip

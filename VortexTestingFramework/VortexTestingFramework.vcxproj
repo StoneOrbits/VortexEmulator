@@ -167,8 +167,12 @@
     <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\patterns\AdvancedPattern.cpp" />
     <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\patterns\BasicPattern.cpp" />
     <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\patterns\GapPattern.cpp" />
+    <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\patterns\HybridPattern.cpp" />
+    <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\patterns\MultiLedPattern.cpp" />
     <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\patterns\Pattern.cpp" />
     <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\patterns\PatternFuncs.cpp" />
+    <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\patterns\RabbitPattern.cpp" />
+    <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\patterns\SingleLedPattern.cpp" />
     <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\patterns\TracerPattern.cpp" />
     <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\TimeControl.cpp" />
     <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\Timer.cpp" />
@@ -203,7 +207,11 @@
     <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\patterns\AdvancedPattern.h" />
     <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\patterns\BasicPattern.h" />
     <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\patterns\GapPattern.h" />
+    <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\patterns\HybridPattern.h" />
+    <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\patterns\MultiLedPattern.h" />
     <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\patterns\Pattern.h" />
+    <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\patterns\RabbitPattern.h" />
+    <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\patterns\SingleLedPattern.h" />
     <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\patterns\TracerPattern.h" />
     <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\TimeControl.h" />
     <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\Timer.h" />
