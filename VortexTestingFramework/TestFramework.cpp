@@ -146,7 +146,7 @@ void TestFramework::create(HWND hwnd)
     120, 160, 170, 32, hwnd, (HMENU)CLICK_BUTTON_ID, nullptr, nullptr);
 
   // sub-process the button to capture the press/release individually
-  g_pTestFramework->m_oldButtonProc = (WNDPROC)SetWindowLong(m_hwndClickButton, GWL_WNDPROC,
+  g_pTestFramework->m_oldButtonProc = (WNDPROC)SetWindowLongPtr(m_hwndClickButton, GWLP_WNDPROC,
     (LONG_PTR)TestFramework::button_subproc);
 
   m_hwndTickrateSlider = CreateWindow(TRACKBAR_CLASS, "Tickrate",
