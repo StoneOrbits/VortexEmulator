@@ -21,6 +21,7 @@
 #include "Mode.h"
 
 #include "patterns/Pattern.h"
+#include "patterns/SingleLedPattern.h"
 
 #pragma comment(lib, "Comctl32.lib")
 
@@ -425,8 +426,8 @@ void TestFramework::handlePatternChange()
 {
   // don't want to create a callback mechanism just for the test framework to be
   // notified of pattern changes, I'll just watch the patternID each tick
-  PatternID curPattern = Modes::curMode()->getPattern()->getPatternID();
-  Colorset curColorset = *Modes::curMode()->getColorset();
+  PatternID curPattern = Modes::curMode()->getSinglePattern()->getPatternID();
+  Colorset curColorset = *Modes::curMode()->getSingleColorset();
   // check to see if the pattern or colorset changed
   if (curPattern == m_curPattern && curColorset == m_curColorset) {
     return;
@@ -441,7 +442,7 @@ void TestFramework::handlePatternChange()
     return; 
   }
   // create a new pattern from the id
-  Pattern *newPat = PatternBuilder::make(m_curPattern);
+  SingleLedPattern *newPat = PatternBuilder::makeSingle(m_curPattern);
   if (!newPat) {
     // allocation error
     delete newMode;
@@ -459,7 +460,7 @@ void TestFramework::handlePatternChange()
   // TODO: The hardware is flipped so the 'real' led position is reversed
   LedPos realPos = (LedPos)(LED_LAST - targetPos);
   // bind the pattern and colorset to the mode
-  if (!newMode->bind(newPat, colorset, LED_FIRST)) {
+  if (!newMode->bindSingle(newPat, colorset, LED_FIRST)) {
     delete newPat;
     delete newMode;
     delete colorset;
