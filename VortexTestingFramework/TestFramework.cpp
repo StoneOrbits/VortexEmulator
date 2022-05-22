@@ -426,8 +426,8 @@ void TestFramework::handlePatternChange()
 {
   // don't want to create a callback mechanism just for the test framework to be
   // notified of pattern changes, I'll just watch the patternID each tick
-  PatternID curPattern = Modes::curMode()->getSinglePattern()->getPatternID();
-  Colorset curColorset = *Modes::curMode()->getSingleColorset();
+  PatternID curPattern = Modes::curMode()->getPattern()->getPatternID();
+  Colorset curColorset = *Modes::curMode()->getColorset();
   // check to see if the pattern or colorset changed
   if (curPattern == m_curPattern && curColorset == m_curColorset) {
     return;
