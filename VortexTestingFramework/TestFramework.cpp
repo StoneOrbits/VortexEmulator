@@ -60,7 +60,7 @@ TestFramework::TestFramework() :
   m_keepGoing(true),
   m_isPaused(true),
   m_pauseMutex(nullptr),
-  m_curPattern(PATTERN_NONE),
+  m_curPattern(PATTERN_FIRST),
   m_curColorset(),
   m_patternStrip(),
   m_redrawStrip(false)
