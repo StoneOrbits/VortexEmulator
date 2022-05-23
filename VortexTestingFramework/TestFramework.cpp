@@ -384,6 +384,9 @@ void TestFramework::setTickrate()
 
 void TestFramework::setTickOffset()
 {
+  if (!Modes::curMode()) {
+    return;
+  }
   uint32_t offset = TrackBar_GetPos(g_pTestFramework->m_hwndTickOffsetSlider);
   // mom can we get a synchronization lock?
   // mom: We have a synchronization lock at home
@@ -424,9 +427,12 @@ void TestFramework::unpause()
 
 void TestFramework::handlePatternChange()
 {
+  if (!Modes::curMode()) {
+    return;
+  }
   // don't want to create a callback mechanism just for the test framework to be
   // notified of pattern changes, I'll just watch the patternID each tick
-  PatternID curPattern = Modes::curMode()->getPattern()->getPatternID();
+  PatternID curPattern = Modes::curMode()->getPatternID();
   Colorset curColorset = *Modes::curMode()->getColorset();
   // check to see if the pattern or colorset changed
   if (curPattern == m_curPattern && curColorset == m_curColorset) {
