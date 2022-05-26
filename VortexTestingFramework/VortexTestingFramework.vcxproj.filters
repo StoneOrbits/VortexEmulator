@@ -144,6 +144,12 @@
     <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\SerialBuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\Memory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\Storage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\patterns\BasicPattern.h">
@@ -261,6 +267,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\SerialBuffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\Memory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\Storage.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

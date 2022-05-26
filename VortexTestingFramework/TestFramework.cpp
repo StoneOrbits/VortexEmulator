@@ -255,8 +255,8 @@ void TestFramework::paint(HWND hwnd)
     m_redrawStrip = false;
     RECT backPos = { 0, 229, 420, 251 };
     FillRect(hdc, &backPos, getBrushCol(0));
-    for (int i = 0; i < m_patternStrip.size(); ++i) {
-      RECT stripPos = { i, 230, i + 1, 250 };
+    for (uint32_t i = 0; i < m_patternStrip.size(); ++i) {
+      RECT stripPos = { (LONG)i, 230, (LONG)i + 1, 250 };
       FillRect(hdc, &stripPos, getBrushCol(m_patternStrip[i]));
     }
   }
@@ -433,14 +433,17 @@ void TestFramework::handlePatternChange()
   // don't want to create a callback mechanism just for the test framework to be
   // notified of pattern changes, I'll just watch the patternID each tick
   PatternID curPattern = Modes::curMode()->getPatternID();
-  Colorset curColorset = *Modes::curMode()->getColorset();
+  Colorset *curColorset = (Colorset *)Modes::curMode()->getColorset();
+  if (!curColorset) {
+    return;
+  }
   // check to see if the pattern or colorset changed
-  if (curPattern == m_curPattern && curColorset == m_curColorset) {
+  if (curPattern == m_curPattern && *curColorset == m_curColorset) {
     return;
   }
   // update current pattern and colorset
   m_curPattern = curPattern;
-  m_curColorset = curColorset;
+  m_curColorset = *curColorset;
   // would use the mode builder but it's not quite suited for this
   // create the new mode object
   Mode *newMode = new Mode();
@@ -454,22 +457,13 @@ void TestFramework::handlePatternChange()
     delete newMode;
     return;
   }
-  // unfortunately need to create an entirely new colorset object
-  // because the mode object will free it when it's deleted
-  Colorset *colorset = new Colorset(m_curColorset);
-  if (!colorset) {
-    delete newPat;
-    delete newMode;
-    return;
-  }
   LedPos targetPos = LED_FIRST;
   // TODO: The hardware is flipped so the 'real' led position is reversed
   LedPos realPos = (LedPos)(LED_LAST - targetPos);
   // bind the pattern and colorset to the mode
-  if (!newMode->bindSingle(newPat, colorset, LED_FIRST)) {
+  if (!newMode->bindSingle(newPat, &m_curColorset, LED_FIRST)) {
     delete newPat;
     delete newMode;
-    delete colorset;
     return;
   }
   // backup the current LED 0 color

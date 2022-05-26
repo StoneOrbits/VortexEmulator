@@ -18,6 +18,11 @@ void init_arduino()
   QueryPerformanceCounter(&start);
 }
 
+void delay(size_t amt)
+{
+  Sleep(amt);
+}
+
 // used for seeding randomSeed()
 unsigned long analogRead(uint32_t pin)
 {

@@ -12,6 +12,8 @@
 // init this drop-in framework
 void init_arduino();
 
+void delay(size_t amt);
+
 unsigned long analogRead(uint32_t pin);
 unsigned long digitalRead(uint32_t pin);
 unsigned long millis();
