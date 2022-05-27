@@ -34,9 +34,9 @@ endif
 # local NONSTANDARD libraries to link with
 # these MUST be exact filenames, cannot be -l syntax
 # for example:
-#   ../lmrepo/clibs/libclibs.a
+#   ../path/to/libname.a
 # NOT THIS:
-#   -L../lmrepo/clibs -lclibs
+#   -L../path/to -lname
 # You should NOT need to add a make target to build
 # this library if you have added it correctly.
 LLIBS=\
