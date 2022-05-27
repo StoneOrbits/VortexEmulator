@@ -1,7 +1,18 @@
 #pragma once
 
 // for CRGB?
+#ifdef LINUX_FRAMEWORK
+#include <inttypes.h>
+typedef struct tagCRGB
+{
+    uint8_t    bRed;
+    uint8_t    bGreen;
+    uint8_t    bBlue;
+    uint8_t    bExtra;
+} CRGB;           /* RGB Color */
+#else
 #include <Windows.h>
+#endif
 
 #include <inttypes.h>
 

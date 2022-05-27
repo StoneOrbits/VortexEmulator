@@ -1,5 +1,4 @@
 #pragma once
-#include <Windows.h>
 #include <stdio.h>
 
 #include "VortexGloveset.h"
@@ -9,7 +8,19 @@
 #include "Colorset.h"
 
 #include <vector>
-#include <map>
+
+typedef uint32_t HDC;
+typedef uint32_t HINSTANCE;
+typedef uint32_t HWND;
+typedef uint32_t WPARAM;
+typedef uint32_t LPARAM;
+typedef uint32_t HBRUSH;
+typedef uint32_t DWORD;
+typedef uint32_t LRESULT;
+typedef uint32_t UINT;
+
+typedef struct tagCRGB CRGB;
+
 
 // paint callback type
 typedef void (*paint_fn_t)(void *, HDC);
@@ -20,7 +31,7 @@ public:
   TestFramework();
 
   // initialize the test framework
-  bool init(HINSTANCE hInstance);
+  bool init();
   // run the test framework
   void run();
 
@@ -65,39 +76,24 @@ public:
   HBRUSH getBrushCol(RGBColor col);
 
   // loop that runs arduino code
-  static DWORD __stdcall arduino_loop_thread(void *arg);
+  static DWORD arduino_loop_thread(void *arg);
 
   // button subproc
-  static LRESULT CALLBACK button_subproc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
-  static LRESULT CALLBACK slider_subproc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+  static LRESULT button_subproc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+  static LRESULT slider_subproc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
   // main window procedure
-  static LRESULT CALLBACK window_proc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
+  static LRESULT window_proc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
   static void printlog(const char *file, const char *func, int line, const char *msg, va_list list);
 
 private:
-  const COLORREF bkcolor = RGB(40, 40, 40);
-
   // these are in no particular order
-  HANDLE m_loopThread;
+  //HANDLE m_loopThread;
 
-  HBRUSH m_bkbrush;
-  FILE *m_consoleHandle;
   FILE *m_logHandle;
-  WNDPROC m_oldButtonProc;
-  WNDPROC m_oldSliderProc;
 
-  HWND m_hwndClickButton;
-  HWND m_hwndTickrateSlider;
-  HWND m_hwndTickOffsetSlider;
-
-  HWND m_hwnd;
-  WNDCLASS m_wc;
-
-  int m_brightness;
-
-  RECT m_ledPos[LED_COUNT];
+  //RECT m_ledPos[LED_COUNT];
 
   RGBColor *m_ledList;
   uint32_t m_numLeds;
@@ -110,17 +106,8 @@ private:
 
   volatile bool m_isPaused;
 
-  HANDLE m_pauseMutex;
-
   PatternID m_curPattern;
   Colorset m_curColorset;
-
-  // one color per pixel of strip
-  std::vector<RGBColor> m_patternStrip;
-
-  bool m_redrawStrip;
-
-  std::map<COLORREF, HBRUSH> m_brushmap;
 };
 
 extern TestFramework *g_pTestFramework;

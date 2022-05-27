@@ -450,19 +450,11 @@ void TestFramework::handlePatternChange()
   if (!newMode) { 
     return; 
   }
-  // create a new pattern from the id
-  SingleLedPattern *newPat = PatternBuilder::makeSingle(m_curPattern);
-  if (!newPat) {
-    // allocation error
-    delete newMode;
-    return;
-  }
   LedPos targetPos = LED_FIRST;
   // TODO: The hardware is flipped so the 'real' led position is reversed
   LedPos realPos = (LedPos)(LED_LAST - targetPos);
   // bind the pattern and colorset to the mode
-  if (!newMode->bindSingle(newPat, &m_curColorset, LED_FIRST)) {
-    delete newPat;
+  if (!newMode->bindSingle(m_curPattern, &m_curColorset, LED_FIRST)) {
     delete newMode;
     return;
   }
