@@ -444,6 +444,20 @@ void TestFramework::handlePatternChange()
   // update current pattern and colorset
   m_curPattern = curPattern;
   m_curColorset = *curColorset;
+  // don't draw multi-led pattern
+  if (isMultiLedPatternID(m_curPattern)) {
+    m_patternStrip.clear();
+    for (int i = 0; i < 420; ++i) {
+      m_patternStrip.push_back(RGBColor(0, 0, 0));
+    }
+    // idk
+    Sleep(200);
+    // redraw the pattern strip
+    m_redrawStrip = true;
+    RECT stripRect = { 0, 200, 420, 260 };
+    InvalidateRect(m_hwnd, &stripRect, TRUE);
+    return;
+  }
   // would use the mode builder but it's not quite suited for this
   // create the new mode object
   Mode *newMode = new Mode();
