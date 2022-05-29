@@ -88,7 +88,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions);TEST_FRAMEWORK</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)VortexTestingFramework\;$(SolutionDir)VortexTestingFramework\Vortex-Gloves\VortexGlovesObsidianV1.0\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)VortexTestingFramework\;$(SolutionDir)VortexTestingFramework\VortexFramework\VortexFramework\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -103,7 +103,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions);TEST_FRAMEWORK</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)VortexTestingFramework\;$(SolutionDir)VortexTestingFramework\Vortex-Gloves\VortexGlovesObsidianV1.0\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)VortexTestingFramework\;$(SolutionDir)VortexTestingFramework\VortexFramework\VortexFramework\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -118,7 +118,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions);TEST_FRAMEWORK</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)VortexTestingFramework\;$(SolutionDir)VortexTestingFramework\Vortex-Gloves\VortexGlovesObsidianV1.0\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)VortexTestingFramework\;$(SolutionDir)VortexTestingFramework\VortexFramework\VortexFramework\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -133,7 +133,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions);TEST_FRAMEWORK</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)VortexTestingFramework\;$(SolutionDir)VortexTestingFramework\Vortex-Gloves\VortexGlovesObsidianV1.0\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)VortexTestingFramework\;$(SolutionDir)VortexTestingFramework\VortexFramework\VortexFramework\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -147,40 +147,40 @@
     <ClCompile Include="FastLED.cpp" />
     <ClCompile Include="FlashStorage.cpp" />
     <ClCompile Include="TestFramework.cpp" />
-    <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\Memory.cpp" />
-    <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\Button.cpp" />
-    <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\Buttons.cpp" />
-    <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\Colorset.cpp" />
-    <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\ColorTypes.cpp" />
-    <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\LedControl.cpp" />
-    <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\Log.cpp" />
-    <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\Menus.cpp" />
-    <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\menus\ColorSelect.cpp" />
-    <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\menus\FactoryReset.cpp" />
-    <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\menus\GlobalBrightness.cpp" />
-    <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\menus\Menu.cpp" />
-    <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\menus\ModeSharing.cpp" />
-    <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\menus\PatternSelect.cpp" />
-    <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\menus\Randomizer.cpp" />
-    <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\Mode.cpp" />
-    <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\ModeBuilder.cpp" />
-    <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\Modes.cpp" />
-    <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\PatternBuilder.cpp" />
-    <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\patterns\AdvancedPattern.cpp" />
-    <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\patterns\BasicPattern.cpp" />
-    <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\patterns\GapPattern.cpp" />
-    <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\patterns\HybridPattern.cpp" />
-    <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\patterns\MultiLedPattern.cpp" />
-    <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\patterns\Pattern.cpp" />
-    <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\patterns\PatternFuncs.cpp" />
-    <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\patterns\RabbitPattern.cpp" />
-    <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\patterns\SingleLedPattern.cpp" />
-    <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\patterns\TracerPattern.cpp" />
-    <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\SerialBuffer.cpp" />
-    <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\Storage.cpp" />
-    <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\TimeControl.cpp" />
-    <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\Timer.cpp" />
-    <ClCompile Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\VortexGloveset.cpp" />
+    <ClCompile Include="VortexFramework\VortexFramework\src\Memory.cpp" />
+    <ClCompile Include="VortexFramework\VortexFramework\src\Button.cpp" />
+    <ClCompile Include="VortexFramework\VortexFramework\src\Buttons.cpp" />
+    <ClCompile Include="VortexFramework\VortexFramework\src\Colorset.cpp" />
+    <ClCompile Include="VortexFramework\VortexFramework\src\ColorTypes.cpp" />
+    <ClCompile Include="VortexFramework\VortexFramework\src\LedControl.cpp" />
+    <ClCompile Include="VortexFramework\VortexFramework\src\Log.cpp" />
+    <ClCompile Include="VortexFramework\VortexFramework\src\Menus.cpp" />
+    <ClCompile Include="VortexFramework\VortexFramework\src\menus\ColorSelect.cpp" />
+    <ClCompile Include="VortexFramework\VortexFramework\src\menus\FactoryReset.cpp" />
+    <ClCompile Include="VortexFramework\VortexFramework\src\menus\GlobalBrightness.cpp" />
+    <ClCompile Include="VortexFramework\VortexFramework\src\menus\Menu.cpp" />
+    <ClCompile Include="VortexFramework\VortexFramework\src\menus\ModeSharing.cpp" />
+    <ClCompile Include="VortexFramework\VortexFramework\src\menus\PatternSelect.cpp" />
+    <ClCompile Include="VortexFramework\VortexFramework\src\menus\Randomizer.cpp" />
+    <ClCompile Include="VortexFramework\VortexFramework\src\Mode.cpp" />
+    <ClCompile Include="VortexFramework\VortexFramework\src\ModeBuilder.cpp" />
+    <ClCompile Include="VortexFramework\VortexFramework\src\Modes.cpp" />
+    <ClCompile Include="VortexFramework\VortexFramework\src\PatternBuilder.cpp" />
+    <ClCompile Include="VortexFramework\VortexFramework\src\patterns\AdvancedPattern.cpp" />
+    <ClCompile Include="VortexFramework\VortexFramework\src\patterns\BasicPattern.cpp" />
+    <ClCompile Include="VortexFramework\VortexFramework\src\patterns\GapPattern.cpp" />
+    <ClCompile Include="VortexFramework\VortexFramework\src\patterns\HybridPattern.cpp" />
+    <ClCompile Include="VortexFramework\VortexFramework\src\patterns\MultiLedPattern.cpp" />
+    <ClCompile Include="VortexFramework\VortexFramework\src\patterns\Pattern.cpp" />
+    <ClCompile Include="VortexFramework\VortexFramework\src\patterns\PatternFuncs.cpp" />
+    <ClCompile Include="VortexFramework\VortexFramework\src\patterns\RabbitPattern.cpp" />
+    <ClCompile Include="VortexFramework\VortexFramework\src\patterns\SingleLedPattern.cpp" />
+    <ClCompile Include="VortexFramework\VortexFramework\src\patterns\TracerPattern.cpp" />
+    <ClCompile Include="VortexFramework\VortexFramework\src\SerialBuffer.cpp" />
+    <ClCompile Include="VortexFramework\VortexFramework\src\Storage.cpp" />
+    <ClCompile Include="VortexFramework\VortexFramework\src\TimeControl.cpp" />
+    <ClCompile Include="VortexFramework\VortexFramework\src\Timer.cpp" />
+    <ClCompile Include="VortexFramework\VortexFramework\src\VortexGloveset.cpp" />
     <ClCompile Include="WinMain.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -188,43 +188,43 @@
     <ClInclude Include="Arduino.h" />
     <ClInclude Include="FastLED.h" />
     <ClInclude Include="TestFramework.h" />
-    <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\Button.h" />
-    <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\Buttons.h" />
-    <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\Colorset.h" />
-    <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\ColorTypes.h" />
+    <ClInclude Include="VortexFramework\VortexFramework\src\Button.h" />
+    <ClInclude Include="VortexFramework\VortexFramework\src\Buttons.h" />
+    <ClInclude Include="VortexFramework\VortexFramework\src\Colorset.h" />
+    <ClInclude Include="VortexFramework\VortexFramework\src\ColorTypes.h" />
     <ClInclude Include="FlashStorage.h" />
-    <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\LedConfig.h" />
-    <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\LedControl.h" />
-    <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\Log.h" />
-    <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\Memory.h" />
-    <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\Menus.h" />
-    <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\menus\ColorSelect.h" />
-    <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\menus\FactoryReset.h" />
-    <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\menus\GlobalBrightness.h" />
-    <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\menus\Menu.h" />
-    <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\menus\ModeSharing.h" />
-    <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\menus\PatternSelect.h" />
-    <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\menus\Randomizer.h" />
-    <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\Mode.h" />
-    <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\ModeBuilder.h" />
-    <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\Modes.h" />
-    <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\PatternBuilder.h" />
-    <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\Patterns.h" />
-    <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\patterns\AdvancedPattern.h" />
-    <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\patterns\BasicPattern.h" />
-    <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\patterns\GapPattern.h" />
-    <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\patterns\HybridPattern.h" />
-    <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\patterns\MultiLedPattern.h" />
-    <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\patterns\Pattern.h" />
-    <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\patterns\RabbitPattern.h" />
-    <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\patterns\SingleLedPattern.h" />
-    <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\patterns\TracerPattern.h" />
-    <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\SerialBuffer.h" />
-    <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\Storage.h" />
-    <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\TimeControl.h" />
-    <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\Timer.h" />
-    <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\Timings.h" />
-    <ClInclude Include="Vortex-Gloves\VortexGlovesObsidianV1.0\src\VortexGloveset.h" />
+    <ClInclude Include="VortexFramework\VortexFramework\src\LedConfig.h" />
+    <ClInclude Include="VortexFramework\VortexFramework\src\LedControl.h" />
+    <ClInclude Include="VortexFramework\VortexFramework\src\Log.h" />
+    <ClInclude Include="VortexFramework\VortexFramework\src\Memory.h" />
+    <ClInclude Include="VortexFramework\VortexFramework\src\Menus.h" />
+    <ClInclude Include="VortexFramework\VortexFramework\src\menus\ColorSelect.h" />
+    <ClInclude Include="VortexFramework\VortexFramework\src\menus\FactoryReset.h" />
+    <ClInclude Include="VortexFramework\VortexFramework\src\menus\GlobalBrightness.h" />
+    <ClInclude Include="VortexFramework\VortexFramework\src\menus\Menu.h" />
+    <ClInclude Include="VortexFramework\VortexFramework\src\menus\ModeSharing.h" />
+    <ClInclude Include="VortexFramework\VortexFramework\src\menus\PatternSelect.h" />
+    <ClInclude Include="VortexFramework\VortexFramework\src\menus\Randomizer.h" />
+    <ClInclude Include="VortexFramework\VortexFramework\src\Mode.h" />
+    <ClInclude Include="VortexFramework\VortexFramework\src\ModeBuilder.h" />
+    <ClInclude Include="VortexFramework\VortexFramework\src\Modes.h" />
+    <ClInclude Include="VortexFramework\VortexFramework\src\PatternBuilder.h" />
+    <ClInclude Include="VortexFramework\VortexFramework\src\Patterns.h" />
+    <ClInclude Include="VortexFramework\VortexFramework\src\patterns\AdvancedPattern.h" />
+    <ClInclude Include="VortexFramework\VortexFramework\src\patterns\BasicPattern.h" />
+    <ClInclude Include="VortexFramework\VortexFramework\src\patterns\GapPattern.h" />
+    <ClInclude Include="VortexFramework\VortexFramework\src\patterns\HybridPattern.h" />
+    <ClInclude Include="VortexFramework\VortexFramework\src\patterns\MultiLedPattern.h" />
+    <ClInclude Include="VortexFramework\VortexFramework\src\patterns\Pattern.h" />
+    <ClInclude Include="VortexFramework\VortexFramework\src\patterns\RabbitPattern.h" />
+    <ClInclude Include="VortexFramework\VortexFramework\src\patterns\SingleLedPattern.h" />
+    <ClInclude Include="VortexFramework\VortexFramework\src\patterns\TracerPattern.h" />
+    <ClInclude Include="VortexFramework\VortexFramework\src\SerialBuffer.h" />
+    <ClInclude Include="VortexFramework\VortexFramework\src\Storage.h" />
+    <ClInclude Include="VortexFramework\VortexFramework\src\TimeControl.h" />
+    <ClInclude Include="VortexFramework\VortexFramework\src\Timer.h" />
+    <ClInclude Include="VortexFramework\VortexFramework\src\Timings.h" />
+    <ClInclude Include="VortexFramework\VortexFramework\src\VortexGloveset.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
