@@ -1,7 +1,7 @@
 #pragma once
 #include <stdio.h>
 
-#include "VortexGloveset.h"
+#include "VortexFramework.h"
 #include "ColorTypes.h"
 #include "LedConfig.h"
 #include "Patterns.h"
