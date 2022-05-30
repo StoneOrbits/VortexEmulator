@@ -18,6 +18,7 @@ class TestFramework
 {
 public:
   TestFramework();
+  ~TestFramework();
 
   // initialize the test framework
   bool init(HINSTANCE hInstance);

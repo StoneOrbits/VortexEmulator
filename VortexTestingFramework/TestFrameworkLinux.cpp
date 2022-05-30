@@ -39,6 +39,11 @@ TestFramework::TestFramework() :
 {
 }
 
+TestFramework::~TestFramework()
+{
+  endwin();
+}
+
 bool TestFramework::init()
 {
   if (g_pTestFramework) {
@@ -84,17 +89,24 @@ void TestFramework::run()
       releaseButton();
     } else {
       if (ch != ERR) {
-        if (ch == 'a') {
+        switch (ch) {
+        case 'a':
           pressButton();
           do_release = millis();
-        } else if (ch == 's') {
+          break;
+        case 's':
           pressButton();
           do_release = millis() + 1100;
-        } else if (ch == 'f') {
+          break;
+        case 'f':
           pressButton();
           do_release = millis() + 3100;
-
-        } else if (ch == 'd') {
+          break;
+        case 'q':
+          cleanup();
+          break;
+        case 'd':
+        default:
           if (m_buttonPressed) {
             releaseButton();
           } else {
@@ -111,6 +123,7 @@ void TestFramework::run()
 
 void TestFramework::cleanup()
 {
+  DEBUG("Quitting...");
   m_keepGoing = false;
   m_isPaused = false;
 }

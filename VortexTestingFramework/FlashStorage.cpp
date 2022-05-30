@@ -58,14 +58,14 @@ static inline uint32_t read_unaligned_uint32(const void *data)
 
 void FlashClass::write(const volatile void *flash_ptr, const void *data, uint32_t size)
 {
-  printf("Writing:\n\t");
+  printf("Writing:\r\n\t");
   for (uint32_t i = 0; i < size; ++i) {
     printf("%02x ", ((uint8_t *)data)[i]);
     if (i > 0 && ((i + 1) % 32) == 0) {
-      printf("\n\t");
+      printf("\r\n\t");
     }
   }
-  printf("\n\n");
+  printf("\r\n\r\n");
 #ifdef LINUX_FRAMEWORK
   FILE *f = fopen("FlashStorage.flash", "w");
   if (!f) {
@@ -134,14 +134,23 @@ void FlashClass::read(const volatile void *flash_ptr, void *data, uint32_t size)
   }
   CloseHandle(hFile);
 #endif
-  printf("Read:\n\t");
-  for (uint32_t i = 0; i < size; ++i) {
+  printf("Read:\r\n\t");
+  uint32_t print_amount = size;
+  for (uint32_t i = 0; i < print_amount; ++i) {
+    if (i == 0) {
+      if (!((uint8_t *)data)[i]) {
+        printf("nothing\r\n");
+        break;
+      } else {
+        print_amount = ((uint8_t *)data)[i];
+      }
+    }
     printf("%02x ", ((uint8_t *)data)[i]);
     if (i > 0 && ((i + 1) % 32) == 0) {
-      printf("\n\t");
+      printf("\r\n\t");
     }
   }
-  printf("\n\n");
+  printf("\r\n\r\n");
 
 }
 

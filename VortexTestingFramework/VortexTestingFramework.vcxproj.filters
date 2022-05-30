@@ -45,7 +45,7 @@
     <ClCompile Include="VortexFramework\VortexFramework\src\ColorTypes.cpp">
       <Filter>Source Files\src</Filter>
     </ClCompile>
-    <ClCompile Include="VortexFramework\VortexFramework\src\LedControl.cpp">
+    <ClCompile Include="VortexFramework\VortexFramework\src\Leds.cpp">
       <Filter>Source Files\src</Filter>
     </ClCompile>
     <ClCompile Include="VortexFramework\VortexFramework\src\Mode.cpp">
@@ -147,7 +147,7 @@
     <ClCompile Include="VortexFramework\VortexFramework\src\patterns\HueShiftPattern.cpp">
       <Filter>Source Files\src\patterns</Filter>
     </ClCompile>
-    <ClCompile Include="VortexFramework\VortexFramework\src\InfraredControl.cpp">
+    <ClCompile Include="VortexFramework\VortexFramework\src\Infrared.cpp">
       <Filter>Source Files\src</Filter>
     </ClCompile>
     <ClCompile Include="VortexFramework\VortexFramework\src\patterns\HybridPattern.cpp">
@@ -194,7 +194,7 @@
     <ClInclude Include="VortexFramework\VortexFramework\src\LedConfig.h">
       <Filter>Header Files\src</Filter>
     </ClInclude>
-    <ClInclude Include="VortexFramework\VortexFramework\src\LedControl.h">
+    <ClInclude Include="VortexFramework\VortexFramework\src\Leds.h">
       <Filter>Header Files\src</Filter>
     </ClInclude>
     <ClInclude Include="VortexFramework\VortexFramework\src\Mode.h">
@@ -293,7 +293,7 @@
     <ClInclude Include="FlashStorage.h">
       <Filter>Header Files\src</Filter>
     </ClInclude>
-    <ClInclude Include="VortexFramework\VortexFramework\src\InfraredControl.h">
+    <ClInclude Include="VortexFramework\VortexFramework\src\Infrared.h">
       <Filter>Header Files\src</Filter>
     </ClInclude>
     <ClInclude Include="VortexFramework\VortexFramework\src\SerialBuffer.h">

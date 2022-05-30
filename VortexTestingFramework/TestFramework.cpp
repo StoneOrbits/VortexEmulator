@@ -67,6 +67,10 @@ TestFramework::TestFramework() :
 {
 }
 
+TestFramework::~TestFramework()
+{
+}
+
 bool TestFramework::init(HINSTANCE hInstance)
 {
   if (g_pTestFramework) {

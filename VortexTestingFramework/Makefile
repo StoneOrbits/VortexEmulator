@@ -90,6 +90,18 @@ vortex_framework: $(DEPS)
 	$(CC) $(CFLAGS) $^ -o $@ $(LIBS)
 	@rm -f *.txt
 
+valgrind: vortex_framework
+	rm -f valg.out
+	valgrind \
+	  -v \
+	  --leak-check=full \
+	  --show-leak-kinds=all \
+	  --track-origins=yes \
+	  --log-file=valg.out \
+	  ./vortex_framework
+	cat valg.out
+    
+
 # catch-all make target to generate .o and .d files
 %.o: %.cpp
 	$(CC) $(CFLAGS) -MMD -c $< -o $@
