@@ -169,6 +169,7 @@
     <ClCompile Include="VortexFramework\VortexFramework\src\patterns\AdvancedPattern.cpp" />
     <ClCompile Include="VortexFramework\VortexFramework\src\patterns\BasicPattern.cpp" />
     <ClCompile Include="VortexFramework\VortexFramework\src\patterns\GapPattern.cpp" />
+    <ClCompile Include="VortexFramework\VortexFramework\src\patterns\HueShiftPattern.cpp" />
     <ClCompile Include="VortexFramework\VortexFramework\src\patterns\HybridPattern.cpp" />
     <ClCompile Include="VortexFramework\VortexFramework\src\patterns\MultiLedPattern.cpp" />
     <ClCompile Include="VortexFramework\VortexFramework\src\patterns\Pattern.cpp" />
@@ -216,6 +217,7 @@
     <ClInclude Include="VortexFramework\VortexFramework\src\patterns\HybridPattern.h" />
     <ClInclude Include="VortexFramework\VortexFramework\src\patterns\MultiLedPattern.h" />
     <ClInclude Include="VortexFramework\VortexFramework\src\patterns\Pattern.h" />
+    <ClInclude Include="VortexFramework\VortexFramework\src\patterns\HueShiftPattern.h" />
     <ClInclude Include="VortexFramework\VortexFramework\src\patterns\RabbitPattern.h" />
     <ClInclude Include="VortexFramework\VortexFramework\src\patterns\SingleLedPattern.h" />
     <ClInclude Include="VortexFramework\VortexFramework\src\patterns\TracerPattern.h" />

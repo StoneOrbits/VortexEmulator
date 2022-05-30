@@ -150,6 +150,9 @@
     <ClCompile Include="VortexFramework\VortexFramework\src\VortexFramework.cpp">
       <Filter>Source Files\src</Filter>
     </ClCompile>
+    <ClCompile Include="VortexFramework\VortexFramework\src\patterns\HueShiftPattern.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="VortexFramework\VortexFramework\src\patterns\BasicPattern.h">
@@ -274,6 +277,9 @@
     </ClInclude>
     <ClInclude Include="VortexFramework\VortexFramework\src\VortexFramework.h">
       <Filter>Header Files\src</Filter>
+    </ClInclude>
+    <ClInclude Include="VortexFramework\VortexFramework\src\patterns\HueShiftPattern.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
