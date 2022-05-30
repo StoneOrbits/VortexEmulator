@@ -147,6 +147,7 @@
     <ClCompile Include="FastLED.cpp" />
     <ClCompile Include="FlashStorage.cpp" />
     <ClCompile Include="TestFramework.cpp" />
+    <ClCompile Include="VortexFramework\VortexFramework\src\InfraredControl.cpp" />
     <ClCompile Include="VortexFramework\VortexFramework\src\Memory.cpp" />
     <ClCompile Include="VortexFramework\VortexFramework\src\Button.cpp" />
     <ClCompile Include="VortexFramework\VortexFramework\src\Buttons.cpp" />
@@ -194,6 +195,12 @@
     <ClInclude Include="VortexFramework\VortexFramework\src\Colorset.h" />
     <ClInclude Include="VortexFramework\VortexFramework\src\ColorTypes.h" />
     <ClInclude Include="FlashStorage.h" />
+    <ClInclude Include="VortexFramework\VortexFramework\src\InfraredControl.h" />
+    <ClInclude Include="IRLibCombo.h" />
+    <ClInclude Include="IRLibDecodeBase.h" />
+    <ClInclude Include="IRLibRecv.h" />
+    <ClInclude Include="IRLibSendBase.h" />
+    <ClInclude Include="IRLib_P01_NEC.h" />
     <ClInclude Include="VortexFramework\VortexFramework\src\LedConfig.h" />
     <ClInclude Include="VortexFramework\VortexFramework\src\LedControl.h" />
     <ClInclude Include="VortexFramework\VortexFramework\src\Log.h" />

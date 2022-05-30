@@ -123,35 +123,38 @@
     <ClCompile Include="VortexFramework\VortexFramework\src\patterns\GapPattern.cpp">
       <Filter>Source Files\src\patterns</Filter>
     </ClCompile>
-    <ClCompile Include="VortexFramework\VortexFramework\src\patterns\MultiLedPattern.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="VortexFramework\VortexFramework\src\patterns\SingleLedPattern.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="VortexFramework\VortexFramework\src\patterns\HybridPattern.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="VortexFramework\VortexFramework\src\patterns\RabbitPattern.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="FlashStorage.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="VortexFramework\VortexFramework\src\SerialBuffer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="VortexFramework\VortexFramework\src\Memory.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="VortexFramework\VortexFramework\src\Storage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="VortexFramework\VortexFramework\src\VortexFramework.cpp">
       <Filter>Source Files\src</Filter>
     </ClCompile>
+    <ClCompile Include="VortexFramework\VortexFramework\src\patterns\MultiLedPattern.cpp">
+      <Filter>Source Files\src\patterns</Filter>
+    </ClCompile>
+    <ClCompile Include="VortexFramework\VortexFramework\src\Memory.cpp">
+      <Filter>Source Files\src</Filter>
+    </ClCompile>
+    <ClCompile Include="VortexFramework\VortexFramework\src\SerialBuffer.cpp">
+      <Filter>Source Files\src</Filter>
+    </ClCompile>
+    <ClCompile Include="VortexFramework\VortexFramework\src\Storage.cpp">
+      <Filter>Source Files\src</Filter>
+    </ClCompile>
+    <ClCompile Include="VortexFramework\VortexFramework\src\patterns\SingleLedPattern.cpp">
+      <Filter>Source Files\src\patterns</Filter>
+    </ClCompile>
     <ClCompile Include="VortexFramework\VortexFramework\src\patterns\HueShiftPattern.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\src\patterns</Filter>
+    </ClCompile>
+    <ClCompile Include="VortexFramework\VortexFramework\src\InfraredControl.cpp">
+      <Filter>Source Files\src</Filter>
+    </ClCompile>
+    <ClCompile Include="VortexFramework\VortexFramework\src\patterns\HybridPattern.cpp">
+      <Filter>Source Files\src\patterns</Filter>
+    </ClCompile>
+    <ClCompile Include="VortexFramework\VortexFramework\src\patterns\RabbitPattern.cpp">
+      <Filter>Source Files\src\patterns</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -251,35 +254,53 @@
     <ClInclude Include="VortexFramework\VortexFramework\src\patterns\GapPattern.h">
       <Filter>Header Files\src\patterns</Filter>
     </ClInclude>
-    <ClInclude Include="VortexFramework\VortexFramework\src\patterns\MultiLedPattern.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="VortexFramework\VortexFramework\src\patterns\SingleLedPattern.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="VortexFramework\VortexFramework\src\patterns\HybridPattern.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="VortexFramework\VortexFramework\src\patterns\RabbitPattern.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="FlashStorage.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="VortexFramework\VortexFramework\src\SerialBuffer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="VortexFramework\VortexFramework\src\Memory.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="VortexFramework\VortexFramework\src\Storage.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="VortexFramework\VortexFramework\src\VortexFramework.h">
       <Filter>Header Files\src</Filter>
     </ClInclude>
-    <ClInclude Include="VortexFramework\VortexFramework\src\patterns\HueShiftPattern.h">
+    <ClInclude Include="IRLib_P01_NEC.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IRLibCombo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IRLibDecodeBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IRLibRecv.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IRLibSendBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VortexFramework\VortexFramework\src\patterns\HueShiftPattern.h">
+      <Filter>Header Files\src\patterns</Filter>
+    </ClInclude>
+    <ClInclude Include="VortexFramework\VortexFramework\src\patterns\HybridPattern.h">
+      <Filter>Header Files\src\patterns</Filter>
+    </ClInclude>
+    <ClInclude Include="VortexFramework\VortexFramework\src\patterns\MultiLedPattern.h">
+      <Filter>Header Files\src\patterns</Filter>
+    </ClInclude>
+    <ClInclude Include="VortexFramework\VortexFramework\src\patterns\SingleLedPattern.h">
+      <Filter>Header Files\src\patterns</Filter>
+    </ClInclude>
+    <ClInclude Include="VortexFramework\VortexFramework\src\patterns\RabbitPattern.h">
+      <Filter>Header Files\src\patterns</Filter>
+    </ClInclude>
+    <ClInclude Include="VortexFramework\VortexFramework\src\Memory.h">
+      <Filter>Header Files\src</Filter>
+    </ClInclude>
+    <ClInclude Include="FlashStorage.h">
+      <Filter>Header Files\src</Filter>
+    </ClInclude>
+    <ClInclude Include="VortexFramework\VortexFramework\src\InfraredControl.h">
+      <Filter>Header Files\src</Filter>
+    </ClInclude>
+    <ClInclude Include="VortexFramework\VortexFramework\src\SerialBuffer.h">
+      <Filter>Header Files\src</Filter>
+    </ClInclude>
+    <ClInclude Include="VortexFramework\VortexFramework\src\Storage.h">
+      <Filter>Header Files\src</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
