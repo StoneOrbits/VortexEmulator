@@ -180,7 +180,7 @@
     <ClCompile Include="VortexFramework\VortexFramework\src\Storage.cpp" />
     <ClCompile Include="VortexFramework\VortexFramework\src\TimeControl.cpp" />
     <ClCompile Include="VortexFramework\VortexFramework\src\Timer.cpp" />
-    <ClCompile Include="VortexFramework\VortexFramework\src\VortexGloveset.cpp" />
+    <ClCompile Include="VortexFramework\VortexFramework\src\VortexFramework.cpp" />
     <ClCompile Include="WinMain.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -224,7 +224,7 @@
     <ClInclude Include="VortexFramework\VortexFramework\src\TimeControl.h" />
     <ClInclude Include="VortexFramework\VortexFramework\src\Timer.h" />
     <ClInclude Include="VortexFramework\VortexFramework\src\Timings.h" />
-    <ClInclude Include="VortexFramework\VortexFramework\src\VortexGloveset.h" />
+    <ClInclude Include="VortexFramework\VortexFramework\src\VortexFramework.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

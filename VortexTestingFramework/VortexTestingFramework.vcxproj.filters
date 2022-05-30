@@ -57,9 +57,6 @@
     <ClCompile Include="VortexFramework\VortexFramework\src\TimeControl.cpp">
       <Filter>Source Files\src</Filter>
     </ClCompile>
-    <ClCompile Include="VortexFramework\VortexFramework\src\VortexGloveset.cpp">
-      <Filter>Source Files\src</Filter>
-    </ClCompile>
     <ClCompile Include="VortexFramework\VortexFramework\src\menus\GlobalBrightness.cpp">
       <Filter>Source Files\src\menus</Filter>
     </ClCompile>
@@ -150,6 +147,9 @@
     <ClCompile Include="VortexFramework\VortexFramework\src\Storage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="VortexFramework\VortexFramework\src\VortexFramework.cpp">
+      <Filter>Source Files\src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="VortexFramework\VortexFramework\src\patterns\BasicPattern.h">
@@ -198,9 +198,6 @@
       <Filter>Header Files\src</Filter>
     </ClInclude>
     <ClInclude Include="VortexFramework\VortexFramework\src\TimeControl.h">
-      <Filter>Header Files\src</Filter>
-    </ClInclude>
-    <ClInclude Include="VortexFramework\VortexFramework\src\VortexGloveset.h">
       <Filter>Header Files\src</Filter>
     </ClInclude>
     <ClInclude Include="Arduino.h">
@@ -274,6 +271,9 @@
     </ClInclude>
     <ClInclude Include="VortexFramework\VortexFramework\src\Storage.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VortexFramework\VortexFramework\src\VortexFramework.h">
+      <Filter>Header Files\src</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

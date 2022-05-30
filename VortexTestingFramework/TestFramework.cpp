@@ -12,7 +12,7 @@
 
 #include "Log.h"
 
-#include "VortexGloveset.h"
+#include "VortexFramework.h"
 #include "PatternBuilder.h"
 #include "ModeBuilder.h"
 #include "TimeControl.h"
@@ -276,7 +276,7 @@ void TestFramework::arduino_setup()
 {
   // init the drop-in arduino library replacement
   init_arduino();
-  if (!VortexGloveset::init()) {
+  if (!VortexFramework::init()) {
     // uhoh
   }
 }
@@ -284,7 +284,7 @@ void TestFramework::arduino_setup()
 void TestFramework::arduino_loop()
 {
   // run the tick
-  VortexGloveset::tick();
+  VortexFramework::tick();
 }
 
 void TestFramework::installLeds(CRGB *leds, uint32_t count)
