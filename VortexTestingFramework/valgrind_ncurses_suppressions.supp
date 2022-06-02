@@ -1,0 +1,462 @@
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:calloc
+   obj:/usr/lib/x86_64-linux-gnu/libncurses.so.6.2
+   fun:newterm_sp
+   fun:newterm
+   fun:initscr
+   fun:_ZN13TestFramework4initEv
+   fun:main
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   fun:strdup
+   obj:/usr/lib/x86_64-linux-gnu/libtinfo.so.6.2
+   fun:_nc_first_db
+   fun:_nc_read_entry2
+   obj:/usr/lib/x86_64-linux-gnu/libtinfo.so.6.2
+   fun:_nc_setupterm
+   fun:newterm_sp
+   fun:newterm
+   fun:initscr
+   fun:_ZN13TestFramework4initEv
+   fun:main
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   fun:strdup
+   fun:_nc_setupterm
+   fun:newterm_sp
+   fun:newterm
+   fun:initscr
+   fun:_ZN13TestFramework4initEv
+   fun:main
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   fun:_nc_tparm_analyze
+   fun:tparm
+   obj:/usr/lib/x86_64-linux-gnu/libncurses.so.6.2
+   fun:newterm_sp
+   fun:newterm
+   fun:initscr
+   fun:_ZN13TestFramework4initEv
+   fun:main
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   fun:_nc_home_terminfo
+   fun:_nc_first_db
+   fun:_nc_read_entry2
+   obj:/usr/lib/x86_64-linux-gnu/libtinfo.so.6.2
+   fun:_nc_setupterm
+   fun:newterm_sp
+   fun:newterm
+   fun:initscr
+   fun:_ZN13TestFramework4initEv
+   fun:main
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:calloc
+   fun:_nc_read_termtype
+   obj:/usr/lib/x86_64-linux-gnu/libtinfo.so.6.2
+   obj:/usr/lib/x86_64-linux-gnu/libtinfo.so.6.2
+   fun:_nc_read_entry2
+   obj:/usr/lib/x86_64-linux-gnu/libtinfo.so.6.2
+   fun:_nc_setupterm
+   fun:newterm_sp
+   fun:newterm
+   fun:initscr
+   fun:_ZN13TestFramework4initEv
+   fun:main
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   obj:/usr/lib/x86_64-linux-gnu/libtinfo.so.6.2
+   fun:_nc_setupterm
+   fun:newterm_sp
+   fun:newterm
+   fun:initscr
+   fun:_ZN13TestFramework4initEv
+   fun:main
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:calloc
+   fun:_nc_first_db
+   fun:_nc_read_entry2
+   obj:/usr/lib/x86_64-linux-gnu/libtinfo.so.6.2
+   fun:_nc_setupterm
+   fun:newterm_sp
+   fun:newterm
+   fun:initscr
+   fun:_ZN13TestFramework4initEv
+   fun:main
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:realloc
+   fun:_nc_doalloc
+   fun:tparm
+   obj:/usr/lib/x86_64-linux-gnu/libncurses.so.6.2
+   fun:newterm_sp
+   fun:newterm
+   fun:initscr
+   fun:_ZN13TestFramework4initEv
+   fun:main
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   obj:/usr/lib/x86_64-linux-gnu/libtinfo.so.6.2
+   fun:_nc_setupterm
+   fun:newterm_sp
+   fun:newterm
+   fun:initscr
+   fun:_ZN13TestFramework4initEv
+   fun:main
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   fun:_nc_first_db
+   fun:_nc_read_entry2
+   obj:/usr/lib/x86_64-linux-gnu/libtinfo.so.6.2
+   fun:_nc_setupterm
+   fun:newterm_sp
+   fun:newterm
+   fun:initscr
+   fun:_ZN13TestFramework4initEv
+   fun:main
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:calloc
+   obj:/usr/lib/x86_64-linux-gnu/libncurses.so.6.2
+   fun:newwin_sp
+   obj:/usr/lib/x86_64-linux-gnu/libncurses.so.6.2
+   fun:newterm_sp
+   fun:newterm
+   fun:initscr
+   fun:_ZN13TestFramework4initEv
+   fun:main
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:calloc
+   obj:/usr/lib/x86_64-linux-gnu/libncurses.so.6.2
+   fun:newwin_sp
+   obj:/usr/lib/x86_64-linux-gnu/libncurses.so.6.2
+   fun:newterm_sp
+   fun:newterm
+   fun:initscr
+   fun:_ZN13TestFramework4initEv
+   fun:main
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:calloc
+   obj:/usr/lib/x86_64-linux-gnu/libncurses.so.6.2
+   fun:newwin_sp
+   obj:/usr/lib/x86_64-linux-gnu/libncurses.so.6.2
+   fun:newterm_sp
+   fun:newterm
+   fun:initscr
+   fun:_ZN13TestFramework4initEv
+   fun:main
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:calloc
+   obj:/usr/lib/x86_64-linux-gnu/libncurses.so.6.2
+   fun:newterm_sp
+   fun:newterm
+   fun:initscr
+   fun:_ZN13TestFramework4initEv
+   fun:main
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:calloc
+   fun:_nc_read_termtype
+   obj:/usr/lib/x86_64-linux-gnu/libtinfo.so.6.2
+   obj:/usr/lib/x86_64-linux-gnu/libtinfo.so.6.2
+   fun:_nc_read_entry2
+   obj:/usr/lib/x86_64-linux-gnu/libtinfo.so.6.2
+   fun:_nc_setupterm
+   fun:newterm_sp
+   fun:newterm
+   fun:initscr
+   fun:_ZN13TestFramework4initEv
+   fun:main
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   obj:/usr/lib/x86_64-linux-gnu/libncurses.so.6.2
+   fun:doupdate_sp
+   fun:wrefresh
+   fun:_ZN13TestFramework3runEv
+   fun:main
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:calloc
+   fun:_nc_setupterm
+   fun:newterm_sp
+   fun:newterm
+   fun:initscr
+   fun:_ZN13TestFramework4initEv
+   fun:main
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:calloc
+   obj:/usr/lib/x86_64-linux-gnu/libncurses.so.6.2
+   obj:/usr/lib/x86_64-linux-gnu/libncurses.so.6.2
+   fun:doupdate_sp
+   fun:wrefresh
+   fun:_ZN13TestFramework3runEv
+   fun:main
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:calloc
+   obj:/usr/lib/x86_64-linux-gnu/libncurses.so.6.2
+   obj:/usr/lib/x86_64-linux-gnu/libncurses.so.6.2
+   fun:doupdate_sp
+   fun:wrefresh
+   fun:_ZN13TestFramework3runEv
+   fun:main
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   fun:__fopen_internal
+   fun:fopen@@GLIBC_2.2.5
+   fun:_ZN13TestFramework4initEv
+   fun:main
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:calloc
+   obj:/usr/lib/x86_64-linux-gnu/libncurses.so.6.2
+   fun:newterm_sp
+   fun:newterm
+   fun:initscr
+   fun:_ZN13TestFramework4initEv
+   fun:main
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   fun:_nc_read_termtype
+   obj:/usr/lib/x86_64-linux-gnu/libtinfo.so.6.2
+   obj:/usr/lib/x86_64-linux-gnu/libtinfo.so.6.2
+   fun:_nc_read_entry2
+   obj:/usr/lib/x86_64-linux-gnu/libtinfo.so.6.2
+   fun:_nc_setupterm
+   fun:newterm_sp
+   fun:newterm
+   fun:initscr
+   fun:_ZN13TestFramework4initEv
+   fun:main
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:calloc
+   obj:/usr/lib/x86_64-linux-gnu/libncurses.so.6.2
+   fun:newwin_sp
+   obj:/usr/lib/x86_64-linux-gnu/libncurses.so.6.2
+   fun:newterm_sp
+   fun:newterm
+   fun:initscr
+   fun:_ZN13TestFramework4initEv
+   fun:main
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:calloc
+   obj:/usr/lib/x86_64-linux-gnu/libncurses.so.6.2
+   fun:newwin_sp
+   obj:/usr/lib/x86_64-linux-gnu/libncurses.so.6.2
+   fun:newterm_sp
+   fun:newterm
+   fun:initscr
+   fun:_ZN13TestFramework4initEv
+   fun:main
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:calloc
+   obj:/usr/lib/x86_64-linux-gnu/libncurses.so.6.2
+   fun:newwin_sp
+   obj:/usr/lib/x86_64-linux-gnu/libncurses.so.6.2
+   fun:newterm_sp
+   fun:newterm
+   fun:initscr
+   fun:_ZN13TestFramework4initEv
+   fun:main
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:calloc
+   fun:new_prescr
+   fun:newterm
+   fun:initscr
+   fun:_ZN13TestFramework4initEv
+   fun:main
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   obj:/usr/lib/x86_64-linux-gnu/libncurses.so.6.2
+   obj:/usr/lib/x86_64-linux-gnu/libncurses.so.6.2
+   fun:doupdate_sp
+   fun:wrefresh
+   fun:_ZN13TestFramework3runEv
+   fun:main
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:calloc
+   fun:_nc_read_termtype
+   obj:/usr/lib/x86_64-linux-gnu/libtinfo.so.6.2
+   obj:/usr/lib/x86_64-linux-gnu/libtinfo.so.6.2
+   fun:_nc_read_entry2
+   obj:/usr/lib/x86_64-linux-gnu/libtinfo.so.6.2
+   fun:_nc_setupterm
+   fun:newterm_sp
+   fun:newterm
+   fun:initscr
+   fun:_ZN13TestFramework4initEv
+   fun:main
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   obj:/usr/lib/x86_64-linux-gnu/libtinfo.so.6.2
+   fun:_nc_setupterm
+   fun:newterm_sp
+   fun:newterm
+   fun:initscr
+   fun:_ZN13TestFramework4initEv
+   fun:main
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   obj:/usr/lib/x86_64-linux-gnu/libncurses.so.6.2
+   fun:newterm_sp
+   fun:newterm
+   fun:initscr
+   fun:_ZN13TestFramework4initEv
+   fun:main
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:calloc
+   fun:newwin_sp
+   obj:/usr/lib/x86_64-linux-gnu/libncurses.so.6.2
+   fun:newterm_sp
+   fun:newterm
+   fun:initscr
+   fun:_ZN13TestFramework4initEv
+   fun:main
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:calloc
+   fun:newwin_sp
+   obj:/usr/lib/x86_64-linux-gnu/libncurses.so.6.2
+   fun:newterm_sp
+   fun:newterm
+   fun:initscr
+   fun:_ZN13TestFramework4initEv
+   fun:main
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:calloc
+   fun:newwin_sp
+   obj:/usr/lib/x86_64-linux-gnu/libncurses.so.6.2
+   fun:newterm_sp
+   fun:newterm
+   fun:initscr
+   fun:_ZN13TestFramework4initEv
+   fun:main
+}
