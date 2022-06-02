@@ -384,7 +384,7 @@ void TestFramework::setTickrate()
   rateRect.left = 20;
   rateRect.right = 200;
   InvalidateRect(m_hwnd, &rateRect, TRUE);
-  DEBUGF("Set tickrate: %u", tickrate);
+  DEBUG_LOGF("Set tickrate: %u", tickrate);
 }
 
 void TestFramework::setTickOffset()
@@ -406,7 +406,7 @@ void TestFramework::setTickOffset()
   offsetRect.left = 280;
   offsetRect.right = 400;
   InvalidateRect(m_hwnd, &offsetRect, TRUE);
-  DEBUGF("Set time offset: %u", offset);
+  DEBUG_LOGF("Set time offset: %u", offset);
 }
 
 

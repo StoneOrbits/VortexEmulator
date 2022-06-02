@@ -126,7 +126,7 @@ void TestFramework::run()
 
 void TestFramework::cleanup()
 {
-  DEBUG("Quitting...");
+  DEBUG_LOG("Quitting...");
   m_keepGoing = false;
   m_isPaused = false;
 }
