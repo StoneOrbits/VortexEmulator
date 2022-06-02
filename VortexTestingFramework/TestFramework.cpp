@@ -69,6 +69,7 @@ TestFramework::TestFramework() :
 
 TestFramework::~TestFramework()
 {
+  fclose(m_logHandle);
 }
 
 bool TestFramework::init(HINSTANCE hInstance)
@@ -523,6 +524,8 @@ DWORD __stdcall TestFramework::arduino_loop_thread(void *arg)
       ReleaseMutex(framework->m_pauseMutex);
     }
   }
+  // cleanup
+  VortexFramework::cleanup();
   return 0;
 }
 

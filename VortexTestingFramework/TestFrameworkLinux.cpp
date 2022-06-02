@@ -42,6 +42,7 @@ TestFramework::TestFramework() :
 TestFramework::~TestFramework()
 {
   endwin();
+  fclose(m_logHandle);
 }
 
 bool TestFramework::init()
@@ -119,6 +120,8 @@ void TestFramework::run()
 
     VortexFramework::tick();
   }
+
+  VortexFramework::cleanup();
 }
 
 void TestFramework::cleanup()

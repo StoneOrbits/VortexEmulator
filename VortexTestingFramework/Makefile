@@ -11,7 +11,7 @@ RM=rm -rf
 AR=ar cru
 RANLIB=ranlib
 
-CFLAGS=-g -O0 -Wall
+CFLAGS=-g -O2 -Wall
 
 # compiler defines
 DEFINES=\
@@ -97,10 +97,10 @@ valgrind: vortex_framework
 	  --leak-check=full \
 	  --show-leak-kinds=all \
 	  --track-origins=yes \
+	  --suppressions=valgrind_ncurses_suppressions.supp \
 	  --log-file=valg.out \
 	  ./vortex_framework
 	cat valg.out
-    
 
 # catch-all make target to generate .o and .d files
 %.o: %.cpp

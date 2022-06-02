@@ -201,6 +201,7 @@
     <ClInclude Include="IRLibRecv.h" />
     <ClInclude Include="IRLibSendBase.h" />
     <ClInclude Include="IRLib_P01_NEC.h" />
+    <ClInclude Include="IRLibRecvLoop.h" />
     <ClInclude Include="VortexFramework\VortexFramework\src\LedConfig.h" />
     <ClInclude Include="VortexFramework\VortexFramework\src\Leds.h" />
     <ClInclude Include="VortexFramework\VortexFramework\src\Log.h" />

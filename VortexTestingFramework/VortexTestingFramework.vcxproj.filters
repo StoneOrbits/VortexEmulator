@@ -302,5 +302,8 @@
     <ClInclude Include="VortexFramework\VortexFramework\src\Storage.h">
       <Filter>Header Files\src</Filter>
     </ClInclude>
+    <ClInclude Include="IRLibRecvLoop.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
