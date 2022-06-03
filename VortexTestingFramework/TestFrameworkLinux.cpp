@@ -18,7 +18,7 @@
 #include "Mode.h"
 
 #include "patterns/Pattern.h"
-#include "patterns/SingleLedPattern.h"
+#include "patterns/single/SingleLedPattern.h"
 
 #include <ncurses.h>
 

@@ -21,7 +21,7 @@
 #include "Mode.h"
 
 #include "patterns/Pattern.h"
-#include "patterns/SingleLedPattern.h"
+#include "patterns/single/SingleLedPattern.h"
 
 #pragma comment(lib, "Comctl32.lib")
 

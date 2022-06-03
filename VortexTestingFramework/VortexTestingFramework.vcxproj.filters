@@ -31,6 +31,18 @@
     <Filter Include="Header Files\src\patterns">
       <UniqueIdentifier>{267b3904-eb2a-4a02-8872-088d8377618b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\src\patterns\single">
+      <UniqueIdentifier>{550afc4b-e979-4dbd-9ee0-64dc55cf039d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\src\patterns\multi">
+      <UniqueIdentifier>{5a61d7e0-56a0-4f6e-a757-b096ba30b834}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\src\patterns\single">
+      <UniqueIdentifier>{5ba2bb47-b3fa-4004-8739-b99150fdee4d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\src\patterns\multi">
+      <UniqueIdentifier>{7944d8fd-d0ea-416a-834d-7147aaf5fef3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinMain.cpp">
@@ -81,9 +93,6 @@
     <ClCompile Include="VortexFramework\VortexFramework\src\patterns\PatternFuncs.cpp">
       <Filter>Source Files\src\patterns</Filter>
     </ClCompile>
-    <ClCompile Include="VortexFramework\VortexFramework\src\patterns\BasicPattern.cpp">
-      <Filter>Source Files\src\patterns</Filter>
-    </ClCompile>
     <ClCompile Include="VortexFramework\VortexFramework\src\menus\Menu.cpp">
       <Filter>Source Files\src\menus</Filter>
     </ClCompile>
@@ -98,9 +107,6 @@
     </ClCompile>
     <ClCompile Include="VortexFramework\VortexFramework\src\Log.cpp">
       <Filter>Source Files\src</Filter>
-    </ClCompile>
-    <ClCompile Include="VortexFramework\VortexFramework\src\patterns\TracerPattern.cpp">
-      <Filter>Source Files\src\patterns</Filter>
     </ClCompile>
     <ClCompile Include="VortexFramework\VortexFramework\src\PatternBuilder.cpp">
       <Filter>Source Files\src</Filter>
@@ -117,20 +123,11 @@
     <ClCompile Include="VortexFramework\VortexFramework\src\Modes.cpp">
       <Filter>Source Files\src</Filter>
     </ClCompile>
-    <ClCompile Include="VortexFramework\VortexFramework\src\patterns\AdvancedPattern.cpp">
-      <Filter>Source Files\src\patterns</Filter>
-    </ClCompile>
-    <ClCompile Include="VortexFramework\VortexFramework\src\patterns\GapPattern.cpp">
-      <Filter>Source Files\src\patterns</Filter>
-    </ClCompile>
     <ClCompile Include="FlashStorage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="VortexFramework\VortexFramework\src\VortexFramework.cpp">
       <Filter>Source Files\src</Filter>
-    </ClCompile>
-    <ClCompile Include="VortexFramework\VortexFramework\src\patterns\MultiLedPattern.cpp">
-      <Filter>Source Files\src\patterns</Filter>
     </ClCompile>
     <ClCompile Include="VortexFramework\VortexFramework\src\Memory.cpp">
       <Filter>Source Files\src</Filter>
@@ -141,26 +138,38 @@
     <ClCompile Include="VortexFramework\VortexFramework\src\Storage.cpp">
       <Filter>Source Files\src</Filter>
     </ClCompile>
-    <ClCompile Include="VortexFramework\VortexFramework\src\patterns\SingleLedPattern.cpp">
-      <Filter>Source Files\src\patterns</Filter>
-    </ClCompile>
-    <ClCompile Include="VortexFramework\VortexFramework\src\patterns\HueShiftPattern.cpp">
-      <Filter>Source Files\src\patterns</Filter>
-    </ClCompile>
     <ClCompile Include="VortexFramework\VortexFramework\src\Infrared.cpp">
       <Filter>Source Files\src</Filter>
     </ClCompile>
-    <ClCompile Include="VortexFramework\VortexFramework\src\patterns\HybridPattern.cpp">
-      <Filter>Source Files\src\patterns</Filter>
+    <ClCompile Include="VortexFramework\VortexFramework\src\patterns\single\AdvancedPattern.cpp">
+      <Filter>Source Files\src\patterns\single</Filter>
     </ClCompile>
-    <ClCompile Include="VortexFramework\VortexFramework\src\patterns\RabbitPattern.cpp">
-      <Filter>Source Files\src\patterns</Filter>
+    <ClCompile Include="VortexFramework\VortexFramework\src\patterns\single\BasicPattern.cpp">
+      <Filter>Source Files\src\patterns\single</Filter>
+    </ClCompile>
+    <ClCompile Include="VortexFramework\VortexFramework\src\patterns\single\GapPattern.cpp">
+      <Filter>Source Files\src\patterns\single</Filter>
+    </ClCompile>
+    <ClCompile Include="VortexFramework\VortexFramework\src\patterns\multi\HybridPattern.cpp">
+      <Filter>Source Files\src\patterns\multi</Filter>
+    </ClCompile>
+    <ClCompile Include="VortexFramework\VortexFramework\src\patterns\multi\HueShiftPattern.cpp">
+      <Filter>Source Files\src\patterns\multi</Filter>
+    </ClCompile>
+    <ClCompile Include="VortexFramework\VortexFramework\src\patterns\multi\MultiLedPattern.cpp">
+      <Filter>Source Files\src\patterns\multi</Filter>
+    </ClCompile>
+    <ClCompile Include="VortexFramework\VortexFramework\src\patterns\multi\RabbitPattern.cpp">
+      <Filter>Source Files\src\patterns\multi</Filter>
+    </ClCompile>
+    <ClCompile Include="VortexFramework\VortexFramework\src\patterns\single\TracerPattern.cpp">
+      <Filter>Source Files\src\patterns\single</Filter>
+    </ClCompile>
+    <ClCompile Include="VortexFramework\VortexFramework\src\patterns\single\SingleLedPattern.cpp">
+      <Filter>Source Files\src\patterns\single</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="VortexFramework\VortexFramework\src\patterns\BasicPattern.h">
-      <Filter>Header Files\src\patterns</Filter>
-    </ClInclude>
     <ClInclude Include="VortexFramework\VortexFramework\src\patterns\Pattern.h">
       <Filter>Header Files\src\patterns</Filter>
     </ClInclude>
@@ -224,9 +233,6 @@
     <ClInclude Include="VortexFramework\VortexFramework\src\menus\PatternSelect.h">
       <Filter>Header Files\src\menus</Filter>
     </ClInclude>
-    <ClInclude Include="VortexFramework\VortexFramework\src\patterns\TracerPattern.h">
-      <Filter>Header Files\src\patterns</Filter>
-    </ClInclude>
     <ClInclude Include="VortexFramework\VortexFramework\src\Patterns.h">
       <Filter>Header Files\src</Filter>
     </ClInclude>
@@ -248,12 +254,6 @@
     <ClInclude Include="VortexFramework\VortexFramework\src\Timer.h">
       <Filter>Header Files\src</Filter>
     </ClInclude>
-    <ClInclude Include="VortexFramework\VortexFramework\src\patterns\AdvancedPattern.h">
-      <Filter>Header Files\src\patterns</Filter>
-    </ClInclude>
-    <ClInclude Include="VortexFramework\VortexFramework\src\patterns\GapPattern.h">
-      <Filter>Header Files\src\patterns</Filter>
-    </ClInclude>
     <ClInclude Include="VortexFramework\VortexFramework\src\VortexFramework.h">
       <Filter>Header Files\src</Filter>
     </ClInclude>
@@ -272,21 +272,6 @@
     <ClInclude Include="IRLibSendBase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="VortexFramework\VortexFramework\src\patterns\HueShiftPattern.h">
-      <Filter>Header Files\src\patterns</Filter>
-    </ClInclude>
-    <ClInclude Include="VortexFramework\VortexFramework\src\patterns\HybridPattern.h">
-      <Filter>Header Files\src\patterns</Filter>
-    </ClInclude>
-    <ClInclude Include="VortexFramework\VortexFramework\src\patterns\MultiLedPattern.h">
-      <Filter>Header Files\src\patterns</Filter>
-    </ClInclude>
-    <ClInclude Include="VortexFramework\VortexFramework\src\patterns\SingleLedPattern.h">
-      <Filter>Header Files\src\patterns</Filter>
-    </ClInclude>
-    <ClInclude Include="VortexFramework\VortexFramework\src\patterns\RabbitPattern.h">
-      <Filter>Header Files\src\patterns</Filter>
-    </ClInclude>
     <ClInclude Include="VortexFramework\VortexFramework\src\Memory.h">
       <Filter>Header Files\src</Filter>
     </ClInclude>
@@ -304,6 +289,33 @@
     </ClInclude>
     <ClInclude Include="IRLibRecvLoop.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VortexFramework\VortexFramework\src\patterns\single\SingleLedPattern.h">
+      <Filter>Header Files\src\patterns\single</Filter>
+    </ClInclude>
+    <ClInclude Include="VortexFramework\VortexFramework\src\patterns\single\TracerPattern.h">
+      <Filter>Header Files\src\patterns\single</Filter>
+    </ClInclude>
+    <ClInclude Include="VortexFramework\VortexFramework\src\patterns\single\GapPattern.h">
+      <Filter>Header Files\src\patterns\single</Filter>
+    </ClInclude>
+    <ClInclude Include="VortexFramework\VortexFramework\src\patterns\single\BasicPattern.h">
+      <Filter>Header Files\src\patterns\single</Filter>
+    </ClInclude>
+    <ClInclude Include="VortexFramework\VortexFramework\src\patterns\single\AdvancedPattern.h">
+      <Filter>Header Files\src\patterns\single</Filter>
+    </ClInclude>
+    <ClInclude Include="VortexFramework\VortexFramework\src\patterns\multi\HueShiftPattern.h">
+      <Filter>Header Files\src\patterns\multi</Filter>
+    </ClInclude>
+    <ClInclude Include="VortexFramework\VortexFramework\src\patterns\multi\HybridPattern.h">
+      <Filter>Header Files\src\patterns\multi</Filter>
+    </ClInclude>
+    <ClInclude Include="VortexFramework\VortexFramework\src\patterns\multi\MultiLedPattern.h">
+      <Filter>Header Files\src\patterns\multi</Filter>
+    </ClInclude>
+    <ClInclude Include="VortexFramework\VortexFramework\src\patterns\multi\RabbitPattern.h">
+      <Filter>Header Files\src\patterns\multi</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
