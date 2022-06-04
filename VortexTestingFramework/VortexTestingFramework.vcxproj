@@ -147,6 +147,7 @@
     <ClCompile Include="FastLED.cpp" />
     <ClCompile Include="FlashStorage.cpp" />
     <ClCompile Include="TestFramework.cpp" />
+    <ClCompile Include="VortexFramework\VortexFramework\src\BitStream.cpp" />
     <ClCompile Include="VortexFramework\VortexFramework\src\Infrared.cpp" />
     <ClCompile Include="VortexFramework\VortexFramework\src\Memory.cpp" />
     <ClCompile Include="VortexFramework\VortexFramework\src\Button.cpp" />
@@ -191,6 +192,7 @@
     <ClInclude Include="Arduino.h" />
     <ClInclude Include="FastLED.h" />
     <ClInclude Include="TestFramework.h" />
+    <ClInclude Include="VortexFramework\VortexFramework\src\BitStream.h" />
     <ClInclude Include="VortexFramework\VortexFramework\src\Button.h" />
     <ClInclude Include="VortexFramework\VortexFramework\src\Buttons.h" />
     <ClInclude Include="VortexFramework\VortexFramework\src\Colorset.h" />

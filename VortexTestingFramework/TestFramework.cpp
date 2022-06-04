@@ -159,19 +159,19 @@ void TestFramework::create(HWND hwnd)
     WS_VISIBLE | WS_CHILD | WS_TABSTOP | TBS_VERT,
     20, 30, 36, 160, hwnd, (HMENU)TICKRATE_SLIDER_ID, nullptr, nullptr);
 
-  m_hwndTickOffsetSlider = CreateWindow(TRACKBAR_CLASS, "Time Offset",
-    WS_VISIBLE | WS_CHILD | WS_TABSTOP | TBS_VERT,
-    360, 30, 36, 160, hwnd, (HMENU)TIME_OFFSET_SLIDER_ID, nullptr, nullptr);
+  //m_hwndTickOffsetSlider = CreateWindow(TRACKBAR_CLASS, "Time Offset",
+  //  WS_VISIBLE | WS_CHILD | WS_TABSTOP | TBS_VERT,
+  //  360, 30, 36, 160, hwnd, (HMENU)TIME_OFFSET_SLIDER_ID, nullptr, nullptr);
 
   // do the arduino init/setup
   arduino_setup();
 
   TrackBar_SetPos(m_hwndTickrateSlider, 20);
-  TrackBar_SetPos(m_hwndTickOffsetSlider, 0);
+  //TrackBar_SetPos(m_hwndTickOffsetSlider, 0);
 
   // init tickrate and time offset to match the sliders
   setTickrate();
-  setTickOffset();
+  //setTickOffset();
 }
 
 void TestFramework::command(WPARAM wParam, LPARAM lParam)
@@ -246,6 +246,7 @@ void TestFramework::paint(HWND hwnd)
   rateRect.right = 200;
   DrawText(hdc, tickspeedStr.c_str(), -1, &rateRect, 0);
 
+#if 0
   // Tick offset
   string tickoffsetStr = "Tick Offset: " + to_string(Time::getTickOffset((LedPos)1));
   RECT offsetRect;
@@ -254,6 +255,7 @@ void TestFramework::paint(HWND hwnd)
   offsetRect.left = 280;
   offsetRect.right = 400;
   DrawText(hdc, tickoffsetStr.c_str(), -1, &offsetRect, DT_RIGHT);
+#endif
 
   // pattern strip
   if (m_redrawStrip) {
@@ -389,6 +391,7 @@ void TestFramework::setTickrate()
 
 void TestFramework::setTickOffset()
 {
+#if 0
   if (!Modes::curMode()) {
     return;
   }
@@ -407,8 +410,8 @@ void TestFramework::setTickOffset()
   offsetRect.right = 400;
   InvalidateRect(m_hwnd, &offsetRect, TRUE);
   DEBUG_LOGF("Set time offset: %u", offset);
+#endif
 }
-
 
 void TestFramework::pause()
 {
@@ -552,9 +555,9 @@ LRESULT CALLBACK TestFramework::window_proc(HWND hwnd, UINT uMsg, WPARAM wParam,
     case TB_THUMBTRACK:
     case TB_ENDTRACK:
       // lazy
-      if ((HWND)lParam == g_pTestFramework->m_hwndTickOffsetSlider) {
-        g_pTestFramework->setTickOffset();
-      }
+      //if ((HWND)lParam == g_pTestFramework->m_hwndTickOffsetSlider) {
+      //  g_pTestFramework->setTickOffset();
+      //}
       if ((HWND)lParam == g_pTestFramework->m_hwndTickrateSlider) {
         g_pTestFramework->setTickrate();
       }

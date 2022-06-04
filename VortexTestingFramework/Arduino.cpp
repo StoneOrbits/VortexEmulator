@@ -39,6 +39,10 @@ void delay(size_t amt)
 #endif
 }
 
+void delayMicroseconds(size_t us)
+{
+}
+
 // used for seeding randomSeed()
 unsigned long analogRead(uint32_t pin)
 {
@@ -56,6 +60,10 @@ unsigned long digitalRead(uint32_t pin)
     return HIGH;
   }
   return HIGH;
+}
+
+void digitalWrite(uint32_t pin,  uint32_t val)
+{
 }
 
 /// Convert seconds to milliseconds
@@ -112,4 +120,13 @@ void randomSeed(uint32_t seed)
 void pinMode(uint32_t pin, uint32_t mode)
 {
   // ???
+}
+
+void attachInterrupt(int interrupt, void *func, int type)
+{
+}
+
+int digitalPinToInterrupt(int pin)
+{
+  return 0;
 }

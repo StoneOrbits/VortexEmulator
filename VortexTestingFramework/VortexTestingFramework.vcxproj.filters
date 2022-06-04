@@ -171,6 +171,9 @@
     <ClCompile Include="VortexFramework\VortexFramework\src\patterns\single\BlendPattern.cpp">
       <Filter>Source Files\src\patterns\single</Filter>
     </ClCompile>
+    <ClCompile Include="VortexFramework\VortexFramework\src\BitStream.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="VortexFramework\VortexFramework\src\patterns\Pattern.h">
@@ -322,6 +325,9 @@
     </ClInclude>
     <ClInclude Include="VortexFramework\VortexFramework\src\patterns\single\BlendPattern.h">
       <Filter>Header Files\src\patterns\single</Filter>
+    </ClInclude>
+    <ClInclude Include="VortexFramework\VortexFramework\src\BitStream.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
