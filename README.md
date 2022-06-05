@@ -3,7 +3,7 @@ A test framework for the Vortex engine
 
 ![Screenshot](Screenshot.png?raw=true "Screenshot")
 
-To pull the Vortex-Gloves branch inside do:
+To pull the VortexFramework branch inside do:
 ```
 git submodule init
 git submodule update
