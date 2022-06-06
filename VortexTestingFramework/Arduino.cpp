@@ -122,7 +122,7 @@ void pinMode(uint32_t pin, uint32_t mode)
   // ???
 }
 
-void attachInterrupt(int interrupt, void *func, int type)
+void attachInterrupt(int interrupt, void (*func)(), int type)
 {
 }
 

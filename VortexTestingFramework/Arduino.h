@@ -28,7 +28,7 @@ unsigned long random(uint32_t low = 0, uint32_t high = 0);
 void randomSeed(uint32_t seed);
 void pinMode(uint32_t pin, uint32_t mode);
 
-void attachInterrupt(int interrupt, void *func, int type);
+void attachInterrupt(int interrupt, void (*func)(), int type);
 int digitalPinToInterrupt(int pin);
 
 class SerialClass
