@@ -171,7 +171,7 @@
     <ClCompile Include="VortexFramework\VortexFramework\src\patterns\single\AdvancedPattern.cpp" />
     <ClCompile Include="VortexFramework\VortexFramework\src\patterns\single\BasicPattern.cpp" />
     <ClCompile Include="VortexFramework\VortexFramework\src\patterns\single\BlendPattern.cpp" />
-    <ClCompile Include="VortexFramework\VortexFramework\src\patterns\single\BracketsPatterns.cpp" />
+    <ClCompile Include="VortexFramework\VortexFramework\src\patterns\single\BracketsPattern.cpp" />
     <ClCompile Include="VortexFramework\VortexFramework\src\patterns\single\GapPattern.cpp" />
     <ClCompile Include="VortexFramework\VortexFramework\src\patterns\multi\HueShiftPattern.cpp" />
     <ClCompile Include="VortexFramework\VortexFramework\src\patterns\multi\HybridPattern.cpp" />
