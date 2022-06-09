@@ -60,7 +60,7 @@ public:
   void unpause();
 
   // reload the pattern strip with the new patternID
-  void handlePatternChange();
+  bool handlePatternChange();
     
   // lookup a brush by rgbcolor
   HBRUSH getBrushCol(RGBColor col);

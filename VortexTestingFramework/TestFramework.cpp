@@ -58,7 +58,7 @@ TestFramework::TestFramework() :
   m_initialized(false),
   m_buttonPressed(false),
   m_keepGoing(true),
-  m_isPaused(true),
+  m_isPaused(false),
   m_pauseMutex(nullptr),
   m_curPattern(PATTERN_FIRST),
   m_curColorset(),
@@ -419,6 +419,7 @@ void TestFramework::pause()
     return;
   }
   if (WaitForSingleObject(m_pauseMutex, INFINITE) != WAIT_OBJECT_0) {
+    DEBUG_LOG("Failed to pause");
     return;
   }
   m_isPaused = true;
@@ -433,21 +434,21 @@ void TestFramework::unpause()
   m_isPaused = false;
 }
 
-void TestFramework::handlePatternChange()
+bool TestFramework::handlePatternChange()
 {
   if (!Modes::curMode()) {
-    return;
+    return false;
   }
   // don't want to create a callback mechanism just for the test framework to be
   // notified of pattern changes, I'll just watch the patternID each tick
   PatternID curPattern = Modes::curMode()->getPatternID();
   Colorset *curColorset = (Colorset *)Modes::curMode()->getColorset();
   if (!curColorset) {
-    return;
+    return false;
   }
   // check to see if the pattern or colorset changed
   if (curPattern == m_curPattern && *curColorset == m_curColorset) {
-    return;
+    return false;
   }
   // update current pattern and colorset
   m_curPattern = curPattern;
@@ -464,13 +465,13 @@ void TestFramework::handlePatternChange()
     m_redrawStrip = true;
     RECT stripRect = { 0, 200, 420, 260 };
     InvalidateRect(m_hwnd, &stripRect, TRUE);
-    return;
+    return false;
   }
   // would use the mode builder but it's not quite suited for this
   // create the new mode object
   Mode *newMode = new Mode();
   if (!newMode) { 
-    return; 
+    return false; 
   }
   LedPos targetPos = LED_FIRST;
   // TODO: The hardware is flipped so the 'real' led position is reversed
@@ -478,12 +479,12 @@ void TestFramework::handlePatternChange()
   // bind the pattern and colorset to the mode
   if (!newMode->bindSingle(m_curPattern, &m_curColorset, LED_FIRST)) {
     delete newMode;
-    return;
+    return false;
   }
   // backup the current LED 0 color
   RGBColor curLed0Col = m_ledList[realPos];
-  newMode->init();
   Time::startSimulation();
+  newMode->init();
   m_patternStrip.clear();
   for (int i = 0; i < 420; ++i) {
     newMode->play();
@@ -502,6 +503,7 @@ void TestFramework::handlePatternChange()
   m_redrawStrip = true;
   RECT stripRect = { 0, 200, 420, 260 };
   InvalidateRect(m_hwnd, &stripRect, TRUE);
+  return true;
 }
 
 HBRUSH TestFramework::getBrushCol(RGBColor rgbcol)
@@ -523,6 +525,7 @@ DWORD __stdcall TestFramework::arduino_loop_thread(void *arg)
     DWORD dwWaitResult = WaitForSingleObject(framework->m_pauseMutex, INFINITE);  // no time-out interval
     if (dwWaitResult == WAIT_OBJECT_0) {
       framework->arduino_loop();
+      // if pattern changes we need to reload the pattern strip
       framework->handlePatternChange();
       ReleaseMutex(framework->m_pauseMutex);
     }

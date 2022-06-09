@@ -147,9 +147,6 @@
     <ClCompile Include="VortexFramework\VortexFramework\src\patterns\single\BasicPattern.cpp">
       <Filter>Source Files\src\patterns\single</Filter>
     </ClCompile>
-    <ClCompile Include="VortexFramework\VortexFramework\src\patterns\single\GapPattern.cpp">
-      <Filter>Source Files\src\patterns\single</Filter>
-    </ClCompile>
     <ClCompile Include="VortexFramework\VortexFramework\src\patterns\multi\HybridPattern.cpp">
       <Filter>Source Files\src\patterns\multi</Filter>
     </ClCompile>
@@ -303,9 +300,6 @@
       <Filter>Header Files\src\patterns\single</Filter>
     </ClInclude>
     <ClInclude Include="VortexFramework\VortexFramework\src\patterns\single\TracerPattern.h">
-      <Filter>Header Files\src\patterns\single</Filter>
-    </ClInclude>
-    <ClInclude Include="VortexFramework\VortexFramework\src\patterns\single\GapPattern.h">
       <Filter>Header Files\src\patterns\single</Filter>
     </ClInclude>
     <ClInclude Include="VortexFramework\VortexFramework\src\patterns\single\BasicPattern.h">
