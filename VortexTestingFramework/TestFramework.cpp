@@ -453,20 +453,6 @@ bool TestFramework::handlePatternChange()
   // update current pattern and colorset
   m_curPattern = curPattern;
   m_curColorset = *curColorset;
-  // don't draw multi-led pattern
-  if (isMultiLedPatternID(m_curPattern)) {
-    m_patternStrip.clear();
-    for (int i = 0; i < 420; ++i) {
-      m_patternStrip.push_back(RGBColor(0, 0, 0));
-    }
-    // idk
-    Sleep(200);
-    // redraw the pattern strip
-    m_redrawStrip = true;
-    RECT stripRect = { 0, 200, 420, 260 };
-    InvalidateRect(m_hwnd, &stripRect, TRUE);
-    return false;
-  }
   // would use the mode builder but it's not quite suited for this
   // create the new mode object
   Mode *newMode = new Mode();
@@ -476,10 +462,17 @@ bool TestFramework::handlePatternChange()
   LedPos targetPos = LED_FIRST;
   // TODO: The hardware is flipped so the 'real' led position is reversed
   LedPos realPos = (LedPos)(LED_LAST - targetPos);
+  if (isMultiLedPatternID(m_curPattern)) {
+    if (!newMode->bindMulti(m_curPattern, &m_curColorset)) {
+      delete newMode;
+      return false;
+    }
+  } else {
   // bind the pattern and colorset to the mode
-  if (!newMode->bindSingle(m_curPattern, &m_curColorset, LED_FIRST)) {
-    delete newMode;
-    return false;
+    if (!newMode->bindSingle(m_curPattern, &m_curColorset, LED_FIRST)) {
+      delete newMode;
+      return false;
+    }
   }
   // backup the current LED 0 color
   RGBColor curLed0Col = m_ledList[realPos];
@@ -590,15 +583,20 @@ LRESULT CALLBACK TestFramework::window_proc(HWND hwnd, UINT uMsg, WPARAM wParam,
 
 void TestFramework::printlog(const char *file, const char *func, int line, const char *msg, va_list list)
 {
-  string strMsg = file;
-  if (strMsg.find_last_of('\\') != string::npos) {
-    strMsg = strMsg.substr(strMsg.find_last_of('\\') + 1);
+  string strMsg;
+  if (file) {
+    strMsg = file;
+    if (strMsg.find_last_of('\\') != string::npos) {
+      strMsg = strMsg.substr(strMsg.find_last_of('\\') + 1);
+    }
+    strMsg += ":";
+    strMsg += to_string(line);
   }
-  strMsg += ":";
-  strMsg += to_string(line);
-  strMsg += " ";
-  strMsg += func;
-  strMsg += "(): ";
+  if (func) {
+    strMsg += " ";
+    strMsg += func;
+    strMsg += "(): ";
+  }
   strMsg += msg;
   strMsg += "\n";
   vfprintf(g_pTestFramework->m_consoleHandle, strMsg.c_str(), list);

@@ -38,6 +38,7 @@ public:
     void print(uint32_t i) {}
     void print(const char *s) {}
     void println(const char *s) {}
+    operator bool() { return true; }
 };
 
 extern SerialClass Serial;

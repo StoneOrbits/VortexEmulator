@@ -168,6 +168,7 @@
     <ClCompile Include="VortexFramework\VortexFramework\src\ModeBuilder.cpp" />
     <ClCompile Include="VortexFramework\VortexFramework\src\Modes.cpp" />
     <ClCompile Include="VortexFramework\VortexFramework\src\PatternBuilder.cpp" />
+    <ClCompile Include="VortexFramework\VortexFramework\src\patterns\multi\TheaterChasePattern.cpp" />
     <ClCompile Include="VortexFramework\VortexFramework\src\patterns\single\AdvancedPattern.cpp" />
     <ClCompile Include="VortexFramework\VortexFramework\src\patterns\single\BasicPattern.cpp" />
     <ClCompile Include="VortexFramework\VortexFramework\src\patterns\single\BlendPattern.cpp" />
@@ -222,6 +223,7 @@
     <ClInclude Include="VortexFramework\VortexFramework\src\Modes.h" />
     <ClInclude Include="VortexFramework\VortexFramework\src\PatternBuilder.h" />
     <ClInclude Include="VortexFramework\VortexFramework\src\Patterns.h" />
+    <ClInclude Include="VortexFramework\VortexFramework\src\patterns\multi\TheaterChasePattern.h" />
     <ClInclude Include="VortexFramework\VortexFramework\src\patterns\single\AdvancedPattern.h" />
     <ClInclude Include="VortexFramework\VortexFramework\src\patterns\single\BasicPattern.h" />
     <ClInclude Include="VortexFramework\VortexFramework\src\patterns\single\BlendPattern.h" />

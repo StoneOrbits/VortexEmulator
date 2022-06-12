@@ -167,15 +167,20 @@ bool TestFramework::isButtonPressed() const
 
 void TestFramework::printlog(const char *file, const char *func, int line, const char *msg, va_list vlst)
 {
-  string strMsg = file;
-  if (strMsg.find_last_of('\\') != string::npos) {
-    strMsg = strMsg.substr(strMsg.find_last_of('\\') + 1);
+  string strMsg;
+  if (file) {
+    strMsg = file;
+    if (strMsg.find_last_of('\\') != string::npos) {
+      strMsg = strMsg.substr(strMsg.find_last_of('\\') + 1);
+    }
+    strMsg += ":";
+    strMsg += to_string(line);
   }
-  strMsg += ":";
-  strMsg += to_string(line);
-  strMsg += " ";
-  strMsg += func;
-  strMsg += "(): ";
+  if (func) {
+    strMsg += " ";
+    strMsg += func;
+    strMsg += "(): ";
+  }
   strMsg += msg;
   strMsg += "\r\n";
   va_list list2;
