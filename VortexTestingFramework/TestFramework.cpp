@@ -96,7 +96,7 @@ bool TestFramework::init(HINSTANCE hInstance)
   // create the pause mutex
   m_pauseMutex = CreateMutex(NULL, false, NULL);
   if (!m_pauseMutex) {
-    return false;
+    //return false;
   }
 
   m_bkbrush = CreateSolidBrush(bkcolor);

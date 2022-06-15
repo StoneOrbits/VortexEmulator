@@ -177,6 +177,9 @@
     <ClCompile Include="VortexFramework\VortexFramework\src\patterns\multi\TheaterChasePattern.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="VortexFramework\VortexFramework\src\patterns\single\ReciprocalBlendPattern.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="VortexFramework\VortexFramework\src\patterns\Pattern.h">
@@ -266,21 +269,6 @@
     <ClInclude Include="VortexFramework\VortexFramework\src\VortexFramework.h">
       <Filter>Header Files\src</Filter>
     </ClInclude>
-    <ClInclude Include="IRLib_P01_NEC.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IRLibCombo.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IRLibDecodeBase.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IRLibRecv.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IRLibSendBase.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="VortexFramework\VortexFramework\src\Memory.h">
       <Filter>Header Files\src</Filter>
     </ClInclude>
@@ -295,9 +283,6 @@
     </ClInclude>
     <ClInclude Include="VortexFramework\VortexFramework\src\Storage.h">
       <Filter>Header Files\src</Filter>
-    </ClInclude>
-    <ClInclude Include="IRLibRecvLoop.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="VortexFramework\VortexFramework\src\patterns\single\SingleLedPattern.h">
       <Filter>Header Files\src\patterns\single</Filter>
@@ -333,6 +318,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="VortexFramework\VortexFramework\src\patterns\multi\TheaterChasePattern.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VortexFramework\VortexFramework\src\patterns\single\ReciprocalBlendPattern.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

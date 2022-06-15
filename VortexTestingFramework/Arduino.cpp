@@ -2,9 +2,12 @@
 
 #ifdef LINUX_FRAMEWORK
 #include "TestFrameworkLinux.h"
+#include <sys/socket.h>
 #else
-#include "TestFramework.h"
+#include <WinSock2.h>
+#include <Ws2tcpip.h>
 #include <Windows.h>
+#include "TestFramework.h"
 #endif
 
 #include <chrono>
@@ -15,10 +18,25 @@ SerialClass Serial;
 
 #ifdef LINUX_FRAMEWORK
 static uint64_t start;
+#define SOCKET int
 #else
 static LARGE_INTEGER start;
 static LARGE_INTEGER tps; //tps = ticks per second
+#pragma comment (lib, "ws2_32.lib")
+#define DEFAULT_PORT "33456"
 #endif
+
+SOCKET sock = -1;
+SOCKET client_sock = -1;
+bool is_server = false;
+static bool receive_message(uint32_t &out_message);
+static bool send_network_message(uint32_t message);
+static bool accept_connection();
+#ifndef LINUX_FRAMEWORK
+static DWORD __stdcall listen_connection(void *arg);
+#endif
+static bool init_server();
+static bool init_network_client();
 
 void init_arduino()
 {
@@ -27,7 +45,20 @@ void init_arduino()
 #else
   QueryPerformanceFrequency(&tps);
   QueryPerformanceCounter(&start);
+
+  WSAData wsaData;
+  // Initialize Winsock
+  int res = WSAStartup(MAKEWORD(2, 2), &wsaData);
+  if (res != 0) {
+    printf("WSAStartup failed with error: %d\n", res);
+    return;
+  }
 #endif
+  // try to connect to server first, if no server
+  if (!init_network_client()) {
+    // then just initialize an listen
+    init_server();
+  }
 }
 
 void delay(size_t amt)
@@ -35,7 +66,7 @@ void delay(size_t amt)
 #ifdef LINUX_FRAMEWORK
   //sleep(amt);
 #else
-  Sleep(amt);
+  Sleep((DWORD)amt);
 #endif
 }
 
@@ -126,7 +157,205 @@ void attachInterrupt(int interrupt, void (*func)(), int type)
 {
 }
 
+void detachInterrupt(int interrupt)
+{
+}
+
+void ir_mark(uint32_t duration)
+{
+  send_network_message(duration | (1<<31));
+}
+
+void ir_space(uint32_t duration)
+{
+  send_network_message(duration);
+}
+
 int digitalPinToInterrupt(int pin)
 {
   return 0;
+}
+
+void (*IR_change_callback)(uint32_t data);
+
+void installIRCallback(void (*func)(uint32_t))
+{
+  IR_change_callback = func;
+}
+
+// receive a message from client
+static bool receive_message(uint32_t &out_message)
+{
+#ifndef LINUX_FRAMEWORK
+  if (recv(client_sock, (char *)&out_message, sizeof(out_message), 0) <= 0) {
+    printf("Recv failed with error: %d\n", WSAGetLastError());
+    return false;
+  }
+#endif
+  return true;
+}
+
+// send a message
+static bool send_network_message(uint32_t message)
+{
+#ifndef LINUX_FRAMEWORK
+  if (send(sock, (char *)&message, sizeof(message), 0) == SOCKET_ERROR) {
+    // most likely server closed
+    printf("send failed with error: %d\n", WSAGetLastError());
+    return false;
+  }
+#endif
+  return true;
+}
+
+// wait for a connection from client
+static bool accept_connection()
+{
+#ifndef LINUX_FRAMEWORK
+  // Wait for a client connection and accept it
+  client_sock = accept(sock, NULL, NULL);
+  if (client_sock == INVALID_SOCKET) {
+    printf("accept failed with error: %d\n", WSAGetLastError());
+    return 1;
+  }
+#endif
+  printf("Received connection!\n");
+  return true;
+}
+
+#ifndef LINUX_FRAMEWORK
+static DWORD __stdcall listen_connection(void *arg)
+{
+  // block till a client connects and clear the output files
+  if (!accept_connection()) {
+    return 0;
+  }
+  printf("Accepted connection\n");
+
+  // idk when another one launches the first ones strip unpaints
+  g_pTestFramework->redrawStrip();
+  PostMessage(NULL, WM_PAINT, NULL, NULL);
+
+  // each message received will get passed into the logging system
+  while (1) {
+    uint32_t message = 0;
+    if (!receive_message(message)) {
+      break;
+    }
+    bool is_mark = (message & (1<<31)) != 0;
+    message &= ~(1<<31);
+    if (IR_change_callback) {
+      IR_change_callback(message);
+    }
+    //printf("Received %s: %x\n", is_mark ? "mark" : "space", message);
+  }
+
+  printf("Connection closed\n");
+  return 0;
+}
+#endif
+
+// initialize the server
+static bool init_server()
+{
+#ifndef LINUX_FRAMEWORK
+  struct addrinfo hints;
+  ZeroMemory(&hints, sizeof(hints));
+  hints.ai_family = AF_INET;
+  hints.ai_socktype = SOCK_STREAM;
+  hints.ai_protocol = IPPROTO_TCP;
+  hints.ai_flags = AI_PASSIVE;
+
+  // Resolve the server address and port
+  struct addrinfo *result = NULL;
+  int res = getaddrinfo(NULL, DEFAULT_PORT, &hints, &result);
+  if (res != 0) {
+    printf("getaddrinfo failed with error: %d\n", res);
+    WSACleanup();
+    return false;
+  }
+  // Create a SOCKET for connecting to server
+  sock = socket(result->ai_family, result->ai_socktype, result->ai_protocol);
+  if (sock == INVALID_SOCKET) {
+    printf("socket failed with error: %ld\n", WSAGetLastError());
+    freeaddrinfo(result);
+    return false;
+  }
+  // Setup the TCP listening socket
+  res = bind(sock, result->ai_addr, (int)result->ai_addrlen);
+  freeaddrinfo(result);
+  if (res == SOCKET_ERROR) {
+    printf("bind failed with error: %d\n", WSAGetLastError());
+    closesocket(sock);
+    return false;
+  }
+  // start listening
+  if (listen(sock, SOMAXCONN) == SOCKET_ERROR) {
+    printf("listen failed with error: %d\n", WSAGetLastError());
+    return false;
+  }
+  printf("Success listening on *:8080\n");
+  is_server = true;
+  CreateThread(NULL, 0, listen_connection, NULL, 0, NULL);
+#endif
+  return true;
+}
+
+// initialize the network client for server mode, thanks msdn for the code
+static bool init_network_client()
+{
+#ifndef LINUX_FRAMEWORK
+  struct addrinfo *addrs = NULL;
+  struct addrinfo *ptr = NULL;
+  struct addrinfo hints;
+
+  ZeroMemory(&hints, sizeof(hints));
+  hints.ai_family = AF_UNSPEC; // allows ipv4 or ipv6
+  hints.ai_socktype = SOCK_STREAM;
+  hints.ai_protocol = IPPROTO_TCP;
+
+  // Resolve the server address and port
+  int res = getaddrinfo("127.0.0.1", DEFAULT_PORT, &hints, &addrs);
+  if (res != 0) {
+    printf("Could not resolve addr info\n");
+    return false;
+  }
+  //info("Attempting to connect to %s", config.server_ip.c_str());
+  // try connecting to all the addrs
+  for (ptr = addrs; ptr != NULL; ptr = ptr->ai_next) {
+    sock = socket(ptr->ai_family, ptr->ai_socktype, ptr->ai_protocol);
+    if (sock == INVALID_SOCKET) {
+      printf("Error creating socket: %d\n", GetLastError());
+      freeaddrinfo(addrs);
+      return false;
+    }
+    if (connect(sock, ptr->ai_addr, (int)ptr->ai_addrlen) == SOCKET_ERROR) {
+      printf("Failed to connect to socket: %d\n", GetLastError());
+      // try again
+      closesocket(sock);
+      sock = INVALID_SOCKET;
+      continue;
+    }
+    // Success!
+    break;
+  }
+  freeaddrinfo(addrs);
+  if (sock == INVALID_SOCKET) {
+    printf("Could not create socket\n");
+    return false;
+  }
+  // turn on non-blocking for the socket so the module cannot
+  // get stuck in the send() call if the server is closed
+  u_long iMode = 1; // 1 = non-blocking mode
+  res = ioctlsocket(sock, FIONBIO, &iMode);
+  if (res != NO_ERROR) {
+    printf("Failed to ioctrl on socket\n");
+    closesocket(sock);
+    return false;
+  }
+  printf("Success initializing network client\n");
+  //info("Connected to server %s", config.server_ip.c_str());
+  send_network_message(1);
+#endif
+  return true;
 }

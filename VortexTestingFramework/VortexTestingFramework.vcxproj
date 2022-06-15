@@ -179,6 +179,7 @@
     <ClCompile Include="VortexFramework\VortexFramework\src\patterns\Pattern.cpp" />
     <ClCompile Include="VortexFramework\VortexFramework\src\patterns\PatternFuncs.cpp" />
     <ClCompile Include="VortexFramework\VortexFramework\src\patterns\multi\RabbitPattern.cpp" />
+    <ClCompile Include="VortexFramework\VortexFramework\src\patterns\single\ReciprocalBlendPattern.cpp" />
     <ClCompile Include="VortexFramework\VortexFramework\src\patterns\single\SingleLedPattern.cpp" />
     <ClCompile Include="VortexFramework\VortexFramework\src\patterns\single\TracerPattern.cpp" />
     <ClCompile Include="VortexFramework\VortexFramework\src\SerialBuffer.cpp" />
@@ -200,12 +201,6 @@
     <ClInclude Include="VortexFramework\VortexFramework\src\ColorTypes.h" />
     <ClInclude Include="FlashStorage.h" />
     <ClInclude Include="VortexFramework\VortexFramework\src\Infrared.h" />
-    <ClInclude Include="IRLibCombo.h" />
-    <ClInclude Include="IRLibDecodeBase.h" />
-    <ClInclude Include="IRLibRecv.h" />
-    <ClInclude Include="IRLibSendBase.h" />
-    <ClInclude Include="IRLib_P01_NEC.h" />
-    <ClInclude Include="IRLibRecvLoop.h" />
     <ClInclude Include="VortexFramework\VortexFramework\src\LedConfig.h" />
     <ClInclude Include="VortexFramework\VortexFramework\src\Leds.h" />
     <ClInclude Include="VortexFramework\VortexFramework\src\Log.h" />
@@ -233,6 +228,7 @@
     <ClInclude Include="VortexFramework\VortexFramework\src\patterns\Pattern.h" />
     <ClInclude Include="VortexFramework\VortexFramework\src\patterns\multi\HueShiftPattern.h" />
     <ClInclude Include="VortexFramework\VortexFramework\src\patterns\multi\RabbitPattern.h" />
+    <ClInclude Include="VortexFramework\VortexFramework\src\patterns\single\ReciprocalBlendPattern.h" />
     <ClInclude Include="VortexFramework\VortexFramework\src\patterns\single\SingleLedPattern.h" />
     <ClInclude Include="VortexFramework\VortexFramework\src\patterns\single\TracerPattern.h" />
     <ClInclude Include="VortexFramework\VortexFramework\src\SerialBuffer.h" />

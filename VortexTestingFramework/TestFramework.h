@@ -65,6 +65,8 @@ public:
   // lookup a brush by rgbcolor
   HBRUSH getBrushCol(RGBColor col);
 
+  void redrawStrip() { m_redrawStrip = true; }
+
   // loop that runs arduino code
   static DWORD __stdcall arduino_loop_thread(void *arg);
 
