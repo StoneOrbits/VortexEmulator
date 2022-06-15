@@ -24,19 +24,16 @@ static LARGE_INTEGER start;
 static LARGE_INTEGER tps; //tps = ticks per second
 #pragma comment (lib, "ws2_32.lib")
 #define DEFAULT_PORT "33456"
-#endif
-
 SOCKET sock = -1;
 SOCKET client_sock = -1;
 bool is_server = false;
 static bool receive_message(uint32_t &out_message);
 static bool send_network_message(uint32_t message);
 static bool accept_connection();
-#ifndef LINUX_FRAMEWORK
 static DWORD __stdcall listen_connection(void *arg);
-#endif
 static bool init_server();
 static bool init_network_client();
+#endif
 
 void init_arduino()
 {
@@ -53,12 +50,12 @@ void init_arduino()
     printf("WSAStartup failed with error: %d\n", res);
     return;
   }
-#endif
   // try to connect to server first, if no server
   if (!init_network_client()) {
     // then just initialize an listen
     init_server();
   }
+#endif
 }
 
 void delay(size_t amt)
@@ -161,14 +158,25 @@ void detachInterrupt(int interrupt)
 {
 }
 
-void ir_mark(uint32_t duration)
+void test_ir_mark(uint32_t duration)
 {
+#ifndef LINUX_FRAMEWORK
   send_network_message(duration | (1<<31));
+#endif
 }
 
-void ir_space(uint32_t duration)
+void test_ir_space(uint32_t duration)
 {
+#ifndef LINUX_FRAMEWORK
   send_network_message(duration);
+#endif
+}
+
+// this is only used on the windows framework to test IR
+void (*IR_change_callback)(uint32_t data);
+void installIRCallback(void (*func)(uint32_t))
+{
+  IR_change_callback = func;
 }
 
 int digitalPinToInterrupt(int pin)
@@ -176,54 +184,44 @@ int digitalPinToInterrupt(int pin)
   return 0;
 }
 
-void (*IR_change_callback)(uint32_t data);
 
-void installIRCallback(void (*func)(uint32_t))
-{
-  IR_change_callback = func;
-}
+#ifndef LINUX_FRAMEWORK
+// windows only IR simulator via network socket
 
 // receive a message from client
 static bool receive_message(uint32_t &out_message)
 {
-#ifndef LINUX_FRAMEWORK
   if (recv(client_sock, (char *)&out_message, sizeof(out_message), 0) <= 0) {
     printf("Recv failed with error: %d\n", WSAGetLastError());
     return false;
   }
-#endif
   return true;
 }
 
 // send a message
 static bool send_network_message(uint32_t message)
 {
-#ifndef LINUX_FRAMEWORK
   if (send(sock, (char *)&message, sizeof(message), 0) == SOCKET_ERROR) {
     // most likely server closed
     printf("send failed with error: %d\n", WSAGetLastError());
     return false;
   }
-#endif
   return true;
 }
 
 // wait for a connection from client
 static bool accept_connection()
 {
-#ifndef LINUX_FRAMEWORK
   // Wait for a client connection and accept it
   client_sock = accept(sock, NULL, NULL);
   if (client_sock == INVALID_SOCKET) {
     printf("accept failed with error: %d\n", WSAGetLastError());
     return 1;
   }
-#endif
   printf("Received connection!\n");
   return true;
 }
 
-#ifndef LINUX_FRAMEWORK
 static DWORD __stdcall listen_connection(void *arg)
 {
   // block till a client connects and clear the output files
@@ -253,12 +251,10 @@ static DWORD __stdcall listen_connection(void *arg)
   printf("Connection closed\n");
   return 0;
 }
-#endif
 
 // initialize the server
 static bool init_server()
 {
-#ifndef LINUX_FRAMEWORK
   struct addrinfo hints;
   ZeroMemory(&hints, sizeof(hints));
   hints.ai_family = AF_INET;
@@ -297,14 +293,12 @@ static bool init_server()
   printf("Success listening on *:8080\n");
   is_server = true;
   CreateThread(NULL, 0, listen_connection, NULL, 0, NULL);
-#endif
   return true;
 }
 
 // initialize the network client for server mode, thanks msdn for the code
 static bool init_network_client()
 {
-#ifndef LINUX_FRAMEWORK
   struct addrinfo *addrs = NULL;
   struct addrinfo *ptr = NULL;
   struct addrinfo hints;
@@ -330,7 +324,6 @@ static bool init_network_client()
       return false;
     }
     if (connect(sock, ptr->ai_addr, (int)ptr->ai_addrlen) == SOCKET_ERROR) {
-      printf("Failed to connect to socket: %d\n", GetLastError());
       // try again
       closesocket(sock);
       sock = INVALID_SOCKET;
@@ -341,7 +334,6 @@ static bool init_network_client()
   }
   freeaddrinfo(addrs);
   if (sock == INVALID_SOCKET) {
-    printf("Could not create socket\n");
     return false;
   }
   // turn on non-blocking for the socket so the module cannot
@@ -356,6 +348,7 @@ static bool init_network_client()
   printf("Success initializing network client\n");
   //info("Connected to server %s", config.server_ip.c_str());
   send_network_message(1);
-#endif
   return true;
 }
+
+#endif // ifndef LINUX_FRAMEWORK

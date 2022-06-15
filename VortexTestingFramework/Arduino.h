@@ -34,8 +34,8 @@ int digitalPinToInterrupt(int pin);
 
 #ifdef TEST_FRAMEWORK
 // not actually from arduino but we use to simulate ir comms
-void ir_mark(uint32_t duration);
-void ir_space(uint32_t duration);
+void test_ir_mark(uint32_t duration);
+void test_ir_space(uint32_t duration);
 
 // install the IR callback for test framework
 void installIRCallback(void (*func)(uint32_t));
