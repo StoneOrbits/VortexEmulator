@@ -191,7 +191,11 @@ int digitalPinToInterrupt(int pin)
 // receive a message from client
 static bool receive_message(uint32_t &out_message)
 {
-  if (recv(client_sock, (char *)&out_message, sizeof(out_message), 0) <= 0) {
+  SOCKET target_sock = sock;
+  if (is_server) {
+    target_sock = client_sock;
+  }
+  if (recv(target_sock, (char *)&out_message, sizeof(out_message), 0) <= 0) {
     printf("Recv failed with error: %d\n", WSAGetLastError());
     return false;
   }
@@ -201,7 +205,11 @@ static bool receive_message(uint32_t &out_message)
 // send a message
 static bool send_network_message(uint32_t message)
 {
-  if (send(sock, (char *)&message, sizeof(message), 0) == SOCKET_ERROR) {
+  SOCKET target_sock = sock;
+  if (is_server) {
+    target_sock = client_sock;
+  }
+  if (send(target_sock, (char *)&message, sizeof(message), 0) == SOCKET_ERROR) {
     // most likely server closed
     printf("send failed with error: %d\n", WSAGetLastError());
     return false;
@@ -347,7 +355,6 @@ static bool init_network_client()
   }
   printf("Success initializing network client\n");
   //info("Connected to server %s", config.server_ip.c_str());
-  send_network_message(1);
   return true;
 }
 
