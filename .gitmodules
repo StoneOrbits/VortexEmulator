@@ -1,3 +1,3 @@
-[submodule "VortexTestingFramework/VortexFramework"]
+[submodule "VortexTestingFramework/VortexEngine"]
 	path = VortexTestingFramework/VortexEngine
-	url = https://github.com/Unreal-Dan/VortexFramework
+	url = https://github.com/Unreal-Dan/VortexEngine
