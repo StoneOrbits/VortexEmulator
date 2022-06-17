@@ -20,7 +20,7 @@ DEFINES=\
 
 # compiler include paths
 INCLUDES=\
-	-I ./VortexFramework/VortexFramework/src/ \
+	-I ./VortexEngine/VortexEngine/src/ \
 	-I ./ \
 
 # only set them if they're not empty to prevent unnecessary whitespace
@@ -55,7 +55,7 @@ SRC=\
     ./FastLED.cpp \
     ./FlashStorage.cpp \
     ./TestFrameworkLinux.cpp \
-    $(shell find ./VortexFramework/VortexFramework/src/ -type f -name '*.cpp') \
+    $(shell find ./VortexEngine/VortexEngine/src/ -type f -name '*.cpp') \
 
 # object files are source files with .c replaced with .o
 OBJS=\

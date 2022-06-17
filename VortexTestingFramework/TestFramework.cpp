@@ -447,21 +447,23 @@ void TestFramework::unpause()
   m_isPaused = false;
 }
 
-bool TestFramework::handlePatternChange()
+bool TestFramework::handlePatternChange(bool force)
 {
   if (!Modes::curMode()) {
     return false;
   }
   // don't want to create a callback mechanism just for the test framework to be
   // notified of pattern changes, I'll just watch the patternID each tick
-  PatternID curPattern = Modes::curMode()->getPatternID(m_curSelectedLed);
-  Colorset *curColorset = (Colorset *)Modes::curMode()->getColorset(m_curSelectedLed);
+  PatternID curPattern = Modes::curMode()->getPatternID();
+  Colorset *curColorset = (Colorset *)Modes::curMode()->getColorset();
   if (!curColorset) {
     return false;
   }
   // check to see if the pattern or colorset changed
-  if (curPattern == m_curPattern && *curColorset == m_curColorset) {
-    return false;
+  if (!force) {
+    if (curPattern == m_curPattern && *curColorset == m_curColorset) {
+      return false;
+    }
   }
   // update current pattern and colorset
   m_curPattern = curPattern;
@@ -472,9 +474,8 @@ bool TestFramework::handlePatternChange()
   if (!newMode) { 
     return false; 
   }
-  LedPos targetPos = LED_FIRST;
   // TODO: The hardware is flipped so the 'real' led position is reversed
-  LedPos realPos = (LedPos)(LED_LAST - targetPos);
+  LedPos realPos = (LedPos)(LED_LAST - m_curSelectedLed);
   if (isMultiLedPatternID(m_curPattern)) {
     if (!newMode->bindMulti(m_curPattern, &m_curColorset)) {
       delete newMode;
@@ -510,6 +511,25 @@ bool TestFramework::handlePatternChange()
   RECT stripRect = { 0, 200, 420, 340 };
   InvalidateRect(m_hwnd, &stripRect, TRUE);
   return true;
+}
+
+void TestFramework::handleWindowClick(int x, int y)
+{
+  for (uint32_t i = 0; i < m_numLeds; ++i) {
+    if (x >= m_ledPos[i].left && y >= m_ledPos[i].top && 
+        x <= m_ledPos[i].right && y <= m_ledPos[i].bottom) {
+      // TODO: flip this when hardware switches
+      selectLed((LedPos)(LED_LAST - i));
+    }
+  }
+}
+
+void TestFramework::selectLed(LedPos pos)
+{
+  DEBUG_LOGF("Selected LED %u", pos);
+  m_curSelectedLed = pos;
+  m_redrawStrip = true;
+  handlePatternChange(true);
 }
 
 HBRUSH TestFramework::getBrushCol(RGBColor rgbcol)
@@ -554,25 +574,6 @@ LRESULT CALLBACK TestFramework::button_subproc(HWND hwnd, UINT uMsg, WPARAM wPar
     break;
   }
   return CallWindowProcA(g_pTestFramework->m_oldButtonProc, hwnd, uMsg, wParam, lParam);
-}
-
-void TestFramework::handleWindowClick(int x, int y)
-{
-  for (uint32_t i = 0; i < m_numLeds; ++i) {
-    if (x >= m_ledPos[i].left && y >= m_ledPos[i].top && 
-        x <= m_ledPos[i].right && y <= m_ledPos[i].bottom) {
-      // TODO: flip this when hardware switches
-      selectLed((LedPos)(LED_LAST - i));
-    }
-  }
-}
-
-void TestFramework::selectLed(LedPos pos)
-{
-  DEBUG_LOGF("Selected LED %u", pos);
-  m_curSelectedLed = pos;
-  m_redrawStrip = true;
-  handlePatternChange();
 }
 
 LRESULT CALLBACK TestFramework::window_proc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)

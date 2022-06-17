@@ -60,7 +60,7 @@ public:
   void unpause();
 
   // reload the pattern strip with the new patternID
-  bool handlePatternChange();
+  bool handlePatternChange(bool force = false);
   void handleWindowClick(int x, int y);
   void selectLed(LedPos led);
 

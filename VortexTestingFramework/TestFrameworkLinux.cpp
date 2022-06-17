@@ -9,7 +9,7 @@
 
 #include "Log.h"
 
-#include "VortexFramework.h"
+#include "VortexEngine.h"
 #include "PatternBuilder.h"
 #include "ModeBuilder.h"
 #include "TimeControl.h"
@@ -118,10 +118,10 @@ void TestFramework::run()
     }
     refresh();
 
-    VortexFramework::tick();
+    VortexEngine::tick();
   }
 
-  VortexFramework::cleanup();
+  VortexEngine::cleanup();
 }
 
 void TestFramework::cleanup()
@@ -135,7 +135,7 @@ void TestFramework::arduino_setup()
 {
   // init the drop-in arduino library replacement
   init_arduino();
-  if (!VortexFramework::init()) {
+  if (!VortexEngine::init()) {
     // uhoh
   }
 }
