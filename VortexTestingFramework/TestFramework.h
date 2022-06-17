@@ -2,7 +2,7 @@
 #include <Windows.h>
 #include <stdio.h>
 
-#include "VortexFramework.h"
+#include "VortexEngine.h"
 #include "ColorTypes.h"
 #include "LedConfig.h"
 #include "Patterns.h"
@@ -61,7 +61,9 @@ public:
 
   // reload the pattern strip with the new patternID
   bool handlePatternChange();
-    
+  void handleWindowClick(int x, int y);
+  void selectLed(LedPos led);
+
   // lookup a brush by rgbcolor
   HBRUSH getBrushCol(RGBColor col);
 
@@ -124,6 +126,8 @@ private:
   bool m_redrawStrip;
 
   std::map<COLORREF, HBRUSH> m_brushmap;
+
+  LedPos m_curSelectedLed;
 };
 
 extern TestFramework *g_pTestFramework;

@@ -12,8 +12,8 @@
 
 #include "Log.h"
 
-#include "VortexFramework.h"
 #include "PatternBuilder.h"
+#include "VortexEngine.h"
 #include "ModeBuilder.h"
 #include "TimeControl.h"
 #include "Colorset.h"
@@ -63,7 +63,8 @@ TestFramework::TestFramework() :
   m_curPattern(PATTERN_FIRST),
   m_curColorset(),
   m_patternStrip(),
-  m_redrawStrip(false)
+  m_redrawStrip(false),
+  m_curSelectedLed(LED_FIRST)
 {
 }
 
@@ -295,7 +296,7 @@ void TestFramework::arduino_setup()
 {
   // init the drop-in arduino library replacement
   init_arduino();
-  if (!VortexFramework::init()) {
+  if (!VortexEngine::init()) {
     // uhoh
   }
 }
@@ -303,7 +304,7 @@ void TestFramework::arduino_setup()
 void TestFramework::arduino_loop()
 {
   // run the tick
-  VortexFramework::tick();
+  VortexEngine::tick();
 }
 
 void TestFramework::installLeds(CRGB *leds, uint32_t count)
@@ -453,8 +454,8 @@ bool TestFramework::handlePatternChange()
   }
   // don't want to create a callback mechanism just for the test framework to be
   // notified of pattern changes, I'll just watch the patternID each tick
-  PatternID curPattern = Modes::curMode()->getPatternID();
-  Colorset *curColorset = (Colorset *)Modes::curMode()->getColorset();
+  PatternID curPattern = Modes::curMode()->getPatternID(m_curSelectedLed);
+  Colorset *curColorset = (Colorset *)Modes::curMode()->getColorset(m_curSelectedLed);
   if (!curColorset) {
     return false;
   }
@@ -536,7 +537,7 @@ DWORD __stdcall TestFramework::arduino_loop_thread(void *arg)
     }
   }
   // cleanup
-  VortexFramework::cleanup();
+  VortexEngine::cleanup();
   return 0;
 }
 
@@ -553,6 +554,25 @@ LRESULT CALLBACK TestFramework::button_subproc(HWND hwnd, UINT uMsg, WPARAM wPar
     break;
   }
   return CallWindowProcA(g_pTestFramework->m_oldButtonProc, hwnd, uMsg, wParam, lParam);
+}
+
+void TestFramework::handleWindowClick(int x, int y)
+{
+  for (uint32_t i = 0; i < m_numLeds; ++i) {
+    if (x >= m_ledPos[i].left && y >= m_ledPos[i].top && 
+        x <= m_ledPos[i].right && y <= m_ledPos[i].bottom) {
+      // TODO: flip this when hardware switches
+      selectLed((LedPos)(LED_LAST - i));
+    }
+  }
+}
+
+void TestFramework::selectLed(LedPos pos)
+{
+  DEBUG_LOGF("Selected LED %u", pos);
+  m_curSelectedLed = pos;
+  m_redrawStrip = true;
+  handlePatternChange();
 }
 
 LRESULT CALLBACK TestFramework::window_proc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
@@ -580,6 +600,9 @@ LRESULT CALLBACK TestFramework::window_proc(HWND hwnd, UINT uMsg, WPARAM wParam,
   case WM_PAINT:
     g_pTestFramework->paint(hwnd);
     return 0;
+  case WM_LBUTTONDOWN:
+    g_pTestFramework->handleWindowClick(LOWORD(lParam), HIWORD(lParam));
+    break;
   case WM_COMMAND:
     g_pTestFramework->command(wParam, lParam);
     break;

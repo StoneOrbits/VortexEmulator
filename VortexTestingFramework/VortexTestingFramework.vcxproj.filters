@@ -48,52 +48,52 @@
     <ClCompile Include="WinMain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="VortexFramework\VortexFramework\src\Button.cpp">
+    <ClCompile Include="VortexEngine\VortexFramework\src\Button.cpp">
       <Filter>Source Files\src</Filter>
     </ClCompile>
-    <ClCompile Include="VortexFramework\VortexFramework\src\Colorset.cpp">
+    <ClCompile Include="VortexEngine\VortexFramework\src\Colorset.cpp">
       <Filter>Source Files\src</Filter>
     </ClCompile>
-    <ClCompile Include="VortexFramework\VortexFramework\src\ColorTypes.cpp">
+    <ClCompile Include="VortexEngine\VortexFramework\src\ColorTypes.cpp">
       <Filter>Source Files\src</Filter>
     </ClCompile>
-    <ClCompile Include="VortexFramework\VortexFramework\src\Leds.cpp">
+    <ClCompile Include="VortexEngine\VortexFramework\src\Leds.cpp">
       <Filter>Source Files\src</Filter>
     </ClCompile>
-    <ClCompile Include="VortexFramework\VortexFramework\src\Mode.cpp">
+    <ClCompile Include="VortexEngine\VortexFramework\src\Mode.cpp">
       <Filter>Source Files\src</Filter>
     </ClCompile>
-    <ClCompile Include="VortexFramework\VortexFramework\src\ModeBuilder.cpp">
+    <ClCompile Include="VortexEngine\VortexFramework\src\ModeBuilder.cpp">
       <Filter>Source Files\src</Filter>
     </ClCompile>
-    <ClCompile Include="VortexFramework\VortexFramework\src\TimeControl.cpp">
+    <ClCompile Include="VortexEngine\VortexFramework\src\TimeControl.cpp">
       <Filter>Source Files\src</Filter>
     </ClCompile>
-    <ClCompile Include="VortexFramework\VortexFramework\src\menus\GlobalBrightness.cpp">
+    <ClCompile Include="VortexEngine\VortexFramework\src\menus\GlobalBrightness.cpp">
       <Filter>Source Files\src\menus</Filter>
     </ClCompile>
-    <ClCompile Include="VortexFramework\VortexFramework\src\menus\FactoryReset.cpp">
+    <ClCompile Include="VortexEngine\VortexFramework\src\menus\FactoryReset.cpp">
       <Filter>Source Files\src\menus</Filter>
     </ClCompile>
-    <ClCompile Include="VortexFramework\VortexFramework\src\menus\ColorSelect.cpp">
+    <ClCompile Include="VortexEngine\VortexFramework\src\menus\ColorSelect.cpp">
       <Filter>Source Files\src\menus</Filter>
     </ClCompile>
-    <ClCompile Include="VortexFramework\VortexFramework\src\menus\ModeSharing.cpp">
+    <ClCompile Include="VortexEngine\VortexFramework\src\menus\ModeSharing.cpp">
       <Filter>Source Files\src\menus</Filter>
     </ClCompile>
-    <ClCompile Include="VortexFramework\VortexFramework\src\menus\Randomizer.cpp">
+    <ClCompile Include="VortexEngine\VortexFramework\src\menus\Randomizer.cpp">
       <Filter>Source Files\src\menus</Filter>
     </ClCompile>
-    <ClCompile Include="VortexFramework\VortexFramework\src\menus\PatternSelect.cpp">
+    <ClCompile Include="VortexEngine\VortexFramework\src\menus\PatternSelect.cpp">
       <Filter>Source Files\src\menus</Filter>
     </ClCompile>
-    <ClCompile Include="VortexFramework\VortexFramework\src\patterns\Pattern.cpp">
+    <ClCompile Include="VortexEngine\VortexFramework\src\patterns\Pattern.cpp">
       <Filter>Source Files\src\patterns</Filter>
     </ClCompile>
-    <ClCompile Include="VortexFramework\VortexFramework\src\patterns\PatternFuncs.cpp">
+    <ClCompile Include="VortexEngine\VortexFramework\src\patterns\PatternFuncs.cpp">
       <Filter>Source Files\src\patterns</Filter>
     </ClCompile>
-    <ClCompile Include="VortexFramework\VortexFramework\src\menus\Menu.cpp">
+    <ClCompile Include="VortexEngine\VortexFramework\src\menus\Menu.cpp">
       <Filter>Source Files\src\menus</Filter>
     </ClCompile>
     <ClCompile Include="Arduino.cpp">
@@ -105,126 +105,126 @@
     <ClCompile Include="TestFramework.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="VortexFramework\VortexFramework\src\Log.cpp">
+    <ClCompile Include="VortexEngine\VortexFramework\src\Log.cpp">
       <Filter>Source Files\src</Filter>
     </ClCompile>
-    <ClCompile Include="VortexFramework\VortexFramework\src\PatternBuilder.cpp">
+    <ClCompile Include="VortexEngine\VortexFramework\src\PatternBuilder.cpp">
       <Filter>Source Files\src</Filter>
     </ClCompile>
-    <ClCompile Include="VortexFramework\VortexFramework\src\Buttons.cpp">
+    <ClCompile Include="VortexEngine\VortexFramework\src\Buttons.cpp">
       <Filter>Source Files\src</Filter>
     </ClCompile>
-    <ClCompile Include="VortexFramework\VortexFramework\src\Menus.cpp">
+    <ClCompile Include="VortexEngine\VortexFramework\src\Menus.cpp">
       <Filter>Source Files\src</Filter>
     </ClCompile>
-    <ClCompile Include="VortexFramework\VortexFramework\src\Timer.cpp">
+    <ClCompile Include="VortexEngine\VortexFramework\src\Timer.cpp">
       <Filter>Source Files\src</Filter>
     </ClCompile>
-    <ClCompile Include="VortexFramework\VortexFramework\src\Modes.cpp">
+    <ClCompile Include="VortexEngine\VortexFramework\src\Modes.cpp">
       <Filter>Source Files\src</Filter>
     </ClCompile>
     <ClCompile Include="FlashStorage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="VortexFramework\VortexFramework\src\VortexFramework.cpp">
+    <ClCompile Include="VortexEngine\VortexFramework\src\Memory.cpp">
       <Filter>Source Files\src</Filter>
     </ClCompile>
-    <ClCompile Include="VortexFramework\VortexFramework\src\Memory.cpp">
+    <ClCompile Include="VortexEngine\VortexFramework\src\SerialBuffer.cpp">
       <Filter>Source Files\src</Filter>
     </ClCompile>
-    <ClCompile Include="VortexFramework\VortexFramework\src\SerialBuffer.cpp">
+    <ClCompile Include="VortexEngine\VortexFramework\src\Storage.cpp">
       <Filter>Source Files\src</Filter>
     </ClCompile>
-    <ClCompile Include="VortexFramework\VortexFramework\src\Storage.cpp">
+    <ClCompile Include="VortexEngine\VortexFramework\src\Infrared.cpp">
       <Filter>Source Files\src</Filter>
     </ClCompile>
-    <ClCompile Include="VortexFramework\VortexFramework\src\Infrared.cpp">
-      <Filter>Source Files\src</Filter>
-    </ClCompile>
-    <ClCompile Include="VortexFramework\VortexFramework\src\patterns\single\AdvancedPattern.cpp">
+    <ClCompile Include="VortexEngine\VortexFramework\src\patterns\single\AdvancedPattern.cpp">
       <Filter>Source Files\src\patterns\single</Filter>
     </ClCompile>
-    <ClCompile Include="VortexFramework\VortexFramework\src\patterns\single\BasicPattern.cpp">
+    <ClCompile Include="VortexEngine\VortexFramework\src\patterns\single\BasicPattern.cpp">
       <Filter>Source Files\src\patterns\single</Filter>
     </ClCompile>
-    <ClCompile Include="VortexFramework\VortexFramework\src\patterns\multi\HybridPattern.cpp">
+    <ClCompile Include="VortexEngine\VortexFramework\src\patterns\multi\HybridPattern.cpp">
       <Filter>Source Files\src\patterns\multi</Filter>
     </ClCompile>
-    <ClCompile Include="VortexFramework\VortexFramework\src\patterns\multi\HueShiftPattern.cpp">
+    <ClCompile Include="VortexEngine\VortexFramework\src\patterns\multi\HueShiftPattern.cpp">
       <Filter>Source Files\src\patterns\multi</Filter>
     </ClCompile>
-    <ClCompile Include="VortexFramework\VortexFramework\src\patterns\multi\MultiLedPattern.cpp">
+    <ClCompile Include="VortexEngine\VortexFramework\src\patterns\multi\MultiLedPattern.cpp">
       <Filter>Source Files\src\patterns\multi</Filter>
     </ClCompile>
-    <ClCompile Include="VortexFramework\VortexFramework\src\patterns\multi\RabbitPattern.cpp">
+    <ClCompile Include="VortexEngine\VortexFramework\src\patterns\multi\RabbitPattern.cpp">
       <Filter>Source Files\src\patterns\multi</Filter>
     </ClCompile>
-    <ClCompile Include="VortexFramework\VortexFramework\src\patterns\single\TracerPattern.cpp">
+    <ClCompile Include="VortexEngine\VortexFramework\src\patterns\single\TracerPattern.cpp">
       <Filter>Source Files\src\patterns\single</Filter>
     </ClCompile>
-    <ClCompile Include="VortexFramework\VortexFramework\src\patterns\single\SingleLedPattern.cpp">
+    <ClCompile Include="VortexEngine\VortexFramework\src\patterns\single\SingleLedPattern.cpp">
       <Filter>Source Files\src\patterns\single</Filter>
     </ClCompile>
-    <ClCompile Include="VortexFramework\VortexFramework\src\patterns\single\BlendPattern.cpp">
+    <ClCompile Include="VortexEngine\VortexFramework\src\patterns\single\BlendPattern.cpp">
       <Filter>Source Files\src\patterns\single</Filter>
     </ClCompile>
-    <ClCompile Include="VortexFramework\VortexFramework\src\BitStream.cpp">
+    <ClCompile Include="VortexEngine\VortexFramework\src\BitStream.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="VortexFramework\VortexFramework\src\patterns\single\BracketsPattern.cpp">
+    <ClCompile Include="VortexEngine\VortexFramework\src\patterns\single\BracketsPattern.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="VortexFramework\VortexFramework\src\patterns\multi\TheaterChasePattern.cpp">
+    <ClCompile Include="VortexEngine\VortexFramework\src\patterns\multi\TheaterChasePattern.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="VortexFramework\VortexFramework\src\patterns\single\ReciprocalBlendPattern.cpp">
+    <ClCompile Include="VortexEngine\VortexFramework\src\patterns\single\ReciprocalBlendPattern.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="VortexEngine\VortexFramework\src\VortexEngine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="VortexFramework\VortexFramework\src\patterns\Pattern.h">
+    <ClInclude Include="VortexEngine\VortexFramework\src\patterns\Pattern.h">
       <Filter>Header Files\src\patterns</Filter>
     </ClInclude>
-    <ClInclude Include="VortexFramework\VortexFramework\src\menus\FactoryReset.h">
+    <ClInclude Include="VortexEngine\VortexFramework\src\menus\FactoryReset.h">
       <Filter>Header Files\src\menus</Filter>
     </ClInclude>
-    <ClInclude Include="VortexFramework\VortexFramework\src\menus\ColorSelect.h">
+    <ClInclude Include="VortexEngine\VortexFramework\src\menus\ColorSelect.h">
       <Filter>Header Files\src\menus</Filter>
     </ClInclude>
-    <ClInclude Include="VortexFramework\VortexFramework\src\menus\GlobalBrightness.h">
+    <ClInclude Include="VortexEngine\VortexFramework\src\menus\GlobalBrightness.h">
       <Filter>Header Files\src\menus</Filter>
     </ClInclude>
-    <ClInclude Include="VortexFramework\VortexFramework\src\menus\ModeSharing.h">
+    <ClInclude Include="VortexEngine\VortexFramework\src\menus\ModeSharing.h">
       <Filter>Header Files\src\menus</Filter>
     </ClInclude>
-    <ClInclude Include="VortexFramework\VortexFramework\src\menus\Randomizer.h">
+    <ClInclude Include="VortexEngine\VortexFramework\src\menus\Randomizer.h">
       <Filter>Header Files\src\menus</Filter>
     </ClInclude>
-    <ClInclude Include="VortexFramework\VortexFramework\src\menus\Menu.h">
+    <ClInclude Include="VortexEngine\VortexFramework\src\menus\Menu.h">
       <Filter>Header Files\src\menus</Filter>
     </ClInclude>
-    <ClInclude Include="VortexFramework\VortexFramework\src\Button.h">
+    <ClInclude Include="VortexEngine\VortexFramework\src\Button.h">
       <Filter>Header Files\src</Filter>
     </ClInclude>
-    <ClInclude Include="VortexFramework\VortexFramework\src\Colorset.h">
+    <ClInclude Include="VortexEngine\VortexFramework\src\Colorset.h">
       <Filter>Header Files\src</Filter>
     </ClInclude>
-    <ClInclude Include="VortexFramework\VortexFramework\src\ColorTypes.h">
+    <ClInclude Include="VortexEngine\VortexFramework\src\ColorTypes.h">
       <Filter>Header Files\src</Filter>
     </ClInclude>
-    <ClInclude Include="VortexFramework\VortexFramework\src\LedConfig.h">
+    <ClInclude Include="VortexEngine\VortexFramework\src\LedConfig.h">
       <Filter>Header Files\src</Filter>
     </ClInclude>
-    <ClInclude Include="VortexFramework\VortexFramework\src\Leds.h">
+    <ClInclude Include="VortexEngine\VortexFramework\src\Leds.h">
       <Filter>Header Files\src</Filter>
     </ClInclude>
-    <ClInclude Include="VortexFramework\VortexFramework\src\Mode.h">
+    <ClInclude Include="VortexEngine\VortexFramework\src\Mode.h">
       <Filter>Header Files\src</Filter>
     </ClInclude>
-    <ClInclude Include="VortexFramework\VortexFramework\src\ModeBuilder.h">
+    <ClInclude Include="VortexEngine\VortexFramework\src\ModeBuilder.h">
       <Filter>Header Files\src</Filter>
     </ClInclude>
-    <ClInclude Include="VortexFramework\VortexFramework\src\TimeControl.h">
+    <ClInclude Include="VortexEngine\VortexFramework\src\TimeControl.h">
       <Filter>Header Files\src</Filter>
     </ClInclude>
     <ClInclude Include="Arduino.h">
@@ -239,88 +239,88 @@
     <ClInclude Include="TestFramework.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="VortexFramework\VortexFramework\src\Log.h">
+    <ClInclude Include="VortexEngine\VortexFramework\src\Log.h">
       <Filter>Header Files\src</Filter>
     </ClInclude>
-    <ClInclude Include="VortexFramework\VortexFramework\src\menus\PatternSelect.h">
+    <ClInclude Include="VortexEngine\VortexFramework\src\menus\PatternSelect.h">
       <Filter>Header Files\src\menus</Filter>
     </ClInclude>
-    <ClInclude Include="VortexFramework\VortexFramework\src\Patterns.h">
+    <ClInclude Include="VortexEngine\VortexFramework\src\Patterns.h">
       <Filter>Header Files\src</Filter>
     </ClInclude>
-    <ClInclude Include="VortexFramework\VortexFramework\src\PatternBuilder.h">
+    <ClInclude Include="VortexEngine\VortexFramework\src\PatternBuilder.h">
       <Filter>Header Files\src</Filter>
     </ClInclude>
-    <ClInclude Include="VortexFramework\VortexFramework\src\Timings.h">
+    <ClInclude Include="VortexEngine\VortexFramework\src\Timings.h">
       <Filter>Header Files\src</Filter>
     </ClInclude>
-    <ClInclude Include="VortexFramework\VortexFramework\src\Buttons.h">
+    <ClInclude Include="VortexEngine\VortexFramework\src\Buttons.h">
       <Filter>Header Files\src</Filter>
     </ClInclude>
-    <ClInclude Include="VortexFramework\VortexFramework\src\Menus.h">
+    <ClInclude Include="VortexEngine\VortexFramework\src\Menus.h">
       <Filter>Header Files\src</Filter>
     </ClInclude>
-    <ClInclude Include="VortexFramework\VortexFramework\src\Modes.h">
+    <ClInclude Include="VortexEngine\VortexFramework\src\Modes.h">
       <Filter>Header Files\src</Filter>
     </ClInclude>
-    <ClInclude Include="VortexFramework\VortexFramework\src\Timer.h">
+    <ClInclude Include="VortexEngine\VortexFramework\src\Timer.h">
       <Filter>Header Files\src</Filter>
     </ClInclude>
-    <ClInclude Include="VortexFramework\VortexFramework\src\VortexFramework.h">
-      <Filter>Header Files\src</Filter>
-    </ClInclude>
-    <ClInclude Include="VortexFramework\VortexFramework\src\Memory.h">
+    <ClInclude Include="VortexEngine\VortexFramework\src\Memory.h">
       <Filter>Header Files\src</Filter>
     </ClInclude>
     <ClInclude Include="FlashStorage.h">
       <Filter>Header Files\src</Filter>
     </ClInclude>
-    <ClInclude Include="VortexFramework\VortexFramework\src\Infrared.h">
+    <ClInclude Include="VortexEngine\VortexFramework\src\Infrared.h">
       <Filter>Header Files\src</Filter>
     </ClInclude>
-    <ClInclude Include="VortexFramework\VortexFramework\src\SerialBuffer.h">
+    <ClInclude Include="VortexEngine\VortexFramework\src\SerialBuffer.h">
       <Filter>Header Files\src</Filter>
     </ClInclude>
-    <ClInclude Include="VortexFramework\VortexFramework\src\Storage.h">
+    <ClInclude Include="VortexEngine\VortexFramework\src\Storage.h">
       <Filter>Header Files\src</Filter>
     </ClInclude>
-    <ClInclude Include="VortexFramework\VortexFramework\src\patterns\single\SingleLedPattern.h">
+    <ClInclude Include="VortexEngine\VortexFramework\src\patterns\single\SingleLedPattern.h">
       <Filter>Header Files\src\patterns\single</Filter>
     </ClInclude>
-    <ClInclude Include="VortexFramework\VortexFramework\src\patterns\single\TracerPattern.h">
+    <ClInclude Include="VortexEngine\VortexFramework\src\patterns\single\TracerPattern.h">
       <Filter>Header Files\src\patterns\single</Filter>
     </ClInclude>
-    <ClInclude Include="VortexFramework\VortexFramework\src\patterns\single\BasicPattern.h">
+    <ClInclude Include="VortexEngine\VortexFramework\src\patterns\single\BasicPattern.h">
       <Filter>Header Files\src\patterns\single</Filter>
     </ClInclude>
-    <ClInclude Include="VortexFramework\VortexFramework\src\patterns\single\AdvancedPattern.h">
+    <ClInclude Include="VortexEngine\VortexFramework\src\patterns\single\AdvancedPattern.h">
       <Filter>Header Files\src\patterns\single</Filter>
     </ClInclude>
-    <ClInclude Include="VortexFramework\VortexFramework\src\patterns\multi\HueShiftPattern.h">
+    <ClInclude Include="VortexEngine\VortexFramework\src\patterns\multi\HueShiftPattern.h">
       <Filter>Header Files\src\patterns\multi</Filter>
     </ClInclude>
-    <ClInclude Include="VortexFramework\VortexFramework\src\patterns\multi\HybridPattern.h">
+    <ClInclude Include="VortexEngine\VortexFramework\src\patterns\multi\HybridPattern.h">
       <Filter>Header Files\src\patterns\multi</Filter>
     </ClInclude>
-    <ClInclude Include="VortexFramework\VortexFramework\src\patterns\multi\MultiLedPattern.h">
+    <ClInclude Include="VortexEngine\VortexFramework\src\patterns\multi\MultiLedPattern.h">
       <Filter>Header Files\src\patterns\multi</Filter>
     </ClInclude>
-    <ClInclude Include="VortexFramework\VortexFramework\src\patterns\multi\RabbitPattern.h">
+    <ClInclude Include="VortexEngine\VortexFramework\src\patterns\multi\RabbitPattern.h">
       <Filter>Header Files\src\patterns\multi</Filter>
     </ClInclude>
-    <ClInclude Include="VortexFramework\VortexFramework\src\patterns\single\BlendPattern.h">
+    <ClInclude Include="VortexEngine\VortexFramework\src\patterns\single\BlendPattern.h">
       <Filter>Header Files\src\patterns\single</Filter>
     </ClInclude>
-    <ClInclude Include="VortexFramework\VortexFramework\src\BitStream.h">
+    <ClInclude Include="VortexEngine\VortexFramework\src\BitStream.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="VortexFramework\VortexFramework\src\patterns\single\BracketsPattern.h">
+    <ClInclude Include="VortexEngine\VortexFramework\src\patterns\single\BracketsPattern.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="VortexFramework\VortexFramework\src\patterns\multi\TheaterChasePattern.h">
+    <ClInclude Include="VortexEngine\VortexFramework\src\patterns\multi\TheaterChasePattern.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="VortexFramework\VortexFramework\src\patterns\single\ReciprocalBlendPattern.h">
+    <ClInclude Include="VortexEngine\VortexFramework\src\patterns\single\ReciprocalBlendPattern.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VortexEngine\VortexFramework\src\VortexEngine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
