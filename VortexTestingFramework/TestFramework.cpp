@@ -482,11 +482,14 @@ bool TestFramework::handlePatternChange(bool force)
       return false;
     }
   } else {
-  // bind the pattern and colorset to the mode
+    // bind the pattern and colorset to the mode
     if (!newMode->bindSingle(m_curPattern, &m_curColorset, LED_FIRST)) {
       delete newMode;
       return false;
     }
+    // if it's single led pattern then we can only poll from slot 0
+    // TODO: flip this
+    realPos = (LedPos)(LED_LAST - LED_FIRST);
   }
   // backup the current LED 0 color
   RGBColor curLed0Col = m_ledList[realPos];
