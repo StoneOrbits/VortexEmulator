@@ -43,6 +43,7 @@ void init_arduino()
   QueryPerformanceFrequency(&tps);
   QueryPerformanceCounter(&start);
 
+#ifdef ENABLE_IR_COMMS
   WSAData wsaData;
   // Initialize Winsock
   int res = WSAStartup(MAKEWORD(2, 2), &wsaData);
@@ -55,6 +56,7 @@ void init_arduino()
     // then just initialize an listen
     init_server();
   }
+#endif
 #endif
 }
 
@@ -161,14 +163,18 @@ void detachInterrupt(int interrupt)
 void test_ir_mark(uint32_t duration)
 {
 #ifndef LINUX_FRAMEWORK
+#ifdef ENABLE_IR_COMMS
   send_network_message(duration | (1<<31));
+#endif
 #endif
 }
 
 void test_ir_space(uint32_t duration)
 {
 #ifndef LINUX_FRAMEWORK
+#ifdef ENABLE_IR_COMMS
   send_network_message(duration);
+#endif
 #endif
 }
 
