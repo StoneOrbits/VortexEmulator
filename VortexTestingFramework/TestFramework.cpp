@@ -117,7 +117,7 @@ bool TestFramework::init(HINSTANCE hInstance)
   m_hwnd = CreateWindow(m_wc.lpszClassName, "Vortex Test Framework",
     WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX,
     (desktop.right / 2) - 240, (desktop.bottom / 2) - 84,
-    420, 310, nullptr, nullptr, hInstance, nullptr);
+    420, 340, nullptr, nullptr, hInstance, nullptr);
   if (!m_hwnd) {
     MessageBox(nullptr, "Failed to open window", "Error", 0);
     return 0;
@@ -265,6 +265,18 @@ void TestFramework::paint(HWND hwnd)
     for (uint32_t i = 0; i < m_patternStrip.size(); ++i) {
       RECT stripPos = { (LONG)i, 230, (LONG)i + 1, 250 };
       FillRect(hdc, &stripPos, getBrushCol(m_patternStrip[i]));
+    }
+
+    const uint32_t border_size = 2;
+    for (uint32_t i = 0; i < MAX_COLOR_SLOTS; ++i) {
+      RECT colPos = { 50 + (LONG)(i * 40), 265, 50 + (LONG)(i * 40) + 20, 285 };
+      RECT bordPos = colPos;
+      bordPos.left -= border_size;
+      bordPos.top -= border_size;
+      bordPos.bottom += border_size;
+      bordPos.right += border_size;
+      FillRect(hdc, &bordPos, getBrushCol(RGB_OFF));
+      FillRect(hdc, &colPos, getBrushCol(Modes::curMode()->getColorset()->get(i)));
     }
   }
 
@@ -494,7 +506,7 @@ bool TestFramework::handlePatternChange()
   delete newMode;
   // redraw the pattern strip
   m_redrawStrip = true;
-  RECT stripRect = { 0, 200, 420, 260 };
+  RECT stripRect = { 0, 200, 420, 340 };
   InvalidateRect(m_hwnd, &stripRect, TRUE);
   return true;
 }
