@@ -51,6 +51,7 @@ public:
     void print(uint32_t i) {}
     void print(const char *s) {}
     void println(const char *s) {}
+    uint32_t write(const uint8_t *buf, size_t len) { return 0; }
     operator bool() { return true; }
 };
 
