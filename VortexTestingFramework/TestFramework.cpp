@@ -287,7 +287,7 @@ void TestFramework::paint(HWND hwnd)
         // fill black background
         FillRect(hdc, &stripPos, getBrushCol(0));
         // adjust the size of the bar based on value
-        uint32_t offset = (uint32_t)(5 - ((val / 255.0) * 5));
+        uint32_t offset = (uint32_t)(8 - ((val / 255.0) * 8));
         stripPos.top += offset;
         stripPos.bottom -= offset;
         // replace original color with full value color
@@ -306,7 +306,7 @@ void TestFramework::paint(HWND hwnd)
         hsvCol.val = 255;
       }
       curCol = hsvCol;
-      uint32_t offset = (uint32_t)(5 - ((val / 255.0) * 5));
+      uint32_t offset = (uint32_t)(8 - ((val / 255.0) * 8));
       RECT colPos = { 50 + (LONG)(i * 40) , 265, 50 + (LONG)(i * 40) + 20, 285 };
       RECT bordPos = colPos;
       colPos.left += offset;
