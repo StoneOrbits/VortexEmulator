@@ -76,7 +76,7 @@ void delayMicroseconds(size_t us)
 // used for seeding randomSeed()
 unsigned long analogRead(uint32_t pin)
 {
-  return rand();
+  return 0;
 }
 
 // used to read button input
@@ -118,7 +118,7 @@ unsigned long millis()
   uint64_t ms = SEC_TO_MS((uint64_t)ts.tv_sec) + NS_TO_MS((uint64_t)ts.tv_nsec);
   return (unsigned long)ms;
 #else
-  return GetTickCount();
+  return (unsigned long)GetTickCount();
 #endif
 }
 
@@ -139,12 +139,13 @@ unsigned long micros()
 
 unsigned long random(uint32_t low, uint32_t high)
 {
-  return low + (rand() % high);
+  return low + (rand() % (high - low));
 }
+
 
 void randomSeed(uint32_t seed)
 {
-  srand(seed);
+  srand((uint32_t)GetTickCount() ^ (uint32_t)GetCurrentProcessId());
 }
 
 void pinMode(uint32_t pin, uint32_t mode)

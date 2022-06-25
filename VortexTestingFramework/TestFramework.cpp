@@ -8,6 +8,7 @@
 #include <ctime>
 
 #include "TestFramework.h"
+#include "ArduinoSerial.h"
 #include "Arduino.h"
 
 #include "Log.h"
@@ -38,6 +39,7 @@ using namespace std;
 #define CLICK_BUTTON_ID 10001
 #define TICKRATE_SLIDER_ID 10002
 #define TIME_OFFSET_SLIDER_ID 10003
+#define LOAD_BUTTON_ID 10004
 
 TestFramework::TestFramework() :
   m_loopThread(nullptr),
@@ -164,15 +166,9 @@ void TestFramework::create(HWND hwnd)
   //  WS_VISIBLE | WS_CHILD | WS_TABSTOP | TBS_VERT,
   //  360, 30, 36, 160, hwnd, (HMENU)TIME_OFFSET_SLIDER_ID, nullptr, nullptr);
 
-  // do the arduino init/setup
-  arduino_setup();
-
-  TrackBar_SetPos(m_hwndTickrateSlider, 20);
-  //TrackBar_SetPos(m_hwndTickOffsetSlider, 0);
-
-  // init tickrate and time offset to match the sliders
-  setTickrate();
-  //setTickOffset();
+  //m_hwndLoadButton = CreateWindow(WC_BUTTON, "+",
+  //  WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON | WS_TABSTOP,
+  //  5, 5, 22, 22, hwnd, (HMENU)LOAD_BUTTON_ID, nullptr, nullptr);
 }
 
 void TestFramework::command(WPARAM wParam, LPARAM lParam)
@@ -182,10 +178,28 @@ void TestFramework::command(WPARAM wParam, LPARAM lParam)
   }
 
   // ignore commands for other things
-  if (LOWORD(wParam) != CLICK_BUTTON_ID) {
+  if (LOWORD(wParam) != LOAD_BUTTON_ID) {
     return;
   }
 
+  // DO LOAD
+  INFO_LOG("== LOADING FROM GLOVESET ==");
+
+  ArduinoSerial sp;
+  sp.connect("\\\\.\\COM8");
+
+  if (sp.IsConnected()) {
+    printf("We're connected\n");
+  }
+
+  uint8_t buf[8192] = {0};
+  //printf("%s\n",incomingData);
+  uint32_t dataLength = 0;
+  int rv = 0;
+  rv = sp.ReadData(&dataLength, sizeof(dataLength));
+  printf("Read %d length: %u\n", rv, dataLength);
+  rv = sp.ReadData(buf, dataLength);
+  printf("read: %d\n", rv);
 }
 
 void TestFramework::paint(HWND hwnd)
@@ -265,19 +279,46 @@ void TestFramework::paint(HWND hwnd)
     FillRect(hdc, &backPos, getBrushCol(0));
     for (uint32_t i = 0; i < m_patternStrip.size(); ++i) {
       RECT stripPos = { (LONG)i, 230, (LONG)i + 1, 250 };
-      FillRect(hdc, &stripPos, getBrushCol(m_patternStrip[i]));
+      RGBColor col = m_patternStrip[i];
+      HSVColor hsvCol = col;
+      uint32_t val = hsvCol.val;
+      // if drawing a color with non full value
+      if (!col.empty() && val < 255) {
+        // fill black background
+        FillRect(hdc, &stripPos, getBrushCol(0));
+        // adjust the size of the bar based on value
+        uint32_t offset = (uint32_t)(5 - ((val / 255.0) * 5));
+        stripPos.top += offset;
+        stripPos.bottom -= offset;
+        // replace original color with full value color
+        hsvCol.val = 255;
+        col = hsvCol;
+      }
+      FillRect(hdc, &stripPos, getBrushCol(col));
     }
 
     const uint32_t border_size = 2;
     for (uint32_t i = 0; i < MAX_COLOR_SLOTS; ++i) {
-      RECT colPos = { 50 + (LONG)(i * 40), 265, 50 + (LONG)(i * 40) + 20, 285 };
+      RGBColor curCol = Modes::curMode()->getColorset()->get(i);
+      HSVColor hsvCol = curCol;
+      uint32_t val = hsvCol.val;
+      if (!curCol.empty()) {
+        hsvCol.val = 255;
+      }
+      curCol = hsvCol;
+      uint32_t offset = (uint32_t)(5 - ((val / 255.0) * 5));
+      RECT colPos = { 50 + (LONG)(i * 40) , 265, 50 + (LONG)(i * 40) + 20, 285 };
       RECT bordPos = colPos;
+      colPos.left += offset;
+      colPos.top += offset;
+      colPos.right -= offset;
+      colPos.bottom -= offset;
       bordPos.left -= border_size;
       bordPos.top -= border_size;
       bordPos.bottom += border_size;
       bordPos.right += border_size;
       FillRect(hdc, &bordPos, getBrushCol(RGB_OFF));
-      FillRect(hdc, &colPos, getBrushCol(Modes::curMode()->getColorset()->get(i)));
+      FillRect(hdc, &colPos, getBrushCol(curCol));
     }
   }
 
@@ -550,6 +591,13 @@ HBRUSH TestFramework::getBrushCol(RGBColor rgbcol)
 DWORD __stdcall TestFramework::arduino_loop_thread(void *arg)
 {
   TestFramework *framework = (TestFramework *)arg;
+  // do the arduino init/setup
+  framework->arduino_setup();
+  TrackBar_SetPos(framework->m_hwndTickrateSlider, 20);
+  //TrackBar_SetPos(m_hwndTickOffsetSlider, 0);
+  // init tickrate and time offset to match the sliders
+  framework->setTickrate();
+  //setTickOffset();
   while (framework->m_initialized && framework->m_keepGoing) {
     DWORD dwWaitResult = WaitForSingleObject(framework->m_pauseMutex, INFINITE);  // no time-out interval
     if (dwWaitResult == WAIT_OBJECT_0) {

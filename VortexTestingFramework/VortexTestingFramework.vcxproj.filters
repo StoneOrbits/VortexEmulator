@@ -180,6 +180,12 @@
     <ClCompile Include="VortexEngine\VortexEngine\src\patterns\single\ReciprocalBlendPattern.cpp">
       <Filter>Source Files\src\patterns\single</Filter>
     </ClCompile>
+    <ClCompile Include="ArduinoSerial.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="VortexEngine\VortexEngine\src\Serial.cpp">
+      <Filter>Source Files\src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="VortexEngine\VortexEngine\src\patterns\Pattern.h">
@@ -321,6 +327,12 @@
       <Filter>Header Files\src\patterns\single</Filter>
     </ClInclude>
     <ClInclude Include="VortexEngine\VortexEngine\src\VortexEngine.h">
+      <Filter>Header Files\src</Filter>
+    </ClInclude>
+    <ClInclude Include="ArduinoSerial.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VortexEngine\VortexEngine\src\Serial.h">
       <Filter>Header Files\src</Filter>
     </ClInclude>
   </ItemGroup>

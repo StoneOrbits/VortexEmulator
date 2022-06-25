@@ -96,6 +96,7 @@ private:
   HWND m_hwndClickButton;
   HWND m_hwndTickrateSlider;
   HWND m_hwndTickOffsetSlider;
+  HWND m_hwndLoadButton;
 
   HWND m_hwnd;
   WNDCLASS m_wc;

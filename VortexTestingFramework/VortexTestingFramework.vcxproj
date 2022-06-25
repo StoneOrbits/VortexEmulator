@@ -144,6 +144,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Arduino.cpp" />
+    <ClCompile Include="ArduinoSerial.cpp" />
     <ClCompile Include="FastLED.cpp" />
     <ClCompile Include="FlashStorage.cpp" />
     <ClCompile Include="TestFramework.cpp" />
@@ -183,6 +184,7 @@
     <ClCompile Include="VortexEngine\VortexEngine\src\patterns\single\SingleLedPattern.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\patterns\single\TracerPattern.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\SerialBuffer.cpp" />
+    <ClCompile Include="VortexEngine\VortexEngine\src\Serial.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\Storage.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\TimeControl.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\Timer.cpp" />
@@ -194,6 +196,7 @@
     <ClInclude Include="Arduino.h" />
     <ClInclude Include="FastLED.h" />
     <ClInclude Include="TestFramework.h" />
+    <ClInclude Include="ArduinoSerial.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\BitStream.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Button.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Buttons.h" />
@@ -231,6 +234,7 @@
     <ClInclude Include="VortexEngine\VortexEngine\src\patterns\single\SingleLedPattern.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\patterns\single\TracerPattern.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\SerialBuffer.h" />
+    <ClInclude Include="VortexEngine\VortexEngine\src\Serial.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Storage.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\TimeControl.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Timer.h" />

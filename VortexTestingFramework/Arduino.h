@@ -27,7 +27,9 @@ void digitalWrite(uint32_t pin,  uint32_t val);
 unsigned long millis();
 unsigned long micros();
 unsigned long nanos();
-unsigned long random(uint32_t low = 0, uint32_t high = 0);
+// generate random number from low (inclusive) to high (exclusive)
+unsigned long random(uint32_t low, uint32_t high);
+unsigned long random(uint32_t high);
 void randomSeed(uint32_t seed);
 void pinMode(uint32_t pin, uint32_t mode);
 
