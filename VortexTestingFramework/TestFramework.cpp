@@ -272,6 +272,7 @@ void TestFramework::paint(HWND hwnd)
   DrawText(hdc, tickoffsetStr.c_str(), -1, &offsetRect, DT_RIGHT);
 #endif
 
+#ifdef ENABLE_PATTERN_STRIP
   // pattern strip
   if (m_redrawStrip) {
     m_redrawStrip = false;
@@ -321,6 +322,7 @@ void TestFramework::paint(HWND hwnd)
       FillRect(hdc, &colPos, getBrushCol(curCol));
     }
   }
+#endif
 
   EndPaint(hwnd, &ps);
 }
@@ -490,6 +492,9 @@ void TestFramework::unpause()
 
 bool TestFramework::handlePatternChange(bool force)
 {
+#ifndef ENABLE_PATTERN_STRIP
+  return true;
+#endif
   if (!Modes::curMode()) {
     return false;
   }

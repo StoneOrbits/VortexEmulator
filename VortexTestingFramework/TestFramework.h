@@ -11,6 +11,11 @@
 #include <vector>
 #include <map>
 
+// comment this out to disable pattern strip, this can help
+// if trying to debug a pattern and the framework keeps 
+// calling play to refresh the strip
+#define ENABLE_PATTERN_STRIP
+
 // paint callback type
 typedef void (*paint_fn_t)(void *, HDC);
 

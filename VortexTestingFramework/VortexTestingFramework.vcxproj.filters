@@ -186,6 +186,9 @@
     <ClCompile Include="VortexEngine\VortexEngine\src\Serial.cpp">
       <Filter>Source Files\src</Filter>
     </ClCompile>
+    <ClCompile Include="VortexEngine\VortexEngine\src\patterns\multi\SequencedPattern.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="VortexEngine\VortexEngine\src\patterns\Pattern.h">
@@ -334,6 +337,9 @@
     </ClInclude>
     <ClInclude Include="VortexEngine\VortexEngine\src\Serial.h">
       <Filter>Header Files\src</Filter>
+    </ClInclude>
+    <ClInclude Include="VortexEngine\VortexEngine\src\patterns\multi\SequencedPattern.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
