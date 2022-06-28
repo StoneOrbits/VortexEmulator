@@ -3,6 +3,7 @@
 #ifdef LINUX_FRAMEWORK
 #include "TestFrameworkLinux.h"
 #include <sys/socket.h>
+#include <time.h>
 #else
 #include <WinSock2.h>
 #include <Ws2tcpip.h>
@@ -145,7 +146,11 @@ unsigned long random(uint32_t low, uint32_t high)
 
 void randomSeed(uint32_t seed)
 {
+#ifdef LINUX_FRAMEWORK
+  srand(time(NULL));
+#else
   srand((uint32_t)GetTickCount() ^ (uint32_t)GetCurrentProcessId());
+#endif
 }
 
 void pinMode(uint32_t pin, uint32_t mode)
