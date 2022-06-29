@@ -231,7 +231,7 @@ void TestFramework::paint(HWND hwnd)
     idRect.bottom += (30 * signEven) + 8;
     char text[4] = {0};
     // The text is in reverse (LED_LAST - i) because that's the order of the enums
-    // in LedConfig.h -- the actual hardware is reversed too and should be flipped in v2
+    // in LedTypes.h -- the actual hardware is reversed too and should be flipped in v2
     snprintf(text, sizeof(text), "%d", LED_LAST - i);
     DrawText(hdc, text, -1, &idRect, DT_CENTER);
   }

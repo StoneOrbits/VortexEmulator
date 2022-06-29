@@ -3,7 +3,7 @@
 
 #include "VortexEngine.h"
 #include "ColorTypes.h"
-#include "LedConfig.h"
+#include "LedTypes.h"
 #include "Patterns.h"
 #include "Colorset.h"
 

@@ -221,7 +221,7 @@
     <ClInclude Include="VortexEngine\VortexEngine\src\ColorTypes.h">
       <Filter>Header Files\src</Filter>
     </ClInclude>
-    <ClInclude Include="VortexEngine\VortexEngine\src\LedConfig.h">
+    <ClInclude Include="VortexEngine\VortexEngine\src\LedTypes.h">
       <Filter>Header Files\src</Filter>
     </ClInclude>
     <ClInclude Include="VortexEngine\VortexEngine\src\Leds.h">

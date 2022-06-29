@@ -204,7 +204,7 @@
     <ClInclude Include="VortexEngine\VortexEngine\src\Colorset.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\ColorTypes.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Infrared.h" />
-    <ClInclude Include="VortexEngine\VortexEngine\src\LedConfig.h" />
+    <ClInclude Include="VortexEngine\VortexEngine\src\LedTypes.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Leds.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Log.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Memory.h" />
