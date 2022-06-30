@@ -189,6 +189,9 @@
     <ClCompile Include="VortexEngine\VortexEngine\src\patterns\multi\SequencedPattern.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="VortexEngine\VortexEngine\src\patterns\single\SolidPattern.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="VortexEngine\VortexEngine\src\patterns\Pattern.h">
@@ -339,6 +342,9 @@
       <Filter>Header Files\src</Filter>
     </ClInclude>
     <ClInclude Include="VortexEngine\VortexEngine\src\patterns\multi\SequencedPattern.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VortexEngine\VortexEngine\src\patterns\single\SolidPattern.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
