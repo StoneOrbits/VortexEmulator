@@ -187,10 +187,13 @@
       <Filter>Source Files\src</Filter>
     </ClCompile>
     <ClCompile Include="VortexEngine\VortexEngine\src\patterns\multi\SequencedPattern.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\src\patterns\multi</Filter>
+    </ClCompile>
+    <ClCompile Include="VortexEngine\VortexEngine\src\Sequence.cpp">
+      <Filter>Source Files\src</Filter>
     </ClCompile>
     <ClCompile Include="VortexEngine\VortexEngine\src\patterns\single\SolidPattern.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\src\patterns\single</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -341,11 +344,14 @@
     <ClInclude Include="VortexEngine\VortexEngine\src\Serial.h">
       <Filter>Header Files\src</Filter>
     </ClInclude>
-    <ClInclude Include="VortexEngine\VortexEngine\src\patterns\multi\SequencedPattern.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="VortexEngine\VortexEngine\src\Sequence.h">
+      <Filter>Header Files\src</Filter>
     </ClInclude>
     <ClInclude Include="VortexEngine\VortexEngine\src\patterns\single\SolidPattern.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\src\patterns\single</Filter>
+    </ClInclude>
+    <ClInclude Include="VortexEngine\VortexEngine\src\patterns\multi\SequencedPattern.h">
+      <Filter>Header Files\src\patterns\multi</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

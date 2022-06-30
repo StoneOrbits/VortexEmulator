@@ -185,6 +185,7 @@
     <ClCompile Include="VortexEngine\VortexEngine\src\patterns\single\SingleLedPattern.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\patterns\single\SolidPattern.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\patterns\single\TracerPattern.cpp" />
+    <ClCompile Include="VortexEngine\VortexEngine\src\Sequence.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\SerialBuffer.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\Serial.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\Storage.cpp" />
@@ -237,6 +238,7 @@
     <ClInclude Include="VortexEngine\VortexEngine\src\patterns\single\SingleLedPattern.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\patterns\single\SolidPattern.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\patterns\single\TracerPattern.h" />
+    <ClInclude Include="VortexEngine\VortexEngine\src\Sequence.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\SerialBuffer.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Serial.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Storage.h" />
