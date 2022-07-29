@@ -195,6 +195,9 @@
     <ClCompile Include="VortexEngine\VortexEngine\src\patterns\single\SolidPattern.cpp">
       <Filter>Source Files\src\patterns\single</Filter>
     </ClCompile>
+    <ClCompile Include="VortexEngine\VortexEngine\src\patterns\multi\ZigzagPattern.cpp">
+      <Filter>Source Files\src\patterns\multi</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="VortexEngine\VortexEngine\src\patterns\Pattern.h">
@@ -351,6 +354,9 @@
       <Filter>Header Files\src\patterns\single</Filter>
     </ClInclude>
     <ClInclude Include="VortexEngine\VortexEngine\src\patterns\multi\SequencedPattern.h">
+      <Filter>Header Files\src\patterns\multi</Filter>
+    </ClInclude>
+    <ClInclude Include="VortexEngine\VortexEngine\src\patterns\multi\ZigzagPattern.h">
       <Filter>Header Files\src\patterns\multi</Filter>
     </ClInclude>
   </ItemGroup>

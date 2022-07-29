@@ -175,6 +175,7 @@
     <ClCompile Include="VortexEngine\VortexEngine\src\patterns\multi\RabbitPattern.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\patterns\multi\SequencedPattern.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\patterns\multi\TheaterChasePattern.cpp" />
+    <ClCompile Include="VortexEngine\VortexEngine\src\patterns\multi\ZigzagPattern.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\patterns\Pattern.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\patterns\PatternFuncs.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\patterns\single\AdvancedPattern.cpp" />
@@ -229,6 +230,7 @@
     <ClInclude Include="VortexEngine\VortexEngine\src\patterns\multi\RabbitPattern.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\patterns\multi\SequencedPattern.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\patterns\multi\TheaterChasePattern.h" />
+    <ClInclude Include="VortexEngine\VortexEngine\src\patterns\multi\ZigzagPattern.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\patterns\Pattern.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\patterns\single\AdvancedPattern.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\patterns\single\BasicPattern.h" />
