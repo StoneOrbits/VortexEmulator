@@ -177,9 +177,6 @@
     <ClCompile Include="VortexEngine\VortexEngine\src\VortexEngine.cpp">
       <Filter>Source Files\src</Filter>
     </ClCompile>
-    <ClCompile Include="VortexEngine\VortexEngine\src\patterns\single\ReciprocalBlendPattern.cpp">
-      <Filter>Source Files\src\patterns\single</Filter>
-    </ClCompile>
     <ClCompile Include="ArduinoSerial.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -197,6 +194,9 @@
     </ClCompile>
     <ClCompile Include="VortexEngine\VortexEngine\src\patterns\multi\ZigzagPattern.cpp">
       <Filter>Source Files\src\patterns\multi</Filter>
+    </ClCompile>
+    <ClCompile Include="VortexEngine\VortexEngine\src\patterns\single\ComplementaryBlendPattern.cpp">
+      <Filter>Source Files\src\patterns\single</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -326,9 +326,6 @@
     <ClInclude Include="VortexEngine\VortexEngine\src\patterns\single\BlendPattern.h">
       <Filter>Header Files\src\patterns\single</Filter>
     </ClInclude>
-    <ClInclude Include="VortexEngine\VortexEngine\src\patterns\single\ReciprocalBlendPattern.h">
-      <Filter>Header Files\src\patterns\multi</Filter>
-    </ClInclude>
     <ClInclude Include="VortexEngine\VortexEngine\src\patterns\multi\TheaterChasePattern.h">
       <Filter>Header Files\src\patterns\multi</Filter>
     </ClInclude>
@@ -358,6 +355,9 @@
     </ClInclude>
     <ClInclude Include="VortexEngine\VortexEngine\src\patterns\multi\ZigzagPattern.h">
       <Filter>Header Files\src\patterns\multi</Filter>
+    </ClInclude>
+    <ClInclude Include="VortexEngine\VortexEngine\src\patterns\single\ComplementaryBlendPattern.h">
+      <Filter>Header Files\src\patterns\single</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

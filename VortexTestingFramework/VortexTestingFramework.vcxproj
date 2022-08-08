@@ -182,7 +182,7 @@
     <ClCompile Include="VortexEngine\VortexEngine\src\patterns\single\BasicPattern.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\patterns\single\BlendPattern.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\patterns\single\BracketsPattern.cpp" />
-    <ClCompile Include="VortexEngine\VortexEngine\src\patterns\single\ReciprocalBlendPattern.cpp" />
+    <ClCompile Include="VortexEngine\VortexEngine\src\patterns\single\ComplementaryBlendPattern.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\patterns\single\SingleLedPattern.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\patterns\single\SolidPattern.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\patterns\single\TracerPattern.cpp" />
@@ -236,7 +236,7 @@
     <ClInclude Include="VortexEngine\VortexEngine\src\patterns\single\BasicPattern.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\patterns\single\BlendPattern.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\patterns\single\BracketsPattern.h" />
-    <ClInclude Include="VortexEngine\VortexEngine\src\patterns\single\ReciprocalBlendPattern.h" />
+    <ClInclude Include="VortexEngine\VortexEngine\src\patterns\single\ComplementaryBlendPattern.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\patterns\single\SingleLedPattern.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\patterns\single\SolidPattern.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\patterns\single\TracerPattern.h" />
