@@ -198,6 +198,39 @@
     <ClCompile Include="VortexEngine\VortexEngine\src\patterns\single\ComplementaryBlendPattern.cpp">
       <Filter>Source Files\src\patterns\single</Filter>
     </ClCompile>
+    <ClCompile Include="VortexEngine\VortexEngine\src\patterns\multi\CrossDopsPattern.cpp">
+      <Filter>Source Files\src\patterns\multi</Filter>
+    </ClCompile>
+    <ClCompile Include="VortexEngine\VortexEngine\src\patterns\multi\DoubleStrobePattern.cpp">
+      <Filter>Source Files\src\patterns\multi</Filter>
+    </ClCompile>
+    <ClCompile Include="VortexEngine\VortexEngine\src\patterns\multi\DripPattern.cpp">
+      <Filter>Source Files\src\patterns\multi</Filter>
+    </ClCompile>
+    <ClCompile Include="VortexEngine\VortexEngine\src\patterns\multi\MeteorPattern.cpp">
+      <Filter>Source Files\src\patterns\multi</Filter>
+    </ClCompile>
+    <ClCompile Include="VortexEngine\VortexEngine\src\patterns\multi\TipTopPattern.cpp">
+      <Filter>Source Files\src\patterns\multi</Filter>
+    </ClCompile>
+    <ClCompile Include="VortexEngine\VortexEngine\src\LedStash.cpp">
+      <Filter>Source Files\src</Filter>
+    </ClCompile>
+    <ClCompile Include="VortexEngine\VortexEngine\src\patterns\multi\SparkleTracePattern.cpp">
+      <Filter>Source Files\src\patterns\multi</Filter>
+    </ClCompile>
+    <ClCompile Include="VortexEngine\VortexEngine\src\patterns\multi\FillPattern.cpp">
+      <Filter>Source Files\src\patterns\multi</Filter>
+    </ClCompile>
+    <ClCompile Include="VortexEngine\VortexEngine\src\patterns\multi\VortexWipePattern.cpp">
+      <Filter>Source Files\src\patterns\multi</Filter>
+    </ClCompile>
+    <ClCompile Include="VortexEngine\VortexEngine\src\patterns\multi\Warp.cpp">
+      <Filter>Source Files\src\patterns\multi</Filter>
+    </ClCompile>
+    <ClCompile Include="VortexEngine\VortexEngine\src\patterns\multi\WarpWormPattern.cpp">
+      <Filter>Source Files\src\patterns\multi</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="VortexEngine\VortexEngine\src\patterns\Pattern.h">
@@ -358,6 +391,39 @@
     </ClInclude>
     <ClInclude Include="VortexEngine\VortexEngine\src\patterns\single\ComplementaryBlendPattern.h">
       <Filter>Header Files\src\patterns\single</Filter>
+    </ClInclude>
+    <ClInclude Include="VortexEngine\VortexEngine\src\patterns\multi\CrossDopsPattern.h">
+      <Filter>Header Files\src\patterns\multi</Filter>
+    </ClInclude>
+    <ClInclude Include="VortexEngine\VortexEngine\src\patterns\multi\DoubleStrobePattern.h">
+      <Filter>Header Files\src\patterns\multi</Filter>
+    </ClInclude>
+    <ClInclude Include="VortexEngine\VortexEngine\src\patterns\multi\DripPattern.h">
+      <Filter>Header Files\src\patterns\multi</Filter>
+    </ClInclude>
+    <ClInclude Include="VortexEngine\VortexEngine\src\patterns\multi\MeteorPattern.h">
+      <Filter>Header Files\src\patterns\multi</Filter>
+    </ClInclude>
+    <ClInclude Include="VortexEngine\VortexEngine\src\patterns\multi\TipTopPattern.h">
+      <Filter>Header Files\src\patterns\multi</Filter>
+    </ClInclude>
+    <ClInclude Include="VortexEngine\VortexEngine\src\LedStash.h">
+      <Filter>Header Files\src</Filter>
+    </ClInclude>
+    <ClInclude Include="VortexEngine\VortexEngine\src\patterns\multi\SparkleTracePattern.h">
+      <Filter>Header Files\src\patterns\multi</Filter>
+    </ClInclude>
+    <ClInclude Include="VortexEngine\VortexEngine\src\patterns\multi\FillPattern.h">
+      <Filter>Header Files\src\patterns\multi</Filter>
+    </ClInclude>
+    <ClInclude Include="VortexEngine\VortexEngine\src\patterns\multi\VortexWipePattern.h">
+      <Filter>Header Files\src\patterns\multi</Filter>
+    </ClInclude>
+    <ClInclude Include="VortexEngine\VortexEngine\src\patterns\multi\WarpPattern.h">
+      <Filter>Header Files\src\patterns\multi</Filter>
+    </ClInclude>
+    <ClInclude Include="VortexEngine\VortexEngine\src\patterns\multi\WarpWormPattern.h">
+      <Filter>Header Files\src\patterns\multi</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
