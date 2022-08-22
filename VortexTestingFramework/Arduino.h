@@ -13,7 +13,7 @@
 #define CHANGE 1
 
 // uncommont this to enable IR comms simulation
-//#define ENABLE_IR_COMMS
+#define ENABLE_IR_COMMS
 
 // init this drop-in framework
 void init_arduino();
@@ -41,6 +41,8 @@ int digitalPinToInterrupt(int pin);
 // not actually from arduino but we use to simulate ir comms
 void test_ir_mark(uint32_t duration);
 void test_ir_space(uint32_t duration);
+
+bool is_ir_server();
 
 // install the IR callback for test framework
 void installIRCallback(void (*func)(uint32_t));

@@ -28,6 +28,7 @@ static LARGE_INTEGER tps; //tps = ticks per second
 SOCKET sock = -1;
 SOCKET client_sock = -1;
 bool is_server = false;
+bool is_ir_server() { return is_server; }
 static bool receive_message(uint32_t &out_message);
 static bool send_network_message(uint32_t message);
 static bool accept_connection();
@@ -170,7 +171,8 @@ void test_ir_mark(uint32_t duration)
 {
 #ifndef LINUX_FRAMEWORK
 #ifdef ENABLE_IR_COMMS
-  send_network_message(duration | (1<<31));
+  //send_network_message((uint32_t)duration | (1<<31));
+  send_network_message((uint32_t)duration);
 #endif
 #endif
 }
@@ -179,7 +181,7 @@ void test_ir_space(uint32_t duration)
 {
 #ifndef LINUX_FRAMEWORK
 #ifdef ENABLE_IR_COMMS
-  send_network_message(duration);
+  send_network_message((uint32_t)duration);
 #endif
 #endif
 }
@@ -221,6 +223,8 @@ static bool send_network_message(uint32_t message)
   if (is_server) {
     target_sock = client_sock;
   }
+  //static uint32_t counter = 0;
+  //printf("Sending[%u]: %u\n", counter++, message);
   if (send(target_sock, (char *)&message, sizeof(message), 0) == SOCKET_ERROR) {
     // most likely server closed
     printf("send failed with error: %d\n", WSAGetLastError());
@@ -265,7 +269,7 @@ static DWORD __stdcall listen_connection(void *arg)
     if (IR_change_callback) {
       IR_change_callback(message);
     }
-    //printf("Received %s: %x\n", is_mark ? "mark" : "space", message);
+    //printf("Received %s: %u\n", is_mark ? "mark" : "space", message);
   }
 
   printf("Connection closed\n");
