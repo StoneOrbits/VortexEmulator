@@ -225,10 +225,37 @@
     <ClCompile Include="VortexEngine\VortexEngine\src\patterns\multi\VortexWipePattern.cpp">
       <Filter>Source Files\src\patterns\multi</Filter>
     </ClCompile>
-    <ClCompile Include="VortexEngine\VortexEngine\src\patterns\multi\Warp.cpp">
+    <ClCompile Include="VortexEngine\VortexEngine\src\patterns\multi\WarpWormPattern.cpp">
       <Filter>Source Files\src\patterns\multi</Filter>
     </ClCompile>
-    <ClCompile Include="VortexEngine\VortexEngine\src\patterns\multi\WarpWormPattern.cpp">
+    <ClCompile Include="VortexEngine\VortexEngine\src\patterns\multi\SnowballPattern.cpp">
+      <Filter>Source Files\src\patterns\multi</Filter>
+    </ClCompile>
+    <ClCompile Include="VortexEngine\VortexEngine\src\patterns\multi\LighthousePattern.cpp">
+      <Filter>Source Files\src\patterns\multi</Filter>
+    </ClCompile>
+    <ClCompile Include="VortexEngine\VortexEngine\src\patterns\multi\WarpPattern.cpp">
+      <Filter>Source Files\src\patterns\multi</Filter>
+    </ClCompile>
+    <ClCompile Include="VortexEngine\VortexEngine\src\patterns\multi\PulsishPattern.cpp">
+      <Filter>Source Files\src\patterns\multi</Filter>
+    </ClCompile>
+    <ClCompile Include="VortexEngine\VortexEngine\src\patterns\multi\BlinkStepPattern.cpp">
+      <Filter>Source Files\src\patterns\multi</Filter>
+    </ClCompile>
+    <ClCompile Include="VortexEngine\VortexEngine\src\patterns\multi\BouncePattern.cpp">
+      <Filter>Source Files\src\patterns\multi</Filter>
+    </ClCompile>
+    <ClCompile Include="VortexEngine\VortexEngine\src\patterns\multi\ImpactPattern.cpp">
+      <Filter>Source Files\src\patterns\multi</Filter>
+    </ClCompile>
+    <ClCompile Include="VortexEngine\VortexEngine\src\patterns\multi\SplitStrobiePattern.cpp">
+      <Filter>Source Files\src\patterns\multi</Filter>
+    </ClCompile>
+    <ClCompile Include="VortexEngine\VortexEngine\src\patterns\multi\BackStrobePattern.cpp">
+      <Filter>Source Files\src\patterns\multi</Filter>
+    </ClCompile>
+    <ClCompile Include="VortexEngine\VortexEngine\src\patterns\multi\FlowersPattern.cpp">
       <Filter>Source Files\src\patterns\multi</Filter>
     </ClCompile>
   </ItemGroup>
@@ -423,6 +450,33 @@
       <Filter>Header Files\src\patterns\multi</Filter>
     </ClInclude>
     <ClInclude Include="VortexEngine\VortexEngine\src\patterns\multi\WarpWormPattern.h">
+      <Filter>Header Files\src\patterns\multi</Filter>
+    </ClInclude>
+    <ClInclude Include="VortexEngine\VortexEngine\src\patterns\multi\SnowballPattern.h">
+      <Filter>Header Files\src\patterns\multi</Filter>
+    </ClInclude>
+    <ClInclude Include="VortexEngine\VortexEngine\src\patterns\multi\LighthousePattern.h">
+      <Filter>Header Files\src\patterns\multi</Filter>
+    </ClInclude>
+    <ClInclude Include="VortexEngine\VortexEngine\src\patterns\multi\PulsishPattern.h">
+      <Filter>Header Files\src\patterns\multi</Filter>
+    </ClInclude>
+    <ClInclude Include="VortexEngine\VortexEngine\src\patterns\multi\BlinkStepPattern.h">
+      <Filter>Header Files\src\patterns\multi</Filter>
+    </ClInclude>
+    <ClInclude Include="VortexEngine\VortexEngine\src\patterns\multi\BouncePattern.h">
+      <Filter>Header Files\src\patterns\multi</Filter>
+    </ClInclude>
+    <ClInclude Include="VortexEngine\VortexEngine\src\patterns\multi\SplitStrobiePattern.h">
+      <Filter>Header Files\src\patterns\multi</Filter>
+    </ClInclude>
+    <ClInclude Include="VortexEngine\VortexEngine\src\patterns\multi\ImpactPattern.h">
+      <Filter>Header Files\src\patterns\multi</Filter>
+    </ClInclude>
+    <ClInclude Include="VortexEngine\VortexEngine\src\patterns\multi\BackStrobePattern.h">
+      <Filter>Header Files\src\patterns\multi</Filter>
+    </ClInclude>
+    <ClInclude Include="VortexEngine\VortexEngine\src\patterns\multi\FlowersPattern.h">
       <Filter>Header Files\src\patterns\multi</Filter>
     </ClInclude>
   </ItemGroup>
