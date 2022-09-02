@@ -180,6 +180,7 @@
     <ClCompile Include="VortexEngine\VortexEngine\src\patterns\multi\HueShiftPattern.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\patterns\multi\HybridPattern.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\patterns\multi\ImpactPattern.cpp" />
+    <ClCompile Include="VortexEngine\VortexEngine\src\patterns\multi\JestPattern.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\patterns\multi\LighthousePattern.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\patterns\multi\MeteorPattern.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\patterns\multi\MultiLedPattern.cpp" />
@@ -255,6 +256,7 @@
     <ClInclude Include="VortexEngine\VortexEngine\src\patterns\multi\HueShiftPattern.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\patterns\multi\HybridPattern.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\patterns\multi\ImpactPattern.h" />
+    <ClInclude Include="VortexEngine\VortexEngine\src\patterns\multi\JestPattern.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\patterns\multi\LighthousePattern.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\patterns\multi\MeteorPattern.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\patterns\multi\MultiLedPattern.h" />
