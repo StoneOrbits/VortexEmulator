@@ -175,6 +175,7 @@
     <ClCompile Include="VortexEngine\VortexEngine\src\patterns\multi\BouncePattern.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\patterns\multi\CrossDopsPattern.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\patterns\multi\DoubleStrobePattern.cpp" />
+    <ClCompile Include="VortexEngine\VortexEngine\src\patterns\multi\DripMorphPattern.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\patterns\multi\DripPattern.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\patterns\multi\FlowersPattern.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\patterns\multi\HueShiftPattern.cpp" />
@@ -251,6 +252,7 @@
     <ClInclude Include="VortexEngine\VortexEngine\src\patterns\multi\BouncePattern.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\patterns\multi\CrossDopsPattern.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\patterns\multi\DoubleStrobePattern.h" />
+    <ClInclude Include="VortexEngine\VortexEngine\src\patterns\multi\DripMorphPattern.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\patterns\multi\DripPattern.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\patterns\multi\FlowersPattern.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\patterns\multi\HueShiftPattern.h" />

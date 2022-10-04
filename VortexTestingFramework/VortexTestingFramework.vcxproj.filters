@@ -258,8 +258,11 @@
     <ClCompile Include="VortexEngine\VortexEngine\src\patterns\multi\FlowersPattern.cpp">
       <Filter>Source Files\src\patterns\multi</Filter>
     </ClCompile>
+    <ClCompile Include="VortexEngine\VortexEngine\src\patterns\multi\DripMorphPattern.cpp">
+      <Filter>Source Files\src\patterns\multi</Filter>
+    </ClCompile>
     <ClCompile Include="VortexEngine\VortexEngine\src\patterns\multi\JestPattern.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\src\patterns\multi</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -482,8 +485,11 @@
     <ClInclude Include="VortexEngine\VortexEngine\src\patterns\multi\FlowersPattern.h">
       <Filter>Header Files\src\patterns\multi</Filter>
     </ClInclude>
+    <ClInclude Include="VortexEngine\VortexEngine\src\patterns\multi\DripMorphPattern.h">
+      <Filter>Header Files\src\patterns\multi</Filter>
+    </ClInclude>
     <ClInclude Include="VortexEngine\VortexEngine\src\patterns\multi\JestPattern.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\src\patterns\multi</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
