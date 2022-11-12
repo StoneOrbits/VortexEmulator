@@ -90,9 +90,6 @@
     <ClCompile Include="VortexEngine\VortexEngine\src\patterns\Pattern.cpp">
       <Filter>Source Files\src\patterns</Filter>
     </ClCompile>
-    <ClCompile Include="VortexEngine\VortexEngine\src\patterns\PatternFuncs.cpp">
-      <Filter>Source Files\src\patterns</Filter>
-    </ClCompile>
     <ClCompile Include="VortexEngine\VortexEngine\src\menus\Menu.cpp">
       <Filter>Source Files\src\menus</Filter>
     </ClCompile>
