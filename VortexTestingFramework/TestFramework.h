@@ -3,10 +3,10 @@
 #include <stdio.h>
 
 #include "VortexEngine.h"
-#include "ColorTypes.h"
-#include "LedTypes.h"
-#include "Patterns.h"
-#include "Colorset.h"
+#include "Colors/ColorTypes.h"
+#include "Colors/Colorset.h"
+#include "Leds/LedTypes.h"
+#include "Patterns/Patterns.h"
 
 #include <vector>
 #include <map>

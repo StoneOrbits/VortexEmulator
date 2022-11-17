@@ -312,10 +312,10 @@
     <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\PatternBuilder.cpp">
       <Filter>Source Files\src\Patterns</Filter>
     </ClCompile>
-    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\sequencer\SequencedPattern.cpp">
+    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\Sequencer\SequencedPattern.cpp">
       <Filter>Source Files\src\Patterns\Multi\Sequencer</Filter>
     </ClCompile>
-    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\sequencer\Sequence.cpp">
+    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\Sequencer\Sequence.cpp">
       <Filter>Source Files\src\Patterns\Multi\Sequencer</Filter>
     </ClCompile>
     <ClCompile Include="VortexEngine\VortexEngine\src\Serial\Serial.cpp">
@@ -518,10 +518,10 @@
     <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Patterns.h">
       <Filter>Header Files\src\Patterns</Filter>
     </ClInclude>
-    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\sequencer\Sequence.h">
+    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\Sequencer\Sequence.h">
       <Filter>Header Files\src\Patterns\Multi\Sequencer</Filter>
     </ClInclude>
-    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\sequencer\SequencedPattern.h">
+    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\Sequencer\SequencedPattern.h">
       <Filter>Header Files\src\Patterns\Multi\Sequencer</Filter>
     </ClInclude>
     <ClInclude Include="VortexEngine\VortexEngine\src\Serial\Serial.h">

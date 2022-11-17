@@ -187,7 +187,7 @@
     <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\MultiLedPattern.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\PulsishPattern.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\RabbitPattern.cpp" />
-    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\sequencer\SequencedPattern.cpp" />
+    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\Sequencer\SequencedPattern.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\SnowballPattern.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\SparkleTracePattern.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\SplitStrobiePattern.cpp" />
@@ -207,7 +207,7 @@
     <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Single\SingleLedPattern.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Single\SolidPattern.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Single\TracerPattern.cpp" />
-    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\sequencer\Sequence.cpp" />
+    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\Sequencer\Sequence.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\Serial\SerialBuffer.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\Serial\Serial.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\Storage\Storage.cpp" />
@@ -263,7 +263,7 @@
     <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\MultiLedPattern.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\PulsishPattern.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\RabbitPattern.h" />
-    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\sequencer\SequencedPattern.h" />
+    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\Sequencer\SequencedPattern.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\SnowballPattern.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\SparkleTracePattern.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\SplitStrobiePattern.h" />
@@ -283,7 +283,7 @@
     <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Single\SingleLedPattern.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Single\SolidPattern.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Single\TracerPattern.h" />
-    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\sequencer\Sequence.h" />
+    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\Sequencer\Sequence.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Serial\SerialBuffer.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Serial\Serial.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Storage\Storage.h" />
