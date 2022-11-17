@@ -2,10 +2,11 @@
 #include <stdio.h>
 
 #include "VortexEngine.h"
-#include "ColorTypes.h"
-#include "LedTypes.h"
-#include "Patterns.h"
-#include "Colorset.h"
+
+#include "Patterns/Patterns.h"
+#include "Colors/ColorTypes.h"
+#include "Colors/Colorset.h"
+#include "Leds/LedTypes.h"
 
 #include <vector>
 

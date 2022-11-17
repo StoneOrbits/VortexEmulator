@@ -7,18 +7,19 @@
 #include "TestFrameworkLinux.h"
 #include "Arduino.h"
 
-#include "Log.h"
+#include "Log/Log.h"
 
 #include "VortexEngine.h"
-#include "PatternBuilder.h"
-#include "ModeBuilder.h"
-#include "TimeControl.h"
-#include "Colorset.h"
-#include "Modes.h"
-#include "Mode.h"
 
-#include "patterns/Pattern.h"
-#include "patterns/single/SingleLedPattern.h"
+#include "Patterns/PatternBuilder.h"
+#include "Time/TimeControl.h"
+#include "Colors/Colorset.h"
+#include "Modes/ModeBuilder.h"
+#include "Modes/Modes.h"
+#include "Modes/Mode.h"
+
+#include "Patterns/Pattern.h"
+#include "Patterns/single/SingleLedPattern.h"
 
 #include <ncurses.h>
 
