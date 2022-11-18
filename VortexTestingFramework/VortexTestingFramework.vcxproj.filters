@@ -16,82 +16,115 @@
     <Filter Include="Source Files\src">
       <UniqueIdentifier>{3c2d1a83-94e7-48e6-a91d-0c4b42ba4eb0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\src\menus">
-      <UniqueIdentifier>{570f38f1-68b8-4e5c-b864-3b2dcbe7afe8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\src\patterns">
-      <UniqueIdentifier>{40ed0aa7-2772-449b-9ace-c26a19d0937b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\src">
       <UniqueIdentifier>{d9ca222a-dfc0-4003-b9e7-8c9bd8e5e98c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\src\menus">
+    <Filter Include="Header Files\src\Buttons">
+      <UniqueIdentifier>{2af7e4e0-ef79-41fc-83ca-5475ebbf47a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\src\Colors">
+      <UniqueIdentifier>{064bae06-883f-4385-99f1-215e5c71a14b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\src\Infrared">
+      <UniqueIdentifier>{b8bdc5ad-f5f8-4cc4-afd3-6e90d5a370ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\src\Leds">
+      <UniqueIdentifier>{5a9857ce-fd89-4185-9360-151221c85747}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\src\Log">
+      <UniqueIdentifier>{f9d274a2-81a8-451e-b374-6cb7b5404c78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\src\Memory">
+      <UniqueIdentifier>{3d6ad817-6413-433d-8693-95a9f61b4ae6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\src\Modes">
+      <UniqueIdentifier>{406ba83c-9d45-4f0e-9d95-59a899589603}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\src\Menus">
       <UniqueIdentifier>{8035a6b8-0a27-459c-b23f-9a9ed1720ac7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\src\patterns">
+    <Filter Include="Header Files\src\Patterns">
       <UniqueIdentifier>{267b3904-eb2a-4a02-8872-088d8377618b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\src\patterns\single">
-      <UniqueIdentifier>{550afc4b-e979-4dbd-9ee0-64dc55cf039d}</UniqueIdentifier>
+    <Filter Include="Header Files\src\Serial">
+      <UniqueIdentifier>{233462b5-a961-447e-a4e3-b9cd90ad122b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\src\patterns\multi">
+    <Filter Include="Header Files\src\Time">
+      <UniqueIdentifier>{ee3f9c6c-2444-400f-9ec2-ef3f0badff4e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\src\Storage">
+      <UniqueIdentifier>{774ecc57-3778-4659-95a9-c9dd05cc8bf0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\src\Patterns\Multi">
       <UniqueIdentifier>{5a61d7e0-56a0-4f6e-a757-b096ba30b834}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\src\patterns\single">
+    <Filter Include="Header Files\src\Patterns\Multi\Sequencer">
+      <UniqueIdentifier>{45ae3600-6434-4706-90f7-e931a03c91a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\src\Menus\MenuList">
+      <UniqueIdentifier>{abb20ed3-f648-441b-819b-0483985b8d45}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\src\Patterns\Single">
+      <UniqueIdentifier>{550afc4b-e979-4dbd-9ee0-64dc55cf039d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\src\Buttons">
+      <UniqueIdentifier>{3bac6fb9-102c-47db-ad93-379163f518d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\src\Colors">
+      <UniqueIdentifier>{900eb07b-8bc6-4750-a3c0-b6790d88f898}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\src\Infrared">
+      <UniqueIdentifier>{36a04c00-5456-4f23-be43-5a978a7f4c63}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\src\Leds">
+      <UniqueIdentifier>{e3f8c27d-ea77-431a-9cf3-f471278546cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\src\Log">
+      <UniqueIdentifier>{0d165b95-4700-484d-b2f3-d16fd84cdac0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\src\Memory">
+      <UniqueIdentifier>{ab0cc9da-9181-49ea-adbe-d352356d3392}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\src\Modes">
+      <UniqueIdentifier>{08c31ecb-c825-4f12-a1b3-e80d963262fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\src\Time">
+      <UniqueIdentifier>{2758e06a-d657-4d29-8d7e-cee5a29ca6d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\src\Menus">
+      <UniqueIdentifier>{570f38f1-68b8-4e5c-b864-3b2dcbe7afe8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\src\Patterns">
+      <UniqueIdentifier>{40ed0aa7-2772-449b-9ace-c26a19d0937b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\src\Patterns\Single">
       <UniqueIdentifier>{5ba2bb47-b3fa-4004-8739-b99150fdee4d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\src\patterns\multi">
+    <Filter Include="Source Files\src\Patterns\Multi">
       <UniqueIdentifier>{7944d8fd-d0ea-416a-834d-7147aaf5fef3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\src\Serial">
+      <UniqueIdentifier>{4922634c-c39f-4192-a699-85bf805bc2c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\src\Storage">
+      <UniqueIdentifier>{27726224-6bc1-4e85-9b97-d99d7eae6fa1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\src\Menus\MenuList">
+      <UniqueIdentifier>{1eeaed7b-4dd8-460c-8bf0-f7b6d984a9e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\src\Patterns\Multi\Sequencer">
+      <UniqueIdentifier>{289cb695-dcc9-45ac-8158-cc95fc10c0df}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinMain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="VortexEngine\VortexEngine\src\Button.cpp">
-      <Filter>Source Files\src</Filter>
+    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Pattern.cpp">
+      <Filter>Source Files\src\Patterns</Filter>
     </ClCompile>
-    <ClCompile Include="VortexEngine\VortexEngine\src\Colorset.cpp">
-      <Filter>Source Files\src</Filter>
-    </ClCompile>
-    <ClCompile Include="VortexEngine\VortexEngine\src\ColorTypes.cpp">
-      <Filter>Source Files\src</Filter>
-    </ClCompile>
-    <ClCompile Include="VortexEngine\VortexEngine\src\Leds.cpp">
-      <Filter>Source Files\src</Filter>
-    </ClCompile>
-    <ClCompile Include="VortexEngine\VortexEngine\src\Mode.cpp">
-      <Filter>Source Files\src</Filter>
-    </ClCompile>
-    <ClCompile Include="VortexEngine\VortexEngine\src\ModeBuilder.cpp">
-      <Filter>Source Files\src</Filter>
-    </ClCompile>
-    <ClCompile Include="VortexEngine\VortexEngine\src\TimeControl.cpp">
-      <Filter>Source Files\src</Filter>
-    </ClCompile>
-    <ClCompile Include="VortexEngine\VortexEngine\src\menus\GlobalBrightness.cpp">
-      <Filter>Source Files\src\menus</Filter>
-    </ClCompile>
-    <ClCompile Include="VortexEngine\VortexEngine\src\menus\FactoryReset.cpp">
-      <Filter>Source Files\src\menus</Filter>
-    </ClCompile>
-    <ClCompile Include="VortexEngine\VortexEngine\src\menus\ColorSelect.cpp">
-      <Filter>Source Files\src\menus</Filter>
-    </ClCompile>
-    <ClCompile Include="VortexEngine\VortexEngine\src\menus\ModeSharing.cpp">
-      <Filter>Source Files\src\menus</Filter>
-    </ClCompile>
-    <ClCompile Include="VortexEngine\VortexEngine\src\menus\Randomizer.cpp">
-      <Filter>Source Files\src\menus</Filter>
-    </ClCompile>
-    <ClCompile Include="VortexEngine\VortexEngine\src\menus\PatternSelect.cpp">
-      <Filter>Source Files\src\menus</Filter>
-    </ClCompile>
-    <ClCompile Include="VortexEngine\VortexEngine\src\patterns\Pattern.cpp">
-      <Filter>Source Files\src\patterns</Filter>
-    </ClCompile>
-    <ClCompile Include="VortexEngine\VortexEngine\src\menus\Menu.cpp">
-      <Filter>Source Files\src\menus</Filter>
+    <ClCompile Include="VortexEngine\VortexEngine\src\Menus\Menu.cpp">
+      <Filter>Source Files\src\Menus</Filter>
     </ClCompile>
     <ClCompile Include="Arduino.cpp">
       <Filter>Source Files</Filter>
@@ -102,74 +135,41 @@
     <ClCompile Include="TestFramework.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="VortexEngine\VortexEngine\src\Log.cpp">
-      <Filter>Source Files\src</Filter>
-    </ClCompile>
-    <ClCompile Include="VortexEngine\VortexEngine\src\PatternBuilder.cpp">
-      <Filter>Source Files\src</Filter>
-    </ClCompile>
-    <ClCompile Include="VortexEngine\VortexEngine\src\Buttons.cpp">
-      <Filter>Source Files\src</Filter>
-    </ClCompile>
-    <ClCompile Include="VortexEngine\VortexEngine\src\Menus.cpp">
-      <Filter>Source Files\src</Filter>
-    </ClCompile>
-    <ClCompile Include="VortexEngine\VortexEngine\src\Timer.cpp">
-      <Filter>Source Files\src</Filter>
-    </ClCompile>
-    <ClCompile Include="VortexEngine\VortexEngine\src\Modes.cpp">
-      <Filter>Source Files\src</Filter>
-    </ClCompile>
     <ClCompile Include="FlashStorage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="VortexEngine\VortexEngine\src\Memory.cpp">
-      <Filter>Source Files\src</Filter>
+    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Single\AdvancedPattern.cpp">
+      <Filter>Source Files\src\Patterns\Single</Filter>
     </ClCompile>
-    <ClCompile Include="VortexEngine\VortexEngine\src\SerialBuffer.cpp">
-      <Filter>Source Files\src</Filter>
+    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Single\BasicPattern.cpp">
+      <Filter>Source Files\src\Patterns\Single</Filter>
     </ClCompile>
-    <ClCompile Include="VortexEngine\VortexEngine\src\Storage.cpp">
-      <Filter>Source Files\src</Filter>
+    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\HybridPattern.cpp">
+      <Filter>Source Files\src\Patterns\Multi</Filter>
     </ClCompile>
-    <ClCompile Include="VortexEngine\VortexEngine\src\Infrared.cpp">
-      <Filter>Source Files\src</Filter>
+    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\HueShiftPattern.cpp">
+      <Filter>Source Files\src\Patterns\Multi</Filter>
     </ClCompile>
-    <ClCompile Include="VortexEngine\VortexEngine\src\patterns\single\AdvancedPattern.cpp">
-      <Filter>Source Files\src\patterns\single</Filter>
+    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\MultiLedPattern.cpp">
+      <Filter>Source Files\src\Patterns\Multi</Filter>
     </ClCompile>
-    <ClCompile Include="VortexEngine\VortexEngine\src\patterns\single\BasicPattern.cpp">
-      <Filter>Source Files\src\patterns\single</Filter>
+    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\RabbitPattern.cpp">
+      <Filter>Source Files\src\Patterns\Multi</Filter>
     </ClCompile>
-    <ClCompile Include="VortexEngine\VortexEngine\src\patterns\multi\HybridPattern.cpp">
-      <Filter>Source Files\src\patterns\multi</Filter>
+    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Single\TracerPattern.cpp">
+      <Filter>Source Files\src\Patterns\Single</Filter>
     </ClCompile>
-    <ClCompile Include="VortexEngine\VortexEngine\src\patterns\multi\HueShiftPattern.cpp">
-      <Filter>Source Files\src\patterns\multi</Filter>
+    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Single\SingleLedPattern.cpp">
+      <Filter>Source Files\src\Patterns\Single</Filter>
     </ClCompile>
-    <ClCompile Include="VortexEngine\VortexEngine\src\patterns\multi\MultiLedPattern.cpp">
-      <Filter>Source Files\src\patterns\multi</Filter>
+    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Single\BlendPattern.cpp">
+      <Filter>Source Files\src\Patterns\Single</Filter>
     </ClCompile>
-    <ClCompile Include="VortexEngine\VortexEngine\src\patterns\multi\RabbitPattern.cpp">
-      <Filter>Source Files\src\patterns\multi</Filter>
+    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Single\BracketsPattern.cpp">
+      <Filter>Source Files\src\Patterns\Single</Filter>
     </ClCompile>
-    <ClCompile Include="VortexEngine\VortexEngine\src\patterns\single\TracerPattern.cpp">
-      <Filter>Source Files\src\patterns\single</Filter>
-    </ClCompile>
-    <ClCompile Include="VortexEngine\VortexEngine\src\patterns\single\SingleLedPattern.cpp">
-      <Filter>Source Files\src\patterns\single</Filter>
-    </ClCompile>
-    <ClCompile Include="VortexEngine\VortexEngine\src\patterns\single\BlendPattern.cpp">
-      <Filter>Source Files\src\patterns\single</Filter>
-    </ClCompile>
-    <ClCompile Include="VortexEngine\VortexEngine\src\patterns\single\BracketsPattern.cpp">
-      <Filter>Source Files\src\patterns\single</Filter>
-    </ClCompile>
-    <ClCompile Include="VortexEngine\VortexEngine\src\BitStream.cpp">
-      <Filter>Source Files\src</Filter>
-    </ClCompile>
-    <ClCompile Include="VortexEngine\VortexEngine\src\patterns\multi\TheaterChasePattern.cpp">
-      <Filter>Source Files\src\patterns\multi</Filter>
+    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\TheaterChasePattern.cpp">
+      <Filter>Source Files\src\Patterns\Multi</Filter>
     </ClCompile>
     <ClCompile Include="VortexEngine\VortexEngine\src\VortexEngine.cpp">
       <Filter>Source Files\src</Filter>
@@ -177,136 +177,169 @@
     <ClCompile Include="ArduinoSerial.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="VortexEngine\VortexEngine\src\Serial.cpp">
-      <Filter>Source Files\src</Filter>
+    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Single\SolidPattern.cpp">
+      <Filter>Source Files\src\Patterns\Single</Filter>
     </ClCompile>
-    <ClCompile Include="VortexEngine\VortexEngine\src\patterns\multi\SequencedPattern.cpp">
-      <Filter>Source Files\src\patterns\multi</Filter>
+    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\ZigzagPattern.cpp">
+      <Filter>Source Files\src\Patterns\Multi</Filter>
     </ClCompile>
-    <ClCompile Include="VortexEngine\VortexEngine\src\Sequence.cpp">
-      <Filter>Source Files\src</Filter>
+    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Single\ComplementaryBlendPattern.cpp">
+      <Filter>Source Files\src\Patterns\Single</Filter>
     </ClCompile>
-    <ClCompile Include="VortexEngine\VortexEngine\src\patterns\single\SolidPattern.cpp">
-      <Filter>Source Files\src\patterns\single</Filter>
+    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\CrossDopsPattern.cpp">
+      <Filter>Source Files\src\Patterns\Multi</Filter>
     </ClCompile>
-    <ClCompile Include="VortexEngine\VortexEngine\src\patterns\multi\ZigzagPattern.cpp">
-      <Filter>Source Files\src\patterns\multi</Filter>
+    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\DoubleStrobePattern.cpp">
+      <Filter>Source Files\src\Patterns\Multi</Filter>
     </ClCompile>
-    <ClCompile Include="VortexEngine\VortexEngine\src\patterns\single\ComplementaryBlendPattern.cpp">
-      <Filter>Source Files\src\patterns\single</Filter>
+    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\DripPattern.cpp">
+      <Filter>Source Files\src\Patterns\Multi</Filter>
     </ClCompile>
-    <ClCompile Include="VortexEngine\VortexEngine\src\patterns\multi\CrossDopsPattern.cpp">
-      <Filter>Source Files\src\patterns\multi</Filter>
+    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\MeteorPattern.cpp">
+      <Filter>Source Files\src\Patterns\Multi</Filter>
     </ClCompile>
-    <ClCompile Include="VortexEngine\VortexEngine\src\patterns\multi\DoubleStrobePattern.cpp">
-      <Filter>Source Files\src\patterns\multi</Filter>
+    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\TipTopPattern.cpp">
+      <Filter>Source Files\src\Patterns\Multi</Filter>
     </ClCompile>
-    <ClCompile Include="VortexEngine\VortexEngine\src\patterns\multi\DripPattern.cpp">
-      <Filter>Source Files\src\patterns\multi</Filter>
+    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\SparkleTracePattern.cpp">
+      <Filter>Source Files\src\Patterns\Multi</Filter>
     </ClCompile>
-    <ClCompile Include="VortexEngine\VortexEngine\src\patterns\multi\MeteorPattern.cpp">
-      <Filter>Source Files\src\patterns\multi</Filter>
+    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\FillPattern.cpp">
+      <Filter>Source Files\src\Patterns\Multi</Filter>
     </ClCompile>
-    <ClCompile Include="VortexEngine\VortexEngine\src\patterns\multi\TipTopPattern.cpp">
-      <Filter>Source Files\src\patterns\multi</Filter>
+    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\VortexWipePattern.cpp">
+      <Filter>Source Files\src\Patterns\Multi</Filter>
     </ClCompile>
-    <ClCompile Include="VortexEngine\VortexEngine\src\LedStash.cpp">
-      <Filter>Source Files\src</Filter>
+    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\WarpWormPattern.cpp">
+      <Filter>Source Files\src\Patterns\Multi</Filter>
     </ClCompile>
-    <ClCompile Include="VortexEngine\VortexEngine\src\patterns\multi\SparkleTracePattern.cpp">
-      <Filter>Source Files\src\patterns\multi</Filter>
+    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\SnowballPattern.cpp">
+      <Filter>Source Files\src\Patterns\Multi</Filter>
     </ClCompile>
-    <ClCompile Include="VortexEngine\VortexEngine\src\patterns\multi\FillPattern.cpp">
-      <Filter>Source Files\src\patterns\multi</Filter>
+    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\LighthousePattern.cpp">
+      <Filter>Source Files\src\Patterns\Multi</Filter>
     </ClCompile>
-    <ClCompile Include="VortexEngine\VortexEngine\src\patterns\multi\VortexWipePattern.cpp">
-      <Filter>Source Files\src\patterns\multi</Filter>
+    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\WarpPattern.cpp">
+      <Filter>Source Files\src\Patterns\Multi</Filter>
     </ClCompile>
-    <ClCompile Include="VortexEngine\VortexEngine\src\patterns\multi\WarpWormPattern.cpp">
-      <Filter>Source Files\src\patterns\multi</Filter>
+    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\PulsishPattern.cpp">
+      <Filter>Source Files\src\Patterns\Multi</Filter>
     </ClCompile>
-    <ClCompile Include="VortexEngine\VortexEngine\src\patterns\multi\SnowballPattern.cpp">
-      <Filter>Source Files\src\patterns\multi</Filter>
+    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\BlinkStepPattern.cpp">
+      <Filter>Source Files\src\Patterns\Multi</Filter>
     </ClCompile>
-    <ClCompile Include="VortexEngine\VortexEngine\src\patterns\multi\LighthousePattern.cpp">
-      <Filter>Source Files\src\patterns\multi</Filter>
+    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\BouncePattern.cpp">
+      <Filter>Source Files\src\Patterns\Multi</Filter>
     </ClCompile>
-    <ClCompile Include="VortexEngine\VortexEngine\src\patterns\multi\WarpPattern.cpp">
-      <Filter>Source Files\src\patterns\multi</Filter>
+    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\ImpactPattern.cpp">
+      <Filter>Source Files\src\Patterns\Multi</Filter>
     </ClCompile>
-    <ClCompile Include="VortexEngine\VortexEngine\src\patterns\multi\PulsishPattern.cpp">
-      <Filter>Source Files\src\patterns\multi</Filter>
+    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\SplitStrobiePattern.cpp">
+      <Filter>Source Files\src\Patterns\Multi</Filter>
     </ClCompile>
-    <ClCompile Include="VortexEngine\VortexEngine\src\patterns\multi\BlinkStepPattern.cpp">
-      <Filter>Source Files\src\patterns\multi</Filter>
+    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\BackStrobePattern.cpp">
+      <Filter>Source Files\src\Patterns\Multi</Filter>
     </ClCompile>
-    <ClCompile Include="VortexEngine\VortexEngine\src\patterns\multi\BouncePattern.cpp">
-      <Filter>Source Files\src\patterns\multi</Filter>
+    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\FlowersPattern.cpp">
+      <Filter>Source Files\src\Patterns\Multi</Filter>
     </ClCompile>
-    <ClCompile Include="VortexEngine\VortexEngine\src\patterns\multi\ImpactPattern.cpp">
-      <Filter>Source Files\src\patterns\multi</Filter>
+    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\DripMorphPattern.cpp">
+      <Filter>Source Files\src\Patterns\Multi</Filter>
     </ClCompile>
-    <ClCompile Include="VortexEngine\VortexEngine\src\patterns\multi\SplitStrobiePattern.cpp">
-      <Filter>Source Files\src\patterns\multi</Filter>
+    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\JestPattern.cpp">
+      <Filter>Source Files\src\Patterns\Multi</Filter>
     </ClCompile>
-    <ClCompile Include="VortexEngine\VortexEngine\src\patterns\multi\BackStrobePattern.cpp">
-      <Filter>Source Files\src\patterns\multi</Filter>
+    <ClCompile Include="VortexEngine\VortexEngine\src\Leds\LedStash.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="VortexEngine\VortexEngine\src\patterns\multi\FlowersPattern.cpp">
-      <Filter>Source Files\src\patterns\multi</Filter>
+    <ClCompile Include="VortexEngine\VortexEngine\src\Serial\BitStream.cpp">
+      <Filter>Source Files\src\Serial</Filter>
     </ClCompile>
-    <ClCompile Include="VortexEngine\VortexEngine\src\patterns\multi\DripMorphPattern.cpp">
-      <Filter>Source Files\src\patterns\multi</Filter>
+    <ClCompile Include="VortexEngine\VortexEngine\src\Buttons\Button.cpp">
+      <Filter>Source Files\src\Buttons</Filter>
     </ClCompile>
-    <ClCompile Include="VortexEngine\VortexEngine\src\patterns\multi\JestPattern.cpp">
-      <Filter>Source Files\src\patterns\multi</Filter>
+    <ClCompile Include="VortexEngine\VortexEngine\src\Buttons\Buttons.cpp">
+      <Filter>Source Files\src\Buttons</Filter>
+    </ClCompile>
+    <ClCompile Include="VortexEngine\VortexEngine\src\Colors\Colorset.cpp">
+      <Filter>Source Files\src\Colors</Filter>
+    </ClCompile>
+    <ClCompile Include="VortexEngine\VortexEngine\src\Colors\ColorTypes.cpp">
+      <Filter>Source Files\src\Colors</Filter>
+    </ClCompile>
+    <ClCompile Include="VortexEngine\VortexEngine\src\Infrared\Infrared.cpp">
+      <Filter>Source Files\src\Infrared</Filter>
+    </ClCompile>
+    <ClCompile Include="VortexEngine\VortexEngine\src\Leds\Leds.cpp">
+      <Filter>Source Files\src\Leds</Filter>
+    </ClCompile>
+    <ClCompile Include="VortexEngine\VortexEngine\src\Log\Log.cpp">
+      <Filter>Source Files\src\Log</Filter>
+    </ClCompile>
+    <ClCompile Include="VortexEngine\VortexEngine\src\Memory\Memory.cpp">
+      <Filter>Source Files\src\Memory</Filter>
+    </ClCompile>
+    <ClCompile Include="VortexEngine\VortexEngine\src\Menus\Menus.cpp">
+      <Filter>Source Files\src\Menus</Filter>
+    </ClCompile>
+    <ClCompile Include="VortexEngine\VortexEngine\src\Menus\MenuList\ColorSelect.cpp">
+      <Filter>Source Files\src\Menus\MenuList</Filter>
+    </ClCompile>
+    <ClCompile Include="VortexEngine\VortexEngine\src\Menus\MenuList\FactoryReset.cpp">
+      <Filter>Source Files\src\Menus\MenuList</Filter>
+    </ClCompile>
+    <ClCompile Include="VortexEngine\VortexEngine\src\Menus\MenuList\GlobalBrightness.cpp">
+      <Filter>Source Files\src\Menus\MenuList</Filter>
+    </ClCompile>
+    <ClCompile Include="VortexEngine\VortexEngine\src\Menus\MenuList\ModeSharing.cpp">
+      <Filter>Source Files\src\Menus\MenuList</Filter>
+    </ClCompile>
+    <ClCompile Include="VortexEngine\VortexEngine\src\Menus\MenuList\PatternSelect.cpp">
+      <Filter>Source Files\src\Menus\MenuList</Filter>
+    </ClCompile>
+    <ClCompile Include="VortexEngine\VortexEngine\src\Menus\MenuList\Randomizer.cpp">
+      <Filter>Source Files\src\Menus\MenuList</Filter>
+    </ClCompile>
+    <ClCompile Include="VortexEngine\VortexEngine\src\Modes\Mode.cpp">
+      <Filter>Source Files\src\Modes</Filter>
+    </ClCompile>
+    <ClCompile Include="VortexEngine\VortexEngine\src\Modes\ModeBuilder.cpp">
+      <Filter>Source Files\src\Modes</Filter>
+    </ClCompile>
+    <ClCompile Include="VortexEngine\VortexEngine\src\Modes\Modes.cpp">
+      <Filter>Source Files\src\Modes</Filter>
+    </ClCompile>
+    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\PatternBuilder.cpp">
+      <Filter>Source Files\src\Patterns</Filter>
+    </ClCompile>
+    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\Sequencer\SequencedPattern.cpp">
+      <Filter>Source Files\src\Patterns\Multi\Sequencer</Filter>
+    </ClCompile>
+    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\Sequencer\Sequence.cpp">
+      <Filter>Source Files\src\Patterns\Multi\Sequencer</Filter>
+    </ClCompile>
+    <ClCompile Include="VortexEngine\VortexEngine\src\Serial\Serial.cpp">
+      <Filter>Source Files\src\Serial</Filter>
+    </ClCompile>
+    <ClCompile Include="VortexEngine\VortexEngine\src\Serial\SerialBuffer.cpp">
+      <Filter>Source Files\src\Serial</Filter>
+    </ClCompile>
+    <ClCompile Include="VortexEngine\VortexEngine\src\Storage\Storage.cpp">
+      <Filter>Source Files\src\Storage</Filter>
+    </ClCompile>
+    <ClCompile Include="VortexEngine\VortexEngine\src\Time\TimeControl.cpp">
+      <Filter>Source Files\src\Time</Filter>
+    </ClCompile>
+    <ClCompile Include="VortexEngine\VortexEngine\src\Time\Timer.cpp">
+      <Filter>Source Files\src\Time</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="VortexEngine\VortexEngine\src\patterns\Pattern.h">
-      <Filter>Header Files\src\patterns</Filter>
+    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Pattern.h">
+      <Filter>Header Files\src\Patterns</Filter>
     </ClInclude>
-    <ClInclude Include="VortexEngine\VortexEngine\src\menus\FactoryReset.h">
-      <Filter>Header Files\src\menus</Filter>
-    </ClInclude>
-    <ClInclude Include="VortexEngine\VortexEngine\src\menus\ColorSelect.h">
-      <Filter>Header Files\src\menus</Filter>
-    </ClInclude>
-    <ClInclude Include="VortexEngine\VortexEngine\src\menus\GlobalBrightness.h">
-      <Filter>Header Files\src\menus</Filter>
-    </ClInclude>
-    <ClInclude Include="VortexEngine\VortexEngine\src\menus\ModeSharing.h">
-      <Filter>Header Files\src\menus</Filter>
-    </ClInclude>
-    <ClInclude Include="VortexEngine\VortexEngine\src\menus\Randomizer.h">
-      <Filter>Header Files\src\menus</Filter>
-    </ClInclude>
-    <ClInclude Include="VortexEngine\VortexEngine\src\menus\Menu.h">
-      <Filter>Header Files\src\menus</Filter>
-    </ClInclude>
-    <ClInclude Include="VortexEngine\VortexEngine\src\Button.h">
-      <Filter>Header Files\src</Filter>
-    </ClInclude>
-    <ClInclude Include="VortexEngine\VortexEngine\src\Colorset.h">
-      <Filter>Header Files\src</Filter>
-    </ClInclude>
-    <ClInclude Include="VortexEngine\VortexEngine\src\ColorTypes.h">
-      <Filter>Header Files\src</Filter>
-    </ClInclude>
-    <ClInclude Include="VortexEngine\VortexEngine\src\LedTypes.h">
-      <Filter>Header Files\src</Filter>
-    </ClInclude>
-    <ClInclude Include="VortexEngine\VortexEngine\src\Leds.h">
-      <Filter>Header Files\src</Filter>
-    </ClInclude>
-    <ClInclude Include="VortexEngine\VortexEngine\src\Mode.h">
-      <Filter>Header Files\src</Filter>
-    </ClInclude>
-    <ClInclude Include="VortexEngine\VortexEngine\src\ModeBuilder.h">
-      <Filter>Header Files\src</Filter>
-    </ClInclude>
-    <ClInclude Include="VortexEngine\VortexEngine\src\TimeControl.h">
-      <Filter>Header Files\src</Filter>
+    <ClInclude Include="VortexEngine\VortexEngine\src\Menus\Menu.h">
+      <Filter>Header Files\src\Menus</Filter>
     </ClInclude>
     <ClInclude Include="Arduino.h">
       <Filter>Header Files</Filter>
@@ -320,83 +353,38 @@
     <ClInclude Include="TestFramework.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="VortexEngine\VortexEngine\src\Log.h">
-      <Filter>Header Files\src</Filter>
+    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Single\SingleLedPattern.h">
+      <Filter>Header Files\src\Patterns\Single</Filter>
     </ClInclude>
-    <ClInclude Include="VortexEngine\VortexEngine\src\menus\PatternSelect.h">
-      <Filter>Header Files\src\menus</Filter>
+    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Single\TracerPattern.h">
+      <Filter>Header Files\src\Patterns\Single</Filter>
     </ClInclude>
-    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns.h">
-      <Filter>Header Files\src</Filter>
+    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Single\BasicPattern.h">
+      <Filter>Header Files\src\Patterns\Single</Filter>
     </ClInclude>
-    <ClInclude Include="VortexEngine\VortexEngine\src\PatternBuilder.h">
-      <Filter>Header Files\src</Filter>
+    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Single\AdvancedPattern.h">
+      <Filter>Header Files\src\Patterns\Single</Filter>
     </ClInclude>
-    <ClInclude Include="VortexEngine\VortexEngine\src\Timings.h">
-      <Filter>Header Files\src</Filter>
+    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\HueShiftPattern.h">
+      <Filter>Header Files\src\Patterns\Multi</Filter>
     </ClInclude>
-    <ClInclude Include="VortexEngine\VortexEngine\src\Buttons.h">
-      <Filter>Header Files\src</Filter>
+    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\HybridPattern.h">
+      <Filter>Header Files\src\Patterns\Multi</Filter>
     </ClInclude>
-    <ClInclude Include="VortexEngine\VortexEngine\src\Menus.h">
-      <Filter>Header Files\src</Filter>
+    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\MultiLedPattern.h">
+      <Filter>Header Files\src\Patterns\Multi</Filter>
     </ClInclude>
-    <ClInclude Include="VortexEngine\VortexEngine\src\Modes.h">
-      <Filter>Header Files\src</Filter>
+    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\RabbitPattern.h">
+      <Filter>Header Files\src\Patterns\Multi</Filter>
     </ClInclude>
-    <ClInclude Include="VortexEngine\VortexEngine\src\Timer.h">
-      <Filter>Header Files\src</Filter>
+    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Single\BlendPattern.h">
+      <Filter>Header Files\src\Patterns\Single</Filter>
     </ClInclude>
-    <ClInclude Include="VortexEngine\VortexEngine\src\Memory.h">
-      <Filter>Header Files\src</Filter>
+    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\TheaterChasePattern.h">
+      <Filter>Header Files\src\Patterns\Multi</Filter>
     </ClInclude>
-    <ClInclude Include="FlashStorage.h">
-      <Filter>Header Files\src</Filter>
-    </ClInclude>
-    <ClInclude Include="VortexEngine\VortexEngine\src\Infrared.h">
-      <Filter>Header Files\src</Filter>
-    </ClInclude>
-    <ClInclude Include="VortexEngine\VortexEngine\src\SerialBuffer.h">
-      <Filter>Header Files\src</Filter>
-    </ClInclude>
-    <ClInclude Include="VortexEngine\VortexEngine\src\Storage.h">
-      <Filter>Header Files\src</Filter>
-    </ClInclude>
-    <ClInclude Include="VortexEngine\VortexEngine\src\patterns\single\SingleLedPattern.h">
-      <Filter>Header Files\src\patterns\single</Filter>
-    </ClInclude>
-    <ClInclude Include="VortexEngine\VortexEngine\src\patterns\single\TracerPattern.h">
-      <Filter>Header Files\src\patterns\single</Filter>
-    </ClInclude>
-    <ClInclude Include="VortexEngine\VortexEngine\src\patterns\single\BasicPattern.h">
-      <Filter>Header Files\src\patterns\single</Filter>
-    </ClInclude>
-    <ClInclude Include="VortexEngine\VortexEngine\src\patterns\single\AdvancedPattern.h">
-      <Filter>Header Files\src\patterns\single</Filter>
-    </ClInclude>
-    <ClInclude Include="VortexEngine\VortexEngine\src\patterns\multi\HueShiftPattern.h">
-      <Filter>Header Files\src\patterns\multi</Filter>
-    </ClInclude>
-    <ClInclude Include="VortexEngine\VortexEngine\src\patterns\multi\HybridPattern.h">
-      <Filter>Header Files\src\patterns\multi</Filter>
-    </ClInclude>
-    <ClInclude Include="VortexEngine\VortexEngine\src\patterns\multi\MultiLedPattern.h">
-      <Filter>Header Files\src\patterns\multi</Filter>
-    </ClInclude>
-    <ClInclude Include="VortexEngine\VortexEngine\src\patterns\multi\RabbitPattern.h">
-      <Filter>Header Files\src\patterns\multi</Filter>
-    </ClInclude>
-    <ClInclude Include="VortexEngine\VortexEngine\src\patterns\single\BlendPattern.h">
-      <Filter>Header Files\src\patterns\single</Filter>
-    </ClInclude>
-    <ClInclude Include="VortexEngine\VortexEngine\src\patterns\multi\TheaterChasePattern.h">
-      <Filter>Header Files\src\patterns\multi</Filter>
-    </ClInclude>
-    <ClInclude Include="VortexEngine\VortexEngine\src\BitStream.h">
-      <Filter>Header Files\src</Filter>
-    </ClInclude>
-    <ClInclude Include="VortexEngine\VortexEngine\src\patterns\single\BracketsPattern.h">
-      <Filter>Header Files\src\patterns\single</Filter>
+    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Single\BracketsPattern.h">
+      <Filter>Header Files\src\Patterns\Single</Filter>
     </ClInclude>
     <ClInclude Include="VortexEngine\VortexEngine\src\VortexEngine.h">
       <Filter>Header Files\src</Filter>
@@ -404,89 +392,173 @@
     <ClInclude Include="ArduinoSerial.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="VortexEngine\VortexEngine\src\Serial.h">
-      <Filter>Header Files\src</Filter>
+    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Single\SolidPattern.h">
+      <Filter>Header Files\src\Patterns\Single</Filter>
     </ClInclude>
-    <ClInclude Include="VortexEngine\VortexEngine\src\Sequence.h">
-      <Filter>Header Files\src</Filter>
+    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\ZigzagPattern.h">
+      <Filter>Header Files\src\Patterns\Multi</Filter>
     </ClInclude>
-    <ClInclude Include="VortexEngine\VortexEngine\src\patterns\single\SolidPattern.h">
-      <Filter>Header Files\src\patterns\single</Filter>
+    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Single\ComplementaryBlendPattern.h">
+      <Filter>Header Files\src\Patterns\Single</Filter>
     </ClInclude>
-    <ClInclude Include="VortexEngine\VortexEngine\src\patterns\multi\SequencedPattern.h">
-      <Filter>Header Files\src\patterns\multi</Filter>
+    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\CrossDopsPattern.h">
+      <Filter>Header Files\src\Patterns\Multi</Filter>
     </ClInclude>
-    <ClInclude Include="VortexEngine\VortexEngine\src\patterns\multi\ZigzagPattern.h">
-      <Filter>Header Files\src\patterns\multi</Filter>
+    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\DoubleStrobePattern.h">
+      <Filter>Header Files\src\Patterns\Multi</Filter>
     </ClInclude>
-    <ClInclude Include="VortexEngine\VortexEngine\src\patterns\single\ComplementaryBlendPattern.h">
-      <Filter>Header Files\src\patterns\single</Filter>
+    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\DripPattern.h">
+      <Filter>Header Files\src\Patterns\Multi</Filter>
     </ClInclude>
-    <ClInclude Include="VortexEngine\VortexEngine\src\patterns\multi\CrossDopsPattern.h">
-      <Filter>Header Files\src\patterns\multi</Filter>
+    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\MeteorPattern.h">
+      <Filter>Header Files\src\Patterns\Multi</Filter>
     </ClInclude>
-    <ClInclude Include="VortexEngine\VortexEngine\src\patterns\multi\DoubleStrobePattern.h">
-      <Filter>Header Files\src\patterns\multi</Filter>
+    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\TipTopPattern.h">
+      <Filter>Header Files\src\Patterns\Multi</Filter>
     </ClInclude>
-    <ClInclude Include="VortexEngine\VortexEngine\src\patterns\multi\DripPattern.h">
-      <Filter>Header Files\src\patterns\multi</Filter>
+    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\SparkleTracePattern.h">
+      <Filter>Header Files\src\Patterns\Multi</Filter>
     </ClInclude>
-    <ClInclude Include="VortexEngine\VortexEngine\src\patterns\multi\MeteorPattern.h">
-      <Filter>Header Files\src\patterns\multi</Filter>
+    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\FillPattern.h">
+      <Filter>Header Files\src\Patterns\Multi</Filter>
     </ClInclude>
-    <ClInclude Include="VortexEngine\VortexEngine\src\patterns\multi\TipTopPattern.h">
-      <Filter>Header Files\src\patterns\multi</Filter>
+    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\VortexWipePattern.h">
+      <Filter>Header Files\src\Patterns\Multi</Filter>
     </ClInclude>
-    <ClInclude Include="VortexEngine\VortexEngine\src\LedStash.h">
-      <Filter>Header Files\src</Filter>
+    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\WarpPattern.h">
+      <Filter>Header Files\src\Patterns\Multi</Filter>
     </ClInclude>
-    <ClInclude Include="VortexEngine\VortexEngine\src\patterns\multi\SparkleTracePattern.h">
-      <Filter>Header Files\src\patterns\multi</Filter>
+    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\WarpWormPattern.h">
+      <Filter>Header Files\src\Patterns\Multi</Filter>
     </ClInclude>
-    <ClInclude Include="VortexEngine\VortexEngine\src\patterns\multi\FillPattern.h">
-      <Filter>Header Files\src\patterns\multi</Filter>
+    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\SnowballPattern.h">
+      <Filter>Header Files\src\Patterns\Multi</Filter>
     </ClInclude>
-    <ClInclude Include="VortexEngine\VortexEngine\src\patterns\multi\VortexWipePattern.h">
-      <Filter>Header Files\src\patterns\multi</Filter>
+    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\LighthousePattern.h">
+      <Filter>Header Files\src\Patterns\Multi</Filter>
     </ClInclude>
-    <ClInclude Include="VortexEngine\VortexEngine\src\patterns\multi\WarpPattern.h">
-      <Filter>Header Files\src\patterns\multi</Filter>
+    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\PulsishPattern.h">
+      <Filter>Header Files\src\Patterns\Multi</Filter>
     </ClInclude>
-    <ClInclude Include="VortexEngine\VortexEngine\src\patterns\multi\WarpWormPattern.h">
-      <Filter>Header Files\src\patterns\multi</Filter>
+    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\BlinkStepPattern.h">
+      <Filter>Header Files\src\Patterns\Multi</Filter>
     </ClInclude>
-    <ClInclude Include="VortexEngine\VortexEngine\src\patterns\multi\SnowballPattern.h">
-      <Filter>Header Files\src\patterns\multi</Filter>
+    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\BouncePattern.h">
+      <Filter>Header Files\src\Patterns\Multi</Filter>
     </ClInclude>
-    <ClInclude Include="VortexEngine\VortexEngine\src\patterns\multi\LighthousePattern.h">
-      <Filter>Header Files\src\patterns\multi</Filter>
+    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\SplitStrobiePattern.h">
+      <Filter>Header Files\src\Patterns\Multi</Filter>
     </ClInclude>
-    <ClInclude Include="VortexEngine\VortexEngine\src\patterns\multi\PulsishPattern.h">
-      <Filter>Header Files\src\patterns\multi</Filter>
+    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\ImpactPattern.h">
+      <Filter>Header Files\src\Patterns\Multi</Filter>
     </ClInclude>
-    <ClInclude Include="VortexEngine\VortexEngine\src\patterns\multi\BlinkStepPattern.h">
-      <Filter>Header Files\src\patterns\multi</Filter>
+    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\BackStrobePattern.h">
+      <Filter>Header Files\src\Patterns\Multi</Filter>
     </ClInclude>
-    <ClInclude Include="VortexEngine\VortexEngine\src\patterns\multi\BouncePattern.h">
-      <Filter>Header Files\src\patterns\multi</Filter>
+    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\FlowersPattern.h">
+      <Filter>Header Files\src\Patterns\Multi</Filter>
     </ClInclude>
-    <ClInclude Include="VortexEngine\VortexEngine\src\patterns\multi\SplitStrobiePattern.h">
-      <Filter>Header Files\src\patterns\multi</Filter>
+    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\DripMorphPattern.h">
+      <Filter>Header Files\src\Patterns\Multi</Filter>
     </ClInclude>
-    <ClInclude Include="VortexEngine\VortexEngine\src\patterns\multi\ImpactPattern.h">
-      <Filter>Header Files\src\patterns\multi</Filter>
+    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\JestPattern.h">
+      <Filter>Header Files\src\Patterns\Multi</Filter>
     </ClInclude>
-    <ClInclude Include="VortexEngine\VortexEngine\src\patterns\multi\BackStrobePattern.h">
-      <Filter>Header Files\src\patterns\multi</Filter>
+    <ClInclude Include="VortexEngine\VortexEngine\src\Leds\LedStash.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="VortexEngine\VortexEngine\src\patterns\multi\FlowersPattern.h">
-      <Filter>Header Files\src\patterns\multi</Filter>
+    <ClInclude Include="VortexEngine\VortexEngine\src\Leds\LedTypes.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="VortexEngine\VortexEngine\src\patterns\multi\DripMorphPattern.h">
-      <Filter>Header Files\src\patterns\multi</Filter>
+    <ClInclude Include="VortexEngine\VortexEngine\src\Serial\BitStream.h">
+      <Filter>Header Files\src\Serial</Filter>
     </ClInclude>
-    <ClInclude Include="VortexEngine\VortexEngine\src\patterns\multi\JestPattern.h">
-      <Filter>Header Files\src\patterns\multi</Filter>
+    <ClInclude Include="VortexEngine\VortexEngine\src\Buttons\Button.h">
+      <Filter>Header Files\src\Buttons</Filter>
+    </ClInclude>
+    <ClInclude Include="VortexEngine\VortexEngine\src\Buttons\Buttons.h">
+      <Filter>Header Files\src\Buttons</Filter>
+    </ClInclude>
+    <ClInclude Include="VortexEngine\VortexEngine\src\Colors\Colorset.h">
+      <Filter>Header Files\src\Colors</Filter>
+    </ClInclude>
+    <ClInclude Include="VortexEngine\VortexEngine\src\Colors\ColorTypes.h">
+      <Filter>Header Files\src\Colors</Filter>
+    </ClInclude>
+    <ClInclude Include="FlashStorage.h">
+      <Filter>Header Files\src\Storage</Filter>
+    </ClInclude>
+    <ClInclude Include="VortexEngine\VortexEngine\src\Infrared\Infrared.h">
+      <Filter>Header Files\src\Infrared</Filter>
+    </ClInclude>
+    <ClInclude Include="VortexEngine\VortexEngine\src\Leds\Leds.h">
+      <Filter>Header Files\src\Leds</Filter>
+    </ClInclude>
+    <ClInclude Include="VortexEngine\VortexEngine\src\Log\Log.h">
+      <Filter>Header Files\src\Log</Filter>
+    </ClInclude>
+    <ClInclude Include="VortexEngine\VortexEngine\src\Memory\Memory.h">
+      <Filter>Header Files\src\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="VortexEngine\VortexEngine\src\Menus\Menus.h">
+      <Filter>Header Files\src\Menus</Filter>
+    </ClInclude>
+    <ClInclude Include="VortexEngine\VortexEngine\src\Modes\Mode.h">
+      <Filter>Header Files\src\Modes</Filter>
+    </ClInclude>
+    <ClInclude Include="VortexEngine\VortexEngine\src\Modes\ModeBuilder.h">
+      <Filter>Header Files\src\Modes</Filter>
+    </ClInclude>
+    <ClInclude Include="VortexEngine\VortexEngine\src\Modes\Modes.h">
+      <Filter>Header Files\src\Modes</Filter>
+    </ClInclude>
+    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\PatternBuilder.h">
+      <Filter>Header Files\src\Patterns</Filter>
+    </ClInclude>
+    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Patterns.h">
+      <Filter>Header Files\src\Patterns</Filter>
+    </ClInclude>
+    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\Sequencer\Sequence.h">
+      <Filter>Header Files\src\Patterns\Multi\Sequencer</Filter>
+    </ClInclude>
+    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\Sequencer\SequencedPattern.h">
+      <Filter>Header Files\src\Patterns\Multi\Sequencer</Filter>
+    </ClInclude>
+    <ClInclude Include="VortexEngine\VortexEngine\src\Serial\Serial.h">
+      <Filter>Header Files\src\Serial</Filter>
+    </ClInclude>
+    <ClInclude Include="VortexEngine\VortexEngine\src\Serial\SerialBuffer.h">
+      <Filter>Header Files\src\Serial</Filter>
+    </ClInclude>
+    <ClInclude Include="VortexEngine\VortexEngine\src\Storage\Storage.h">
+      <Filter>Header Files\src\Storage</Filter>
+    </ClInclude>
+    <ClInclude Include="VortexEngine\VortexEngine\src\Time\TimeControl.h">
+      <Filter>Header Files\src\Time</Filter>
+    </ClInclude>
+    <ClInclude Include="VortexEngine\VortexEngine\src\Time\Timer.h">
+      <Filter>Header Files\src\Time</Filter>
+    </ClInclude>
+    <ClInclude Include="VortexEngine\VortexEngine\src\Time\Timings.h">
+      <Filter>Header Files\src\Time</Filter>
+    </ClInclude>
+    <ClInclude Include="VortexEngine\VortexEngine\src\Menus\MenuList\ColorSelect.h">
+      <Filter>Header Files\src\Menus\MenuList</Filter>
+    </ClInclude>
+    <ClInclude Include="VortexEngine\VortexEngine\src\Menus\MenuList\FactoryReset.h">
+      <Filter>Header Files\src\Menus\MenuList</Filter>
+    </ClInclude>
+    <ClInclude Include="VortexEngine\VortexEngine\src\Menus\MenuList\GlobalBrightness.h">
+      <Filter>Header Files\src\Menus\MenuList</Filter>
+    </ClInclude>
+    <ClInclude Include="VortexEngine\VortexEngine\src\Menus\MenuList\ModeSharing.h">
+      <Filter>Header Files\src\Menus\MenuList</Filter>
+    </ClInclude>
+    <ClInclude Include="VortexEngine\VortexEngine\src\Menus\MenuList\PatternSelect.h">
+      <Filter>Header Files\src\Menus\MenuList</Filter>
+    </ClInclude>
+    <ClInclude Include="VortexEngine\VortexEngine\src\Menus\MenuList\Randomizer.h">
+      <Filter>Header Files\src\Menus\MenuList</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
