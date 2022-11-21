@@ -13,7 +13,7 @@
 #define CHANGE 1
 
 // uncommont this to enable IR comms simulation
-#define ENABLE_IR_COMMS
+//#define SIMULATE_IR_COMMS
 
 // init this drop-in framework
 void init_arduino();

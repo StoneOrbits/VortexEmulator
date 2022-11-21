@@ -93,8 +93,13 @@ bool TestFramework::init(HINSTANCE hInstance)
     localtime_s(&tm, &t);
     ostringstream oss;
     oss << std::put_time(&tm, "%d-%m-%Y-%H-%M-%S");
+    oss << "." << GetCurrentProcessId();
     string filename = "vortex-test-framework-log." + oss.str() + ".txt";
-    fopen_s(&m_logHandle, filename.c_str(), "w");
+    int err = fopen_s(&m_logHandle, filename.c_str(), "w");
+    if (err != 0 || !m_logHandle) {
+      MessageBox(NULL, "Failed to open logfile", to_string(err).c_str(), 0);
+      return false;
+    }
   }
 
   // create the pause mutex
@@ -694,4 +699,24 @@ void TestFramework::printlog(const char *file, const char *func, int line, const
   strMsg += "\n";
   vfprintf(g_pTestFramework->m_consoleHandle, strMsg.c_str(), list);
   vfprintf(g_pTestFramework->m_logHandle, strMsg.c_str(), list);
+}
+
+std::string TestFramework::getWindowTitle()
+{
+  char text[2048] = {0};
+  GetWindowText(m_hwnd, text, sizeof(text));
+  return text;
+}
+
+void TestFramework::setWindowTitle(std::string title)
+{
+  SetWindowTextA(m_hwnd, title.c_str());
+}
+
+
+void TestFramework::setWindowPos(uint32_t x, uint32_t y)
+{
+  RECT pos;
+  GetWindowRect(m_hwnd, &pos);
+  SetWindowPos(m_hwnd, NULL, x, y, pos.right - pos.left, pos.bottom - pos.top, 0);
 }

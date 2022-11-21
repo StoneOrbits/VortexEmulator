@@ -147,8 +147,11 @@
     <ClCompile Include="ArduinoSerial.cpp" />
     <ClCompile Include="FastLED.cpp" />
     <ClCompile Include="FlashStorage.cpp" />
+    <ClCompile Include="VortexEngine\VortexEngine\src\Infrared\IRReceiver.cpp" />
     <ClCompile Include="TestFramework.cpp" />
+    <ClCompile Include="VortexEngine\VortexEngine\src\Infrared\IRSender.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\Leds\LedStash.cpp" />
+    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\Sequencer\ChaserPattern.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\Serial\BitStream.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\Buttons\Button.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\Buttons\Buttons.cpp" />
@@ -208,7 +211,7 @@
     <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Single\SolidPattern.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Single\TracerPattern.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\Sequencer\Sequence.cpp" />
-    <ClCompile Include="VortexEngine\VortexEngine\src\Serial\SerialBuffer.cpp" />
+    <ClCompile Include="VortexEngine\VortexEngine\src\Serial\ByteStream.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\Serial\Serial.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\Storage\Storage.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\Time\TimeControl.cpp" />
@@ -220,10 +223,14 @@
     <ClInclude Include="Adafruit_Dotstar.h" />
     <ClInclude Include="Arduino.h" />
     <ClInclude Include="FastLED.h" />
+    <ClInclude Include="VortexEngine\VortexEngine\src\Infrared\IRReceiver.h" />
     <ClInclude Include="TestFramework.h" />
     <ClInclude Include="ArduinoSerial.h" />
+    <ClInclude Include="VortexEngine\VortexEngine\src\Infrared\IRConfig.h" />
+    <ClInclude Include="VortexEngine\VortexEngine\src\Infrared\IRSender.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Leds\LedStash.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Leds\LedTypes.h" />
+    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\Sequencer\ChaserPattern.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Serial\BitStream.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Buttons\Button.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Buttons\Buttons.h" />
@@ -284,7 +291,7 @@
     <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Single\SolidPattern.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Single\TracerPattern.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\Sequencer\Sequence.h" />
-    <ClInclude Include="VortexEngine\VortexEngine\src\Serial\SerialBuffer.h" />
+    <ClInclude Include="VortexEngine\VortexEngine\src\Serial\ByteStream.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Serial\Serial.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Storage\Storage.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Time\TimeControl.h" />
