@@ -28,6 +28,8 @@ static LARGE_INTEGER tps; //tps = ticks per second
 SOCKET sock = -1;
 SOCKET client_sock = -1;
 bool is_server = false;
+HANDLE hServerMutex = NULL;
+bool is_ir_server() { return is_server; }
 static bool receive_message(uint32_t &out_message);
 static bool send_network_message(uint32_t message);
 static bool accept_connection();
@@ -44,7 +46,7 @@ void init_arduino()
   QueryPerformanceFrequency(&tps);
   QueryPerformanceCounter(&start);
 
-#ifdef ENABLE_IR_COMMS
+#ifdef SIMULATE_IR_COMMS
   WSAData wsaData;
   // Initialize Winsock
   int res = WSAStartup(MAKEWORD(2, 2), &wsaData);
@@ -52,10 +54,14 @@ void init_arduino()
     printf("WSAStartup failed with error: %d\n", res);
     return;
   }
-  // try to connect to server first, if no server
-  if (!init_network_client()) {
-    // then just initialize an listen
+  // use a mutex to detect if server is running yet
+  hServerMutex = CreateMutex(NULL, TRUE, "VortexServerMutex");
+  if (hServerMutex && GetLastError() != ERROR_ALREADY_EXISTS) {
+    // initialize the listen server
     init_server();
+  } else {
+    // otherwise try to connect client to server
+    init_network_client();
   }
 #endif
 #endif
@@ -169,8 +175,9 @@ void detachInterrupt(int interrupt)
 void test_ir_mark(uint32_t duration)
 {
 #ifndef LINUX_FRAMEWORK
-#ifdef ENABLE_IR_COMMS
-  send_network_message(duration | (1<<31));
+#ifdef SIMULATE_IR_COMMS
+  //send_network_message((uint32_t)duration | (1<<31));
+  send_network_message((uint32_t)duration);
 #endif
 #endif
 }
@@ -178,8 +185,8 @@ void test_ir_mark(uint32_t duration)
 void test_ir_space(uint32_t duration)
 {
 #ifndef LINUX_FRAMEWORK
-#ifdef ENABLE_IR_COMMS
-  send_network_message(duration);
+#ifdef SIMULATE_IR_COMMS
+  send_network_message((uint32_t)duration);
 #endif
 #endif
 }
@@ -221,6 +228,8 @@ static bool send_network_message(uint32_t message)
   if (is_server) {
     target_sock = client_sock;
   }
+  //static uint32_t counter = 0;
+  //printf("Sending[%u]: %u\n", counter++, message);
   if (send(target_sock, (char *)&message, sizeof(message), 0) == SOCKET_ERROR) {
     // most likely server closed
     printf("send failed with error: %d\n", WSAGetLastError());
@@ -265,7 +274,7 @@ static DWORD __stdcall listen_connection(void *arg)
     if (IR_change_callback) {
       IR_change_callback(message);
     }
-    //printf("Received %s: %x\n", is_mark ? "mark" : "space", message);
+    //printf("Received %s: %u\n", is_mark ? "mark" : "space", message);
   }
 
   printf("Connection closed\n");
@@ -310,9 +319,22 @@ static bool init_server()
     printf("listen failed with error: %d\n", WSAGetLastError());
     return false;
   }
+  CreateThread(NULL, 0, listen_connection, NULL, 0, NULL);
   printf("Success listening on *:8080\n");
   is_server = true;
-  CreateThread(NULL, 0, listen_connection, NULL, 0, NULL);
+  g_pTestFramework->setWindowTitle(g_pTestFramework->getWindowTitle() + " Receiver");
+  g_pTestFramework->setWindowPos(250, 650);
+
+  // launch another instance of the test framwork to act as the sender
+  if (is_ir_server()) {
+    char filename[2048] = {0};
+    GetModuleFileName(GetModuleHandle(NULL), filename, sizeof(filename));
+    PROCESS_INFORMATION procInfo;
+    memset(&procInfo, 0, sizeof(procInfo));
+    STARTUPINFO startInfo;
+    memset(&startInfo, 0, sizeof(startInfo));
+    CreateProcess(filename, NULL, NULL, NULL, false, 0, NULL, NULL, &startInfo, &procInfo);
+  }
   return true;
 }
 
@@ -366,6 +388,8 @@ static bool init_network_client()
     return false;
   }
   printf("Success initializing network client\n");
+  g_pTestFramework->setWindowTitle(g_pTestFramework->getWindowTitle() + " Sender");
+  g_pTestFramework->setWindowPos(1300, 650);
   //info("Connected to server %s", config.server_ip.c_str());
   return true;
 }

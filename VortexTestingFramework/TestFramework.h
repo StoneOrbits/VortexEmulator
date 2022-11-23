@@ -8,6 +8,7 @@
 #include "Leds/LedTypes.h"
 #include "Patterns/Patterns.h"
 
+#include <string>
 #include <vector>
 #include <map>
 
@@ -73,6 +74,11 @@ public:
   HBRUSH getBrushCol(RGBColor col);
 
   void redrawStrip() { m_redrawStrip = true; }
+
+  std::string getWindowTitle();
+  void setWindowTitle(std::string title);
+  
+  void setWindowPos(uint32_t x, uint32_t y);
 
   // loop that runs arduino code
   static DWORD __stdcall arduino_loop_thread(void *arg);
