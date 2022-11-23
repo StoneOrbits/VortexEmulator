@@ -581,5 +581,8 @@
     <ClInclude Include="VortexEngine\VortexEngine\src\Infrared\IRReceiver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="VortexEngine\VortexEngine\src\VortexConfig.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

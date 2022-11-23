@@ -297,6 +297,7 @@
     <ClInclude Include="VortexEngine\VortexEngine\src\Time\TimeControl.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Time\Timer.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Time\Timings.h" />
+    <ClInclude Include="VortexEngine\VortexEngine\src\VortexConfig.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\VortexEngine.h" />
     <ClInclude Include="FlashStorage.h" />
   </ItemGroup>
