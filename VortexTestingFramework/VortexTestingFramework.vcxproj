@@ -151,7 +151,9 @@
     <ClCompile Include="TestFramework.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\Infrared\IRSender.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\Leds\LedStash.cpp" />
+    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\MateriaPattern.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\Sequencer\ChaserPattern.cpp" />
+    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Single\DashDopsPattern.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\Serial\BitStream.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\Buttons\Button.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\Buttons\Buttons.cpp" />
@@ -230,7 +232,9 @@
     <ClInclude Include="VortexEngine\VortexEngine\src\Infrared\IRSender.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Leds\LedStash.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Leds\LedTypes.h" />
+    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\MateriaPattern.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\Sequencer\ChaserPattern.h" />
+    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Single\DashDopsPattern.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Serial\BitStream.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Buttons\Button.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Buttons\Buttons.h" />
