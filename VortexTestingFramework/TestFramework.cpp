@@ -52,6 +52,7 @@ TestFramework::TestFramework() :
   m_hwndClickButton(nullptr),
   m_hwndTickrateSlider(nullptr),
   m_hwndTickOffsetSlider(nullptr),
+  m_hwndLoadButton(nullptr),
   m_hwnd(nullptr),
   m_wc(),
   m_brightness(255),

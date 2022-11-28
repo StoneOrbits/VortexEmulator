@@ -215,7 +215,7 @@
     <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Single\TracerPattern.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\Sequencer\Sequence.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\Serial\ByteStream.cpp" />
-    <ClCompile Include="VortexEngine\VortexEngine\src\Serial\lz4.c" />
+    <ClCompile Include="VortexEngine\VortexEngine\src\Serial\Compression.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\Serial\Serial.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\Storage\Storage.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\Time\TimeControl.cpp" />
@@ -299,7 +299,7 @@
     <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Single\TracerPattern.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\Sequencer\Sequence.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Serial\ByteStream.h" />
-    <ClInclude Include="VortexEngine\VortexEngine\src\Serial\lz4.h" />
+    <ClInclude Include="VortexEngine\VortexEngine\src\Serial\Compression.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Serial\Serial.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Storage\Storage.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Time\TimeControl.h" />

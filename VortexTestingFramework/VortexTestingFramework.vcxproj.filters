@@ -351,7 +351,7 @@
     <ClCompile Include="VortexEngine\VortexEngine\src\Modes\ModeList\JestMode.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="VortexEngine\VortexEngine\src\Serial\lz4.c">
+    <ClCompile Include="VortexEngine\VortexEngine\src\Serial\Compression.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -605,7 +605,7 @@
     <ClInclude Include="VortexEngine\VortexEngine\src\Modes\ModeList\JestMode.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="VortexEngine\VortexEngine\src\Serial\lz4.h">
+    <ClInclude Include="VortexEngine\VortexEngine\src\Serial\Compression.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
