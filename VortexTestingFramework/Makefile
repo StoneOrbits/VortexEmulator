@@ -98,6 +98,7 @@ valgrind: vortex_framework
 	  --show-leak-kinds=all \
 	  --track-origins=yes \
 	  --suppressions=valgrind_ncurses_suppressions.supp \
+	  --gen-suppressions=all \
 	  --log-file=valg.out \
 	  ./vortex_framework
 	cat valg.out
