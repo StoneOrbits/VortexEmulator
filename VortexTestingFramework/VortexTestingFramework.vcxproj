@@ -147,7 +147,6 @@
     <ClCompile Include="ArduinoSerial.cpp" />
     <ClCompile Include="FastLED.cpp" />
     <ClCompile Include="FlashStorage.cpp" />
-    <ClCompile Include="VortexEngine\VortexEngine\src\Modes\ModeList\JestMode.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\Infrared\IRReceiver.cpp" />
     <ClCompile Include="TestFramework.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\Infrared\IRSender.cpp" />
@@ -227,7 +226,6 @@
     <ClInclude Include="Adafruit_Dotstar.h" />
     <ClInclude Include="Arduino.h" />
     <ClInclude Include="FastLED.h" />
-    <ClInclude Include="VortexEngine\VortexEngine\src\Modes\ModeList\JestMode.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Infrared\IRReceiver.h" />
     <ClInclude Include="TestFramework.h" />
     <ClInclude Include="ArduinoSerial.h" />
