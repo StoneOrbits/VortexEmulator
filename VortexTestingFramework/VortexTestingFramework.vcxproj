@@ -151,6 +151,7 @@
     <ClCompile Include="TestFramework.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\Infrared\IRSender.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\Leds\LedStash.cpp" />
+    <ClCompile Include="VortexEngine\VortexEngine\src\Modes\DefaultModes.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\MateriaPattern.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\Sequencer\ChaserPattern.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Single\DashDopsPattern.cpp" />
@@ -233,6 +234,7 @@
     <ClInclude Include="VortexEngine\VortexEngine\src\Infrared\IRSender.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Leds\LedStash.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Leds\LedTypes.h" />
+    <ClInclude Include="VortexEngine\VortexEngine\src\Modes\DefaultModes.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\MateriaPattern.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\Sequencer\ChaserPattern.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Single\DashDopsPattern.h" />
