@@ -289,7 +289,7 @@ void TestFramework::paint(HWND hwnd)
       RECT stripPos = { (LONG)i, 230, (LONG)i + 1, 250 };
       RGBColor col = m_patternStrip[i];
       HSVColor hsvCol = col;
-      uint32_t val = hsvCol.val;
+      uint32_t val = 255; //hsvCol.val;
       // if drawing a color with non full value
       if (!col.empty() && val < 255) {
         // fill black background
