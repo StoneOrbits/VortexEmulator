@@ -52,6 +52,7 @@ TestFramework::TestFramework() :
   m_hwndClickButton(nullptr),
   m_hwndTickrateSlider(nullptr),
   m_hwndTickOffsetSlider(nullptr),
+  m_hwndLoadButton(nullptr),
   m_hwnd(nullptr),
   m_wc(),
   m_brightness(255),
@@ -288,7 +289,7 @@ void TestFramework::paint(HWND hwnd)
       RECT stripPos = { (LONG)i, 230, (LONG)i + 1, 250 };
       RGBColor col = m_patternStrip[i];
       HSVColor hsvCol = col;
-      uint32_t val = hsvCol.val;
+      uint32_t val = 255; //hsvCol.val;
       // if drawing a color with non full value
       if (!col.empty() && val < 255) {
         // fill black background
@@ -297,9 +298,6 @@ void TestFramework::paint(HWND hwnd)
         uint32_t offset = (uint32_t)(8 - ((val / 255.0) * 8));
         stripPos.top += offset;
         stripPos.bottom -= offset;
-        // replace original color with full value color
-        hsvCol.val = 255;
-        col = hsvCol;
       }
       FillRect(hdc, &stripPos, getBrushCol(col));
     }
@@ -308,12 +306,7 @@ void TestFramework::paint(HWND hwnd)
     for (uint32_t i = 0; i < MAX_COLOR_SLOTS; ++i) {
       RGBColor curCol = Modes::curMode()->getColorset()->get(i);
       HSVColor hsvCol = curCol;
-      uint32_t val = hsvCol.val;
-      if (!curCol.empty()) {
-        hsvCol.val = 255;
-      }
-      curCol = hsvCol;
-      uint32_t offset = (uint32_t)(8 - ((val / 255.0) * 8));
+      uint32_t offset = (uint32_t)(8 - ((hsvCol.val / 255.0) * 8));
       RECT colPos = { 50 + (LONG)(i * 40) , 265, 50 + (LONG)(i * 40) + 20, 285 };
       RECT bordPos = colPos;
       colPos.left += offset;

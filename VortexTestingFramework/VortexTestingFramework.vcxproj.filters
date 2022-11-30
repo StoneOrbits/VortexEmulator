@@ -348,6 +348,12 @@
     <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Single\DashDopsPattern.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="VortexEngine\VortexEngine\src\Serial\Compression.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="VortexEngine\VortexEngine\src\Modes\DefaultModes.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Pattern.h">
@@ -594,6 +600,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Single\DashDopsPattern.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VortexEngine\VortexEngine\src\Serial\Compression.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VortexEngine\VortexEngine\src\Modes\DefaultModes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
