@@ -160,7 +160,6 @@
     <ClCompile Include="VortexEngine\VortexEngine\src\Buttons\Buttons.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\Colors\Colorset.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\Colors\ColorTypes.cpp" />
-    <ClCompile Include="VortexEngine\VortexEngine\src\Infrared\Infrared.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\Leds\Leds.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\Log\Log.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\Memory\Memory.cpp" />
@@ -243,7 +242,6 @@
     <ClInclude Include="VortexEngine\VortexEngine\src\Buttons\Buttons.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Colors\Colorset.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Colors\ColorTypes.h" />
-    <ClInclude Include="VortexEngine\VortexEngine\src\Infrared\Infrared.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Leds\Leds.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Log\Log.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Memory\Memory.h" />

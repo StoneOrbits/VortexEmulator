@@ -267,9 +267,6 @@
     <ClCompile Include="VortexEngine\VortexEngine\src\Colors\ColorTypes.cpp">
       <Filter>Source Files\src\Colors</Filter>
     </ClCompile>
-    <ClCompile Include="VortexEngine\VortexEngine\src\Infrared\Infrared.cpp">
-      <Filter>Source Files\src\Infrared</Filter>
-    </ClCompile>
     <ClCompile Include="VortexEngine\VortexEngine\src\Leds\Leds.cpp">
       <Filter>Source Files\src\Leds</Filter>
     </ClCompile>
@@ -508,9 +505,6 @@
     </ClInclude>
     <ClInclude Include="FlashStorage.h">
       <Filter>Header Files\src\Storage</Filter>
-    </ClInclude>
-    <ClInclude Include="VortexEngine\VortexEngine\src\Infrared\Infrared.h">
-      <Filter>Header Files\src\Infrared</Filter>
     </ClInclude>
     <ClInclude Include="VortexEngine\VortexEngine\src\Leds\Leds.h">
       <Filter>Header Files\src\Leds</Filter>
