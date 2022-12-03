@@ -88,7 +88,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions);TEST_FRAMEWORK</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)VortexTestingFramework\;$(SolutionDir)VortexTestingFramework\VortexEngine\VortexEngine\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)\EngineDependencies\;$(ProjectDir)\VortexEngine\VortexEngine\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -103,7 +103,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions);TEST_FRAMEWORK</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)VortexTestingFramework\;$(SolutionDir)VortexTestingFramework\VortexEngine\VortexEngine\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)\EngineDependencies\;$(ProjectDir)\VortexEngine\VortexEngine\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -118,7 +118,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions);TEST_FRAMEWORK</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)VortexTestingFramework\;$(SolutionDir)VortexTestingFramework\VortexEngine\VortexEngine\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)\EngineDependencies\;$(ProjectDir)\VortexEngine\VortexEngine\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -133,7 +133,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions);TEST_FRAMEWORK</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)VortexTestingFramework\;$(SolutionDir)VortexTestingFramework\VortexEngine\VortexEngine\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)\EngineDependencies\;$(ProjectDir)\VortexEngine\VortexEngine\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -143,14 +143,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Arduino.cpp" />
-    <ClCompile Include="ArduinoSerial.cpp" />
-    <ClCompile Include="FastLED.cpp" />
-    <ClCompile Include="FlashStorage.cpp" />
+    <ClCompile Include="EngineDependencies\Arduino.cpp" />
+    <ClCompile Include="EngineDependencies\ArduinoSerial.cpp" />
+    <ClCompile Include="EngineDependencies\FastLED.cpp" />
+    <ClCompile Include="EngineDependencies\FlashStorage.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\Infrared\IRReceiver.cpp" />
     <ClCompile Include="TestFramework.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\Infrared\IRSender.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\Leds\LedStash.cpp" />
+    <ClCompile Include="VortexEngine\VortexEngine\src\Menus\MenuList\Game.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\Modes\DefaultModes.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\MateriaPattern.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\Sequencer\ChaserPattern.cpp" />
@@ -223,16 +224,17 @@
     <ClCompile Include="WinMain.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Adafruit_Dotstar.h" />
-    <ClInclude Include="Arduino.h" />
-    <ClInclude Include="FastLED.h" />
+    <ClInclude Include="EngineDependencies\Adafruit_Dotstar.h" />
+    <ClInclude Include="EngineDependencies\Arduino.h" />
+    <ClInclude Include="EngineDependencies\FastLED.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Infrared\IRReceiver.h" />
     <ClInclude Include="TestFramework.h" />
-    <ClInclude Include="ArduinoSerial.h" />
+    <ClInclude Include="EngineDependencies\ArduinoSerial.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Infrared\IRConfig.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Infrared\IRSender.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Leds\LedStash.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Leds\LedTypes.h" />
+    <ClInclude Include="VortexEngine\VortexEngine\src\Menus\MenuList\Game.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Modes\DefaultModes.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\MateriaPattern.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\Sequencer\ChaserPattern.h" />
@@ -305,7 +307,7 @@
     <ClInclude Include="VortexEngine\VortexEngine\src\Time\Timings.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\VortexConfig.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\VortexEngine.h" />
-    <ClInclude Include="FlashStorage.h" />
+    <ClInclude Include="EngineDependencies\FlashStorage.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -173,9 +173,9 @@ void TestFramework::create(HWND hwnd)
   //  WS_VISIBLE | WS_CHILD | WS_TABSTOP | TBS_VERT,
   //  360, 30, 36, 160, hwnd, (HMENU)TIME_OFFSET_SLIDER_ID, nullptr, nullptr);
 
-  //m_hwndLoadButton = CreateWindow(WC_BUTTON, "+",
-  //  WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON | WS_TABSTOP,
-  //  5, 5, 22, 22, hwnd, (HMENU)LOAD_BUTTON_ID, nullptr, nullptr);
+  m_hwndLoadButton = CreateWindow(WC_BUTTON, "+",
+    WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON | WS_TABSTOP,
+    5, 5, 22, 22, hwnd, (HMENU)LOAD_BUTTON_ID, nullptr, nullptr);
 }
 
 void TestFramework::command(WPARAM wParam, LPARAM lParam)

@@ -126,16 +126,16 @@
     <ClCompile Include="VortexEngine\VortexEngine\src\Menus\Menu.cpp">
       <Filter>Source Files\src\Menus</Filter>
     </ClCompile>
-    <ClCompile Include="Arduino.cpp">
+    <ClCompile Include="EngineDependencies\Arduino.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="FastLED.cpp">
+    <ClCompile Include="EngineDependencies\FastLED.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TestFramework.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="FlashStorage.cpp">
+    <ClCompile Include="EngineDependencies\FlashStorage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Single\AdvancedPattern.cpp">
@@ -174,7 +174,7 @@
     <ClCompile Include="VortexEngine\VortexEngine\src\VortexEngine.cpp">
       <Filter>Source Files\src</Filter>
     </ClCompile>
-    <ClCompile Include="ArduinoSerial.cpp">
+    <ClCompile Include="EngineDependencies\ArduinoSerial.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Single\SolidPattern.cpp">
@@ -351,6 +351,9 @@
     <ClCompile Include="VortexEngine\VortexEngine\src\Modes\DefaultModes.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="VortexEngine\VortexEngine\src\Menus\MenuList\Game.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Pattern.h">
@@ -359,13 +362,13 @@
     <ClInclude Include="VortexEngine\VortexEngine\src\Menus\Menu.h">
       <Filter>Header Files\src\Menus</Filter>
     </ClInclude>
-    <ClInclude Include="Arduino.h">
+    <ClInclude Include="EngineDependencies\Arduino.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="FastLED.h">
+    <ClInclude Include="EngineDependencies\FastLED.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Adafruit_Dotstar.h">
+    <ClInclude Include="EngineDependencies\Adafruit_Dotstar.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TestFramework.h">
@@ -407,7 +410,7 @@
     <ClInclude Include="VortexEngine\VortexEngine\src\VortexEngine.h">
       <Filter>Header Files\src</Filter>
     </ClInclude>
-    <ClInclude Include="ArduinoSerial.h">
+    <ClInclude Include="EngineDependencies\ArduinoSerial.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Single\SolidPattern.h">
@@ -503,7 +506,7 @@
     <ClInclude Include="VortexEngine\VortexEngine\src\Colors\ColorTypes.h">
       <Filter>Header Files\src\Colors</Filter>
     </ClInclude>
-    <ClInclude Include="FlashStorage.h">
+    <ClInclude Include="EngineDependencies\FlashStorage.h">
       <Filter>Header Files\src\Storage</Filter>
     </ClInclude>
     <ClInclude Include="VortexEngine\VortexEngine\src\Leds\Leds.h">
@@ -600,6 +603,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="VortexEngine\VortexEngine\src\Modes\DefaultModes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VortexEngine\VortexEngine\src\Menus\MenuList\Game.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
