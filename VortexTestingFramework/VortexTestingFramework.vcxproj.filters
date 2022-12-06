@@ -354,6 +354,9 @@
     <ClCompile Include="VortexEngine\VortexEngine\src\Menus\MenuList\Game.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="VortexEngine\VortexEngine\src\Menus\MenuList\EditorConnection.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Pattern.h">
@@ -606,6 +609,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="VortexEngine\VortexEngine\src\Menus\MenuList\Game.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VortexEngine\VortexEngine\src\Menus\MenuList\EditorConnection.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
