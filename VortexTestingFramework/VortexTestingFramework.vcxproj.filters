@@ -174,9 +174,6 @@
     <ClCompile Include="VortexEngine\VortexEngine\src\VortexEngine.cpp">
       <Filter>Source Files\src</Filter>
     </ClCompile>
-    <ClCompile Include="EngineDependencies\ArduinoSerial.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Single\SolidPattern.cpp">
       <Filter>Source Files\src\Patterns\Single</Filter>
     </ClCompile>
@@ -357,6 +354,9 @@
     <ClCompile Include="VortexEngine\VortexEngine\src\Menus\MenuList\EditorConnection.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="EngineDependencies\ArduinoSerial.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Pattern.h">
@@ -412,9 +412,6 @@
     </ClInclude>
     <ClInclude Include="VortexEngine\VortexEngine\src\VortexEngine.h">
       <Filter>Header Files\src</Filter>
-    </ClInclude>
-    <ClInclude Include="EngineDependencies\ArduinoSerial.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Single\SolidPattern.h">
       <Filter>Header Files\src\Patterns\Single</Filter>
@@ -612,6 +609,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="VortexEngine\VortexEngine\src\Menus\MenuList\EditorConnection.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineDependencies\ArduinoSerial.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
