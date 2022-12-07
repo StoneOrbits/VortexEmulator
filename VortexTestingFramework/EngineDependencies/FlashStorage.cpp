@@ -124,7 +124,6 @@ void FlashClass::read(const volatile void *flash_ptr, void *data, uint32_t size)
   }
   fclose(f);
 #else
-  memcpy((void *)flash_ptr, data, size);
   HANDLE hFile = CreateFile("FlashStorage.flash", GENERIC_READ, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
   if (!hFile) {
     // error
