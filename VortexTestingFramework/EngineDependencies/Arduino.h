@@ -57,6 +57,9 @@ public:
     void println(const char *s) {}
     uint32_t write(const uint8_t *buf, size_t len) { return 0; }
     operator bool() { return true; }
+    int32_t available() { return 0; }
+    size_t readBytes(char *buf, size_t amt) { return 0; }
+    uint8_t read() { return 0; }
 };
 
 extern SerialClass Serial;
