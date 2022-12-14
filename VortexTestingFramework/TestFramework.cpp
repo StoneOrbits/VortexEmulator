@@ -522,13 +522,13 @@ bool TestFramework::handlePatternChange(bool force)
   // TODO: The hardware is flipped so the 'real' led position is reversed
   LedPos realPos = (LedPos)(LED_LAST - m_curSelectedLed);
   if (isMultiLedPatternID(m_curPattern)) {
-    if (!newMode->setMultiPat(m_curPattern, &m_curColorset)) {
+    if (!newMode->setMultiPat(m_curPattern, nullptr, &m_curColorset)) {
       delete newMode;
       return false;
     }
   } else {
     // bind the pattern and colorset to the mode
-    if (!newMode->setSinglePat(LED_FIRST, m_curPattern, &m_curColorset)) {
+    if (!newMode->setSinglePat(LED_FIRST, m_curPattern, nullptr, &m_curColorset)) {
       delete newMode;
       return false;
     }
