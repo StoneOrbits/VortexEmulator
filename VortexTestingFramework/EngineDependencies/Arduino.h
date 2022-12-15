@@ -51,15 +51,19 @@ void installIRCallback(void (*func)(uint32_t));
 class SerialClass
 {
 public:
-    void begin(uint32_t i) {}
-    void print(uint32_t i) {}
-    void print(const char *s) {}
-    void println(const char *s) {}
-    uint32_t write(const uint8_t *buf, size_t len) { return 0; }
-    operator bool() { return true; }
-    int32_t available() { return 0; }
-    size_t readBytes(char *buf, size_t amt) { return 0; }
-    uint8_t read() { return 0; }
+  SerialClass() : connected(false) {}
+  void begin(uint32_t i);
+  void print(uint32_t i);
+  void print(const char *s);
+  void println(const char *s);
+  uint32_t write(const uint8_t *buf, size_t len);
+  operator bool();
+  int32_t available();
+  size_t readBytes(char *buf, size_t amt);
+  uint8_t read();
+
+private:
+  bool connected;
 };
 
 extern SerialClass Serial;

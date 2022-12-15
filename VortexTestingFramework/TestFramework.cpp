@@ -31,6 +31,8 @@ TestFramework *g_pTestFramework = nullptr;
 
 using namespace std;
 
+#define LOG_TO_FILE 0
+
 #define TrackBar_GetPos(hwnd) \
     (LONG)SendMessage((hwnd), TBM_GETPOS, 0, 0)
 
@@ -74,7 +76,9 @@ TestFramework::TestFramework() :
 
 TestFramework::~TestFramework()
 {
+#if LOG_TO_FILE == 1
   fclose(m_logHandle);
+#endif
 }
 
 bool TestFramework::init(HINSTANCE hInstance)
@@ -88,6 +92,7 @@ bool TestFramework::init(HINSTANCE hInstance)
     AllocConsole();
     freopen_s(&m_consoleHandle, "CONOUT$", "w", stdout);
   }
+#if LOG_TO_FILE == 1
   if (!m_logHandle) {
     time_t t = time(nullptr);
     tm tm;
@@ -102,6 +107,7 @@ bool TestFramework::init(HINSTANCE hInstance)
       return false;
     }
   }
+#endif
 
   // create the pause mutex
   m_pauseMutex = CreateMutex(NULL, false, NULL);
@@ -691,7 +697,9 @@ void TestFramework::printlog(const char *file, const char *func, int line, const
   strMsg += msg;
   strMsg += "\n";
   vfprintf(g_pTestFramework->m_consoleHandle, strMsg.c_str(), list);
+#if LOG_TO_FILE == 1
   vfprintf(g_pTestFramework->m_logHandle, strMsg.c_str(), list);
+#endif
 }
 
 std::string TestFramework::getWindowTitle()

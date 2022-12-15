@@ -36,6 +36,7 @@ static bool accept_connection();
 static DWORD __stdcall listen_connection(void *arg);
 static bool init_server();
 static bool init_network_client();
+static HANDLE hPipe = NULL;
 #endif
 
 void init_arduino()
@@ -64,6 +65,21 @@ void init_arduino()
     init_network_client();
   }
 #endif
+  // create a global pipe
+  hPipe = CreateNamedPipe(
+    "\\\\.\\pipe\\vortextestframework",
+    PIPE_ACCESS_DUPLEX,
+    PIPE_TYPE_BYTE|PIPE_READMODE_BYTE|PIPE_NOWAIT,
+    1,
+    4096,
+    4096,
+    0,
+    NULL);
+  if (hPipe == INVALID_HANDLE_VALUE) {
+    std::string error = "Failed to open pipe";
+    error += std::to_string(GetLastError());
+    MessageBox(NULL, error.c_str(), "", 0);
+  }
 #endif
 }
 
@@ -203,6 +219,86 @@ int digitalPinToInterrupt(int pin)
   return 0;
 }
 
+void SerialClass::begin(uint32_t i)
+{
+}
+
+void SerialClass::print(uint32_t i)
+{
+  std::string str = std::to_string(i);
+  write((const uint8_t *)str.c_str(), str.length());
+}
+
+void SerialClass::print(const char *s)
+{
+  std::string str = s;
+  write((const uint8_t *)str.c_str(), str.length());
+}
+
+void SerialClass::println(const char *s)
+{
+  std::string str = s;
+  str += "\n";
+  write((const uint8_t *)str.c_str(), str.length());
+}
+
+uint32_t SerialClass::write(const uint8_t *buf, size_t len)
+{
+  DWORD total = 0;
+  DWORD written = 0;
+  do {
+    if (!WriteFile(hPipe, buf + total, len - total, &written, NULL)) {
+      break;
+    }
+    total += written;
+  } while (total < len);
+  FlushFileBuffers(hPipe);
+  return total;
+}
+
+SerialClass::operator bool()
+{
+  if (connected) {
+    return true;
+  }
+  // create a global pipe
+  if (!ConnectNamedPipe(hPipe, NULL) && GetLastError() != ERROR_PIPE_CONNECTED) {
+    return false;
+  }
+  connected = true;
+  return true;
+}
+
+int32_t SerialClass::available()
+{
+  DWORD amount = 0;
+  if (!PeekNamedPipe(hPipe, 0, 0, 0, &amount, 0)) {
+    return 0;
+  }
+  return (int32_t)amount;
+}
+
+size_t SerialClass::readBytes(char *buf, size_t amt)
+{
+  DWORD total = 0;
+  DWORD numRead = 0;
+  do {
+    if (!ReadFile(hPipe, buf + total, amt - total, &numRead, NULL)) {
+      break;
+    }
+    total += numRead;
+  } while (total < amt);
+  return total;
+}
+
+uint8_t SerialClass::read()
+{
+  uint8_t byte = 0;
+  if (!readBytes((char *)&byte, 1)) {
+    return 0;
+  }
+  return byte;
+}
 
 #ifndef LINUX_FRAMEWORK
 // windows only IR simulator via network socket
