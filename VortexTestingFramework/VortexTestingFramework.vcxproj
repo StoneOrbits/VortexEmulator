@@ -152,7 +152,6 @@
     <ClCompile Include="VortexEngine\VortexEngine\src\Infrared\IRSender.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\Leds\LedStash.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\Menus\MenuList\EditorConnection.cpp" />
-    <ClCompile Include="VortexEngine\VortexEngine\src\Menus\MenuList\Game.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\Modes\DefaultModes.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\MateriaPattern.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\Sequencer\ChaserPattern.cpp" />
@@ -236,7 +235,6 @@
     <ClInclude Include="VortexEngine\VortexEngine\src\Leds\LedStash.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Leds\LedTypes.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Menus\MenuList\EditorConnection.h" />
-    <ClInclude Include="VortexEngine\VortexEngine\src\Menus\MenuList\Game.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Modes\DefaultModes.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\MateriaPattern.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\Sequencer\ChaserPattern.h" />
