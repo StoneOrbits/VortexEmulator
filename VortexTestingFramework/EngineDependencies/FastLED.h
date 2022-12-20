@@ -19,6 +19,8 @@ typedef struct tagCRGB
 #include "Arduino.h"
 
 #define NEOPIXEL 1
+#define DOTSTAR 1
+#define BGR 1
 //LED_DATA_PIN>
 
 // =======================================================
@@ -98,6 +100,12 @@ class FastLEDClass
 public:
   // empty template to match existing fastled addLeds api
   template <int a, int b>
+  void addLeds(CRGB *cl, int count)
+  {
+    init(cl, count);
+  }
+
+  template <int a, int b, int c, int d>
   void addLeds(CRGB *cl, int count)
   {
     init(cl, count);
