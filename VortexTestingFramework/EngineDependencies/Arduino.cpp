@@ -11,6 +11,8 @@
 #include "TestFramework.h"
 #endif
 
+#include "VortexConfig.h"
+
 #include <chrono>
 #include <random>
 #include <time.h>
@@ -69,7 +71,7 @@ void init_arduino()
   hPipe = CreateNamedPipe(
     "\\\\.\\pipe\\vortextestframework",
     PIPE_ACCESS_DUPLEX,
-    PIPE_TYPE_BYTE|PIPE_READMODE_BYTE|PIPE_NOWAIT,
+    PIPE_TYPE_BYTE | PIPE_READMODE_BYTE | PIPE_NOWAIT,
     1,
     4096,
     4096,
@@ -80,7 +82,24 @@ void init_arduino()
     error += std::to_string(GetLastError());
     MessageBox(NULL, error.c_str(), "", 0);
   }
+  // try to find editor window
+  HWND hwnd = FindWindow("VWINDOW", NULL);
+  if (hwnd != NULL) {
+    // send it a message to tell it the test framework is here
+    PostMessage(hwnd, WM_USER + 1, 0 ,0);
+  }
 #endif
+}
+
+void cleanup_arduino()
+{
+  HWND hwnd = FindWindow("VWINDOW", NULL);
+  if (hwnd != NULL) {
+    PostMessage(hwnd, WM_USER + 2, 0, 0);
+  }
+  if (hPipe) {
+    DisconnectNamedPipe(hPipe);
+  }
 }
 
 void delay(size_t amt)
@@ -252,7 +271,6 @@ uint32_t SerialClass::write(const uint8_t *buf, size_t len)
     }
     total += written;
   } while (total < len);
-  FlushFileBuffers(hPipe);
   return total;
 }
 
@@ -262,8 +280,11 @@ SerialClass::operator bool()
     return true;
   }
   // create a global pipe
-  if (!ConnectNamedPipe(hPipe, NULL) && GetLastError() != ERROR_PIPE_CONNECTED) {
-    return false;
+  if (!ConnectNamedPipe(hPipe, NULL)) {
+    int err = GetLastError();
+    if (err != ERROR_PIPE_CONNECTED && err != ERROR_PIPE_LISTENING) {
+      return false;
+    }
   }
   connected = true;
   return true;
@@ -284,6 +305,10 @@ size_t SerialClass::readBytes(char *buf, size_t amt)
   DWORD numRead = 0;
   do {
     if (!ReadFile(hPipe, buf + total, amt - total, &numRead, NULL)) {
+      int err = GetLastError();
+      if (err == ERROR_PIPE_NOT_CONNECTED) {
+        printf("Fail\n");
+      }
       break;
     }
     total += numRead;

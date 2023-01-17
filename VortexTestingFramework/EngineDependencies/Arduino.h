@@ -17,6 +17,7 @@
 
 // init this drop-in framework
 void init_arduino();
+void cleanup_arduino();
 
 void delay(size_t amt);
 void delayMicroseconds(size_t us);

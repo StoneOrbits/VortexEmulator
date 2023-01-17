@@ -228,6 +228,7 @@
     <ClInclude Include="EngineDependencies\Arduino.h" />
     <ClInclude Include="EngineDependencies\ArduinoSerial.h" />
     <ClInclude Include="EngineDependencies\FastLED.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Infrared\IRReceiver.h" />
     <ClInclude Include="TestFramework.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Infrared\IRConfig.h" />
@@ -308,6 +309,15 @@
     <ClInclude Include="VortexEngine\VortexEngine\src\VortexConfig.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\VortexEngine.h" />
     <ClInclude Include="EngineDependencies\FlashStorage.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="VortexTestingFramework.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\..\..\downloads\bitmap2.bmp" />
+    <Image Include="..\..\..\..\Downloads\glove.bmp" />
+    <Image Include="..\..\..\..\Downloads\glove.png" />
+    <Image Include="glove.bmp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

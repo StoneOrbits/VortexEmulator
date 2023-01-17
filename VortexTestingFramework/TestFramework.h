@@ -95,6 +95,12 @@ public:
 private:
   const COLORREF bkcolor = RGB(40, 40, 40);
 
+  static const int width = 460;
+  static const int height = 460;
+  
+  static const int patternStripStart = 375;
+  static const int patternStripEnd = 405;
+
   // these are in no particular order
   HANDLE m_loopThread;
 
@@ -108,6 +114,8 @@ private:
   HWND m_hwndTickrateSlider;
   HWND m_hwndTickOffsetSlider;
   HWND m_hwndLoadButton;
+
+  HBITMAP m_gloveBMP;
 
   HWND m_hwnd;
   WNDCLASS m_wc;
