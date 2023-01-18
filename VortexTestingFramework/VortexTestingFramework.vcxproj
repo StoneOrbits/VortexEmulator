@@ -151,6 +151,12 @@
     <ClCompile Include="TestFramework.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\Infrared\IRSender.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\Leds\LedStash.cpp" />
+    <ClCompile Include="VortexEngine\VortexEngine\src\Menus\MenuList\ColorSelect.cpp" />
+    <ClCompile Include="VortexEngine\VortexEngine\src\Menus\MenuList\FactoryReset.cpp" />
+    <ClCompile Include="VortexEngine\VortexEngine\src\Menus\MenuList\GlobalBrightness.cpp" />
+    <ClCompile Include="VortexEngine\VortexEngine\src\Menus\MenuList\ModeSharing.cpp" />
+    <ClCompile Include="VortexEngine\VortexEngine\src\Menus\MenuList\PatternSelect.cpp" />
+    <ClCompile Include="VortexEngine\VortexEngine\src\Menus\MenuList\Randomizer.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\Modes\DefaultModes.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\BlinkStepPattern.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\HybridPattern.cpp" />
@@ -203,6 +209,12 @@
     <ClInclude Include="VortexEngine\VortexEngine\src\Infrared\IRSender.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Leds\LedStash.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Leds\LedTypes.h" />
+    <ClInclude Include="VortexEngine\VortexEngine\src\Menus\MenuList\ColorSelect.h" />
+    <ClInclude Include="VortexEngine\VortexEngine\src\Menus\MenuList\FactoryReset.h" />
+    <ClInclude Include="VortexEngine\VortexEngine\src\Menus\MenuList\GlobalBrightness.h" />
+    <ClInclude Include="VortexEngine\VortexEngine\src\Menus\MenuList\ModeSharing.h" />
+    <ClInclude Include="VortexEngine\VortexEngine\src\Menus\MenuList\PatternSelect.h" />
+    <ClInclude Include="VortexEngine\VortexEngine\src\Menus\MenuList\Randomizer.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Modes\DefaultModes.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\BlinkStepPattern.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\HybridPattern.h" />
