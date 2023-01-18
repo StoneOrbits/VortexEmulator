@@ -14,6 +14,7 @@
 #include "Log/Log.h"
 
 #include "Patterns/PatternBuilder.h"
+#include "Leds/Leds.h"
 #include "Time/TimeControl.h"
 #include "Colors/Colorset.h"
 #include "Modes/ModeBuilder.h"
@@ -58,6 +59,7 @@ TestFramework::TestFramework() :
   m_hwndTickOffsetSlider(nullptr),
   m_hwndLoadButton(nullptr),
   m_gloveBMP(nullptr),
+  m_hIcon(nullptr),
   m_hwnd(nullptr),
   m_wc(),
   m_brightness(255),
@@ -91,10 +93,12 @@ bool TestFramework::init(HINSTANCE hInstance)
   }
   g_pTestFramework = this;
 
+#if 0
   if (!m_consoleHandle) {
     AllocConsole();
     freopen_s(&m_consoleHandle, "CONOUT$", "w", stdout);
   }
+#endif
 #if LOG_TO_FILE == 1
   if (!m_logHandle) {
     time_t t = time(nullptr);
@@ -142,6 +146,10 @@ bool TestFramework::init(HINSTANCE hInstance)
     return 0;
   }
 
+  // load the icon and background image
+  m_hIcon = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_ICON1));
+  // set the icon
+  SendMessage(m_hwnd, WM_SETICON, ICON_BIG, (LPARAM)m_hIcon);
   m_gloveBMP = (HBITMAP)LoadImage(hInstance, MAKEINTRESOURCE(IDB_BITMAP1), IMAGE_BITMAP, 0, 0, 0);
   
   return true;
@@ -290,7 +298,7 @@ void TestFramework::paint(HWND hwnd)
   rateRect.right = 200;
   DrawText(hdc, tickspeedStr.c_str(), -1, &rateRect, 0);
 
-  if (Time::getTickrate() < 60) {
+  if (Time::getTickrate() < 120) {
     RECT rateRect;
     rateRect.top = 356;
     rateRect.bottom = 375;
@@ -317,7 +325,7 @@ void TestFramework::paint(HWND hwnd)
     RECT stripRect = { 0, patternStripStart, width, patternStripEnd };
     FillRect(hdc, &stripRect, getBrushCol(0));
     for (uint32_t i = 0; i < m_patternStrip.size(); ++i) {
-      RECT stripPos = { (LONG)i, 230, (LONG)i + 1, 250 };
+      RECT stripPos = { (LONG)i, patternStripStart + 2, (LONG)i + 1, patternStripEnd - 2 };
       RGBColor col = m_patternStrip[i];
       HSVColor hsvCol = col;
       uint32_t val = 255; //hsvCol.val;
@@ -380,6 +388,10 @@ void TestFramework::arduino_loop()
 {
   // run the tick
   VortexEngine::tick();
+
+  for (uint32_t i = 0; i < LED_COUNT; ++i) {
+    m_lastLedColor[i] = m_ledList[i];
+  }
 }
 
 void TestFramework::installLeds(CRGB *leds, uint32_t count)
@@ -451,8 +463,12 @@ void TestFramework::show()
   lastshow = millis();
 #endif
 
+
   // redraw the leds
   for (int i = 0; i < LED_COUNT; ++i) {
+    if (m_ledList[i] == m_lastLedColor[i]) {
+      continue;
+    }
     InvalidateRect(m_hwnd, m_ledPos + i, FALSE);
   }
 }
@@ -731,6 +747,9 @@ LRESULT CALLBACK TestFramework::window_proc(HWND hwnd, UINT uMsg, WPARAM wParam,
 
 void TestFramework::printlog(const char *file, const char *func, int line, const char *msg, va_list list)
 {
+  if (!g_pTestFramework->m_consoleHandle) {
+    return;
+  }
   string strMsg;
   if (file) {
     strMsg = file;

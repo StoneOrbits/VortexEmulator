@@ -116,6 +116,7 @@ private:
   HWND m_hwndLoadButton;
 
   HBITMAP m_gloveBMP;
+  HICON m_hIcon;
 
   HWND m_hwnd;
   WNDCLASS m_wc;
@@ -126,6 +127,8 @@ private:
 
   RGBColor *m_ledList;
   uint32_t m_numLeds;
+  
+  RGBColor m_lastLedColor[LED_COUNT];
 
   bool m_initialized;
 

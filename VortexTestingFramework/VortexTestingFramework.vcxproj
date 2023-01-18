@@ -314,10 +314,8 @@
     <ResourceCompile Include="VortexTestingFramework.rc" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="..\..\..\..\downloads\bitmap2.bmp" />
-    <Image Include="..\..\..\..\Downloads\glove.bmp" />
-    <Image Include="..\..\..\..\Downloads\glove.png" />
     <Image Include="glove.bmp" />
+    <Image Include="icon.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
