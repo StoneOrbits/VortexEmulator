@@ -431,8 +431,7 @@ void TestFramework::installLeds(CRGB *leds, uint32_t count)
   uint32_t dy = 30;
 
   // quadrant 1 top
-  for (uint32_t i = 0; i < 3; ++i)
-  {
+  for (uint32_t i = 0; i < 3; ++i) {
     m_ledPos[i].left = 150 + (i * 17);
     m_ledPos[i].top = 181 + (i * 17);
   }
@@ -442,22 +441,19 @@ void TestFramework::installLeds(CRGB *leds, uint32_t count)
   m_ledPos[3].top = m_ledPos[2].top + 25;
   
   // quadrant 1 bot
-  for (uint32_t i = 0; i < 3; ++i)
-  {
+  for (uint32_t i = 0; i < 3; ++i) {
     m_ledPos[6 - i].left = 332 - (i * 17);
     m_ledPos[6 - i].top = 181 + (i * 17);
   }
 
   // quadrant 2 bot
-  for (uint32_t i = 0; i < 3; ++i)
-  {
+  for (uint32_t i = 0; i < 3; ++i) {
     m_ledPos[7 + i].left = 400 + (i * 17);
     m_ledPos[7 + i].top = 181 + (i * 17);
   }
   
   // quadrant 2 top
-  for (uint32_t i = 0; i < 3; ++i)
-  {
+  for (uint32_t i = 0; i < 3; ++i) {
     m_ledPos[13 - i].left = 82 - (i * 17);
     m_ledPos[13 - i].top = 181 + (i * 17);
   }
@@ -467,8 +463,7 @@ void TestFramework::installLeds(CRGB *leds, uint32_t count)
   m_ledPos[10].top = m_ledPos[11].top + 25;
 
   // quadrant 3 top
-  for (uint32_t i = 0; i < 3; ++i)
-  {
+  for (uint32_t i = 0; i < 3; ++i) {
     m_ledPos[i + 14].left = 82 - (i * 17);
     m_ledPos[i + 14].top = 113 - (i * 17);
   }
@@ -478,23 +473,20 @@ void TestFramework::installLeds(CRGB *leds, uint32_t count)
   m_ledPos[17].top = m_ledPos[16].top - 25;
 
   // quadrant 3 bot
-  for (uint32_t i = 0; i < 3; ++i)
-  {
+  for (uint32_t i = 0; i < 3; ++i) {
     m_ledPos[20 - i].left = 332 - (i * 17);
     m_ledPos[20 - i].top = 113 - (i * 17);
   }
 
   // quadrant 4 bot
-  for (uint32_t i = 0; i < 3; ++i)
-  {
+  for (uint32_t i = 0; i < 3; ++i) {
     m_ledPos[21 + i].left = 400 + (i * 17);
     m_ledPos[21 + i].top = 113 - (i * 17);
   }
 
   // quadrant 4 top
 
-  for (uint32_t i = 0; i < 3; ++i)
-  {
+  for (uint32_t i = 0; i < 3; ++i) {
     m_ledPos[27 - i].left = 150 + (i * 17);
     m_ledPos[27 - i].top = 113 - (i * 17);
   }
