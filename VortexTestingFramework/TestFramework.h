@@ -95,7 +95,7 @@ public:
 private:
   const COLORREF bkcolor = RGB(40, 40, 40);
 
-  static const int width = 460;
+  static const int width = 518;
   static const int height = 460;
   
   static const int patternStripStart = 375;
