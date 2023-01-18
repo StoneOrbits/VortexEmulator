@@ -30,6 +30,9 @@
 
 #pragma comment(lib, "Comctl32.lib")
 
+// uncomment this to flip the colours to be fullbright
+//#ifdef HSV_TO_RGB_GENERIC
+
 TestFramework *g_pTestFramework = nullptr;
 
 using namespace std;
@@ -253,9 +256,13 @@ void TestFramework::paint(HWND hwnd)
   // the first led is 5,5 to 25,25
   for (uint32_t i = 0; i < m_numLeds; ++i) {
     // draw the LED ellipsed
+#ifdef HSV_TO_RGB_GENERIC
     // implicitly convert rgb 'col' to hsv in argument, then back to rgb with different
     // algorithm than was originally used
     RGBColor trueCol = hsv_to_rgb_generic(m_ledList[i]);
+#else
+    RGBColor trueCol = m_ledList[i];
+#endif
     HBRUSH oldbrush = (HBRUSH)SelectObject(hdc, getBrushCol(trueCol));
     Ellipse(hdc, m_ledPos[i].left, m_ledPos[i].top, m_ledPos[i].right, m_ledPos[i].bottom);
     SelectObject(hdc, oldbrush);
@@ -348,9 +355,13 @@ void TestFramework::paint(HWND hwnd)
         stripPos.top += offset;
         stripPos.bottom -= offset;
       }
+#ifdef HSV_TO_RGB_GENERIC
       // implicitly convert rgb 'col' to hsv in argument, then back to rgb with different
       // algorithm than was originally used
-      RGBColor trueCol = hsv_to_rgb_generic(col);
+      RGBColor trueCol = hsv_to_rgb_generic(m_ledList[i]);
+#else
+      RGBColor trueCol = m_ledList[i];
+#endif
       FillRect(hdc, &stripPos, getBrushCol(trueCol));
     }
 
