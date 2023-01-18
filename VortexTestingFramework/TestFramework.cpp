@@ -681,7 +681,7 @@ DWORD __stdcall TestFramework::arduino_loop_thread(void *arg)
   TestFramework *framework = (TestFramework *)arg;
   // do the arduino init/setup
   framework->arduino_setup();
-  TrackBar_SetPos(framework->m_hwndTickrateSlider, 100);
+  TrackBar_SetPos(framework->m_hwndTickrateSlider, 30);
   //TrackBar_SetPos(m_hwndTickOffsetSlider, 0);
   // init tickrate and time offset to match the sliders
   framework->setTickrate();
