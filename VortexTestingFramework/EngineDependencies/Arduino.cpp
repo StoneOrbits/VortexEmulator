@@ -124,12 +124,9 @@ unsigned long analogRead(uint32_t pin)
 // used to read button input
 unsigned long digitalRead(uint32_t pin)
 {
-  if (pin == 1) {
-    // get button state
-    if (g_pTestFramework->isButtonPressed()) {
-      return LOW;
-    }
-    return HIGH;
+  // get button state
+  if (g_pTestFramework->isButtonPressed()) {
+    return LOW;
   }
   return HIGH;
 }
