@@ -253,11 +253,12 @@ void TestFramework::paint(HWND hwnd)
   // the first led is 5,5 to 25,25
   for (uint32_t i = 0; i < m_numLeds; ++i) {
     // draw the LED ellipsed
-    //if (m_ledList[i].raw() != 0) {
-      HBRUSH oldbrush = (HBRUSH)SelectObject(hdc, getBrushCol(m_ledList[i]));
-      Ellipse(hdc, m_ledPos[i].left, m_ledPos[i].top, m_ledPos[i].right, m_ledPos[i].bottom);
-      SelectObject(hdc, oldbrush);
-    //}
+    // implicitly convert rgb 'col' to hsv in argument, then back to rgb with different
+    // algorithm than was originally used
+    RGBColor trueCol = hsv_to_rgb_generic(m_ledList[i]);
+    HBRUSH oldbrush = (HBRUSH)SelectObject(hdc, getBrushCol(trueCol));
+    Ellipse(hdc, m_ledPos[i].left, m_ledPos[i].top, m_ledPos[i].right, m_ledPos[i].bottom);
+    SelectObject(hdc, oldbrush);
 
     // Draw the numbers above/below the LEDs
     RECT idRect = m_ledPos[i];
@@ -266,7 +267,7 @@ void TestFramework::paint(HWND hwnd)
     // shift it up/down 30 with a static offset of 8
     idRect.top += (30 * signEven) + 8;
     idRect.bottom += (30 * signEven) + 8;
-    char text[4] = {0};
+    char text[4] = { 0 };
     // The text is in reverse (LED_LAST - i) because that's the order of the enums
     // in LedTypes.h -- the actual hardware is reversed too and should be flipped in v2
     snprintf(text, sizeof(text), "%d", LED_LAST - i);
@@ -307,6 +308,15 @@ void TestFramework::paint(HWND hwnd)
     DrawText(hdc, "Warning! Low tickrates cause unresponsiveness", -1, &rateRect, 0);
   }
 
+  if (Time::getTickrate() > 600) {
+    RECT rateRect;
+    rateRect.top = 356;
+    rateRect.bottom = 375;
+    rateRect.left = 16;
+    rateRect.right = 600;
+    DrawText(hdc, "Warning! High tickrates are visually inaccurate", -1, &rateRect, 0);
+  }
+
 #if 0
   // Tick offset
   string tickoffsetStr = "Tick Offset: " + to_string(Time::getTickOffset((LedPos)1));
@@ -338,7 +348,10 @@ void TestFramework::paint(HWND hwnd)
         stripPos.top += offset;
         stripPos.bottom -= offset;
       }
-      FillRect(hdc, &stripPos, getBrushCol(col));
+      // implicitly convert rgb 'col' to hsv in argument, then back to rgb with different
+      // algorithm than was originally used
+      RGBColor trueCol = hsv_to_rgb_generic(col);
+      FillRect(hdc, &stripPos, getBrushCol(trueCol));
     }
 
     const uint32_t border_size = 2;
