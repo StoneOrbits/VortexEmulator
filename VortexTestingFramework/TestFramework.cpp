@@ -358,9 +358,9 @@ void TestFramework::paint(HWND hwnd)
 #ifdef HSV_TO_RGB_GENERIC
       // implicitly convert rgb 'col' to hsv in argument, then back to rgb with different
       // algorithm than was originally used
-      RGBColor trueCol = hsv_to_rgb_generic(m_ledList[i]);
+      RGBColor trueCol = hsv_to_rgb_generic(col);
 #else
-      RGBColor trueCol = m_ledList[i];
+      RGBColor trueCol = col;
 #endif
       FillRect(hdc, &stripPos, getBrushCol(trueCol));
     }
