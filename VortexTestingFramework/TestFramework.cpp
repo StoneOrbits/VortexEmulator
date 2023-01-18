@@ -137,7 +137,7 @@ bool TestFramework::init(HINSTANCE hInstance)
   GetClientRect(GetDesktopWindow(), &desktop);
 
   // create the window
-  m_hwnd = CreateWindow(m_wc.lpszClassName, "Vortex Test Framework",
+  m_hwnd = CreateWindow(m_wc.lpszClassName, "Vortex Emulator",
     WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX,
     (desktop.right / 2) - (width / 2), (desktop.bottom / 2) - (height / 2),
     width, height, nullptr, nullptr, hInstance, nullptr);
