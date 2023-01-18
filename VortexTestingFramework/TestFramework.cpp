@@ -14,6 +14,7 @@
 #include "Log/Log.h"
 
 #include "Patterns/PatternBuilder.h"
+#include "Leds/Leds.h"
 #include "Time/TimeControl.h"
 #include "Colors/Colorset.h"
 #include "Modes/ModeBuilder.h"
@@ -24,6 +25,8 @@
 
 #include "patterns/Pattern.h"
 #include "patterns/single/SingleLedPattern.h"
+
+#include "resource.h"
 
 #pragma comment(lib, "Comctl32.lib")
 
@@ -55,6 +58,8 @@ TestFramework::TestFramework() :
   m_hwndTickrateSlider(nullptr),
   m_hwndTickOffsetSlider(nullptr),
   m_hwndLoadButton(nullptr),
+  m_gloveBMP(nullptr),
+  m_hIcon(nullptr),
   m_hwnd(nullptr),
   m_wc(),
   m_brightness(255),
@@ -88,10 +93,12 @@ bool TestFramework::init(HINSTANCE hInstance)
   }
   g_pTestFramework = this;
 
+#if 0
   if (!m_consoleHandle) {
     AllocConsole();
     freopen_s(&m_consoleHandle, "CONOUT$", "w", stdout);
   }
+#endif
 #if LOG_TO_FILE == 1
   if (!m_logHandle) {
     time_t t = time(nullptr);
@@ -130,14 +137,21 @@ bool TestFramework::init(HINSTANCE hInstance)
   GetClientRect(GetDesktopWindow(), &desktop);
 
   // create the window
-  m_hwnd = CreateWindow(m_wc.lpszClassName, "Vortex Test Framework",
+  m_hwnd = CreateWindow(m_wc.lpszClassName, "Vortex Emulator",
     WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX,
-    (desktop.right / 2) - 240, (desktop.bottom / 2) - 84,
-    420, 340, nullptr, nullptr, hInstance, nullptr);
+    (desktop.right / 2) - (width / 2), (desktop.bottom / 2) - (height / 2),
+    width, height, nullptr, nullptr, hInstance, nullptr);
   if (!m_hwnd) {
     MessageBox(nullptr, "Failed to open window", "Error", 0);
     return 0;
   }
+
+  // load the icon and background image
+  m_hIcon = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_ICON1));
+  // set the icon
+  SendMessage(m_hwnd, WM_SETICON, ICON_BIG, (LPARAM)m_hIcon);
+  m_gloveBMP = (HBITMAP)LoadImage(hInstance, MAKEINTRESOURCE(IDB_BITMAP1), IMAGE_BITMAP, 0, 0, 0);
+  
   return true;
 }
 
@@ -165,15 +179,15 @@ void TestFramework::create(HWND hwnd)
   // create the server checkbox and ip textbox
   m_hwndClickButton = CreateWindow(WC_BUTTON, "Click",
     WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON | WS_TABSTOP,
-    120, 160, 170, 32, hwnd, (HMENU)CLICK_BUTTON_ID, nullptr, nullptr);
+    198, 312, 48, 24, hwnd, (HMENU)CLICK_BUTTON_ID, nullptr, nullptr);
 
   // sub-process the button to capture the press/release individually
   g_pTestFramework->m_oldButtonProc = (WNDPROC)SetWindowLongPtr(m_hwndClickButton, GWLP_WNDPROC,
     (LONG_PTR)TestFramework::button_subproc);
 
   m_hwndTickrateSlider = CreateWindow(TRACKBAR_CLASS, "Tickrate",
-    WS_VISIBLE | WS_CHILD | WS_TABSTOP | TBS_VERT,
-    20, 30, 36, 160, hwnd, (HMENU)TICKRATE_SLIDER_ID, nullptr, nullptr);
+    WS_VISIBLE | WS_CHILD | WS_TABSTOP,
+    14, 330, 120, 24, hwnd, (HMENU)TICKRATE_SLIDER_ID, nullptr, nullptr);
 
   //m_hwndTickOffsetSlider = CreateWindow(TRACKBAR_CLASS, "Time Offset",
   //  WS_VISIBLE | WS_CHILD | WS_TABSTOP | TBS_VERT,
@@ -228,10 +242,21 @@ void TestFramework::paint(HWND hwnd)
   SetBkMode(hdc, TRANSPARENT);
   SetTextColor(hdc, RGB(200, 200, 200));
 
+  // draw the glove
+  HDC hdcGlove = CreateCompatibleDC(hdc);
+  HBITMAP hbmpOld = (HBITMAP)SelectObject(hdcGlove, m_gloveBMP);
+  // copy the glove into position
+  BitBlt(hdc, 86, 30, 250, 320, hdcGlove, 0, 0, SRCCOPY);
+  SelectObject(hdcGlove, hbmpOld);
+  DeleteDC(hdcGlove);
+
   // the first led is 5,5 to 25,25
   for (uint32_t i = 0; i < m_numLeds; ++i) {
     // draw the LED ellipsed
-    HBRUSH oldbrush = (HBRUSH)SelectObject(hdc, getBrushCol(m_ledList[i]));
+    // implicitly convert rgb 'col' to hsv in argument, then back to rgb with different
+    // algorithm than was originally used
+    RGBColor trueCol = hsv_to_rgb_generic(m_ledList[i]);
+    HBRUSH oldbrush = (HBRUSH)SelectObject(hdc, getBrushCol(trueCol));
     Ellipse(hdc, m_ledPos[i].left, m_ledPos[i].top, m_ledPos[i].right, m_ledPos[i].bottom);
     SelectObject(hdc, oldbrush);
 
@@ -242,37 +267,55 @@ void TestFramework::paint(HWND hwnd)
     // shift it up/down 30 with a static offset of 8
     idRect.top += (30 * signEven) + 8;
     idRect.bottom += (30 * signEven) + 8;
-    char text[4] = {0};
+    char text[4] = { 0 };
     // The text is in reverse (LED_LAST - i) because that's the order of the enums
     // in LedTypes.h -- the actual hardware is reversed too and should be flipped in v2
     snprintf(text, sizeof(text), "%d", LED_LAST - i);
-    DrawText(hdc, text, -1, &idRect, DT_CENTER);
+    //DrawText(hdc, text, -1, &idRect, DT_CENTER);
   }
 
   // Tip:
-  RECT tipRect = m_ledPos[1];
-  tipRect.top += 8;
-  tipRect.bottom += 10;
-  tipRect.left -= 44;
-  tipRect.right -= 38;
-  DrawText(hdc, "Tip", 3, &tipRect, DT_RIGHT);
+  //RECT tipRect = m_ledPos[1];
+  //tipRect.top += 8;
+  //tipRect.bottom += 10;
+  //tipRect.left -= 44;
+  //tipRect.right -= 38;
+  //DrawText(hdc, "Tip", 3, &tipRect, DT_RIGHT);
 
   // Top:
-  RECT topRect = m_ledPos[0];
-  topRect.top += 8;
-  topRect.bottom += 10;
-  topRect.left -= 44;
-  topRect.right -= 38;
-  DrawText(hdc, "Top", 3, &topRect, DT_RIGHT);
+  //RECT topRect = m_ledPos[0]//;
+  //topRect.top += 8;
+  //topRect.bottom += 10;
+  //topRect.left -= 44;
+  //topRect.right -= 38;
+  ///DrawText(hdc, "Top", 3, &topRect, DT_RIGHT);
 
   // Tickspeed
   string tickspeedStr = "Tickrate: " + to_string(Time::getTickrate());
   RECT rateRect;
-  rateRect.top = 200;
-  rateRect.bottom = 240;
+  rateRect.top = 310;
+  rateRect.bottom = 350;
   rateRect.left = 20;
   rateRect.right = 200;
   DrawText(hdc, tickspeedStr.c_str(), -1, &rateRect, 0);
+
+  if (Time::getTickrate() < 120) {
+    RECT rateRect;
+    rateRect.top = 356;
+    rateRect.bottom = 375;
+    rateRect.left = 16;
+    rateRect.right = 600;
+    DrawText(hdc, "Warning! Low tickrates cause unresponsiveness", -1, &rateRect, 0);
+  }
+
+  if (Time::getTickrate() > 600) {
+    RECT rateRect;
+    rateRect.top = 356;
+    rateRect.bottom = 375;
+    rateRect.left = 16;
+    rateRect.right = 600;
+    DrawText(hdc, "Warning! High tickrates are visually inaccurate", -1, &rateRect, 0);
+  }
 
 #if 0
   // Tick offset
@@ -289,10 +332,10 @@ void TestFramework::paint(HWND hwnd)
   // pattern strip
   if (m_redrawStrip) {
     m_redrawStrip = false;
-    RECT backPos = { 0, 229, 420, 251 };
-    FillRect(hdc, &backPos, getBrushCol(0));
+    RECT stripRect = { 0, patternStripStart, width, patternStripEnd };
+    FillRect(hdc, &stripRect, getBrushCol(0));
     for (uint32_t i = 0; i < m_patternStrip.size(); ++i) {
-      RECT stripPos = { (LONG)i, 230, (LONG)i + 1, 250 };
+      RECT stripPos = { (LONG)i, patternStripStart + 2, (LONG)i + 1, patternStripEnd - 2 };
       RGBColor col = m_patternStrip[i];
       HSVColor hsvCol = col;
       uint32_t val = 255; //hsvCol.val;
@@ -305,7 +348,10 @@ void TestFramework::paint(HWND hwnd)
         stripPos.top += offset;
         stripPos.bottom -= offset;
       }
-      FillRect(hdc, &stripPos, getBrushCol(col));
+      // implicitly convert rgb 'col' to hsv in argument, then back to rgb with different
+      // algorithm than was originally used
+      RGBColor trueCol = hsv_to_rgb_generic(col);
+      FillRect(hdc, &stripPos, getBrushCol(trueCol));
     }
 
     const uint32_t border_size = 2;
@@ -334,10 +380,12 @@ void TestFramework::paint(HWND hwnd)
 
 void TestFramework::cleanup()
 {
+  VortexEngine::cleanup();
   m_keepGoing = false;
   m_isPaused = false;
   WaitForSingleObject(m_loopThread, 3000);
   DeleteObject(m_bkbrush);
+  cleanup_arduino();
 }
 
 void TestFramework::arduino_setup()
@@ -353,6 +401,10 @@ void TestFramework::arduino_loop()
 {
   // run the tick
   VortexEngine::tick();
+
+  for (uint32_t i = 0; i < LED_COUNT; ++i) {
+    m_lastLedColor[i] = m_ledList[i];
+  }
 }
 
 void TestFramework::installLeds(CRGB *leds, uint32_t count)
@@ -366,20 +418,40 @@ void TestFramework::installLeds(CRGB *leds, uint32_t count)
   uint32_t radius = 15;
   uint32_t dx = 24;
   uint32_t dy = 30;
-  for (int i = 0; i < LED_COUNT; ++i) {
-    // bottom to top, left to right is the true order of the hardware
-    int even = i % 2; // whether i is even
-    int odd = (even == 0); // whether i is odd
-    int rDown = i - even; // i rounded down to even
-    m_ledPos[i].left = base_left + (rDown * dx);
-    m_ledPos[i].right = base_left + dy + (rDown * dx);
-    m_ledPos[i].top = base_top + (odd * dy);
-    m_ledPos[i].bottom = base_top + dy + (odd * dy);
-    if (i == 0 || i == 1) {
-      // offset the thumb
-      m_ledPos[i].top += 10;
-      m_ledPos[i].bottom += 10;
-    }
+
+  // thumb top/tip
+  m_ledPos[0].left = 95;
+  m_ledPos[0].top = 175;
+  m_ledPos[1].top = m_ledPos[0].top - 20;
+  m_ledPos[1].left = m_ledPos[0].left - 20;
+
+  // index top/tip
+  m_ledPos[2].left = 135;
+  m_ledPos[2].top = 60;
+  m_ledPos[3].top = m_ledPos[2].top - 30;
+  m_ledPos[3].left = m_ledPos[2].left - 8;
+
+  // middle top/tip
+  m_ledPos[4].left = 195;
+  m_ledPos[4].top = 40;
+  m_ledPos[5].top = m_ledPos[4].top - 30;
+  m_ledPos[5].left = m_ledPos[4].left;
+
+  // ring top/tip
+  m_ledPos[6].left = 254;
+  m_ledPos[6].top = 60;
+  m_ledPos[7].top = m_ledPos[6].top - 30;
+  m_ledPos[7].left = m_ledPos[6].left + 8;
+
+  // pinky top/tip
+  m_ledPos[8].left = 300;
+  m_ledPos[8].top = 95;
+  m_ledPos[9].top = m_ledPos[8].top - 22;
+  m_ledPos[9].left = m_ledPos[8].left + 16;
+
+  for (uint32_t i = 0; i < LED_COUNT; ++i) {
+    m_ledPos[i].right = m_ledPos[i].left + (radius * 2);
+    m_ledPos[i].bottom = m_ledPos[i].top + (radius * 2);
   }
 
   m_initialized = true;;
@@ -404,8 +476,12 @@ void TestFramework::show()
   lastshow = millis();
 #endif
 
+
   // redraw the leds
   for (int i = 0; i < LED_COUNT; ++i) {
+    if (m_ledList[i] == m_lastLedColor[i]) {
+      continue;
+    }
     InvalidateRect(m_hwnd, m_ledPos + i, FALSE);
   }
 }
@@ -429,23 +505,25 @@ bool TestFramework::isButtonPressed() const
 void TestFramework::setTickrate()
 {
   uint32_t tickrate = TrackBar_GetPos(g_pTestFramework->m_hwndTickrateSlider);
-  if (tickrate > 75) {
-    tickrate *= (tickrate / 20);
+  if (tickrate > 20) {
+    tickrate *= (tickrate / 10);
   }
   if (tickrate < 1) {
     tickrate = 1;
   }
-  if (tickrate > 1000000) {
-    tickrate = 1000000;
+  // baseline allowable tickrate
+  tickrate += 60;
+  if (tickrate > 1000) {
+    tickrate = 1000;
   }
   pause();
   Time::setTickrate(tickrate);
   unpause();
   RECT rateRect;
-  rateRect.top = 200;
-  rateRect.bottom = 220;
-  rateRect.left = 20;
-  rateRect.right = 200;
+  rateRect.top = 310;
+  rateRect.bottom = 375;
+  rateRect.left = 10;
+  rateRect.right = 600;
   InvalidateRect(m_hwnd, &rateRect, TRUE);
   DEBUG_LOGF("Set tickrate: %u", tickrate);
 }
@@ -547,7 +625,7 @@ bool TestFramework::handlePatternChange(bool force)
   Time::startSimulation();
   newMode->init();
   m_patternStrip.clear();
-  for (int i = 0; i < 420; ++i) {
+  for (int i = 0; i < width; ++i) {
     newMode->play();
     Time::tickSimulation();
     RGBColor c = m_ledList[realPos];
@@ -562,7 +640,7 @@ bool TestFramework::handlePatternChange(bool force)
   delete newMode;
   // redraw the pattern strip
   m_redrawStrip = true;
-  RECT stripRect = { 0, 200, 420, 340 };
+  RECT stripRect = { 0, patternStripStart, width, patternStripEnd };
   InvalidateRect(m_hwnd, &stripRect, TRUE);
   return true;
 }
@@ -603,7 +681,7 @@ DWORD __stdcall TestFramework::arduino_loop_thread(void *arg)
   TestFramework *framework = (TestFramework *)arg;
   // do the arduino init/setup
   framework->arduino_setup();
-  TrackBar_SetPos(framework->m_hwndTickrateSlider, 20);
+  TrackBar_SetPos(framework->m_hwndTickrateSlider, 100);
   //TrackBar_SetPos(m_hwndTickOffsetSlider, 0);
   // init tickrate and time offset to match the sliders
   framework->setTickrate();
@@ -640,7 +718,7 @@ LRESULT CALLBACK TestFramework::button_subproc(HWND hwnd, UINT uMsg, WPARAM wPar
 LRESULT CALLBACK TestFramework::window_proc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
   switch (uMsg) {
-  case WM_VSCROLL:
+  case WM_HSCROLL:
     switch (LOWORD(wParam)) {
     case TB_THUMBTRACK:
     case TB_ENDTRACK:
@@ -668,8 +746,10 @@ LRESULT CALLBACK TestFramework::window_proc(HWND hwnd, UINT uMsg, WPARAM wParam,
   case WM_COMMAND:
     g_pTestFramework->command(wParam, lParam);
     break;
-  case WM_DESTROY:
+  case WM_CLOSE:
     g_pTestFramework->cleanup();
+    break;
+  case WM_DESTROY:
     PostQuitMessage(0);
     break;
   default:
@@ -680,6 +760,9 @@ LRESULT CALLBACK TestFramework::window_proc(HWND hwnd, UINT uMsg, WPARAM wParam,
 
 void TestFramework::printlog(const char *file, const char *func, int line, const char *msg, va_list list)
 {
+  if (!g_pTestFramework->m_consoleHandle) {
+    return;
+  }
   string strMsg;
   if (file) {
     strMsg = file;
