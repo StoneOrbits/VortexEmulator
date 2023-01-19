@@ -182,7 +182,7 @@ void TestFramework::create(HWND hwnd)
   // create the server checkbox and ip textbox
   m_hwndClickButton = CreateWindow(WC_BUTTON, "Click",
     WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON | WS_TABSTOP,
-    198, 312, 48, 24, hwnd, (HMENU)CLICK_BUTTON_ID, nullptr, nullptr);
+    226, 312, 48, 24, hwnd, (HMENU)CLICK_BUTTON_ID, nullptr, nullptr);
 
   // sub-process the button to capture the press/release individually
   g_pTestFramework->m_oldButtonProc = (WNDPROC)SetWindowLongPtr(m_hwndClickButton, GWLP_WNDPROC,
@@ -649,8 +649,8 @@ bool TestFramework::handlePatternChange(bool force)
   if (!newMode) { 
     return false; 
   }
-  // TODO: The hardware is flipped so the 'real' led position is reversed
-  LedPos realPos = (LedPos)(LED_LAST - m_curSelectedLed);
+  // The hardware is not flipped so the 'real' led position is correct
+  LedPos realPos = (LedPos)(m_curSelectedLed);
   if (isMultiLedPatternID(m_curPattern)) {
     if (!newMode->setMultiPat(m_curPattern, nullptr, &m_curColorset)) {
       delete newMode;
@@ -663,8 +663,7 @@ bool TestFramework::handlePatternChange(bool force)
       return false;
     }
     // if it's single led pattern then we can only poll from slot 0
-    // TODO: flip this
-    realPos = (LedPos)(LED_LAST - LED_FIRST);
+    realPos = (LedPos)(LED_FIRST);
   }
   // backup the current LED 0 color
   RGBColor curLed0Col = m_ledList[realPos];
