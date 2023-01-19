@@ -152,6 +152,7 @@
     <ClCompile Include="VortexEngine\VortexEngine\src\Infrared\IRSender.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\Leds\LedStash.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\Menus\MenuList\ColorSelect.cpp" />
+    <ClCompile Include="VortexEngine\VortexEngine\src\Menus\MenuList\EditorConnection.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\Menus\MenuList\FactoryReset.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\Menus\MenuList\GlobalBrightness.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\Menus\MenuList\ModeSharing.cpp" />
@@ -210,6 +211,7 @@
     <ClInclude Include="VortexEngine\VortexEngine\src\Leds\LedStash.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Leds\LedTypes.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Menus\MenuList\ColorSelect.h" />
+    <ClInclude Include="VortexEngine\VortexEngine\src\Menus\MenuList\EditorConnection.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Menus\MenuList\FactoryReset.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Menus\MenuList\GlobalBrightness.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Menus\MenuList\ModeSharing.h" />
@@ -219,6 +221,7 @@
     <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\BlinkStepPattern.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\HybridPattern.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\Sequencer\ChaserPattern.h" />
+    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\PatternArgs.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Single\DashDopsPattern.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Serial\BitStream.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Buttons\Button.h" />
