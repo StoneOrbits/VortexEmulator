@@ -1,9 +1,7 @@
-# VortexTestingFramework
-A test framework for the Vortex engine
+# Vortex Emulator
+A test framework for the Vortex Engine
 
-![Screenshot](Screenshot.png?raw=true "Screenshot")
-
-To pull the VortexFramework branch inside do:
+To pull the VortexEngine branch inside do:
 ```
 git submodule init
 git submodule update
