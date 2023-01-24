@@ -474,13 +474,13 @@ void TestFramework::installLeds(CRGB *leds, uint32_t count)
 
   // quadrant 3 bot
   for (uint32_t i = 0; i < 3; ++i) {
-    m_ledPos[20 - i].left = 332 - (i * 17);
+    m_ledPos[20 - i].left = 400 + (i * 17);
     m_ledPos[20 - i].top = 113 - (i * 17);
   }
 
   // quadrant 4 bot
-  for (uint32_t i = 0; i < 3; ++i) {
-    m_ledPos[21 + i].left = 400 + (i * 17);
+  for (uint32_t i = 0; i < 3; ++i) { 
+    m_ledPos[21 + i].left = 332 - (i * 17);
     m_ledPos[21 + i].top = 113 - (i * 17);
   }
 
