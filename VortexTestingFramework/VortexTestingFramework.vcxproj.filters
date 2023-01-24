@@ -637,4 +637,7 @@
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="VortexEngine\VortexEngine\src\Patterns\Multi\README.md" />
+  </ItemGroup>
 </Project>
