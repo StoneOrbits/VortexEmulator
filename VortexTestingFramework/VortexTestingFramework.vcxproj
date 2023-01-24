@@ -104,6 +104,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions);TEST_FRAMEWORK</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)\EngineDependencies\;$(ProjectDir)\VortexEngine\VortexEngine\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <Optimization>Disabled</Optimization>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -161,6 +162,7 @@
     <ClCompile Include="VortexEngine\VortexEngine\src\Modes\DefaultModes.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\BlinkStepPattern.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\HybridPattern.cpp" />
+    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\RabbitPattern.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\Sequencer\ChaserPattern.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Single\DashDopsPattern.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\Serial\BitStream.cpp" />
@@ -220,6 +222,7 @@
     <ClInclude Include="VortexEngine\VortexEngine\src\Modes\DefaultModes.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\BlinkStepPattern.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\HybridPattern.h" />
+    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\RabbitPattern.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\Sequencer\ChaserPattern.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\PatternArgs.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Single\DashDopsPattern.h" />
