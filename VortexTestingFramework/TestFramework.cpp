@@ -49,6 +49,7 @@ using namespace std;
 #define TICKRATE_SLIDER_ID 10002
 #define TIME_OFFSET_SLIDER_ID 10003
 #define LOAD_BUTTON_ID 10004
+#define CLICK_BUTTON_ID2 10005
 
 TestFramework::TestFramework() :
   m_loopThread(nullptr),
@@ -58,6 +59,7 @@ TestFramework::TestFramework() :
   m_oldButtonProc(nullptr),
   m_oldSliderProc(nullptr),
   m_hwndClickButton(nullptr),
+  m_hwndClickButton2(nullptr),
   m_hwndTickrateSlider(nullptr),
   m_hwndTickOffsetSlider(nullptr),
   m_hwndLoadButton(nullptr),
@@ -184,8 +186,16 @@ void TestFramework::create(HWND hwnd)
     WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON | WS_TABSTOP,
     226, 312, 48, 24, hwnd, (HMENU)CLICK_BUTTON_ID, nullptr, nullptr);
 
+  m_hwndClickButton2 = CreateWindow(WC_BUTTON, "Click2",
+    WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON | WS_TABSTOP,
+    226, 340, 48, 24, hwnd, (HMENU)CLICK_BUTTON_ID2, nullptr, nullptr);
+
   // sub-process the button to capture the press/release individually
   g_pTestFramework->m_oldButtonProc = (WNDPROC)SetWindowLongPtr(m_hwndClickButton, GWLP_WNDPROC,
+    (LONG_PTR)TestFramework::button_subproc);
+
+  // sub-process the button to capture the press/release individually
+  g_pTestFramework->m_oldButtonProc = (WNDPROC)SetWindowLongPtr(m_hwndClickButton2, GWLP_WNDPROC,
     (LONG_PTR)TestFramework::button_subproc);
 
   m_hwndTickrateSlider = CreateWindow(TRACKBAR_CLASS, "Tickrate",
@@ -532,20 +542,32 @@ void TestFramework::show()
   }
 }
 
-void TestFramework::pressButton()
+void TestFramework::pressButton(uint8_t button)
 {
-  m_buttonPressed = true;
+  if (!button) {
+    m_buttonPressed = true;
+  } else {
+    m_buttonPressed2 = true;
+  }
 }
 
-void TestFramework::releaseButton()
+void TestFramework::releaseButton(uint8_t button)
 {
-  m_buttonPressed = false;
+  if (!button) {
+    m_buttonPressed = false;
+  } else {
+    m_buttonPressed2 = false;
+  }
 }
 
-bool TestFramework::isButtonPressed() const
+bool TestFramework::isButtonPressed(uint8_t button) const
 {
   // spacebar also works
-  return m_buttonPressed || (GetKeyState(VK_SPACE) & 0x100) != 0;
+  if (!button) {
+    return m_buttonPressed || (GetKeyState(VK_SPACE) & 0x100) != 0;
+  } else {
+    return m_buttonPressed2;
+  }
 }
 
 void TestFramework::setTickrate()
@@ -747,12 +769,13 @@ DWORD __stdcall TestFramework::arduino_loop_thread(void *arg)
 
 LRESULT CALLBACK TestFramework::button_subproc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
+  HMENU menu = GetMenu(hwnd);
   switch (uMsg) {
-  case WM_LBUTTONDOWN:
-    g_pTestFramework->pressButton();
+  case WM_LBUTTONDOWN: 
+    g_pTestFramework->pressButton((menu == (HMENU)CLICK_BUTTON_ID2));
     break;
   case WM_LBUTTONUP:
-    g_pTestFramework->releaseButton();
+    g_pTestFramework->releaseButton((menu == (HMENU)CLICK_BUTTON_ID2));
     break;
   default:
     break;
