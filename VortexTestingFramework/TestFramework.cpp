@@ -751,6 +751,10 @@ LRESULT CALLBACK TestFramework::window_proc(HWND hwnd, UINT uMsg, WPARAM wParam,
   case WM_PAINT:
     g_pTestFramework->paint(hwnd);
     return 0;
+  case WM_ERASEBKGND:
+    if (hwnd != g_pTestFramework->m_hwnd) {
+      return 1;
+    }
   case WM_LBUTTONDOWN:
     g_pTestFramework->handleWindowClick(LOWORD(lParam), HIWORD(lParam));
     break;
