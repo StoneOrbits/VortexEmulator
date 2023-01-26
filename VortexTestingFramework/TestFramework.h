@@ -47,11 +47,11 @@ public:
   void show();
 
   // control the button
-  void pressButton();
-  void releaseButton();
+  void pressButton(uint8_t button);
+  void releaseButton(uint8_t button);
 
   // whether the button is pressed
-  bool isButtonPressed() const;
+  bool isButtonPressed(uint8_t button) const;
 
   // change the tick rate based on slider (ticks per second)
   void setTickrate();
@@ -95,7 +95,7 @@ public:
 private:
   const COLORREF bkcolor = RGB(40, 40, 40);
 
-  static const int width = 460;
+  static const int width = 518;
   static const int height = 460;
   
   static const int patternStripStart = 375;
@@ -111,6 +111,7 @@ private:
   WNDPROC m_oldSliderProc;
 
   HWND m_hwndClickButton;
+  HWND m_hwndClickButton2;
   HWND m_hwndTickrateSlider;
   HWND m_hwndTickOffsetSlider;
   HWND m_hwndLoadButton;
@@ -133,6 +134,7 @@ private:
   bool m_initialized;
 
   bool m_buttonPressed;
+  bool m_buttonPressed2;
 
   bool m_keepGoing;
 

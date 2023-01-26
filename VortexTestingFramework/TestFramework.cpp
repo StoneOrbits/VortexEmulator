@@ -49,6 +49,7 @@ using namespace std;
 #define TICKRATE_SLIDER_ID 10002
 #define TIME_OFFSET_SLIDER_ID 10003
 #define LOAD_BUTTON_ID 10004
+#define CLICK_BUTTON_ID2 10005
 
 TestFramework::TestFramework() :
   m_loopThread(nullptr),
@@ -58,6 +59,7 @@ TestFramework::TestFramework() :
   m_oldButtonProc(nullptr),
   m_oldSliderProc(nullptr),
   m_hwndClickButton(nullptr),
+  m_hwndClickButton2(nullptr),
   m_hwndTickrateSlider(nullptr),
   m_hwndTickOffsetSlider(nullptr),
   m_hwndLoadButton(nullptr),
@@ -182,10 +184,18 @@ void TestFramework::create(HWND hwnd)
   // create the server checkbox and ip textbox
   m_hwndClickButton = CreateWindow(WC_BUTTON, "Click",
     WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON | WS_TABSTOP,
-    198, 312, 48, 24, hwnd, (HMENU)CLICK_BUTTON_ID, nullptr, nullptr);
+    226, 312, 48, 24, hwnd, (HMENU)CLICK_BUTTON_ID, nullptr, nullptr);
+
+  m_hwndClickButton2 = CreateWindow(WC_BUTTON, "Click2",
+    WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON | WS_TABSTOP,
+    226, 340, 48, 24, hwnd, (HMENU)CLICK_BUTTON_ID2, nullptr, nullptr);
 
   // sub-process the button to capture the press/release individually
   g_pTestFramework->m_oldButtonProc = (WNDPROC)SetWindowLongPtr(m_hwndClickButton, GWLP_WNDPROC,
+    (LONG_PTR)TestFramework::button_subproc);
+
+  // sub-process the button to capture the press/release individually
+  g_pTestFramework->m_oldButtonProc = (WNDPROC)SetWindowLongPtr(m_hwndClickButton2, GWLP_WNDPROC,
     (LONG_PTR)TestFramework::button_subproc);
 
   m_hwndTickrateSlider = CreateWindow(TRACKBAR_CLASS, "Tickrate",
@@ -249,7 +259,7 @@ void TestFramework::paint(HWND hwnd)
   HDC hdcGlove = CreateCompatibleDC(hdc);
   HBITMAP hbmpOld = (HBITMAP)SelectObject(hdcGlove, m_gloveBMP);
   // copy the glove into position
-  BitBlt(hdc, 86, 30, 250, 320, hdcGlove, 0, 0, SRCCOPY);
+  BitBlt(hdc, 0, 30, 500, 250, hdcGlove, 0, 0, SRCCOPY);
   SelectObject(hdcGlove, hbmpOld);
   DeleteDC(hdcGlove);
 
@@ -426,43 +436,78 @@ void TestFramework::installLeds(CRGB *leds, uint32_t count)
   // initialize the positions of all the leds
   uint32_t base_left = 92;
   uint32_t base_top = 50;
-  uint32_t radius = 15;
+  uint32_t diameter = 21;
   uint32_t dx = 24;
   uint32_t dy = 30;
 
-  // thumb top/tip
-  m_ledPos[0].left = 95;
-  m_ledPos[0].top = 175;
-  m_ledPos[1].top = m_ledPos[0].top - 20;
-  m_ledPos[1].left = m_ledPos[0].left - 20;
+  // quadrant 1 top
+  for (uint32_t i = 0; i < 3; ++i) {
+    m_ledPos[i].left = 150 + (i * 17);
+    m_ledPos[i].top = 181 + (i * 17);
+  }
 
-  // index top/tip
-  m_ledPos[2].left = 135;
-  m_ledPos[2].top = 60;
-  m_ledPos[3].top = m_ledPos[2].top - 30;
-  m_ledPos[3].left = m_ledPos[2].left - 8;
+  // quadrant 1 edge
+  m_ledPos[3].left = m_ledPos[2].left + 25;
+  m_ledPos[3].top = m_ledPos[2].top + 25;
+  
+  // quadrant 1 bot
+  for (uint32_t i = 0; i < 3; ++i) {
+    m_ledPos[6 - i].left = 332 - (i * 17);
+    m_ledPos[6 - i].top = 181 + (i * 17);
+  }
 
-  // middle top/tip
-  m_ledPos[4].left = 195;
-  m_ledPos[4].top = 40;
-  m_ledPos[5].top = m_ledPos[4].top - 30;
-  m_ledPos[5].left = m_ledPos[4].left;
+  // quadrant 2 bot
+  for (uint32_t i = 0; i < 3; ++i) {
+    m_ledPos[7 + i].left = 400 + (i * 17);
+    m_ledPos[7 + i].top = 181 + (i * 17);
+  }
+  
+  // quadrant 2 top
+  for (uint32_t i = 0; i < 3; ++i) {
+    m_ledPos[13 - i].left = 82 - (i * 17);
+    m_ledPos[13 - i].top = 181 + (i * 17);
+  }
 
-  // ring top/tip
-  m_ledPos[6].left = 254;
-  m_ledPos[6].top = 60;
-  m_ledPos[7].top = m_ledPos[6].top - 30;
-  m_ledPos[7].left = m_ledPos[6].left + 8;
+  // quadrant 2 edge
+  m_ledPos[10].left = m_ledPos[11].left - 25;
+  m_ledPos[10].top = m_ledPos[11].top + 25;
 
-  // pinky top/tip
-  m_ledPos[8].left = 300;
-  m_ledPos[8].top = 95;
-  m_ledPos[9].top = m_ledPos[8].top - 22;
-  m_ledPos[9].left = m_ledPos[8].left + 16;
+  // quadrant 3 top
+  for (uint32_t i = 0; i < 3; ++i) {
+    m_ledPos[i + 14].left = 82 - (i * 17);
+    m_ledPos[i + 14].top = 113 - (i * 17);
+  }
+
+  // quadrant 3 edge
+  m_ledPos[17].left = m_ledPos[16].left - 25;
+  m_ledPos[17].top = m_ledPos[16].top - 25;
+
+  // quadrant 3 bot
+  for (uint32_t i = 0; i < 3; ++i) {
+    m_ledPos[20 - i].left = 400 + (i * 17);
+    m_ledPos[20 - i].top = 113 - (i * 17);
+  }
+
+  // quadrant 4 bot
+  for (uint32_t i = 0; i < 3; ++i) { 
+    m_ledPos[21 + i].left = 332 - (i * 17);
+    m_ledPos[21 + i].top = 113 - (i * 17);
+  }
+
+  // quadrant 4 top
+
+  for (uint32_t i = 0; i < 3; ++i) {
+    m_ledPos[27 - i].left = 150 + (i * 17);
+    m_ledPos[27 - i].top = 113 - (i * 17);
+  }
+
+  // quadrant 4 edge
+  m_ledPos[24].left = m_ledPos[25].left + 25;
+  m_ledPos[24].top = m_ledPos[25].top - 25;
 
   for (uint32_t i = 0; i < LED_COUNT; ++i) {
-    m_ledPos[i].right = m_ledPos[i].left + (radius * 2);
-    m_ledPos[i].bottom = m_ledPos[i].top + (radius * 2);
+    m_ledPos[i].right = m_ledPos[i].left + diameter;
+    m_ledPos[i].bottom = m_ledPos[i].top + diameter;
   }
 
   m_initialized = true;;
@@ -497,20 +542,32 @@ void TestFramework::show()
   }
 }
 
-void TestFramework::pressButton()
+void TestFramework::pressButton(uint8_t button)
 {
-  m_buttonPressed = true;
+  if (!button) {
+    m_buttonPressed = true;
+  } else {
+    m_buttonPressed2 = true;
+  }
 }
 
-void TestFramework::releaseButton()
+void TestFramework::releaseButton(uint8_t button)
 {
-  m_buttonPressed = false;
+  if (!button) {
+    m_buttonPressed = false;
+  } else {
+    m_buttonPressed2 = false;
+  }
 }
 
-bool TestFramework::isButtonPressed() const
+bool TestFramework::isButtonPressed(uint8_t button) const
 {
   // spacebar also works
-  return m_buttonPressed || (GetKeyState(VK_SPACE) & 0x100) != 0;
+  if (!button) {
+    return m_buttonPressed || (GetKeyState(VK_SPACE) & 0x100) != 0;
+  } else {
+    return m_buttonPressed2;
+  }
 }
 
 void TestFramework::setTickrate()
@@ -614,8 +671,8 @@ bool TestFramework::handlePatternChange(bool force)
   if (!newMode) { 
     return false; 
   }
-  // TODO: The hardware is flipped so the 'real' led position is reversed
-  LedPos realPos = (LedPos)(LED_LAST - m_curSelectedLed);
+  // The hardware is not flipped so the 'real' led position is correct
+  LedPos realPos = (LedPos)(m_curSelectedLed);
   if (isMultiLedPatternID(m_curPattern)) {
     if (!newMode->setMultiPat(m_curPattern, nullptr, &m_curColorset)) {
       delete newMode;
@@ -628,8 +685,7 @@ bool TestFramework::handlePatternChange(bool force)
       return false;
     }
     // if it's single led pattern then we can only poll from slot 0
-    // TODO: flip this
-    realPos = (LedPos)(LED_LAST - LED_FIRST);
+    realPos = (LedPos)(LED_FIRST);
   }
   // backup the current LED 0 color
   RGBColor curLed0Col = m_ledList[realPos];
@@ -713,12 +769,13 @@ DWORD __stdcall TestFramework::arduino_loop_thread(void *arg)
 
 LRESULT CALLBACK TestFramework::button_subproc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
+  HMENU menu = GetMenu(hwnd);
   switch (uMsg) {
-  case WM_LBUTTONDOWN:
-    g_pTestFramework->pressButton();
+  case WM_LBUTTONDOWN: 
+    g_pTestFramework->pressButton((menu == (HMENU)CLICK_BUTTON_ID2));
     break;
   case WM_LBUTTONUP:
-    g_pTestFramework->releaseButton();
+    g_pTestFramework->releaseButton((menu == (HMENU)CLICK_BUTTON_ID2));
     break;
   default:
     break;
