@@ -317,8 +317,6 @@
     <ResourceCompile Include="VortexTestingFramework.rc" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="..\..\..\..\Documents\OrbitForFramework.bmp" />
-    <Image Include="..\..\..\..\Documents\Untitled.bmp" />
     <Image Include="glove.bmp" />
     <Image Include="icon.ico" />
     <Image Include="OrbitForFramework.bmp" />

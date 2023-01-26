@@ -627,12 +627,6 @@
     <Image Include="icon.ico">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="..\..\..\..\Documents\Untitled.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="..\..\..\..\Documents\OrbitForFramework.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="OrbitForFramework.bmp">
       <Filter>Resource Files</Filter>
     </Image>
