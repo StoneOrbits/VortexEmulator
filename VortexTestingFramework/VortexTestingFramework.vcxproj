@@ -157,6 +157,7 @@
     <ClCompile Include="VortexEngine\VortexEngine\src\Modes\DefaultModes.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\MateriaPattern.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\Sequencer\ChaserPattern.cpp" />
+    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\PatternArgs.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Single\DashDopsPattern.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\Serial\BitStream.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\Buttons\Button.cpp" />
@@ -241,6 +242,7 @@
     <ClInclude Include="VortexEngine\VortexEngine\src\Modes\DefaultModes.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\MateriaPattern.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\Sequencer\ChaserPattern.h" />
+    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\PatternArgs.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Single\DashDopsPattern.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Serial\BitStream.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Buttons\Button.h" />
