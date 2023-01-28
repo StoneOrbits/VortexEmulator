@@ -189,6 +189,7 @@
     <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\WarpPattern.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\WarpWormPattern.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\ZigzagPattern.cpp" />
+    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\PatternArgs.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Single\DashDopsPattern.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\Serial\BitStream.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\Buttons\Button.cpp" />
@@ -317,8 +318,6 @@
     <ResourceCompile Include="VortexTestingFramework.rc" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="..\..\..\..\Documents\OrbitForFramework.bmp" />
-    <Image Include="..\..\..\..\Documents\Untitled.bmp" />
     <Image Include="glove.bmp" />
     <Image Include="icon.ico" />
     <Image Include="OrbitForFramework.bmp" />
