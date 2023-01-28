@@ -184,11 +184,11 @@ void TestFramework::create(HWND hwnd)
   // create the server checkbox and ip textbox
   m_hwndClickButton = CreateWindow(WC_BUTTON, "Click",
     WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON | WS_TABSTOP,
-    226, 312, 48, 24, hwnd, (HMENU)CLICK_BUTTON_ID, nullptr, nullptr);
+    226, 302, 48, 24, hwnd, (HMENU)CLICK_BUTTON_ID, nullptr, nullptr);
 
   m_hwndClickButton2 = CreateWindow(WC_BUTTON, "Click2",
     WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON | WS_TABSTOP,
-    226, 340, 48, 24, hwnd, (HMENU)CLICK_BUTTON_ID2, nullptr, nullptr);
+    226, 330, 48, 24, hwnd, (HMENU)CLICK_BUTTON_ID2, nullptr, nullptr);
 
   // sub-process the button to capture the press/release individually
   g_pTestFramework->m_oldButtonProc = (WNDPROC)SetWindowLongPtr(m_hwndClickButton, GWLP_WNDPROC,
