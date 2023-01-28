@@ -129,14 +129,13 @@ unsigned long digitalRead(uint32_t pin)
     if (g_pTestFramework->isButtonPressed(0)) {
       return LOW;
     }
-    return HIGH;
   }
   if (pin == 20) {
     if (g_pTestFramework->isButtonPressed(1)) {
       return LOW;
     }
-    return HIGH;
   }
+  return HIGH;
 }
 
 void digitalWrite(uint32_t pin,  uint32_t val)
