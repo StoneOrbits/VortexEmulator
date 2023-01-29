@@ -83,7 +83,7 @@ TestFramework::TestFramework() :
   m_pauseMutex(nullptr),
   m_curMode(),
   m_patternStrip(),
-  m_redrawStrip(false),
+  m_redrawStrip(true),
   m_curSelectedLed(LED_FIRST)
 {
 }
@@ -351,53 +351,52 @@ void TestFramework::paint(HWND hwnd)
 
 #ifdef ENABLE_PATTERN_STRIP
   // pattern strip
-  if (m_redrawStrip) {
-    m_redrawStrip = false;
-    RECT stripRect = { 0, patternStripStart, width, patternStripEnd };
-    FillRect(hdc, &stripRect, getBrushCol(0));
-    for (uint32_t i = 0; i < m_patternStrip.size(); ++i) {
-      RECT stripPos = { (LONG)i, patternStripStart + 2, (LONG)i + 1, patternStripEnd - 2 };
-      RGBColor col = m_patternStrip[i];
-      HSVColor hsvCol = col;
-      uint32_t val = 255; //hsvCol.val;
-      // if drawing a color with non full value
-      if (!col.empty() && val < 255) {
-        // fill black background
-        FillRect(hdc, &stripPos, getBrushCol(0));
-        // adjust the size of the bar based on value
-        uint32_t offset = (uint32_t)(8 - ((val / 255.0) * 8));
-        stripPos.top += offset;
-        stripPos.bottom -= offset;
-      }
+  RECT stripRect = { 0, patternStripStart, width, patternStripEnd };
+  FillRect(hdc, &stripRect, getBrushCol(0));
+  for (uint32_t i = 0; i < m_patternStrip.size(); ++i) {
+    RECT stripPos = { (LONG)i, patternStripStart + 2, (LONG)i + 1, patternStripEnd - 2 };
+    RGBColor col = m_patternStrip[i];
+    HSVColor hsvCol = col;
+    uint32_t val = 255; //hsvCol.val;
+    // if drawing a color with non full value
+    if (!col.empty() && val < 255) {
+      // fill black background
+      FillRect(hdc, &stripPos, getBrushCol(0));
+      // adjust the size of the bar based on value
+      uint32_t offset = (uint32_t)(8 - ((val / 255.0) * 8));
+      stripPos.top += offset;
+      stripPos.bottom -= offset;
+    }
 #ifdef HSV_TO_RGB_GENERIC
-      // implicitly convert rgb 'col' to hsv in argument, then back to rgb with different
-      // algorithm than was originally used
-      RGBColor trueCol = hsv_to_rgb_generic(col);
+    // implicitly convert rgb 'col' to hsv in argument, then back to rgb with different
+    // algorithm than was originally used
+    RGBColor trueCol = hsv_to_rgb_generic(col);
 #else
-      RGBColor trueCol = col;
+    RGBColor trueCol = col;
 #endif
-      FillRect(hdc, &stripPos, getBrushCol(trueCol));
-    }
-
-    const uint32_t border_size = 2;
-    for (uint32_t i = 0; i < MAX_COLOR_SLOTS; ++i) {
-      RGBColor curCol = Modes::curMode()->getColorset()->get(i);
-      HSVColor hsvCol = curCol;
-      uint32_t offset = (uint32_t)(8 - ((hsvCol.val / 255.0) * 8));
-      RECT colPos = { 50 + (LONG)(i * 40) , 265, 50 + (LONG)(i * 40) + 20, 285 };
-      RECT bordPos = colPos;
-      colPos.left += offset;
-      colPos.top += offset;
-      colPos.right -= offset;
-      colPos.bottom -= offset;
-      bordPos.left -= border_size;
-      bordPos.top -= border_size;
-      bordPos.bottom += border_size;
-      bordPos.right += border_size;
-      FillRect(hdc, &bordPos, getBrushCol(RGB_OFF));
-      FillRect(hdc, &colPos, getBrushCol(curCol));
-    }
+    FillRect(hdc, &stripPos, getBrushCol(trueCol));
   }
+#if 0
+  // draw the color slots
+  const uint32_t border_size = 2;
+  for (uint32_t i = 0; i < MAX_COLOR_SLOTS; ++i) {
+    RGBColor curCol = Modes::curMode()->getColorset()->get(i);
+    HSVColor hsvCol = curCol;
+    uint32_t offset = (uint32_t)(8 - ((hsvCol.val / 255.0) * 8));
+    RECT colPos = { 50 + (LONG)(i * 40) , 265, 50 + (LONG)(i * 40) + 20, 285 };
+    RECT bordPos = colPos;
+    colPos.left += offset;
+    colPos.top += offset;
+    colPos.right -= offset;
+    colPos.bottom -= offset;
+    bordPos.left -= border_size;
+    bordPos.top -= border_size;
+    bordPos.bottom += border_size;
+    bordPos.right += border_size;
+    FillRect(hdc, &bordPos, getBrushCol(RGB_OFF));
+    FillRect(hdc, &colPos, getBrushCol(curCol));
+  }
+#endif
 #endif
 
   EndPaint(hwnd, &ps);
@@ -405,11 +404,16 @@ void TestFramework::paint(HWND hwnd)
 
 void TestFramework::cleanup()
 {
-  VortexEngine::cleanup();
+  // turn off the loops and unpause
   m_keepGoing = false;
   m_isPaused = false;
+  // wait for the loop to finish, 3 seconds I guess
   WaitForSingleObject(m_loopThread, 3000);
+  // cleanup the vortex engine stuff
+  VortexEngine::cleanup();
+  // delete the thing
   DeleteObject(m_bkbrush);
+  // cleanup arduino stuff
   cleanup_arduino();
 }
 
@@ -653,44 +657,56 @@ bool TestFramework::handlePatternChange(bool force)
   if (!Modes::curMode()) {
     return false;
   }
-  LedPos realPos = (LedPos)(m_curSelectedLed);
   // don't want to create a callback mechanism just for the test framework to be
   // notified of pattern changes, I'll just watch the patternID each tick
   Mode *targetMode = Modes::curMode();
   if (!targetMode) {
     return false;
   }
+#if 0
+  // cant do this it causes too much lag in the editor
   Menu *curMenu = Menus::curMenu();
   if (curMenu && curMenu->curMode()) {
     targetMode = curMenu->curMode();
   }
+#endif
   // check to see if the mode changed
   if (!force && m_curMode.equals(targetMode)) {
     return false;
   }
   // update current mode
   m_curMode = *targetMode;
-  // The hardware is not flipped so the 'real' led position is correct
-  if (!isMultiLedPatternID(m_curMode.getPatternID())) {
-    // if it's single led pattern then we can only poll from slot 0
+  m_curMode.init();
+  // the realpos is used to target the actual index of pattern to run
+  LedPos realPos = (LedPos)(m_curSelectedLed);
+  if (isMultiLedPatternID(m_curMode.getPatternID())) {
+    // if it's multi led then the real pos is just the first
     realPos = (LedPos)(LED_FIRST);
   }
-  // backup the current LED 0 color
-  RGBColor curLed0Col = m_ledList[realPos];
+  // grab the target pattern object that will run
+  Pattern *targetPat = m_curMode.getPattern(realPos);
+  if (!targetPat) {
+    return false;
+  }
+  // backup the selected led
+  RGBColor backupCol = m_ledList[m_curSelectedLed];
+  // begin the time simulation so we can tick forward
   Time::startSimulation();
-  m_curMode.init();
+  // clear and re-generate the pattern strip
   m_patternStrip.clear();
   for (int i = 0; i < width; ++i) {
-    m_curMode.play();
+    // run the pattern each simulated tick
+    targetPat->play();
+    m_patternStrip.push_back(Leds::getLed(m_curSelectedLed));
     Time::tickSimulation();
-    RGBColor c = m_ledList[realPos];
-    m_patternStrip.push_back(c);
   }
+  // end the time simulation, this snaps the tickcount
+  // back to where it was before starting the sim
   Time::endSimulation();
-  // restore original color on Led0
-  m_ledList[realPos] = curLed0Col;
+  // restore original color on the target led
+  m_ledList[m_curSelectedLed] = backupCol;
   // idk why this sleep is necessary, bad synchronization
-  Sleep(100);
+  //Sleep(100);
   // redraw the pattern strip
   m_redrawStrip = true;
   RECT stripRect = { 0, patternStripStart, width, patternStripEnd };
