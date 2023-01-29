@@ -334,7 +334,7 @@ void TestFramework::paint(HWND hwnd)
 
 #ifdef ENABLE_PATTERN_STRIP
   // pattern strip
-  if (m_redrawStrip) {
+  if (m_redrawStrip || 1) {
     m_redrawStrip = false;
     RECT stripRect = { 0, patternStripStart, width, patternStripEnd };
     FillRect(hdc, &stripRect, getBrushCol(0));
@@ -361,26 +361,27 @@ void TestFramework::paint(HWND hwnd)
 #endif
       FillRect(hdc, &stripPos, getBrushCol(trueCol));
     }
-
-    const uint32_t border_size = 2;
-    for (uint32_t i = 0; i < MAX_COLOR_SLOTS; ++i) {
-      RGBColor curCol = Modes::curMode()->getColorset()->get(i);
-      HSVColor hsvCol = curCol;
-      uint32_t offset = (uint32_t)(8 - ((hsvCol.val / 255.0) * 8));
-      RECT colPos = { 50 + (LONG)(i * 40) , 265, 50 + (LONG)(i * 40) + 20, 285 };
-      RECT bordPos = colPos;
-      colPos.left += offset;
-      colPos.top += offset;
-      colPos.right -= offset;
-      colPos.bottom -= offset;
-      bordPos.left -= border_size;
-      bordPos.top -= border_size;
-      bordPos.bottom += border_size;
-      bordPos.right += border_size;
-      FillRect(hdc, &bordPos, getBrushCol(RGB_OFF));
-      FillRect(hdc, &colPos, getBrushCol(curCol));
-    }
   }
+#if 0
+  const uint32_t border_size = 2;
+  for (uint32_t i = 0; i < MAX_COLOR_SLOTS; ++i) {
+    RGBColor curCol = Modes::curMode()->getColorset()->get(i);
+    HSVColor hsvCol = curCol;
+    uint32_t offset = (uint32_t)(8 - ((hsvCol.val / 255.0) * 8));
+    RECT colPos = { 50 + (LONG)(i * 40) , 265, 50 + (LONG)(i * 40) + 20, 285 };
+    RECT bordPos = colPos;
+    colPos.left += offset;
+    colPos.top += offset;
+    colPos.right -= offset;
+    colPos.bottom -= offset;
+    bordPos.left -= border_size;
+    bordPos.top -= border_size;
+    bordPos.bottom += border_size;
+    bordPos.right += border_size;
+    FillRect(hdc, &bordPos, getBrushCol(RGB_OFF));
+    FillRect(hdc, &colPos, getBrushCol(curCol));
+  }
+#endif
 #endif
 
   EndPaint(hwnd, &ps);
