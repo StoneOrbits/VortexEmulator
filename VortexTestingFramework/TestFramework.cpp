@@ -17,9 +17,7 @@
 #include "Leds/Leds.h"
 #include "Time/TimeControl.h"
 #include "Colors/Colorset.h"
-#include "Modes/ModeBuilder.h"
 #include "Modes/Modes.h"
-#include "Modes/Mode.h"
 
 #include "VortexEngine.h"
 
@@ -74,8 +72,7 @@ TestFramework::TestFramework() :
   m_keepGoing(true),
   m_isPaused(false),
   m_pauseMutex(nullptr),
-  m_curPattern(PATTERN_FIRST),
-  m_curColorset(),
+  m_curMode(),
   m_patternStrip(),
   m_redrawStrip(false),
   m_curSelectedLed(LED_FIRST)
@@ -391,11 +388,16 @@ void TestFramework::paint(HWND hwnd)
 
 void TestFramework::cleanup()
 {
-  VortexEngine::cleanup();
+  // turn off the loops and unpause
   m_keepGoing = false;
   m_isPaused = false;
+  // wait for the loop to finish, 3 seconds I guess
   WaitForSingleObject(m_loopThread, 3000);
+  // cleanup the vortex engine stuff
+  VortexEngine::cleanup();
+  // delete the thing
   DeleteObject(m_bkbrush);
+  // cleanup arduino stuff
   cleanup_arduino();
 }
 
@@ -594,61 +596,54 @@ bool TestFramework::handlePatternChange(bool force)
   }
   // don't want to create a callback mechanism just for the test framework to be
   // notified of pattern changes, I'll just watch the patternID each tick
-  PatternID curPattern = Modes::curMode()->getPatternID();
-  Colorset *curColorset = (Colorset *)Modes::curMode()->getColorset();
-  if (!curColorset) {
+  Mode *targetMode = Modes::curMode();
+  if (!targetMode) {
     return false;
   }
-  // check to see if the pattern or colorset changed
-  if (!force) {
-    if (curPattern == m_curPattern && *curColorset == m_curColorset) {
-      return false;
-    }
+#if 0
+  // cant do this it causes too much lag in the editor
+  Menu *curMenu = Menus::curMenu();
+  if (curMenu && curMenu->curMode()) {
+    targetMode = curMenu->curMode();
   }
-  // update current pattern and colorset
-  m_curPattern = curPattern;
-  m_curColorset = *curColorset;
-  // would use the mode builder but it's not quite suited for this
-  // create the new mode object
-  Mode *newMode = new Mode();
-  if (!newMode) { 
-    return false; 
+#endif
+  // check to see if the mode changed
+  if (!force && m_curMode.equals(targetMode)) {
+    return false;
   }
-  // TODO: The hardware is flipped so the 'real' led position is reversed
-  LedPos realPos = (LedPos)(LED_LAST - m_curSelectedLed);
-  if (isMultiLedPatternID(m_curPattern)) {
-    if (!newMode->setMultiPat(m_curPattern, nullptr, &m_curColorset)) {
-      delete newMode;
-      return false;
-    }
-  } else {
-    // bind the pattern and colorset to the mode
-    if (!newMode->setSinglePat(LED_FIRST, m_curPattern, nullptr, &m_curColorset)) {
-      delete newMode;
-      return false;
-    }
-    // if it's single led pattern then we can only poll from slot 0
-    // TODO: flip this
-    realPos = (LedPos)(LED_LAST - LED_FIRST);
+  // update current mode
+  m_curMode = *targetMode;
+  m_curMode.init();
+  // the realpos is used to target the actual index of pattern to run
+  LedPos realPos = (LedPos)(m_curSelectedLed);
+  if (isMultiLedPatternID(m_curMode.getPatternID())) {
+    // if it's multi led then the real pos is just the first
+    realPos = (LedPos)(LED_FIRST);
   }
-  // backup the current LED 0 color
-  RGBColor curLed0Col = m_ledList[realPos];
+  // grab the target pattern object that will run
+  Pattern *targetPat = m_curMode.getPattern(realPos);
+  if (!targetPat) {
+    return false;
+  }
+  // backup the selected led
+  RGBColor backupCol = m_ledList[m_curSelectedLed];
+  // begin the time simulation so we can tick forward
   Time::startSimulation();
-  newMode->init();
+  // clear and re-generate the pattern strip
   m_patternStrip.clear();
   for (int i = 0; i < width; ++i) {
-    newMode->play();
+    // run the pattern each simulated tick
+    targetPat->play();
+    m_patternStrip.push_back(Leds::getLed(m_curSelectedLed));
     Time::tickSimulation();
-    RGBColor c = m_ledList[realPos];
-    m_patternStrip.push_back(c);
   }
+  // end the time simulation, this snaps the tickcount
+  // back to where it was before starting the sim
   Time::endSimulation();
-  // restore original color on Led0
-  m_ledList[realPos] = curLed0Col;
+  // restore original color on the target led
+  m_ledList[m_curSelectedLed] = backupCol;
   // idk why this sleep is necessary, bad synchronization
-  Sleep(100);
-  // clean up the temp mode object and the pattern/colorset it contains
-  delete newMode;
+  //Sleep(100);
   // redraw the pattern strip
   m_redrawStrip = true;
   RECT stripRect = { 0, patternStripStart, width, patternStripEnd };

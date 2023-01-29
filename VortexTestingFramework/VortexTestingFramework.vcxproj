@@ -176,7 +176,6 @@
     <ClCompile Include="VortexEngine\VortexEngine\src\Menus\MenuList\PatternSelect.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\Menus\MenuList\Randomizer.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\Modes\Mode.cpp" />
-    <ClCompile Include="VortexEngine\VortexEngine\src\Modes\ModeBuilder.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\Modes\Modes.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\PatternBuilder.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\BackStrobePattern.cpp" />
@@ -261,7 +260,6 @@
     <ClInclude Include="VortexEngine\VortexEngine\src\Menus\MenuList\PatternSelect.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Menus\MenuList\Randomizer.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Modes\Mode.h" />
-    <ClInclude Include="VortexEngine\VortexEngine\src\Modes\ModeBuilder.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Modes\Modes.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\PatternBuilder.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Patterns.h" />
