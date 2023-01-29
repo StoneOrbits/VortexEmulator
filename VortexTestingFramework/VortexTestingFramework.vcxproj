@@ -202,7 +202,6 @@
     <ClCompile Include="VortexEngine\VortexEngine\src\Menus\Menus.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\Menus\Menu.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\Modes\Mode.cpp" />
-    <ClCompile Include="VortexEngine\VortexEngine\src\Modes\ModeBuilder.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\Modes\Modes.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\PatternBuilder.cpp" />
     <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\MultiLedPattern.cpp" />
@@ -287,7 +286,6 @@
     <ClInclude Include="VortexEngine\VortexEngine\src\Menus\Menus.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Menus\Menu.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Modes\Mode.h" />
-    <ClInclude Include="VortexEngine\VortexEngine\src\Modes\ModeBuilder.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Modes\Modes.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\PatternBuilder.h" />
     <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Patterns.h" />

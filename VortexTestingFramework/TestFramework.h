@@ -7,6 +7,7 @@
 #include "Colors/Colorset.h"
 #include "Leds/LedTypes.h"
 #include "Patterns/Patterns.h"
+#include "Modes/Mode.h"
 
 #include <string>
 #include <vector>
@@ -142,8 +143,7 @@ private:
 
   HANDLE m_pauseMutex;
 
-  PatternID m_curPattern;
-  Colorset m_curColorset;
+  Mode m_curMode;
 
   // one color per pixel of strip
   std::vector<RGBColor> m_patternStrip;

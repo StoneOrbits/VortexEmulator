@@ -17,9 +17,14 @@
 #include "Leds/Leds.h"
 #include "Time/TimeControl.h"
 #include "Colors/Colorset.h"
-#include "Modes/ModeBuilder.h"
 #include "Modes/Modes.h"
-#include "Modes/Mode.h"
+#include "Menus/Menus.h"
+#include "Menus/Menu.h"
+
+#include "Menus/MenuList/EditorConnection.h"
+#include "Menus/MenuList/PatternSelect.h"
+#include "Menus/MenuList/ColorSelect.h"
+#include "Menus/MenuList/Randomizer.h"
 
 #include "VortexEngine.h"
 
@@ -76,8 +81,7 @@ TestFramework::TestFramework() :
   m_keepGoing(true),
   m_isPaused(false),
   m_pauseMutex(nullptr),
-  m_curPattern(PATTERN_FIRST),
-  m_curColorset(),
+  m_curMode(),
   m_patternStrip(),
   m_redrawStrip(false),
   m_curSelectedLed(LED_FIRST)
@@ -649,51 +653,35 @@ bool TestFramework::handlePatternChange(bool force)
   if (!Modes::curMode()) {
     return false;
   }
+  LedPos realPos = (LedPos)(m_curSelectedLed);
   // don't want to create a callback mechanism just for the test framework to be
   // notified of pattern changes, I'll just watch the patternID each tick
-  PatternID curPattern = Modes::curMode()->getPatternID();
-  Colorset *curColorset = (Colorset *)Modes::curMode()->getColorset();
-  if (!curColorset) {
+  Mode *targetMode = Modes::curMode();
+  if (!targetMode) {
     return false;
   }
-  // check to see if the pattern or colorset changed
-  if (!force) {
-    if (curPattern == m_curPattern && *curColorset == m_curColorset) {
-      return false;
-    }
+  Menu *curMenu = Menus::curMenu();
+  if (curMenu && curMenu->curMode()) {
+    targetMode = curMenu->curMode();
   }
-  // update current pattern and colorset
-  m_curPattern = curPattern;
-  m_curColorset = *curColorset;
-  // would use the mode builder but it's not quite suited for this
-  // create the new mode object
-  Mode *newMode = new Mode();
-  if (!newMode) { 
-    return false; 
+  // check to see if the mode changed
+  if (!force && m_curMode.equals(targetMode)) {
+    return false;
   }
+  // update current mode
+  m_curMode = *targetMode;
   // The hardware is not flipped so the 'real' led position is correct
-  LedPos realPos = (LedPos)(m_curSelectedLed);
-  if (isMultiLedPatternID(m_curPattern)) {
-    if (!newMode->setMultiPat(m_curPattern, nullptr, &m_curColorset)) {
-      delete newMode;
-      return false;
-    }
-  } else {
-    // bind the pattern and colorset to the mode
-    if (!newMode->setSinglePat(LED_FIRST, m_curPattern, nullptr, &m_curColorset)) {
-      delete newMode;
-      return false;
-    }
+  if (!isMultiLedPatternID(m_curMode.getPatternID())) {
     // if it's single led pattern then we can only poll from slot 0
     realPos = (LedPos)(LED_FIRST);
   }
   // backup the current LED 0 color
   RGBColor curLed0Col = m_ledList[realPos];
   Time::startSimulation();
-  newMode->init();
+  m_curMode.init();
   m_patternStrip.clear();
   for (int i = 0; i < width; ++i) {
-    newMode->play();
+    m_curMode.play();
     Time::tickSimulation();
     RGBColor c = m_ledList[realPos];
     m_patternStrip.push_back(c);
@@ -703,8 +691,6 @@ bool TestFramework::handlePatternChange(bool force)
   m_ledList[realPos] = curLed0Col;
   // idk why this sleep is necessary, bad synchronization
   Sleep(100);
-  // clean up the temp mode object and the pattern/colorset it contains
-  delete newMode;
   // redraw the pattern strip
   m_redrawStrip = true;
   RECT stripRect = { 0, patternStripStart, width, patternStripEnd };

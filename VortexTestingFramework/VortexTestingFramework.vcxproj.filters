@@ -200,9 +200,6 @@
     <ClCompile Include="VortexEngine\VortexEngine\src\Modes\Mode.cpp">
       <Filter>Source Files\src\Modes</Filter>
     </ClCompile>
-    <ClCompile Include="VortexEngine\VortexEngine\src\Modes\ModeBuilder.cpp">
-      <Filter>Source Files\src\Modes</Filter>
-    </ClCompile>
     <ClCompile Include="VortexEngine\VortexEngine\src\Modes\Modes.cpp">
       <Filter>Source Files\src\Modes</Filter>
     </ClCompile>
@@ -443,9 +440,6 @@
       <Filter>Header Files\src\Menus</Filter>
     </ClInclude>
     <ClInclude Include="VortexEngine\VortexEngine\src\Modes\Mode.h">
-      <Filter>Header Files\src\Modes</Filter>
-    </ClInclude>
-    <ClInclude Include="VortexEngine\VortexEngine\src\Modes\ModeBuilder.h">
       <Filter>Header Files\src\Modes</Filter>
     </ClInclude>
     <ClInclude Include="VortexEngine\VortexEngine\src\Modes\Modes.h">
