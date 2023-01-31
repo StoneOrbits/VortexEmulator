@@ -74,7 +74,7 @@ TestFramework::TestFramework() :
   m_pauseMutex(nullptr),
   m_curMode(),
   m_patternStrip(),
-  m_redrawStrip(false),
+  m_redrawStrip(true),
   m_curSelectedLed(LED_FIRST)
 {
 }
@@ -93,7 +93,7 @@ bool TestFramework::init(HINSTANCE hInstance)
   }
   g_pTestFramework = this;
 
-#if 0
+#if _DEBUG
   if (!m_consoleHandle) {
     AllocConsole();
     freopen_s(&m_consoleHandle, "CONOUT$", "w", stdout);
