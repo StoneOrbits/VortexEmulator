@@ -50,7 +50,7 @@ END
 // Bitmap
 //
 
-IDB_BITMAP1             BITMAP                  "Orbit.bmp"
+IDB_BITMAP1             BITMAP                  "orbit.bmp"
 
 
 /////////////////////////////////////////////////////////////////////////////
