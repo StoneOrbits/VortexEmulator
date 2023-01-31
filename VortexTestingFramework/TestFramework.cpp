@@ -102,7 +102,7 @@ bool TestFramework::init(HINSTANCE hInstance)
   }
   g_pTestFramework = this;
 
-#if 0
+#if _DEBUG
   if (!m_consoleHandle) {
     AllocConsole();
     freopen_s(&m_consoleHandle, "CONOUT$", "w", stdout);
