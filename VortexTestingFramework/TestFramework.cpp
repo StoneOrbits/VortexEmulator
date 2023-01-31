@@ -774,7 +774,7 @@ LRESULT CALLBACK TestFramework::button_subproc(HWND hwnd, UINT uMsg, WPARAM wPar
 {
   HMENU menu = GetMenu(hwnd);
   switch (uMsg) {
-  case WM_LBUTTONDOWN: 
+  case WM_LBUTTONDOWN:
     g_pTestFramework->pressButton((menu == (HMENU)CLICK_BUTTON_ID2));
     break;
   case WM_LBUTTONUP:
