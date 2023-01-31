@@ -78,6 +78,7 @@ TestFramework::TestFramework() :
   m_numLeds(0),
   m_initialized(false),
   m_buttonPressed(false),
+  m_buttonPressed2(false),
   m_keepGoing(true),
   m_isPaused(false),
   m_pauseMutex(nullptr),
