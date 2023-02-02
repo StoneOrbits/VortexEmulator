@@ -14,7 +14,6 @@
 #include "Patterns/PatternBuilder.h"
 #include "Time/TimeControl.h"
 #include "Colors/Colorset.h"
-#include "Modes/ModeBuilder.h"
 #include "Modes/Modes.h"
 #include "Modes/Mode.h"
 
