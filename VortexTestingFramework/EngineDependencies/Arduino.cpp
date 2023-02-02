@@ -93,6 +93,7 @@ void init_arduino()
 
 void cleanup_arduino()
 {
+#ifndef LINUX_FRAMEWORK
   HWND hwnd = FindWindow("VWINDOW", NULL);
   if (hwnd != NULL) {
     PostMessage(hwnd, WM_USER + 2, 0, 0);
@@ -100,6 +101,7 @@ void cleanup_arduino()
   if (hPipe) {
     DisconnectNamedPipe(hPipe);
   }
+#endif
 }
 
 void delay(size_t amt)
@@ -268,6 +270,7 @@ void SerialClass::println(const char *s)
 uint32_t SerialClass::write(const uint8_t *buf, size_t len)
 {
   DWORD total = 0;
+#ifndef LINUX_FRAMEWORK
   DWORD written = 0;
   do {
     if (!WriteFile(hPipe, buf + total, len - total, &written, NULL)) {
@@ -275,6 +278,7 @@ uint32_t SerialClass::write(const uint8_t *buf, size_t len)
     }
     total += written;
   } while (total < len);
+#endif
   return total;
 }
 
@@ -283,6 +287,7 @@ SerialClass::operator bool()
   if (connected) {
     return true;
   }
+#ifndef LINUX_FRAMEWORK
   // create a global pipe
   if (!ConnectNamedPipe(hPipe, NULL)) {
     int err = GetLastError();
@@ -290,6 +295,7 @@ SerialClass::operator bool()
       return false;
     }
   }
+#endif
   connected = true;
   return true;
 }
@@ -297,15 +303,18 @@ SerialClass::operator bool()
 int32_t SerialClass::available()
 {
   DWORD amount = 0;
+#ifndef LINUX_FRAMEWORK
   if (!PeekNamedPipe(hPipe, 0, 0, 0, &amount, 0)) {
     return 0;
   }
+#endif
   return (int32_t)amount;
 }
 
 size_t SerialClass::readBytes(char *buf, size_t amt)
 {
   DWORD total = 0;
+#ifndef LINUX_FRAMEWORK
   DWORD numRead = 0;
   do {
     if (!ReadFile(hPipe, buf + total, amt - total, &numRead, NULL)) {
@@ -317,6 +326,7 @@ size_t SerialClass::readBytes(char *buf, size_t amt)
     }
     total += numRead;
   } while (total < amt);
+#endif
   return total;
 }
 

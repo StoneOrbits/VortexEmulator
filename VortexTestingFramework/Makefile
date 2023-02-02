@@ -21,6 +21,7 @@ DEFINES=\
 # compiler include paths
 INCLUDES=\
 	-I ./VortexEngine/VortexEngine/src/ \
+	-I ./EngineDependencies/ \
 	-I ./ \
 
 # only set them if they're not empty to prevent unnecessary whitespace
@@ -51,10 +52,10 @@ LIBS=\
 # local source files first, other sources after
 SRC=\
     ./LinuxMain.cpp \
-    ./Arduino.cpp \
-    ./FastLED.cpp \
-    ./FlashStorage.cpp \
     ./TestFrameworkLinux.cpp \
+    ./EngineDependencies/Arduino.cpp \
+    ./EngineDependencies/FastLED.cpp \
+    ./EngineDependencies/FlashStorage.cpp \
     $(shell find ./VortexEngine/VortexEngine/src/ -type f -name '*.cpp') \
 
 # object files are source files with .c replaced with .o
