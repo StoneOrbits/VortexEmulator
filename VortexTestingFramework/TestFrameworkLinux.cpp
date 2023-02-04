@@ -14,13 +14,14 @@
 #include "Patterns/PatternBuilder.h"
 #include "Time/TimeControl.h"
 #include "Colors/Colorset.h"
+#include "Buttons/Button.h"
+#include "Time/Timings.h"
+#include "Menus/Menus.h"
 #include "Modes/Modes.h"
 #include "Modes/Mode.h"
 
 #include "Patterns/Pattern.h"
 #include "Patterns/single/SingleLedPattern.h"
-
-#include <ncurses.h>
 
 TestFramework *g_pTestFramework = nullptr;
 
@@ -41,7 +42,6 @@ TestFramework::TestFramework() :
 
 TestFramework::~TestFramework()
 {
-  endwin();
   fclose(m_logHandle);
 }
 
@@ -62,12 +62,6 @@ bool TestFramework::init()
     string filename = "vortex-test-framework-log." + timestr + ".txt";
     m_logHandle = fopen(filename.c_str(), "w");
   }
-  initscr();
-  cbreak();
-  noecho();
-  nodelay(stdscr, TRUE);
-  scrollok(stdscr, TRUE);
-  refresh();
 
   printf("Initialized\r\n");
   printf("  a = short press\r\n");
@@ -84,41 +78,11 @@ unsigned long do_release = 0;
 void TestFramework::run()
 {
   while (m_initialized && m_keepGoing) {
-    int ch = getch();
-    if (do_release && (millis() > do_release)) {
-      do_release = 0;
-      releaseButton();
-    } else {
-      if (ch != ERR) {
-        switch (ch) {
-        case 'a':
-          pressButton();
-          do_release = millis();
-          break;
-        case 's':
-          pressButton();
-          do_release = millis() + 1100;
-          break;
-        case 'f':
-          pressButton();
-          do_release = millis() + 3100;
-          break;
-        case 'q':
-          cleanup();
-          break;
-        case 'd':
-        default:
-          if (m_buttonPressed) {
-            releaseButton();
-          } else {
-            pressButton();
-          }
-        }
-      }
-    }
-    refresh();
-
     VortexEngine::tick();
+    g_pButton->m_longClick = false;
+    g_pButton->m_isPressed = false;
+    g_pButton->m_shortClick = false;
+    g_pButton->m_holdDuration = 0;
   }
 
   VortexEngine::cleanup();
@@ -187,4 +151,48 @@ void TestFramework::printlog(const char *file, const char *func, int line, const
   va_copy(list2, vlst);
   vfprintf(stdout, strMsg.c_str(), vlst);
   vfprintf(g_pTestFramework->m_logHandle, strMsg.c_str(), list2);
+}
+
+void TestFramework::injectButtons()
+{
+  int ch = getchar();
+  if (ch == 0) {
+    return;
+  }
+  switch (ch) {
+  case 'a':
+    printf("short click\n");
+    g_pButton->m_newRelease = true;
+    g_pButton->m_shortClick = true;
+    g_pButton->m_pressTime = Time::getCurtime();
+    g_pButton->m_holdDuration = 200;
+    break;
+  case 's':
+    printf("long click\n");
+    g_pButton->m_newRelease = true;
+    g_pButton->m_longClick = true;
+    g_pButton->m_pressTime = Time::getCurtime();
+    g_pButton->m_holdDuration = SHORT_CLICK_THRESHOLD_TICKS + 1;
+    break;
+  case 'd':
+    printf("menu enter click\n");
+    g_pButton->m_longClick = true;
+    g_pButton->m_isPressed = true;
+    g_pButton->m_holdDuration = MENU_TRIGGER_THRESHOLD_TICKS + 1;
+    break;
+  case 'q':
+    cleanup();
+    break;
+  case 'f':
+    printf("toggle\n");
+    if (m_buttonPressed) {
+      releaseButton();
+    } else {
+      pressButton();
+    }
+    break;
+  default:
+    // do nothing
+    break;
+  }
 }

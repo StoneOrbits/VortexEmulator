@@ -815,3 +815,8 @@ void TestFramework::setWindowPos(uint32_t x, uint32_t y)
   GetWindowRect(m_hwnd, &pos);
   SetWindowPos(m_hwnd, NULL, x, y, pos.right - pos.left, pos.bottom - pos.top, 0);
 }
+
+void TestFramework::injectButtons()
+{
+  // mainly used by linux test framework for now
+}

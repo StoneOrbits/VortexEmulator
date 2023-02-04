@@ -46,7 +46,6 @@ LLIBS=\
 # MUST have LLIBS BEFORE the standard libraries
 LIBS=\
 	$(LLIBS) \
-	-lncurses \
 
 # source files
 # local source files first, other sources after
@@ -98,7 +97,6 @@ valgrind: vortex_framework
 	  --leak-check=full \
 	  --show-leak-kinds=all \
 	  --track-origins=yes \
-	  --suppressions=valgrind_ncurses_suppressions.supp \
 	  --gen-suppressions=all \
 	  --log-file=valg.out \
 	  ./vortex_framework
