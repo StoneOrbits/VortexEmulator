@@ -2,7 +2,7 @@
 .SUFFIXES:
 
 # List all make targets which are not filenames
-.PHONY: all tests clean
+.PHONY: all tests clean wasm
 
 # compiler tool definitions
 CC=g++
@@ -11,7 +11,7 @@ RM=rm -rf
 AR=ar cru
 RANLIB=ranlib
 
-CFLAGS=-sERROR_ON_WASM_CHANGES_AFTER_LINK -sWASM_BIGINT -O1
+CFLAGS=-O2
 
 # compiler defines
 DEFINES=\
@@ -86,13 +86,15 @@ all: $(TARGETS)
 # unit test target
 tests: $(TESTS)
 
+wasm: CC=em++
+
 # target for detect_gibberish
 vortex_framework: $(DEPS)
 	$(CC) $(CFLAGS) $^ -o $@ $(LIBS)
 	@rm -f *.txt
 
-wasm: $(SRC)
-	time em++ $(CFLAGS) $(SRC) -o vortex.html
+wasm: $(DEPS) vortex_framework
+	mv vortex_framework vortex.html
 	tar -zcvf vortex.tar.gz vortex.html vortex.js vortex.wasm
 
 valgrind: vortex_framework

@@ -6,9 +6,6 @@
 
 #include <stdio.h>
 
-#include <emscripten/html5.h>
-#include <emscripten.h>
-
 #include "TestFrameworkLinux.h"
 #include "Arduino.h"
 
@@ -34,6 +31,40 @@ FILE *m_logHandle = nullptr;
 
 using namespace std;
 
+#ifdef WASM // Web assembly glue
+#include <emscripten/html5.h>
+#include <emscripten.h>
+
+static EM_BOOL key_callback(int eventType, const EmscriptenKeyboardEvent *e, void *userData)
+{
+  if (eventType == EMSCRIPTEN_EVENT_KEYDOWN) {
+    if (!strcmp(e->key, "a")) {
+      g_pTestFramework->pressButton();
+    }
+  }
+  if (eventType == EMSCRIPTEN_EVENT_KEYUP) {
+    if (!strcmp(e->key, "a")) {
+      g_pTestFramework->releaseButton();
+    }
+  }
+  return 0;
+}
+
+static void do_run(void *arg)
+{
+  TestFramework *tf = (TestFramework *)arg;
+  tf->run();
+}
+
+static void wasm_init()
+{
+  //emscripten_set_keypress_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW, 0, 1, key_callback);
+  emscripten_set_keydown_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW, 0, 1, key_callback);
+  emscripten_set_keyup_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW, 0, 1, key_callback);
+  emscripten_set_main_loop_arg(do_run, this, 0, true);
+}
+#endif // ifdef WASM
+
 TestFramework::TestFramework() :
   m_ledList(nullptr),
   m_numLeds(0),
@@ -49,27 +80,6 @@ TestFramework::TestFramework() :
 TestFramework::~TestFramework()
 {
   fclose(m_logHandle);
-}
-
-EM_BOOL key_callback(int eventType, const EmscriptenKeyboardEvent *e, void *userData)
-{
-  if (eventType == EMSCRIPTEN_EVENT_KEYDOWN) {
-    if (!strcmp(e->key, "a")) {
-      g_pTestFramework->pressButton();
-    }
-  }
-  if (eventType == EMSCRIPTEN_EVENT_KEYUP) {
-    if (!strcmp(e->key, "a")) {
-      g_pTestFramework->releaseButton();
-    }
-  }
-  return 0;
-}
-
-void do_run(void *arg)
-{
-  TestFramework *tf = (TestFramework *)arg;
-  tf->run();
 }
 
 bool TestFramework::init()
@@ -99,11 +109,9 @@ bool TestFramework::init()
   arduino_setup();
   m_initialized = true;
 
-  //emscripten_set_keypress_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW, 0, 1, key_callback);
-  emscripten_set_keydown_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW, 0, 1, key_callback);
-  emscripten_set_keyup_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW, 0, 1, key_callback);
-
-  emscripten_set_main_loop_arg(do_run, this, 1000, false);
+#ifdef WASM
+  wasm_init();
+#endif
 
   return true;
 }
@@ -111,9 +119,11 @@ bool TestFramework::init()
 void TestFramework::run()
 {
   if (!stillRunning()) {
+    printf("Cleaning up...\n");
     VortexEngine::cleanup();
     return;
   }
+  printf("Tick...\n");
   VortexEngine::tick();
 }
 
