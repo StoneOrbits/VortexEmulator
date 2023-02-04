@@ -1,9 +1,5 @@
 #include "FastLED.h"
-#ifdef LINUX_FRAMEWORK
-#include "TestFrameworkLinux.h"
-#else
 #include "TestFramework.h"
-#endif
 
 // global instance
 FastLEDClass FastLED;

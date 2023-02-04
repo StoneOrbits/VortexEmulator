@@ -1,3 +1,10 @@
+#ifdef LINUX_FRAMEWORK
+
+// redirect to linux version
+#include "TestFrameworkLinux.h"
+
+#else // entire file
+
 #pragma once
 #include <Windows.h>
 #include <stdio.h>
@@ -81,6 +88,9 @@ public:
   
   void setWindowPos(uint32_t x, uint32_t y);
 
+  // called by engine Buttons::check right after buttons are checked
+  void injectButtons();
+
   // loop that runs arduino code
   static DWORD __stdcall arduino_loop_thread(void *arg);
 
@@ -156,3 +166,4 @@ private:
 };
 
 extern TestFramework *g_pTestFramework;
+#endif

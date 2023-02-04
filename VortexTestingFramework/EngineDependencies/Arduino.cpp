@@ -1,15 +1,15 @@
 #include "Arduino.h"
 
 #ifdef LINUX_FRAMEWORK
-#include "TestFrameworkLinux.h"
 #include <sys/socket.h>
 #include <time.h>
 #else
 #include <WinSock2.h>
 #include <Ws2tcpip.h>
 #include <Windows.h>
-#include "TestFramework.h"
 #endif
+
+#include "TestFramework.h"
 
 #include "VortexConfig.h"
 

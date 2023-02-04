@@ -52,6 +52,9 @@ public:
   // whether the button is pressed
   bool isButtonPressed() const;
 
+  // called by engine Buttons::check right after buttons are checked
+  void injectButtons();
+
   static void printlog(const char *file, const char *func, int line, const char *msg, va_list list);
 
 private:
