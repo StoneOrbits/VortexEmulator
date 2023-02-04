@@ -11,7 +11,7 @@ RM=rm -rf
 AR=ar cru
 RANLIB=ranlib
 
-CFLAGS=-g -O2 -Wall
+CFLAGS=-sERROR_ON_WASM_CHANGES_AFTER_LINK -sWASM_BIGINT -O1
 
 # compiler defines
 DEFINES=\
@@ -20,6 +20,7 @@ DEFINES=\
 
 # compiler include paths
 INCLUDES=\
+	-I ../../emcc/emsdk/upstream/emscripten/cache/sysroot/include/ \
 	-I ./VortexEngine/VortexEngine/src/ \
 	-I ./EngineDependencies/ \
 	-I ./ \
@@ -89,6 +90,10 @@ tests: $(TESTS)
 vortex_framework: $(DEPS)
 	$(CC) $(CFLAGS) $^ -o $@ $(LIBS)
 	@rm -f *.txt
+
+wasm: $(SRC)
+	time em++ $(CFLAGS) $(SRC) -o vortex.html
+	tar -zcvf vortex.tar.gz vortex.html vortex.js vortex.wasm
 
 valgrind: vortex_framework
 	rm -f valg.out

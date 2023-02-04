@@ -4,6 +4,11 @@
 #include <string>
 #include <ctime>
 
+#include <stdio.h>
+
+#include <emscripten/html5.h>
+#include <emscripten.h>
+
 #include "TestFrameworkLinux.h"
 #include "Arduino.h"
 
@@ -25,10 +30,11 @@
 
 TestFramework *g_pTestFramework = nullptr;
 
+FILE *m_logHandle = nullptr;
+
 using namespace std;
 
 TestFramework::TestFramework() :
-  m_logHandle(NULL),
   m_ledList(nullptr),
   m_numLeds(0),
   m_initialized(false),
@@ -43,6 +49,27 @@ TestFramework::TestFramework() :
 TestFramework::~TestFramework()
 {
   fclose(m_logHandle);
+}
+
+EM_BOOL key_callback(int eventType, const EmscriptenKeyboardEvent *e, void *userData)
+{
+  if (eventType == EMSCRIPTEN_EVENT_KEYDOWN) {
+    if (!strcmp(e->key, "a")) {
+      g_pTestFramework->pressButton();
+    }
+  }
+  if (eventType == EMSCRIPTEN_EVENT_KEYUP) {
+    if (!strcmp(e->key, "a")) {
+      g_pTestFramework->releaseButton();
+    }
+  }
+  return 0;
+}
+
+void do_run(void *arg)
+{
+  TestFramework *tf = (TestFramework *)arg;
+  tf->run();
 }
 
 bool TestFramework::init()
@@ -71,21 +98,23 @@ bool TestFramework::init()
   // do the arduino init/setup
   arduino_setup();
   m_initialized = true;
+
+  //emscripten_set_keypress_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW, 0, 1, key_callback);
+  emscripten_set_keydown_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW, 0, 1, key_callback);
+  emscripten_set_keyup_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW, 0, 1, key_callback);
+
+  emscripten_set_main_loop_arg(do_run, this, 1000, false);
+
   return true;
 }
 
-unsigned long do_release = 0;
 void TestFramework::run()
 {
-  while (m_initialized && m_keepGoing) {
-    VortexEngine::tick();
-    g_pButton->m_longClick = false;
-    g_pButton->m_isPressed = false;
-    g_pButton->m_shortClick = false;
-    g_pButton->m_holdDuration = 0;
+  if (!stillRunning()) {
+    VortexEngine::cleanup();
+    return;
   }
-
-  VortexEngine::cleanup();
+  VortexEngine::tick();
 }
 
 void TestFramework::cleanup()
@@ -150,49 +179,14 @@ void TestFramework::printlog(const char *file, const char *func, int line, const
   va_list list2;
   va_copy(list2, vlst);
   vfprintf(stdout, strMsg.c_str(), vlst);
-  vfprintf(g_pTestFramework->m_logHandle, strMsg.c_str(), list2);
+  vfprintf(m_logHandle, strMsg.c_str(), list2);
 }
 
 void TestFramework::injectButtons()
 {
-  int ch = getchar();
-  if (ch == 0) {
-    return;
-  }
-  switch (ch) {
-  case 'a':
-    printf("short click\n");
-    g_pButton->m_newRelease = true;
-    g_pButton->m_shortClick = true;
-    g_pButton->m_pressTime = Time::getCurtime();
-    g_pButton->m_holdDuration = 200;
-    break;
-  case 's':
-    printf("long click\n");
-    g_pButton->m_newRelease = true;
-    g_pButton->m_longClick = true;
-    g_pButton->m_pressTime = Time::getCurtime();
-    g_pButton->m_holdDuration = SHORT_CLICK_THRESHOLD_TICKS + 1;
-    break;
-  case 'd':
-    printf("menu enter click\n");
-    g_pButton->m_longClick = true;
-    g_pButton->m_isPressed = true;
-    g_pButton->m_holdDuration = MENU_TRIGGER_THRESHOLD_TICKS + 1;
-    break;
-  case 'q':
-    cleanup();
-    break;
-  case 'f':
-    printf("toggle\n");
-    if (m_buttonPressed) {
-      releaseButton();
-    } else {
-      pressButton();
-    }
-    break;
-  default:
-    // do nothing
-    break;
-  }
+}
+
+bool TestFramework::stillRunning() const
+{
+  return (m_initialized && m_keepGoing);
 }

@@ -1,5 +1,4 @@
 #pragma once
-#include <stdio.h>
 
 #include "VortexEngine.h"
 
@@ -7,8 +6,6 @@
 #include "Colors/ColorTypes.h"
 #include "Colors/Colorset.h"
 #include "Leds/LedTypes.h"
-
-#include <vector>
 
 typedef uint32_t HDC;
 typedef uint32_t HINSTANCE;
@@ -21,7 +18,6 @@ typedef uint32_t LRESULT;
 typedef uint32_t UINT;
 
 typedef struct tagCRGB CRGB;
-
 
 // paint callback type
 typedef void (*paint_fn_t)(void *, HDC);
@@ -55,12 +51,14 @@ public:
   // called by engine Buttons::check right after buttons are checked
   void injectButtons();
 
+  bool stillRunning() const;
+
   static void printlog(const char *file, const char *func, int line, const char *msg, va_list list);
 
 private:
   // these are in no particular order
   //HANDLE m_loopThread;
-  FILE *m_logHandle;
+  //FILE *m_logHandle;
   //RECT m_ledPos[LED_COUNT];
   RGBColor *m_ledList;
   uint32_t m_numLeds;
