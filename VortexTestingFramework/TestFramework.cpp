@@ -19,13 +19,11 @@
 #include "Leds/Leds.h"
 #include "Time/TimeControl.h"
 #include "Colors/Colorset.h"
-#include "Menus/Menus.h"
-#include "Menus/Menu.h"
-#include "Modes/Modes.h"
 #include "Modes/Mode.h"
 
+#include "VortexEngine.h"
+
 #include "patterns/Pattern.h"
-#include "patterns/single/SingleLedPattern.h"
 
 #include "resource.h"
 
@@ -161,34 +159,10 @@ bool TestFramework::init(HINSTANCE hInstance)
   uint32_t dy = 30;
 
   // thumb top/tip
-  m_ledPos[0].left = 95;
-  m_ledPos[0].top = 175;
-  m_ledPos[1].top = m_ledPos[0].top - 20;
-  m_ledPos[1].left = m_ledPos[0].left - 20;
-
-  // index top/tip
-  m_ledPos[2].left = 135;
-  m_ledPos[2].top = 60;
-  m_ledPos[3].top = m_ledPos[2].top - 30;
-  m_ledPos[3].left = m_ledPos[2].left - 8;
-
-  // middle top/tip
-  m_ledPos[4].left = 195;
-  m_ledPos[4].top = 40;
-  m_ledPos[5].top = m_ledPos[4].top - 30;
-  m_ledPos[5].left = m_ledPos[4].left;
-
-  // ring top/tip
-  m_ledPos[6].left = 254;
-  m_ledPos[6].top = 60;
-  m_ledPos[7].top = m_ledPos[6].top - 30;
-  m_ledPos[7].left = m_ledPos[6].left + 8;
-
-  // pinky top/tip
-  m_ledPos[8].left = 300;
-  m_ledPos[8].top = 95;
-  m_ledPos[9].top = m_ledPos[8].top - 22;
-  m_ledPos[9].left = m_ledPos[8].left + 16;
+  m_ledPos[1].left = 196;
+  m_ledPos[1].top = 38;
+  m_ledPos[0].top = m_ledPos[1].top - 20;
+  m_ledPos[0].left = m_ledPos[1].left;
 
   for (uint32_t i = 0; i < LED_COUNT; ++i) {
     m_ledPos[i].right = m_ledPos[i].left + (radius * 2);
@@ -263,9 +237,9 @@ void TestFramework::launchIR(VButton *window, VButton::ButtonEvent type)
   if (!m_pCallbacks) {
     return;
   }
-  IRSimulator::startServer();
-  m_IRLaunchButton.setEnabled(false);
-  Menus::openMenu(MENU_MODE_SHARING);
+  //IRSimulator::startServer();
+  //m_IRLaunchButton.setEnabled(false);
+  //Menus::openMenu(MENU_MODE_SHARING);
 }
 
 void TestFramework::patternStripSelect(uint32_t x, uint32_t y, VSelectBox::SelectEvent sevent)
@@ -275,7 +249,7 @@ void TestFramework::patternStripSelect(uint32_t x, uint32_t y, VSelectBox::Selec
 
 void TestFramework::ledClick(VWindow *window)
 {
-  uint32_t led = LED_LAST - ((uint32_t)GetMenu(window->hwnd()) - LED_CIRCLE_ID);
+  uint32_t led = ((uint32_t)GetMenu(window->hwnd()) - LED_CIRCLE_ID);
   printf("Clicked led %u\n", led);
   m_curSelectedLed = (LedPos)led;
   handlePatternChange(true);
@@ -338,22 +312,15 @@ void TestFramework::show()
 
 bool TestFramework::handlePatternChange(bool force)
 {
-  if (!Modes::curMode() || !m_ledList) {
+  if (!VortexEngine::curMode()) {
     return false;
   }
   // don't want to create a callback mechanism just for the test framework to be
   // notified of pattern changes, I'll just watch the patternID each tick
-  Mode *targetMode = Modes::curMode();
+  Mode *targetMode = VortexEngine::curMode();
   if (!targetMode) {
     return false;
   }
-  // cant do this it causes too much lag in the editor
-  Menu *curMenu = Menus::curMenu();
-  Mode *menuMode = Vortex::getMenuDemoMode();
-  if (menuMode) {
-    targetMode = menuMode;
-  }
-
   // check to see if the mode changed
   if (!force && m_curMode.equals(targetMode)) {
     return false;
@@ -364,10 +331,6 @@ bool TestFramework::handlePatternChange(bool force)
   m_curMode.init();
   // the realpos is used to target the actual index of pattern to run
   LedPos realPos = (LedPos)(m_curSelectedLed);
-  if (isMultiLedPatternID(m_curMode.getPatternID(realPos))) {
-    // if it's multi led then the real pos is just the first
-    realPos = (LedPos)(LED_FIRST);
-  }
   // grab the target pattern object that will run
   Pattern *targetPat = m_curMode.getPattern(realPos);
   if (!targetPat) {
@@ -436,7 +399,7 @@ DWORD __stdcall TestFramework::arduino_loop_thread(void *arg)
   }
   if (IRSimulator::isConnected()) {
     framework->m_IRLaunchButton.setEnabled(false);
-    Menus::openMenu(MENU_MODE_SHARING);
+    //Menus::openMenu(MENU_MODE_SHARING);
   }
   // init tickrate and time offset to match the sliders
   while (framework->m_initialized && framework->m_keepGoing) {
@@ -494,7 +457,7 @@ void TestFramework::setWindowPos(uint32_t x, uint32_t y)
 // called when engine reads digital pins, use this to feed button presses to the engine
 long TestFramework::TestFrameworkCallbacks::checkPinHook(uint32_t pin)
 {
-  if (pin == 1) {
+  if (pin == 9) {
     // get button state
     if (Vortex::isButtonPressed()) {
       return LOW;
