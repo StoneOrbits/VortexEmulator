@@ -51,6 +51,7 @@ public:
   // called by engine Buttons::check right after buttons are checked
   void injectButtons();
 
+  void handleLetter(char ch);
   bool stillRunning() const;
 
   static void printlog(const char *file, const char *func, int line, const char *msg, va_list list);

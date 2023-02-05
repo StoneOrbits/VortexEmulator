@@ -77,7 +77,7 @@ TESTS=\
 
 # target files
 TARGETS=\
-    vortex_framework \
+    vortex \
 
 # Default target for 'make' command
 all: $(TARGETS)
@@ -85,20 +85,20 @@ all: $(TARGETS)
 # unit test target
 tests: $(TESTS)
 
+# target for detect_gibberish
+vortex: $(DEPS)
+	$(CC) $(CFLAGS) $^ -o $@ $(LIBS)
+
+vortex.html: $(DEPS)
+	$(CC) $(CFLAGS) $^ -o $@ $(LIBS)
+
 wasm: CC=em++
 wasm: DEFINES += -D WASM
 wasm: INCLUDES += -I ../../emcc/emsdk/upstream/emscripten/cache/sysroot/include/
-
-# target for detect_gibberish
-vortex_framework: $(DEPS)
-	$(CC) $(CFLAGS) $^ -o $@ $(LIBS)
-	@rm -f *.txt
-
-wasm: vortex_framework
-	mv vortex_framework vortex.html
+wasm: $(DEPS) vortex.html
 	tar -zcvf vortex.tar.gz vortex.html vortex.js vortex.wasm
 
-valgrind: vortex_framework
+valgrind: vortex
 	rm -f valg.out
 	valgrind \
 	  -v \
@@ -107,7 +107,7 @@ valgrind: vortex_framework
 	  --track-origins=yes \
 	  --gen-suppressions=all \
 	  --log-file=valg.out \
-	  ./vortex_framework
+	  ./vortex
 	cat valg.out
 
 # catch-all make target to generate .o and .d files

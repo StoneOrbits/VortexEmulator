@@ -35,17 +35,21 @@ using namespace std;
 #include <emscripten/html5.h>
 #include <emscripten.h>
 
+#include <queue>
+
+static queue<char> keyQueue;
+
 static EM_BOOL key_callback(int eventType, const EmscriptenKeyboardEvent *e, void *userData)
 {
-  if (eventType == EMSCRIPTEN_EVENT_KEYDOWN) {
-    if (!strcmp(e->key, "a")) {
-      g_pTestFramework->pressButton();
-    }
-  }
-  if (eventType == EMSCRIPTEN_EVENT_KEYUP) {
-    if (!strcmp(e->key, "a")) {
-      g_pTestFramework->releaseButton();
-    }
+    switch (e->key[0]) {
+    case 'a':
+    case 's':
+    case 'd':
+    case 'q':
+      keyQueue.push(e->key[0]);
+      break;
+    default:
+      break;
   }
   return 0;
 }
@@ -57,9 +61,8 @@ static void do_run()
 
 static void wasm_init()
 {
-  //emscripten_set_keypress_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW, 0, 1, key_callback);
   emscripten_set_keydown_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW, 0, 1, key_callback);
-  emscripten_set_keyup_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW, 0, 1, key_callback);
+  //emscripten_set_keyup_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW, 0, 1, key_callback);
   emscripten_set_main_loop(do_run, 0, true);
 }
 #endif // ifdef WASM
@@ -122,7 +125,6 @@ void TestFramework::run()
     VortexEngine::cleanup();
     return;
   }
-  printf("Tick...\n");
   VortexEngine::tick();
 }
 
@@ -131,6 +133,9 @@ void TestFramework::cleanup()
   DEBUG_LOG("Quitting...");
   m_keepGoing = false;
   m_isPaused = false;
+#ifdef WASM
+  emscripten_force_exit(0);
+#endif
 }
 
 void TestFramework::arduino_setup()
@@ -152,12 +157,18 @@ void TestFramework::show()
 
 void TestFramework::pressButton()
 {
+  if (m_buttonPressed) {
+    return;
+  }
   printf("Press\r\n");
   m_buttonPressed = true;
 }
 
 void TestFramework::releaseButton()
 {
+  if (!m_buttonPressed) {
+    return;
+  }
   printf("Release\r\n");
   m_buttonPressed = false;
 }
@@ -193,6 +204,60 @@ void TestFramework::printlog(const char *file, const char *func, int line, const
 
 void TestFramework::injectButtons()
 {
+  int ch = 0;
+#ifndef WASM
+  ch = getchar();
+#else
+  if (!keyQueue.size()) {
+    return;
+  }
+  ch = keyQueue.front();
+  keyQueue.pop();
+#endif
+  if (ch == 0) {
+    return;
+  }
+  handleLetter(ch);
+}
+
+void TestFramework::handleLetter(char ch)
+{
+  switch (ch) {
+  case 'a':
+    printf("short click\n");
+    g_pButton->m_newRelease = true;
+    g_pButton->m_shortClick = true;
+    g_pButton->m_pressTime = Time::getCurtime();
+    g_pButton->m_holdDuration = 200;
+    break;
+  case 's':
+    printf("long click\n");
+    g_pButton->m_newRelease = true;
+    g_pButton->m_longClick = true;
+    g_pButton->m_pressTime = Time::getCurtime();
+    g_pButton->m_holdDuration = SHORT_CLICK_THRESHOLD_TICKS + 1;
+    break;
+  case 'd':
+    printf("menu enter click\n");
+    g_pButton->m_longClick = true;
+    g_pButton->m_isPressed = true;
+    g_pButton->m_holdDuration = MENU_TRIGGER_THRESHOLD_TICKS + 1;
+    break;
+  case 'q':
+    cleanup();
+    break;
+  case 'f':
+    printf("toggle\n");
+    if (m_buttonPressed) {
+      releaseButton();
+    } else {
+      pressButton();
+    }
+    break;
+  default:
+    // do nothing
+    break;
+  }
 }
 
 bool TestFramework::stillRunning() const

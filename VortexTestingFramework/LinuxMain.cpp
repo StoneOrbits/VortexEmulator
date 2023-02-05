@@ -5,7 +5,9 @@ int main(int argc, char *argv[])
   TestFramework framework;
   framework.init();
 #ifndef WASM
-  framework.run();
+  while (framework.stillRunning()) {
+    framework.run();
+  }
 #endif
   return 0;
 }
