@@ -11,7 +11,7 @@ RM=rm -rf
 AR=ar cru
 RANLIB=ranlib
 
-CFLAGS=-O2
+CFLAGS=-g -O2 -Wall
 
 # compiler defines
 DEFINES=\
