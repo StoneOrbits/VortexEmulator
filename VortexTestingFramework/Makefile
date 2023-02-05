@@ -93,7 +93,7 @@ vortex_framework: $(DEPS)
 	$(CC) $(CFLAGS) $^ -o $@ $(LIBS)
 	@rm -f *.txt
 
-wasm: $(DEPS) vortex_framework
+wasm: vortex_framework
 	mv vortex_framework vortex.html
 	tar -zcvf vortex.tar.gz vortex.html vortex.js vortex.wasm
 
