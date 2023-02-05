@@ -20,7 +20,6 @@ DEFINES=\
 
 # compiler include paths
 INCLUDES=\
-	-I ../../emcc/emsdk/upstream/emscripten/cache/sysroot/include/ \
 	-I ./VortexEngine/VortexEngine/src/ \
 	-I ./EngineDependencies/ \
 	-I ./ \
@@ -87,6 +86,8 @@ all: $(TARGETS)
 tests: $(TESTS)
 
 wasm: CC=em++
+wasm: DEFINES += -D WASM
+wasm: INCLUDES += -I ../../emcc/emsdk/upstream/emscripten/cache/sysroot/include/ 
 
 # target for detect_gibberish
 vortex_framework: $(DEPS)

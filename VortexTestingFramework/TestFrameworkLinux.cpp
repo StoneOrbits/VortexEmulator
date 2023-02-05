@@ -50,10 +50,9 @@ static EM_BOOL key_callback(int eventType, const EmscriptenKeyboardEvent *e, voi
   return 0;
 }
 
-static void do_run(void *arg)
+static void do_run()
 {
-  TestFramework *tf = (TestFramework *)arg;
-  tf->run();
+  g_pTestFramework->run();
 }
 
 static void wasm_init()
@@ -61,7 +60,7 @@ static void wasm_init()
   //emscripten_set_keypress_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW, 0, 1, key_callback);
   emscripten_set_keydown_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW, 0, 1, key_callback);
   emscripten_set_keyup_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW, 0, 1, key_callback);
-  emscripten_set_main_loop_arg(do_run, this, 0, true);
+  emscripten_set_main_loop(do_run, 0, true);
 }
 #endif // ifdef WASM
 
