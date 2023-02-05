@@ -2,7 +2,7 @@
 .SUFFIXES:
 
 # List all make targets which are not filenames
-.PHONY: all tests clean
+.PHONY: all tests clean wasm
 
 # compiler tool definitions
 CC=g++
@@ -77,7 +77,7 @@ TESTS=\
 
 # target files
 TARGETS=\
-    vortex_framework \
+    vortex \
 
 # Default target for 'make' command
 all: $(TARGETS)
@@ -86,11 +86,19 @@ all: $(TARGETS)
 tests: $(TESTS)
 
 # target for detect_gibberish
-vortex_framework: $(DEPS)
+vortex: $(DEPS)
 	$(CC) $(CFLAGS) $^ -o $@ $(LIBS)
-	@rm -f *.txt
 
-valgrind: vortex_framework
+vortex.html: $(DEPS)
+	$(CC) $(CFLAGS) $^ -o $@ $(LIBS)
+
+wasm: CC=em++
+wasm: DEFINES += -D WASM
+wasm: INCLUDES += -I ../../emcc/emsdk/upstream/emscripten/cache/sysroot/include/
+wasm: $(DEPS) vortex.html
+	tar -zcvf vortex.tar.gz vortex.html vortex.js vortex.wasm
+
+valgrind: vortex
 	rm -f valg.out
 	valgrind \
 	  -v \
@@ -99,7 +107,7 @@ valgrind: vortex_framework
 	  --track-origins=yes \
 	  --gen-suppressions=all \
 	  --log-file=valg.out \
-	  ./vortex_framework
+	  ./vortex
 	cat valg.out
 
 # catch-all make target to generate .o and .d files
