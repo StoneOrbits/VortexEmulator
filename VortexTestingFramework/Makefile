@@ -87,7 +87,7 @@ tests: $(TESTS)
 
 wasm: CC=em++
 wasm: DEFINES += -D WASM
-wasm: INCLUDES += -I ../../emcc/emsdk/upstream/emscripten/cache/sysroot/include/ 
+wasm: INCLUDES += -I ../../emcc/emsdk/upstream/emscripten/cache/sysroot/include/
 
 # target for detect_gibberish
 vortex_framework: $(DEPS)
