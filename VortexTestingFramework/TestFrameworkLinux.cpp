@@ -4,6 +4,8 @@
 #include <string>
 #include <ctime>
 
+#include <stdio.h>
+
 #include "TestFrameworkLinux.h"
 #include "Arduino.h"
 
@@ -25,10 +27,47 @@
 
 TestFramework *g_pTestFramework = nullptr;
 
+FILE *m_logHandle = nullptr;
+
 using namespace std;
 
+#ifdef WASM // Web assembly glue
+#include <emscripten/html5.h>
+#include <emscripten.h>
+
+#include <queue>
+
+static queue<char> keyQueue;
+
+static EM_BOOL key_callback(int eventType, const EmscriptenKeyboardEvent *e, void *userData)
+{
+    switch (e->key[0]) {
+    case 'a':
+    case 's':
+    case 'd':
+    case 'q':
+      keyQueue.push(e->key[0]);
+      break;
+    default:
+      break;
+  }
+  return 0;
+}
+
+static void do_run()
+{
+  g_pTestFramework->run();
+}
+
+static void wasm_init()
+{
+  emscripten_set_keydown_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW, 0, 1, key_callback);
+  //emscripten_set_keyup_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW, 0, 1, key_callback);
+  emscripten_set_main_loop(do_run, 0, true);
+}
+#endif // ifdef WASM
+
 TestFramework::TestFramework() :
-  m_logHandle(NULL),
   m_ledList(nullptr),
   m_numLeds(0),
   m_initialized(false),
@@ -71,21 +110,22 @@ bool TestFramework::init()
   // do the arduino init/setup
   arduino_setup();
   m_initialized = true;
+
+#ifdef WASM
+  wasm_init();
+#endif
+
   return true;
 }
 
-unsigned long do_release = 0;
 void TestFramework::run()
 {
-  while (m_initialized && m_keepGoing) {
-    VortexEngine::tick();
-    g_pButton->m_longClick = false;
-    g_pButton->m_isPressed = false;
-    g_pButton->m_shortClick = false;
-    g_pButton->m_holdDuration = 0;
+  if (!stillRunning()) {
+    printf("Cleaning up...\n");
+    VortexEngine::cleanup();
+    return;
   }
-
-  VortexEngine::cleanup();
+  VortexEngine::tick();
 }
 
 void TestFramework::cleanup()
@@ -93,6 +133,9 @@ void TestFramework::cleanup()
   DEBUG_LOG("Quitting...");
   m_keepGoing = false;
   m_isPaused = false;
+#ifdef WASM
+  emscripten_force_exit(0);
+#endif
 }
 
 void TestFramework::arduino_setup()
@@ -114,12 +157,18 @@ void TestFramework::show()
 
 void TestFramework::pressButton()
 {
+  if (m_buttonPressed) {
+    return;
+  }
   printf("Press\r\n");
   m_buttonPressed = true;
 }
 
 void TestFramework::releaseButton()
 {
+  if (!m_buttonPressed) {
+    return;
+  }
   printf("Release\r\n");
   m_buttonPressed = false;
 }
@@ -150,15 +199,29 @@ void TestFramework::printlog(const char *file, const char *func, int line, const
   va_list list2;
   va_copy(list2, vlst);
   vfprintf(stdout, strMsg.c_str(), vlst);
-  vfprintf(g_pTestFramework->m_logHandle, strMsg.c_str(), list2);
+  vfprintf(m_logHandle, strMsg.c_str(), list2);
 }
 
 void TestFramework::injectButtons()
 {
-  int ch = getchar();
+  int ch = 0;
+#ifndef WASM
+  ch = getchar();
+#else
+  if (!keyQueue.size()) {
+    return;
+  }
+  ch = keyQueue.front();
+  keyQueue.pop();
+#endif
   if (ch == 0) {
     return;
   }
+  handleLetter(ch);
+}
+
+void TestFramework::handleLetter(char ch)
+{
   switch (ch) {
   case 'a':
     printf("short click\n");
@@ -195,4 +258,9 @@ void TestFramework::injectButtons()
     // do nothing
     break;
   }
+}
+
+bool TestFramework::stillRunning() const
+{
+  return (m_initialized && m_keepGoing);
 }
