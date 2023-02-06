@@ -1,3 +1,5 @@
+#include <WinSock2.h>
+#include <Ws2tcpip.h>
 #include <Windows.h>
 #include <CommCtrl.h>
 
@@ -8,8 +10,8 @@
 #include <ctime>
 
 #include "TestFramework.h"
-#include "ArduinoSerial.h"
-#include "Arduino.h"
+#include "VortexLib.h"
+#include "EngineDependencies/Arduino.h"
 
 #include "Log/Log.h"
 
@@ -27,6 +29,7 @@
 #include "resource.h"
 
 #pragma comment(lib, "Comctl32.lib")
+#pragma comment(lib, "ws2_32.lib")
 
 // uncomment this to flip the colours to be fullbright
 //#ifdef HSV_TO_RGB_GENERIC
@@ -157,12 +160,6 @@ bool TestFramework::init(HINSTANCE hInstance)
 
 void TestFramework::run()
 {
-  // launch the 'loop' thread
-  m_loopThread = CreateThread(NULL, 0, TestFramework::arduino_loop_thread, this, 0, NULL);
-  if (!m_loopThread) {
-    // error
-    return;
-  }
   // main message loop
   MSG msg;
   ShowWindow(m_hwnd, SW_NORMAL);
@@ -189,6 +186,13 @@ void TestFramework::create(HWND hwnd)
     WS_VISIBLE | WS_CHILD | WS_TABSTOP,
     14, 330, 120, 24, hwnd, (HMENU)TICKRATE_SLIDER_ID, nullptr, nullptr);
 
+  // launch the 'loop' thread
+  m_loopThread = CreateThread(NULL, 0, TestFramework::arduino_loop_thread, this, 0, NULL);
+  if (!m_loopThread) {
+    // error
+    return;
+  }
+
   //m_hwndTickOffsetSlider = CreateWindow(TRACKBAR_CLASS, "Time Offset",
   //  WS_VISIBLE | WS_CHILD | WS_TABSTOP | TBS_VERT,
   //  360, 30, 36, 160, hwnd, (HMENU)TIME_OFFSET_SLIDER_ID, nullptr, nullptr);
@@ -196,37 +200,6 @@ void TestFramework::create(HWND hwnd)
   //m_hwndLoadButton = CreateWindow(WC_BUTTON, "+",
   //  WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON | WS_TABSTOP,
   //  5, 5, 22, 22, hwnd, (HMENU)LOAD_BUTTON_ID, nullptr, nullptr);
-}
-
-void TestFramework::command(WPARAM wParam, LPARAM lParam)
-{
-  if (!m_initialized) {
-    return;
-  }
-
-  // ignore commands for other things
-  if (LOWORD(wParam) != LOAD_BUTTON_ID) {
-    return;
-  }
-
-  // DO LOAD
-  INFO_LOG("== LOADING FROM GLOVESET ==");
-
-  ArduinoSerial sp;
-  sp.connect("\\\\.\\COM8");
-
-  if (sp.IsConnected()) {
-    printf("We're connected\n");
-  }
-
-  uint8_t buf[8192] = {0};
-  //printf("%s\n",incomingData);
-  uint32_t dataLength = 0;
-  int rv = 0;
-  rv = sp.ReadData(&dataLength, sizeof(dataLength));
-  printf("Read %d length: %u\n", rv, dataLength);
-  rv = sp.ReadData(buf, dataLength);
-  printf("read: %d\n", rv);
 }
 
 void TestFramework::paint(HWND hwnd)
@@ -334,7 +307,7 @@ void TestFramework::paint(HWND hwnd)
 
 #ifdef ENABLE_PATTERN_STRIP
   // pattern strip
-  if (m_redrawStrip || 1) {
+  if (m_redrawStrip) {
     m_redrawStrip = false;
     RECT stripRect = { 0, patternStripStart, width, patternStripEnd };
     FillRect(hdc, &stripRect, getBrushCol(0));
@@ -394,21 +367,361 @@ void TestFramework::cleanup()
   m_isPaused = false;
   // wait for the loop to finish, 3 seconds I guess
   WaitForSingleObject(m_loopThread, 3000);
-  // cleanup the vortex engine stuff
-  VortexEngine::cleanup();
   // delete the thing
   DeleteObject(m_bkbrush);
-  // cleanup arduino stuff
-  cleanup_arduino();
+  // cleanup vortex stuff
+  Vortex::cleanup();
 }
+
+#define DEFAULT_PORT "33456"
+
+class TestFrameworkCallbacks : public VortexCallbacks
+{
+public:
+  TestFrameworkCallbacks() :
+    sock(-1),
+    client_sock(-1),
+    is_server(false),
+    hServerMutex(nullptr),
+    hPipe(nullptr),
+    m_serialConnected(false)
+  {
+    // create a global pipe
+    hPipe = CreateNamedPipe(
+      "\\\\.\\pipe\\vortextestframework",
+      PIPE_ACCESS_DUPLEX,
+      PIPE_TYPE_BYTE | PIPE_READMODE_BYTE | PIPE_NOWAIT,
+      1,
+      4096,
+      4096,
+      0,
+      NULL);
+    if (hPipe == INVALID_HANDLE_VALUE) {
+      std::string error = "Failed to open pipe";
+      error += std::to_string(GetLastError());
+      MessageBox(NULL, error.c_str(), "", 0);
+    }
+    // try to find editor window
+    HWND hwnd = FindWindow("VWINDOW", NULL);
+    if (hwnd != NULL) {
+      // send it a message to tell it the test framework is here
+      PostMessage(hwnd, WM_USER + 1, 0, 0);
+    }
+#ifdef SIMULATE_IR_COMMS
+    WSAData wsaData;
+    // Initialize Winsock
+    int res = WSAStartup(MAKEWORD(2, 2), &wsaData);
+    if (res != 0) {
+      printf("WSAStartup failed with error: %d\n", res);
+      return;
+    }
+    // use a mutex to detect if server is running yet
+    hServerMutex = CreateMutex(NULL, TRUE, "VortexServerMutex");
+    if (hServerMutex && GetLastError() != ERROR_ALREADY_EXISTS) {
+      // initialize the listen server
+      init_server();
+    } else {
+      // otherwise try to connect client to server
+      init_network_client();
+    }
+#endif
+  }
+  virtual ~TestFrameworkCallbacks() {}
+
+  // called when engine reads digital pins, use this to feed button presses to the engine
+  virtual long readHook(uint32_t pin) override
+  {
+    if (pin == 1) {
+      // get button state
+      if (g_pTestFramework->isButtonPressed()) {
+        return LOW;
+      }
+      return HIGH;
+    }
+    return HIGH;
+  }
+  // called when engine writes to ir, use this to read data from the vortex engine
+  // the data received will be in timings of milliseconds
+  // NOTE: to send data to IR use Vortex::IRDeliver at any time
+  virtual void infraredWrite(bool mark, uint32_t amount) override
+  {
+    send_network_message(amount);
+  }
+  // called when engine checks for Serial, use this to indicate serial is connected
+  virtual bool serialCheck() override
+  {
+    if (m_serialConnected) {
+      return true;
+    }
+    // create a global pipe
+    if (!ConnectNamedPipe(hPipe, NULL)) {
+      int err = GetLastError();
+      if (err != ERROR_PIPE_CONNECTED && err != ERROR_PIPE_LISTENING) {
+        return false;
+      }
+    }
+    m_serialConnected = true;
+    return true;
+  }
+
+  // called when engine begins serial, use this to do any initialization of the connection
+  virtual void serialBegin(uint32_t baud) override
+  {
+    // nothing to do here
+  }
+  // called when engine checks for data on serial, use this to tell the engine data is ready
+  virtual int32_t serialAvail()
+  {
+    DWORD amount = 0;
+    if (!PeekNamedPipe(hPipe, 0, 0, 0, &amount, 0)) {
+      return 0;
+    }
+    return (int32_t)amount;
+  }
+  // called when engine reads from serial, use this to deliver data to the vortex engine
+  virtual size_t serialRead(char *buf, size_t amt) override
+  {
+    DWORD total = 0;
+    DWORD numRead = 0;
+    do {
+      if (!ReadFile(hPipe, buf + total, amt - total, &numRead, NULL)) {
+        int err = GetLastError();
+        if (err == ERROR_PIPE_NOT_CONNECTED) {
+          printf("Fail\n");
+        }
+        break;
+      }
+      total += numRead;
+    } while (total < amt);
+    return total;
+  }
+  // called when engine writes to serial, use this to read data from the vortex engine
+  virtual uint32_t serialWrite(const uint8_t *buf, size_t len)
+  {
+    DWORD total = 0;
+    DWORD written = 0;
+    do {
+      if (!WriteFile(hPipe, buf + total, len - total, &written, NULL)) {
+        break;
+      }
+      total += written;
+    } while (total < len);
+    return total;
+  }
+  // called when the LED strip is initialized
+  virtual void ledsInit(CRGB *cl, int count) override
+  {
+    g_pTestFramework->installLeds(cl, count);
+  }
+  // called when the brightness is changed
+  virtual void ledsBrightness(int brightness) override
+  {
+    g_pTestFramework->setBrightness(brightness);
+  }
+  // called when the leds are shown
+  virtual void ledsShow() override
+  {
+    g_pTestFramework->show();
+  }
+
+private:
+  // receive a message from client
+  bool receive_message(uint32_t &out_message)
+  {
+    SOCKET target_sock = sock;
+    if (is_server) {
+      target_sock = client_sock;
+    }
+    if (recv(target_sock, (char *)&out_message, sizeof(out_message), 0) <= 0) {
+      printf("Recv failed with error: %d\n", WSAGetLastError());
+      return false;
+    }
+    return true;
+  }
+  bool send_network_message(uint32_t message)
+  {
+    SOCKET target_sock = sock;
+    if (is_server) {
+      target_sock = client_sock;
+    }
+    //static uint32_t counter = 0;
+    //printf("Sending[%u]: %u\n", counter++, message);
+    if (send(target_sock, (char *)&message, sizeof(message), 0) == SOCKET_ERROR) {
+      // most likely server closed
+      printf("send failed with error: %d\n", WSAGetLastError());
+      return false;
+    }
+    return true;
+  }
+  // wait for a connection from client
+  bool accept_connection()
+  {
+    // Wait for a client connection and accept it
+    client_sock = accept(sock, NULL, NULL);
+    if (client_sock == INVALID_SOCKET) {
+      printf("accept failed with error: %d\n", WSAGetLastError());
+      return 1;
+    }
+    printf("Received connection!\n");
+    return true;
+  }
+  static DWORD __stdcall listen_connection(void *arg)
+  {
+    TestFrameworkCallbacks *pthis = (TestFrameworkCallbacks *)arg;
+    // block till a client connects and clear the output files
+    if (!pthis->accept_connection()) {
+      return 0;
+    }
+    printf("Accepted connection\n");
+
+    // idk when another one launches the first ones strip unpaints
+    g_pTestFramework->redrawStrip();
+    PostMessage(NULL, WM_PAINT, NULL, NULL);
+
+    // each message received will get passed into the logging system
+    while (1) {
+      uint32_t message = 0;
+      if (!pthis->receive_message(message)) {
+        break;
+      }
+      bool is_mark = (message & (1 << 31)) != 0;
+      message &= ~(1 << 31);
+      Vortex::IRDeliver(message);
+      //printf("Received %s: %u\n", is_mark ? "mark" : "space", message);
+    }
+
+    printf("Connection closed\n");
+    return 0;
+  }
+
+  // initialize the server
+  bool init_server()
+  {
+    struct addrinfo hints;
+    ZeroMemory(&hints, sizeof(hints));
+    hints.ai_family = AF_INET;
+    hints.ai_socktype = SOCK_STREAM;
+    hints.ai_protocol = IPPROTO_TCP;
+    hints.ai_flags = AI_PASSIVE;
+
+    // Resolve the server address and port
+    struct addrinfo *result = NULL;
+    int res = getaddrinfo(NULL, DEFAULT_PORT, &hints, &result);
+    if (res != 0) {
+      printf("getaddrinfo failed with error: %d\n", res);
+      WSACleanup();
+      return false;
+    }
+    // Create a SOCKET for connecting to server
+    sock = socket(result->ai_family, result->ai_socktype, result->ai_protocol);
+    if (sock == INVALID_SOCKET) {
+      printf("socket failed with error: %ld\n", WSAGetLastError());
+      freeaddrinfo(result);
+      return false;
+    }
+    // Setup the TCP listening socket
+    res = bind(sock, result->ai_addr, (int)result->ai_addrlen);
+    freeaddrinfo(result);
+    if (res == SOCKET_ERROR) {
+      printf("bind failed with error: %d\n", WSAGetLastError());
+      closesocket(sock);
+      return false;
+    }
+    // start listening
+    if (listen(sock, SOMAXCONN) == SOCKET_ERROR) {
+      printf("listen failed with error: %d\n", WSAGetLastError());
+      return false;
+    }
+    CreateThread(NULL, 0, listen_connection, NULL, 0, NULL);
+    printf("Success listening on *:8080\n");
+    is_server = true;
+    g_pTestFramework->setWindowTitle(g_pTestFramework->getWindowTitle() + " Receiver");
+    g_pTestFramework->setWindowPos(250, 650);
+
+    // launch another instance of the test framwork to act as the sender
+    if (is_server) {
+      char filename[2048] = { 0 };
+      GetModuleFileName(GetModuleHandle(NULL), filename, sizeof(filename));
+      PROCESS_INFORMATION procInfo;
+      memset(&procInfo, 0, sizeof(procInfo));
+      STARTUPINFO startInfo;
+      memset(&startInfo, 0, sizeof(startInfo));
+      CreateProcess(filename, NULL, NULL, NULL, false, 0, NULL, NULL, &startInfo, &procInfo);
+    }
+    return true;
+  }
+
+  // initialize the network client for server mode, thanks msdn for the code
+  bool init_network_client()
+  {
+    struct addrinfo *addrs = NULL;
+    struct addrinfo *ptr = NULL;
+    struct addrinfo hints;
+
+    ZeroMemory(&hints, sizeof(hints));
+    hints.ai_family = AF_UNSPEC; // allows ipv4 or ipv6
+    hints.ai_socktype = SOCK_STREAM;
+    hints.ai_protocol = IPPROTO_TCP;
+
+    // Resolve the server address and port
+    int res = getaddrinfo("127.0.0.1", DEFAULT_PORT, &hints, &addrs);
+    if (res != 0) {
+      printf("Could not resolve addr info\n");
+      return false;
+    }
+    //info("Attempting to connect to %s", config.server_ip.c_str());
+    // try connecting to all the addrs
+    for (ptr = addrs; ptr != NULL; ptr = ptr->ai_next) {
+      sock = socket(ptr->ai_family, ptr->ai_socktype, ptr->ai_protocol);
+      if (sock == INVALID_SOCKET) {
+        printf("Error creating socket: %d\n", GetLastError());
+        freeaddrinfo(addrs);
+        return false;
+      }
+      if (connect(sock, ptr->ai_addr, (int)ptr->ai_addrlen) == SOCKET_ERROR) {
+        // try again
+        closesocket(sock);
+        sock = INVALID_SOCKET;
+        continue;
+      }
+      // Success!
+      break;
+    }
+    freeaddrinfo(addrs);
+    if (sock == INVALID_SOCKET) {
+      return false;
+    }
+    // turn on non-blocking for the socket so the module cannot
+    // get stuck in the send() call if the server is closed
+    u_long iMode = 1; // 1 = non-blocking mode
+    res = ioctlsocket(sock, FIONBIO, &iMode);
+    if (res != NO_ERROR) {
+      printf("Failed to ioctrl on socket\n");
+      closesocket(sock);
+      return false;
+    }
+    printf("Success initializing network client\n");
+    g_pTestFramework->setWindowTitle(g_pTestFramework->getWindowTitle() + " Sender");
+    g_pTestFramework->setWindowPos(1300, 650);
+    //info("Connected to server %s", config.server_ip.c_str());
+    return true;
+  }
+
+  // network data (ir comms)
+  SOCKET sock;
+  SOCKET client_sock;
+  bool is_server;
+  HANDLE hServerMutex;
+
+  // pipe data (serial comms)
+  HANDLE hPipe;
+  bool m_serialConnected;
+};
 
 void TestFramework::arduino_setup()
 {
-  // init the drop-in arduino library replacement
-  init_arduino();
-  if (!VortexEngine::init()) {
-    // uhoh
-  }
+  // init the vortex engine
+  Vortex::init<TestFrameworkCallbacks>();
 }
 
 void TestFramework::arduino_loop()
@@ -755,7 +1068,6 @@ LRESULT CALLBACK TestFramework::window_proc(HWND hwnd, UINT uMsg, WPARAM wParam,
     g_pTestFramework->handleWindowClick(LOWORD(lParam), HIWORD(lParam));
     break;
   case WM_COMMAND:
-    g_pTestFramework->command(wParam, lParam);
     break;
   case WM_CLOSE:
     g_pTestFramework->cleanup();

@@ -20,6 +20,8 @@ DEFINES=\
 
 # compiler include paths
 INCLUDES=\
+	-I ./VortexEngine/VortexEngine/VortexLib/EngineDependencies/ \
+	-I ./VortexEngine/VortexEngine/VortexLib/ \
 	-I ./VortexEngine/VortexEngine/src/ \
 	-I ./EngineDependencies/ \
 	-I ./ \

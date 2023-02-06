@@ -41,7 +41,6 @@ public:
 
   // windows message handlers
   void create(HWND hwnd);
-  void command(WPARAM wParam, LPARAM lParam);
   void paint(HWND hwnd);
   void cleanup();
 
