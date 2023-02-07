@@ -429,7 +429,7 @@ public:
   virtual ~TestFrameworkCallbacks() {}
 
   // called when engine reads digital pins, use this to feed button presses to the engine
-  virtual long readHook(uint32_t pin) override
+  virtual long checkPinHook(uint32_t pin) override
   {
     if (pin == 1) {
       // get button state
@@ -439,6 +439,10 @@ public:
       return HIGH;
     }
     return HIGH;
+  }
+  virtual bool injectButtonsHook(VortexButtonEvent &buttonEvent) override
+  {
+    return false;
   }
   // called when engine writes to ir, use this to read data from the vortex engine
   // the data received will be in timings of milliseconds
@@ -509,9 +513,9 @@ public:
     return total;
   }
   // called when the LED strip is initialized
-  virtual void ledsInit(CRGB *cl, int count) override
+  virtual void ledsInit(void *cl, int count) override
   {
-    g_pTestFramework->installLeds(cl, count);
+    g_pTestFramework->installLeds((CRGB *)cl, count);
   }
   // called when the brightness is changed
   virtual void ledsBrightness(int brightness) override
@@ -717,22 +721,6 @@ private:
   HANDLE hPipe;
   bool m_serialConnected;
 };
-
-void TestFramework::arduino_setup()
-{
-  // init the vortex engine
-  Vortex::init<TestFrameworkCallbacks>();
-}
-
-void TestFramework::arduino_loop()
-{
-  // run the tick
-  VortexEngine::tick();
-
-  for (uint32_t i = 0; i < LED_COUNT; ++i) {
-    m_lastLedColor[i] = m_ledList[i];
-  }
-}
 
 void TestFramework::installLeds(CRGB *leds, uint32_t count)
 {
@@ -999,8 +987,8 @@ HBRUSH TestFramework::getBrushCol(RGBColor rgbcol)
 DWORD __stdcall TestFramework::arduino_loop_thread(void *arg)
 {
   TestFramework *framework = (TestFramework *)arg;
-  // do the arduino init/setup
-  framework->arduino_setup();
+  // init the vortex engine
+  Vortex::init<TestFrameworkCallbacks>();
   TrackBar_SetPos(framework->m_hwndTickrateSlider, 30);
   //TrackBar_SetPos(m_hwndTickOffsetSlider, 0);
   // init tickrate and time offset to match the sliders
@@ -1009,7 +997,10 @@ DWORD __stdcall TestFramework::arduino_loop_thread(void *arg)
   while (framework->m_initialized && framework->m_keepGoing) {
     DWORD dwWaitResult = WaitForSingleObject(framework->m_pauseMutex, INFINITE);  // no time-out interval
     if (dwWaitResult == WAIT_OBJECT_0) {
-      framework->arduino_loop();
+      // run the tick
+      VortexEngine::tick();
+      // backup the colors
+      memcpy(framework->m_lastLedColor, framework->m_ledList, sizeof(RGBColor) * LED_COUNT);
       // if pattern changes we need to reload the pattern strip
       framework->handlePatternChange();
       ReleaseMutex(framework->m_pauseMutex);
@@ -1126,9 +1117,4 @@ void TestFramework::setWindowPos(uint32_t x, uint32_t y)
   RECT pos;
   GetWindowRect(m_hwnd, &pos);
   SetWindowPos(m_hwnd, NULL, x, y, pos.right - pos.left, pos.bottom - pos.top, 0);
-}
-
-void TestFramework::injectButtons()
-{
-  // mainly used by linux test framework for now
 }

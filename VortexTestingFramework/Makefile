@@ -43,6 +43,7 @@ endif
 # You should NOT need to add a make target to build
 # this library if you have added it correctly.
 LLIBS=\
+	./VortexEngine/VortexEngine/vortex.a \
 
 # STANDARD libraries to link with (-l is fine here)
 # MUST have LLIBS BEFORE the standard libraries
@@ -54,10 +55,6 @@ LIBS=\
 SRC=\
     ./LinuxMain.cpp \
     ./TestFrameworkLinux.cpp \
-    ./EngineDependencies/Arduino.cpp \
-    ./EngineDependencies/FastLED.cpp \
-    ./EngineDependencies/FlashStorage.cpp \
-    $(shell find ./VortexEngine/VortexEngine/src/ -type f -name '*.cpp') \
 
 # object files are source files with .c replaced with .o
 OBJS=\
@@ -126,6 +123,7 @@ valgrind: vortex
 # generic clean target
 clean:
 	@$(RM) $(DFILES) $(OBJS) $(TARGETS) $(TESTS) *.txt FlashStorage.flash
+	make -C ./VortexEngine/VortexEngine clean
 
 # Now include our target dependency files
 # the hyphen means ignore non-existent files

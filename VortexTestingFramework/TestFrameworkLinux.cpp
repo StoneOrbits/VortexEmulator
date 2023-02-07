@@ -11,7 +11,7 @@
 
 #include "Log/Log.h"
 
-#include "VortexEngine.h"
+#include "VortexLib.h"
 
 #include "Patterns/PatternBuilder.h"
 #include "Time/TimeControl.h"
@@ -84,6 +84,92 @@ TestFramework::~TestFramework()
   fclose(m_logHandle);
 }
 
+class TestFrameworkCallbacks : public VortexCallbacks
+{
+public:
+  TestFrameworkCallbacks()
+  {
+  }
+  virtual ~TestFrameworkCallbacks() {}
+
+  // called when engine reads digital pins, use this to feed button presses to the engine
+  virtual long checkPinHook(uint32_t pin) override
+  {
+    return g_pTestFramework->isButtonPressed();
+  }
+  virtual bool injectButtonsHook(VortexButtonEvent &buttonEvent) override
+  {
+    int ch = 0;
+#ifndef WASM
+    ch = getchar();
+#else
+    if (!keyQueue.size()) {
+      return false;
+    }
+    ch = keyQueue.front();
+    keyQueue.pop();
+#endif
+    if (ch == 0) {
+      return false;
+    }
+    switch (ch) {
+    case 'a':
+      printf("short click\n");
+      buttonEvent.m_newRelease = true;
+      buttonEvent.m_shortClick = true;
+      buttonEvent.m_pressTime = Time::getCurtime();
+      buttonEvent.m_holdDuration = 200;
+      break;
+    case 's':
+      printf("long click\n");
+      buttonEvent.m_newRelease = true;
+      buttonEvent.m_longClick = true;
+      buttonEvent.m_pressTime = Time::getCurtime();
+      buttonEvent.m_holdDuration = SHORT_CLICK_THRESHOLD_TICKS + 1;
+      break;
+    case 'd':
+      printf("menu enter click\n");
+      buttonEvent.m_longClick = true;
+      buttonEvent.m_isPressed = true;
+      buttonEvent.m_holdDuration = MENU_TRIGGER_THRESHOLD_TICKS + 1;
+      break;
+    case 'q':
+      g_pTestFramework->cleanup();
+      break;
+    case 'f':
+      printf("toggle\n");
+      if (g_pTestFramework->isButtonPressed()) {
+        g_pTestFramework->releaseButton();
+      } else {
+        g_pTestFramework->pressButton();
+      }
+      break;
+    default:
+      // do nothing
+      break;
+    }
+    return false;
+  }
+  // called when the LED strip is initialized
+  virtual void ledsInit(void *cl, int count) override
+  {
+    //g_pTestFramework->installLeds((CRGB *)cl, count);
+  }
+  // called when the brightness is changed
+  virtual void ledsBrightness(int brightness) override
+  {
+    //g_pTestFramework->setBrightness(brightness);
+  }
+  // called when the leds are shown
+  virtual void ledsShow() override
+  {
+    //g_pTestFramework->show();
+  }
+
+private:
+  // receive a message from client
+};
+
 bool TestFramework::init()
 {
   if (g_pTestFramework) {
@@ -108,7 +194,7 @@ bool TestFramework::init()
   printf("  d = variable press\r\n");
 
   // do the arduino init/setup
-  arduino_setup();
+  Vortex::init<TestFrameworkCallbacks>();
   m_initialized = true;
 
 #ifdef WASM
@@ -136,15 +222,6 @@ void TestFramework::cleanup()
 #ifdef WASM
   emscripten_force_exit(0);
 #endif
-}
-
-void TestFramework::arduino_setup()
-{
-  // init the drop-in arduino library replacement
-  init_arduino();
-  if (!VortexEngine::init()) {
-    // uhoh
-  }
 }
 
 // when the glove framework calls 'FastLED.show'
@@ -200,64 +277,6 @@ void TestFramework::printlog(const char *file, const char *func, int line, const
   va_copy(list2, vlst);
   vfprintf(stdout, strMsg.c_str(), vlst);
   vfprintf(m_logHandle, strMsg.c_str(), list2);
-}
-
-void TestFramework::injectButtons()
-{
-  int ch = 0;
-#ifndef WASM
-  ch = getchar();
-#else
-  if (!keyQueue.size()) {
-    return;
-  }
-  ch = keyQueue.front();
-  keyQueue.pop();
-#endif
-  if (ch == 0) {
-    return;
-  }
-  handleLetter(ch);
-}
-
-void TestFramework::handleLetter(char ch)
-{
-  switch (ch) {
-  case 'a':
-    printf("short click\n");
-    g_pButton->m_newRelease = true;
-    g_pButton->m_shortClick = true;
-    g_pButton->m_pressTime = Time::getCurtime();
-    g_pButton->m_holdDuration = 200;
-    break;
-  case 's':
-    printf("long click\n");
-    g_pButton->m_newRelease = true;
-    g_pButton->m_longClick = true;
-    g_pButton->m_pressTime = Time::getCurtime();
-    g_pButton->m_holdDuration = SHORT_CLICK_THRESHOLD_TICKS + 1;
-    break;
-  case 'd':
-    printf("menu enter click\n");
-    g_pButton->m_longClick = true;
-    g_pButton->m_isPressed = true;
-    g_pButton->m_holdDuration = MENU_TRIGGER_THRESHOLD_TICKS + 1;
-    break;
-  case 'q':
-    cleanup();
-    break;
-  case 'f':
-    printf("toggle\n");
-    if (m_buttonPressed) {
-      releaseButton();
-    } else {
-      pressButton();
-    }
-    break;
-  default:
-    // do nothing
-    break;
-  }
 }
 
 bool TestFramework::stillRunning() const

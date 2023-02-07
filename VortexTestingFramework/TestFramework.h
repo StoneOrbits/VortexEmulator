@@ -44,10 +44,6 @@ public:
   void paint(HWND hwnd);
   void cleanup();
 
-  // arduino setup/loop
-  void arduino_setup();
-  void arduino_loop();
-
   // handlers for the arduino routines
   void installLeds(CRGB *leds, uint32_t count);
   void setBrightness(int brightness);
@@ -87,15 +83,11 @@ public:
   
   void setWindowPos(uint32_t x, uint32_t y);
 
-  // called by engine Buttons::check right after buttons are checked
-  void injectButtons();
-
   // loop that runs arduino code
   static DWORD __stdcall arduino_loop_thread(void *arg);
 
   // button subproc
   static LRESULT CALLBACK button_subproc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
-  static LRESULT CALLBACK slider_subproc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
   // main window procedure
   static LRESULT CALLBACK window_proc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
