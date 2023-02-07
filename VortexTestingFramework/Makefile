@@ -117,8 +117,11 @@ valgrind: vortex
 # <directory>/<library.a>
 # this expects that the makefile in <directory> has a
 # make target named <library>
-%.a:
+%.a: FORCE
 	$(MAKE) -C $(dir $@) $(notdir $@)
+
+# Empty rule that forces %.a to run all the time
+FORCE:
 
 # generic clean target
 clean:

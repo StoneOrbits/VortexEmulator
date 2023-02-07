@@ -21,8 +21,6 @@
 #include "Colors/Colorset.h"
 #include "Modes/Modes.h"
 
-#include "VortexEngine.h"
-
 #include "patterns/Pattern.h"
 #include "patterns/single/SingleLedPattern.h"
 
@@ -54,8 +52,6 @@ using namespace std;
 TestFramework::TestFramework() :
   m_loopThread(nullptr),
   m_bkbrush(nullptr),
-  m_consoleHandle(NULL),
-  m_logHandle(NULL),
   m_oldButtonProc(nullptr),
   m_oldSliderProc(nullptr),
   m_hwndClickButton(nullptr),
@@ -95,29 +91,6 @@ bool TestFramework::init(HINSTANCE hInstance)
     return false;
   }
   g_pTestFramework = this;
-
-#if _DEBUG
-  if (!m_consoleHandle) {
-    AllocConsole();
-    freopen_s(&m_consoleHandle, "CONOUT$", "w", stdout);
-  }
-#endif
-#if LOG_TO_FILE == 1
-  if (!m_logHandle) {
-    time_t t = time(nullptr);
-    tm tm;
-    localtime_s(&tm, &t);
-    ostringstream oss;
-    oss << std::put_time(&tm, "%d-%m-%Y-%H-%M-%S");
-    oss << "." << GetCurrentProcessId();
-    string filename = "vortex-test-framework-log." + oss.str() + ".txt";
-    int err = fopen_s(&m_logHandle, filename.c_str(), "w");
-    if (err != 0 || !m_logHandle) {
-      MessageBox(NULL, "Failed to open logfile", to_string(err).c_str(), 0);
-      return false;
-    }
-  }
-#endif
 
   // create the pause mutex
   m_pauseMutex = CreateMutex(NULL, false, NULL);
@@ -369,8 +342,6 @@ void TestFramework::cleanup()
   WaitForSingleObject(m_loopThread, 3000);
   // delete the thing
   DeleteObject(m_bkbrush);
-  // cleanup vortex stuff
-  Vortex::cleanup();
 }
 
 #define DEFAULT_PORT "33456"
@@ -439,10 +410,6 @@ public:
       return HIGH;
     }
     return HIGH;
-  }
-  virtual bool injectButtonsHook(VortexButtonEvent &buttonEvent) override
-  {
-    return false;
   }
   // called when engine writes to ir, use this to read data from the vortex engine
   // the data received will be in timings of milliseconds
@@ -998,7 +965,7 @@ DWORD __stdcall TestFramework::arduino_loop_thread(void *arg)
     DWORD dwWaitResult = WaitForSingleObject(framework->m_pauseMutex, INFINITE);  // no time-out interval
     if (dwWaitResult == WAIT_OBJECT_0) {
       // run the tick
-      VortexEngine::tick();
+      Vortex::tick();
       // backup the colors
       memcpy(framework->m_lastLedColor, framework->m_ledList, sizeof(RGBColor) * LED_COUNT);
       // if pattern changes we need to reload the pattern strip
@@ -1007,7 +974,7 @@ DWORD __stdcall TestFramework::arduino_loop_thread(void *arg)
     }
   }
   // cleanup
-  VortexEngine::cleanup();
+  Vortex::cleanup();
   return 0;
 }
 
@@ -1070,33 +1037,6 @@ LRESULT CALLBACK TestFramework::window_proc(HWND hwnd, UINT uMsg, WPARAM wParam,
     break;
   }
   return DefWindowProc(hwnd, uMsg, wParam, lParam);
-}
-
-void TestFramework::printlog(const char *file, const char *func, int line, const char *msg, va_list list)
-{
-  if (!g_pTestFramework->m_consoleHandle) {
-    return;
-  }
-  string strMsg;
-  if (file) {
-    strMsg = file;
-    if (strMsg.find_last_of('\\') != string::npos) {
-      strMsg = strMsg.substr(strMsg.find_last_of('\\') + 1);
-    }
-    strMsg += ":";
-    strMsg += to_string(line);
-  }
-  if (func) {
-    strMsg += " ";
-    strMsg += func;
-    strMsg += "(): ";
-  }
-  strMsg += msg;
-  strMsg += "\n";
-  vfprintf(g_pTestFramework->m_consoleHandle, strMsg.c_str(), list);
-#if LOG_TO_FILE == 1
-  vfprintf(g_pTestFramework->m_logHandle, strMsg.c_str(), list);
-#endif
 }
 
 std::string TestFramework::getWindowTitle()
