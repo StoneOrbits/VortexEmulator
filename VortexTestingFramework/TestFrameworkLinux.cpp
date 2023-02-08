@@ -36,7 +36,6 @@ using namespace std;
 
 static EM_BOOL key_callback(int eventType, const EmscriptenKeyboardEvent *e, void *userData)
 {
-  printf("Key: %c\n", e->key[0]);
   switch (e->key[0]) {
   case 'a':
     Vortex::shortClick();
@@ -121,13 +120,16 @@ public:
   // called when the leds are shown
   virtual void ledsShow() override
   {
+    string out;
 #ifdef WASM
     for (uint32_t i = 0; i < m_count; ++i) {
-      printf("#%06X", m_leds[i].raw());
+      char buf[128] = {0};
+      snprintf(buf, sizeof(buf), "#%06X|", m_leds[i].raw());
+      out += buf;
     }
-    printf("\n");
+    out += "\n";
 #else
-    string out;
+    out += "\r";
     for (uint32_t i = 0; i < m_count; ++i) {
       out += "\x1B[0m|"; // opening |
       out += "\x1B[48;2;"; // colorcode start
@@ -137,9 +139,9 @@ public:
       out += "  "; // colored space
       out += "\x1B[0m|"; // ending |
     }
+#endif
     printf("%s", out.c_str());
     fflush(stdout);
-#endif
   }
 
 private:
