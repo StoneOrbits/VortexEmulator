@@ -15,6 +15,7 @@
 
 #include "Patterns/PatternBuilder.h"
 #include "Time/TimeControl.h"
+#include "Colors/ColorTypes.h"
 #include "Colors/Colorset.h"
 #include "Buttons/Button.h"
 #include "Time/Timings.h"
@@ -35,24 +36,25 @@ using namespace std;
 
 static EM_BOOL key_callback(int eventType, const EmscriptenKeyboardEvent *e, void *userData)
 {
-    switch (e->key[0]) {
-    case 'a':
-      Vortex::shortClick();
-      break;
-    case 's':
-      Vortex::longClick();
-      break;
-    case 'd':
-      Vortex::menuEnterClick();
-      break;
-    case 'f':
-      Vortex::toggleClick();
-      break;
-    case 'q':
-      Vortex::quitClick();
-      break;
-    default:
-      break;
+  printf("Key: %c\n", e->key[0]);
+  switch (e->key[0]) {
+  case 'a':
+    Vortex::shortClick();
+    break;
+  case 's':
+    Vortex::longClick();
+    break;
+  case 'd':
+    Vortex::menuEnterClick();
+    break;
+  case 'f':
+    Vortex::toggleClick();
+    break;
+  case 'q':
+    Vortex::quitClick();
+    break;
+  default:
+    break;
   }
   return 0;
 }
@@ -89,7 +91,10 @@ TestFramework::~TestFramework()
 class TestFrameworkCallbacks : public VortexCallbacks
 {
 public:
-  TestFrameworkCallbacks()
+  TestFrameworkCallbacks() :
+    VortexCallbacks(),
+    m_leds(nullptr),
+    m_count(0)
   {
   }
   virtual ~TestFrameworkCallbacks() {}
@@ -104,7 +109,9 @@ public:
   // called when the LED strip is initialized
   virtual void ledsInit(void *cl, int count) override
   {
-    //g_pTestFramework->installLeds((CRGB *)cl, count);
+    //g_pTestFramework->installLeds((RGBColor *)cl, count);
+    m_leds = (RGBColor *)cl;
+    m_count = count;
   }
   // called when the brightness is changed
   virtual void ledsBrightness(int brightness) override
@@ -114,11 +121,31 @@ public:
   // called when the leds are shown
   virtual void ledsShow() override
   {
-    //g_pTestFramework->show();
+#ifdef WASM
+    for (uint32_t i = 0; i < m_count; ++i) {
+      printf("#%06X", m_leds[i].raw());
+    }
+    printf("\n");
+#else
+    string out;
+    for (uint32_t i = 0; i < m_count; ++i) {
+      out += "\x1B[0m|"; // opening |
+      out += "\x1B[48;2;"; // colorcode start
+      out += to_string(m_leds[i].red) + ";"; // col red
+      out += to_string(m_leds[i].green) + ";"; // col green
+      out += to_string(m_leds[i].blue) + "m"; // col blue
+      out += "  "; // colored space
+      out += "\x1B[0m|"; // ending |
+    }
+    printf("%s", out.c_str());
+    fflush(stdout);
+#endif
   }
 
 private:
   // receive a message from client
+  RGBColor *m_leds;
+  uint32_t m_count;
 };
 
 bool TestFramework::init()
@@ -128,13 +155,11 @@ bool TestFramework::init()
   }
   g_pTestFramework = this;
 
+  printf("Initializing...\n");
+
   // do the arduino init/setup
   Vortex::init<TestFrameworkCallbacks>();
   m_initialized = true;
-
-#ifdef WASM
-  wasm_init();
-#endif
 
   printf("Initialized\r\n");
   printf("  a = short press\r\n");
@@ -142,6 +167,10 @@ bool TestFramework::init()
   printf("  d = variable press\r\n");
   printf("  f = toggle press\r\n");
   printf("  q = quit\r\n");
+
+#ifdef WASM
+  wasm_init();
+#endif
 
   return true;
 }
