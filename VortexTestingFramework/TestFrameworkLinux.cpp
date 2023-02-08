@@ -37,10 +37,19 @@ static EM_BOOL key_callback(int eventType, const EmscriptenKeyboardEvent *e, voi
 {
     switch (e->key[0]) {
     case 'a':
+      Vortex::shortClick();
+      break;
     case 's':
+      Vortex::longClick();
+      break;
     case 'd':
+      Vortex::menuEnterClick();
+      break;
+    case 'f':
+      Vortex::toggleClick();
+      break;
     case 'q':
-      keyQueue.push(e->key[0]);
+      Vortex::quitClick();
       break;
     default:
       break;
@@ -119,11 +128,6 @@ bool TestFramework::init()
   }
   g_pTestFramework = this;
 
-  printf("Initialized\r\n");
-  printf("  a = short press\r\n");
-  printf("  s = med press\r\n");
-  printf("  d = variable press\r\n");
-
   // do the arduino init/setup
   Vortex::init<TestFrameworkCallbacks>();
   m_initialized = true;
@@ -131,6 +135,13 @@ bool TestFramework::init()
 #ifdef WASM
   wasm_init();
 #endif
+
+  printf("Initialized\r\n");
+  printf("  a = short press\r\n");
+  printf("  s = med press\r\n");
+  printf("  d = variable press\r\n");
+  printf("  f = toggle press\r\n");
+  printf("  q = quit\r\n");
 
   return true;
 }

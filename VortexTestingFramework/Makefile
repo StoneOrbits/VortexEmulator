@@ -5,10 +5,16 @@
 .PHONY: all tests clean wasm
 
 # compiler tool definitions
+ifdef WASM
+CC=em++
+AR=emar cru
+else
 CC=g++
+AR=ar cru
+endif
+
 MAKE=make
 RM=rm -rf
-AR=ar cru
 RANLIB=ranlib
 
 CFLAGS=-g -O2 -Wall
@@ -25,6 +31,15 @@ INCLUDES=\
 	-I ./VortexEngine/VortexEngine/src/ \
 	-I ./EngineDependencies/ \
 	-I ./ \
+
+# output filename
+OUTTARGET=vortex
+
+ifdef WASM
+OUTTARGET=vortex.html
+DEFINES += -D WASM
+LIBS += --bind
+endif
 
 # only set them if they're not empty to prevent unnecessary whitespace
 ifneq ($(DEFINES),)
@@ -76,7 +91,7 @@ TESTS=\
 
 # target files
 TARGETS=\
-    vortex \
+    $(OUTTARGET) \
 
 # Default target for 'make' command
 all: $(TARGETS)
@@ -85,17 +100,12 @@ all: $(TARGETS)
 tests: $(TESTS)
 
 # target for detect_gibberish
-vortex: $(DEPS)
+$(OUTTARGET): $(DEPS)
 	$(CC) $(CFLAGS) $^ -o $@ $(LIBS)
 
-vortex.html: $(DEPS)
-	$(CC) $(CFLAGS) $^ -o $@ $(LIBS)
-
-wasm: CC=em++
-wasm: DEFINES += -D WASM
-wasm: INCLUDES += -I ../../emcc/emsdk/upstream/emscripten/cache/sysroot/include/
-wasm: $(DEPS) vortex.html
-	tar -zcvf vortex.tar.gz vortex.html vortex.js vortex.wasm
+# force sub-build of wasm
+wasm: FORCE
+	env WASM=1 $(MAKE)
 
 valgrind: vortex
 	rm -f valg.out
@@ -125,8 +135,8 @@ FORCE:
 
 # generic clean target
 clean:
-	@$(RM) $(DFILES) $(OBJS) $(TARGETS) $(TESTS) *.txt FlashStorage.flash
-	make -C ./VortexEngine/VortexEngine clean
+	@$(RM) $(DFILES) $(OBJS) $(TARGETS) $(TESTS) vortex.html vortex.js vortex.wasm *.txt FlashStorage.flash
+	$(MAKE) -C ./VortexEngine/VortexEngine clean
 
 # Now include our target dependency files
 # the hyphen means ignore non-existent files
