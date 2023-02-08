@@ -21,8 +21,6 @@ CFLAGS=-g -O2 -Wall
 
 # compiler defines
 DEFINES=\
-	-D LINUX_FRAMEWORK \
-	-D TEST_FRAMEWORK \
 
 # compiler include paths
 INCLUDES=\
@@ -105,7 +103,7 @@ $(OUTTARGET): $(DEPS)
 
 # force sub-build of wasm
 wasm: FORCE
-	env WASM=1 $(MAKE)
+	env WASM=1 TESTFRAMEWORK=1 $(MAKE)
 
 valgrind: vortex
 	rm -f valg.out
@@ -128,7 +126,8 @@ valgrind: vortex
 # this expects that the makefile in <directory> has a
 # make target named <library>
 %.a: FORCE
-	$(MAKE) -C $(dir $@) $(notdir $@)
+	# run make with VortexTestingFramework=1 in the environment
+	env TESTFRAMEWORK=1 $(MAKE) -C $(dir $@) $(notdir $@)
 
 # Empty rule that forces %.a to run all the time
 FORCE:
