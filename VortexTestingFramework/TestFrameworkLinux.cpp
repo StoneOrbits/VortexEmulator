@@ -38,19 +38,31 @@ static EM_BOOL key_callback(int eventType, const EmscriptenKeyboardEvent *e, voi
 {
   switch (e->key[0]) {
   case 'a':
-    Vortex::shortClick();
+    if (eventType == EMSCRIPTEN_EVENT_KEYDOWN) {
+      Vortex::shortClick();
+    }
     break;
   case 's':
-    Vortex::longClick();
+    if (eventType == EMSCRIPTEN_EVENT_KEYDOWN) {
+      Vortex::longClick();
+    }
     break;
   case 'd':
-    Vortex::menuEnterClick();
+    if (eventType == EMSCRIPTEN_EVENT_KEYDOWN) {
+      Vortex::menuEnterClick();
+    }
     break;
   case 'f':
-    Vortex::toggleClick();
+    if (eventType == EMSCRIPTEN_EVENT_KEYDOWN) {
+      g_pTestFramework->pressButton();
+    } else if (eventType == EMSCRIPTEN_EVENT_KEYUP) {
+      g_pTestFramework->releaseButton();
+    }
     break;
   case 'q':
-    Vortex::quitClick();
+    if (eventType == EMSCRIPTEN_EVENT_KEYDOWN) {
+      Vortex::quitClick();
+    }
     break;
   default:
     break;
@@ -66,7 +78,7 @@ static void do_run()
 static void wasm_init()
 {
   emscripten_set_keydown_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW, 0, 1, key_callback);
-  //emscripten_set_keyup_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW, 0, 1, key_callback);
+  emscripten_set_keyup_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW, 0, 1, key_callback);
   emscripten_set_main_loop(do_run, 0, true);
 }
 #endif // ifdef WASM
@@ -103,7 +115,7 @@ public:
   {
     // LOW = 0 = pressed
     // HIGH = 1 = unpressed
-    return 1;
+    return g_pTestFramework->isButtonPressed() ? LOW : HIGH;
   }
   // called when the LED strip is initialized
   virtual void ledsInit(void *cl, int count) override
@@ -157,20 +169,22 @@ bool TestFramework::init()
   }
   g_pTestFramework = this;
 
+#ifndef WASM
   printf("Initializing...\n");
+#endif
 
   // do the arduino init/setup
   Vortex::init<TestFrameworkCallbacks>();
   m_initialized = true;
 
+#ifndef WASM
   printf("Initialized\r\n");
   printf("  a = short press\r\n");
   printf("  s = med press\r\n");
   printf("  d = variable press\r\n");
   printf("  f = toggle press\r\n");
   printf("  q = quit\r\n");
-
-#ifdef WASM
+#else
   wasm_init();
 #endif
 
@@ -211,7 +225,7 @@ void TestFramework::pressButton()
   if (m_buttonPressed) {
     return;
   }
-  printf("Press\r\n");
+  printf("Press\n");
   m_buttonPressed = true;
 }
 
@@ -220,13 +234,13 @@ void TestFramework::releaseButton()
   if (!m_buttonPressed) {
     return;
   }
-  printf("Release\r\n");
+  printf("Release\n");
   m_buttonPressed = false;
 }
 
 bool TestFramework::isButtonPressed() const
 {
-  return false;
+  return m_buttonPressed;
 }
 
 bool TestFramework::stillRunning() const

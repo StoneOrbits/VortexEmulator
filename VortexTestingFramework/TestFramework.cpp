@@ -20,6 +20,7 @@
 #include "Time/TimeControl.h"
 #include "Colors/Colorset.h"
 #include "Modes/Modes.h"
+#include "Modes/Mode.h"
 
 #include "patterns/Pattern.h"
 #include "patterns/single/SingleLedPattern.h"

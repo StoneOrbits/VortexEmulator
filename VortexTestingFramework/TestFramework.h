@@ -9,7 +9,6 @@
 #include <Windows.h>
 #include <stdio.h>
 
-#include "VortexEngine.h"
 #include "Colors/ColorTypes.h"
 #include "Colors/Colorset.h"
 #include "Leds/LedTypes.h"
