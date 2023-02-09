@@ -37,10 +37,6 @@ public:
   // handlers for the arduino routines
   void show();
 
-  // control the button
-  void pressButton();
-  void releaseButton();
-
   // whether the button is pressed
   bool isButtonPressed() const;
 

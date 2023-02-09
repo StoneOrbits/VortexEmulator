@@ -30,6 +30,8 @@ TestFramework *g_pTestFramework = nullptr;
 
 using namespace std;
 
+#define USAGE   "a = short press | s = med press | d = enter ringmenu | f = toggle pressed | q = quit"
+
 #ifdef WASM // Web assembly glue
 #include <emscripten/html5.h>
 #include <emscripten.h>
@@ -54,9 +56,9 @@ static EM_BOOL key_callback(int eventType, const EmscriptenKeyboardEvent *e, voi
     break;
   case 'f':
     if (eventType == EMSCRIPTEN_EVENT_KEYDOWN) {
-      g_pTestFramework->pressButton();
+      Vortex::pressButton();
     } else if (eventType == EMSCRIPTEN_EVENT_KEYUP) {
-      g_pTestFramework->releaseButton();
+      Vortex::releaseButton();
     }
     break;
   case 'q':
@@ -110,13 +112,6 @@ public:
   }
   virtual ~TestFrameworkCallbacks() {}
 
-  // called when engine reads digital pins, use this to feed button presses to the engine
-  virtual long checkPinHook(uint32_t pin) override
-  {
-    // LOW = 0 = pressed
-    // HIGH = 1 = unpressed
-    return g_pTestFramework->isButtonPressed() ? LOW : HIGH;
-  }
   // called when the LED strip is initialized
   virtual void ledsInit(void *cl, int count) override
   {
@@ -141,7 +136,7 @@ public:
     }
     out += "\n";
 #else
-    out += "\r";
+    out += "\33[2K\033[A\r";
     for (uint32_t i = 0; i < m_count; ++i) {
       out += "\x1B[0m|"; // opening |
       out += "\x1B[48;2;"; // colorcode start
@@ -151,6 +146,7 @@ public:
       out += "  "; // colored space
       out += "\x1B[0m|"; // ending |
     }
+    out += USAGE;
 #endif
     printf("%s", out.c_str());
     fflush(stdout);
@@ -177,13 +173,10 @@ bool TestFramework::init()
   Vortex::init<TestFrameworkCallbacks>();
   m_initialized = true;
 
+  printf("Initialized!\n");
+  printf("%s\n", USAGE);
+
 #ifndef WASM
-  printf("Initialized\r\n");
-  printf("  a = short press\r\n");
-  printf("  s = med press\r\n");
-  printf("  d = variable press\r\n");
-  printf("  f = toggle press\r\n");
-  printf("  q = quit\r\n");
 #else
   wasm_init();
 #endif
@@ -220,27 +213,9 @@ void TestFramework::show()
   }
 }
 
-void TestFramework::pressButton()
-{
-  if (m_buttonPressed) {
-    return;
-  }
-  printf("Press\n");
-  m_buttonPressed = true;
-}
-
-void TestFramework::releaseButton()
-{
-  if (!m_buttonPressed) {
-    return;
-  }
-  printf("Release\n");
-  m_buttonPressed = false;
-}
-
 bool TestFramework::isButtonPressed() const
 {
-  return m_buttonPressed;
+  return Vortex::isButtonPressed();
 }
 
 bool TestFramework::stillRunning() const
