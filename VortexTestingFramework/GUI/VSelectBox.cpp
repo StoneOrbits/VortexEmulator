@@ -294,6 +294,7 @@ void VSelectBox::addBackgroundOffset(int32_t x, int32_t y, uint32_t wrapMult)
     m_backgroundOffsetX %= m_width * wrapMult;
     m_backgroundOffsetY %= m_height * wrapMult;
   }
+  redraw();
 }
 
 void VSelectBox::setSelection(uint32_t x, uint32_t y)
