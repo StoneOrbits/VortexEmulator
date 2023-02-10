@@ -31,6 +31,7 @@ public:
   // set a background via callback to convert x/y to rgb
   //void setBackground(VFillCallback fillCallback);
   void setColor(uint32_t color, bool redraw = true);
+  uint32_t getColor() const;
 
 private:
   static HBITMAP genMask(uint32_t width, uint32_t height);

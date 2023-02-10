@@ -43,7 +43,7 @@ public:
   //void setBackground(VFillCallback fillCallback);
   void setBackground(HBITMAP hBitmap);
   void setBackgroundOffset(int32_t x, int32_t y);
-  void addBackgroundOffset(int32_t x, int32_t y, bool wrap = true);
+  void addBackgroundOffset(int32_t x, int32_t y, uint32_t wrapMult = 10);
   void setSelection(uint32_t x, uint32_t y);
 
   // whether to draw specific components

@@ -174,6 +174,11 @@ void VCircle::setColor(uint32_t col, bool doredraw)
   }
 }
 
+uint32_t VCircle::getColor() const
+{
+  return m_col;
+}
+
 LRESULT CALLBACK VCircle::window_proc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
   VCircle *pCircle = (VCircle *)GetWindowLongPtr(hwnd, GWLP_USERDATA);

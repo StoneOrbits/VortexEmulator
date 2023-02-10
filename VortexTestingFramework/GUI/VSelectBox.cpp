@@ -286,13 +286,13 @@ void VSelectBox::setBackgroundOffset(int32_t x, int32_t y)
   m_backgroundOffsetY = y;
 }
 
-void VSelectBox::addBackgroundOffset(int32_t x, int32_t y, bool wrap)
+void VSelectBox::addBackgroundOffset(int32_t x, int32_t y, uint32_t wrapMult)
 {
   m_backgroundOffsetX += x;
   m_backgroundOffsetY += y;
-  if (wrap) {
-    m_backgroundOffsetX %= m_width;
-    m_backgroundOffsetY %= m_height;
+  if (wrapMult) {
+    m_backgroundOffsetX %= m_width * wrapMult;
+    m_backgroundOffsetY %= m_height * wrapMult;
   }
 }
 

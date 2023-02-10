@@ -39,188 +39,9 @@ using namespace std;
 #define CLICK_BUTTON_ID 10001
 #define TICKRATE_SLIDER_ID 10002
 #define LED_CIRCLE_ID 20003
+#define LAUNCH_IR_ID  30001
 
 #define BACK_COL        RGB(40, 40, 40)
-
-TestFramework::TestFramework() :
-  m_loopThread(nullptr),
-  m_gloveBMP(nullptr),
-  m_hIcon(nullptr),
-  m_brightness(255),
-  m_ledPos(),
-  m_ledList(nullptr),
-  m_numLeds(0),
-  m_initialized(false),
-  m_buttonPressed(false),
-  m_keepGoing(true),
-  m_isPaused(false),
-  m_curMode(),
-  m_curSelectedLed(LED_FIRST)
-{
-}
-
-TestFramework::~TestFramework()
-{
-  if (m_lastLedColor) {
-    delete[] m_lastLedColor;
-  }
-}
-
-bool TestFramework::init(HINSTANCE hInstance)
-{
-  if (g_pTestFramework) {
-    return false;
-  }
-  g_pTestFramework = this;
-
-  m_hInst = hInstance;
-
-#ifdef _DEBUG
-  if (!m_consoleHandle) {
-    AllocConsole();
-    freopen_s(&m_consoleHandle, "CONOUT$", "w", stdout);
-  }
-  DeleteFile("VortexEditor.dat");
-#endif
-
-  // create the pause mutex
-  m_pauseMutex = CreateMutex(NULL, false, NULL);
-  if (!m_pauseMutex) {
-    //return false;
-  }
-
-  // load the main window
-  m_window.init(m_hInst, "Vortex Glove Emulator", BACK_COL, width, height, this);
-
-  // load the icon and background image
-  m_hIcon = LoadIcon(m_hInst, MAKEINTRESOURCE(IDI_ICON1));
-  // set the icon
-  SendMessage(m_window.hwnd(), WM_SETICON, ICON_BIG, (LPARAM)m_hIcon);
-  m_gloveBMP = (HBITMAP)LoadImage(m_hInst, MAKEINTRESOURCE(IDB_BITMAP1), IMAGE_BITMAP, 0, 0, 0);
-
-  m_gloveBox.init(m_hInst, m_window, "Glove", BACK_COL, 250, 320, 86, 30, 0, 0, nullptr);
-  m_gloveBox.setDoCapture(false);
-  m_gloveBox.setDrawHLine(false);
-  m_gloveBox.setDrawVLine(false);
-  m_gloveBox.setDrawCircle(false);
-  m_gloveBox.setBackground(m_gloveBMP);
-  // disable the glove so it doesn't steal clicks from the leds
-  m_gloveBox.setEnabled(false);
-
-  m_patternStrip.init(m_hInst, m_window, "Pattern Strip", BACK_COL, width, patternStripHeight, 0, 375, 2, 11234, patternStripSelectCallback); 
-  m_patternStrip.setDrawHLine(false);
-  m_patternStrip.setDrawVLine(false);
-  m_patternStrip.setDrawCircle(false);
-
-  m_button.init(m_hInst, m_window, "Click", BACK_COL, 48, 24, 198, 312, CLICK_BUTTON_ID, buttonClickCallback);
-
-  // initialize the positions of all the leds
-  uint32_t base_left = 92;
-  uint32_t base_top = 50;
-  uint32_t radius = 15;
-  uint32_t dx = 24;
-  uint32_t dy = 30;
-
-  // thumb top/tip
-  m_ledPos[0].left = 95;
-  m_ledPos[0].top = 175;
-  m_ledPos[1].top = m_ledPos[0].top - 20;
-  m_ledPos[1].left = m_ledPos[0].left - 20;
-
-  // index top/tip
-  m_ledPos[2].left = 135;
-  m_ledPos[2].top = 60;
-  m_ledPos[3].top = m_ledPos[2].top - 30;
-  m_ledPos[3].left = m_ledPos[2].left - 8;
-
-  // middle top/tip
-  m_ledPos[4].left = 195;
-  m_ledPos[4].top = 40;
-  m_ledPos[5].top = m_ledPos[4].top - 30;
-  m_ledPos[5].left = m_ledPos[4].left;
-
-  // ring top/tip
-  m_ledPos[6].left = 254;
-  m_ledPos[6].top = 60;
-  m_ledPos[7].top = m_ledPos[6].top - 30;
-  m_ledPos[7].left = m_ledPos[6].left + 8;
-
-  // pinky top/tip
-  m_ledPos[8].left = 300;
-  m_ledPos[8].top = 95;
-  m_ledPos[9].top = m_ledPos[8].top - 22;
-  m_ledPos[9].left = m_ledPos[8].left + 16;
-
-  for (uint32_t i = 0; i < LED_COUNT; ++i) {
-    m_ledPos[i].right = m_ledPos[i].left + (radius * 2);
-    m_ledPos[i].bottom = m_ledPos[i].top + (radius * 2);
-  }
-
-  for (uint32_t i = 0; i < LED_COUNT; ++i) {
-    m_leds[i].init(m_hInst, m_window, to_string(0),
-      BACK_COL, 30, 30, m_ledPos[i].left, m_ledPos[i].top, LED_CIRCLE_ID + i, ledClickCallback);
-  }
-
-  // launch the 'loop' thread
-  m_loopThread = CreateThread(NULL, 0, TestFramework::arduino_loop_thread, this, 0, NULL);
-  if (!m_loopThread) {
-    // error
-    return false;
-  }
-
-  return true;
-}
-
-void TestFramework::cleanup()
-{
-  // turn off the loops and unpause
-  m_keepGoing = false;
-  m_isPaused = false;
-  // wait for the loop to finish, 3 seconds I guess
-  WaitForSingleObject(m_loopThread, 3000);
-}
-
-void TestFramework::buttonClick(VButton *button, VButton::ButtonEvent type)
-{
-  switch (type) {
-  case VButton::ButtonEvent::BUTTON_EVENT_CLICK:
-    break;
-  case VButton::ButtonEvent::BUTTON_EVENT_PRESS:
-    Vortex::pressButton();
-    break;
-  case VButton::ButtonEvent::BUTTON_EVENT_RELEASE:
-    Vortex::releaseButton();
-    break;
-  default:
-    break;
-  }
-}
-
-void TestFramework::patternStripSelect(uint32_t x, uint32_t y, VSelectBox::SelectEvent sevent)
-{
-  // can't drag it yet
-}
-
-void TestFramework::ledClick(VWindow *window)
-{
-  uint32_t led = (uint32_t)GetMenu(window->hwnd()) - LED_CIRCLE_ID;
-  printf("Clicked led %u\n", led);
-  m_curSelectedLed = (LedPos)led;
-  handlePatternChange(true);
-}
-
-void TestFramework::run()
-{
-  // main message loop
-  MSG msg;
-  while (GetMessage(&msg, NULL, 0, 0)) {
-    // pass message to main window otherwise process it
-    if (!m_window.process(msg)) {
-      TranslateMessage(&msg);
-      DispatchMessage(&msg);
-    }
-  }
-}
 
 #define DEFAULT_PORT "33456"
 
@@ -235,6 +56,19 @@ public:
     hPipe(nullptr),
     m_serialConnected(false)
   {
+    WSAData wsaData;
+    // Initialize Winsock
+    int res = WSAStartup(MAKEWORD(2, 2), &wsaData);
+    if (res != 0) {
+      printf("WSAStartup failed with error: %d\n", res);
+      return;
+    }
+    // use a mutex to detect if server is running yet
+    hServerMutex = CreateMutex(NULL, TRUE, "VortexServerMutex");
+    if (!hServerMutex || GetLastError() == ERROR_ALREADY_EXISTS) {
+      // otherwise try to connect client to server
+      init_network_client();
+    }
     // create a global pipe
     hPipe = CreateNamedPipe(
       "\\\\.\\pipe\\vortextestframework",
@@ -246,9 +80,12 @@ public:
       0,
       NULL);
     if (hPipe == INVALID_HANDLE_VALUE) {
-      std::string error = "Failed to open pipe";
-      error += std::to_string(GetLastError());
-      MessageBox(NULL, error.c_str(), "", 0);
+      // only throw a message if this isn't the network client openign
+      if (!hServerMutex) {
+        std::string error = "Failed to open pipe";
+        error += std::to_string(GetLastError());
+        MessageBox(NULL, error.c_str(), "", 0);
+      }
     }
     // try to find editor window
     HWND hwnd = FindWindow("VWINDOW", NULL);
@@ -256,26 +93,13 @@ public:
       // send it a message to tell it the test framework is here
       PostMessage(hwnd, WM_USER + 1, 0, 0);
     }
-#ifdef SIMULATE_IR_COMMS
-    WSAData wsaData;
-    // Initialize Winsock
-    int res = WSAStartup(MAKEWORD(2, 2), &wsaData);
-    if (res != 0) {
-      printf("WSAStartup failed with error: %d\n", res);
-      return;
-    }
-    // use a mutex to detect if server is running yet
-    hServerMutex = CreateMutex(NULL, TRUE, "VortexServerMutex");
-    if (hServerMutex && GetLastError() != ERROR_ALREADY_EXISTS) {
-      // initialize the listen server
-      init_server();
-    } else {
-      // otherwise try to connect client to server
-      init_network_client();
-    }
-#endif
   }
   virtual ~TestFrameworkCallbacks() {}
+  
+  void initServer()
+  {
+    init_server();
+  }
 
   // called when engine reads digital pins, use this to feed button presses to the engine
   virtual long checkPinHook(uint32_t pin) override
@@ -374,6 +198,8 @@ public:
   }
 
 private:
+  friend class TestFramework;
+
   // receive a message from client
   bool receive_message(uint32_t &out_message)
   {
@@ -422,6 +248,8 @@ private:
       return 0;
     }
     printf("Accepted connection\n");
+
+    pthis->is_connected = true;
 
     // idk when another one launches the first ones strip unpaints
     PostMessage(NULL, WM_PAINT, NULL, NULL);
@@ -480,11 +308,11 @@ private:
       printf("listen failed with error: %d\n", WSAGetLastError());
       return false;
     }
-    CreateThread(NULL, 0, listen_connection, NULL, 0, NULL);
+    CreateThread(NULL, 0, listen_connection, this, 0, NULL);
     printf("Success listening on *:8080\n");
     is_server = true;
     g_pTestFramework->setWindowTitle(g_pTestFramework->getWindowTitle() + " Receiver");
-    g_pTestFramework->setWindowPos(250, 650);
+    g_pTestFramework->setWindowPos(900, 350);
 
     // launch another instance of the test framwork to act as the sender
     if (is_server) {
@@ -550,7 +378,8 @@ private:
     }
     printf("Success initializing network client\n");
     g_pTestFramework->setWindowTitle(g_pTestFramework->getWindowTitle() + " Sender");
-    g_pTestFramework->setWindowPos(1300, 650);
+    g_pTestFramework->setWindowPos(450, 350);
+    is_connected = true;
     //info("Connected to server %s", config.server_ip.c_str());
     return true;
   }
@@ -559,12 +388,263 @@ private:
   SOCKET sock;
   SOCKET client_sock;
   bool is_server;
+  bool is_connected;
   HANDLE hServerMutex;
 
   // pipe data (serial comms)
   HANDLE hPipe;
   bool m_serialConnected;
 };
+
+TestFrameworkCallbacks *g_pCallbacks = nullptr;
+
+TestFramework::TestFramework() :
+  m_loopThread(nullptr),
+  m_gloveBMP(nullptr),
+  m_hIcon(nullptr),
+  m_brightness(255),
+  m_ledPos(),
+  m_ledList(nullptr),
+  m_numLeds(0),
+  m_initialized(false),
+  m_buttonPressed(false),
+  m_keepGoing(true),
+  m_isPaused(false),
+  m_curMode(),
+  m_curSelectedLed(LED_FIRST)
+{
+}
+
+TestFramework::~TestFramework()
+{
+  if (m_lastLedColor) {
+    delete[] m_lastLedColor;
+  }
+}
+
+bool TestFramework::init(HINSTANCE hInstance)
+{
+  if (g_pTestFramework) {
+    return false;
+  }
+  g_pTestFramework = this;
+
+  m_hInst = hInstance;
+
+#ifdef _DEBUG
+  if (!m_consoleHandle) {
+    AllocConsole();
+    freopen_s(&m_consoleHandle, "CONOUT$", "w", stdout);
+  }
+  DeleteFile("VortexEditor.dat");
+#endif
+
+  // create the pause mutex
+  m_pauseMutex = CreateMutex(NULL, false, NULL);
+  if (!m_pauseMutex) {
+    //return false;
+  }
+
+  // load the main window
+  m_window.init(m_hInst, "Vortex Glove Emulator", BACK_COL, width, height, this);
+
+  // load the icon and background image
+  m_hIcon = LoadIcon(m_hInst, MAKEINTRESOURCE(IDI_ICON1));
+  // set the icon
+  SendMessage(m_window.hwnd(), WM_SETICON, ICON_BIG, (LPARAM)m_hIcon);
+  m_gloveBMP = (HBITMAP)LoadImage(m_hInst, MAKEINTRESOURCE(IDB_BITMAP1), IMAGE_BITMAP, 0, 0, 0);
+
+  m_gloveBox.init(m_hInst, m_window, "Glove", BACK_COL, 250, 320, 86, 30, 0, 0, nullptr);
+  m_gloveBox.setDoCapture(false);
+  m_gloveBox.setDrawHLine(false);
+  m_gloveBox.setDrawVLine(false);
+  m_gloveBox.setDrawCircle(false);
+  m_gloveBox.setBackground(m_gloveBMP);
+  // disable the glove so it doesn't steal clicks from the leds
+  m_gloveBox.setEnabled(false);
+
+  m_patternStrip.init(m_hInst, m_window, "Pattern Strip", BACK_COL, width, patternStripHeight, -2, 375, 2, 11234, patternStripSelectCallback); 
+  m_patternStrip.setDrawHLine(false);
+  m_patternStrip.setDrawVLine(false);
+  m_patternStrip.setDrawCircle(false);
+
+  m_tickrateSlider.init(m_hInst, m_window, "Tickrate", BACK_COL, tickrateSliderWidth, tickrateSliderHeight, 30, 100, 1, 123433, setTickrateCallback);
+  m_tickrateSlider.setDrawCircle(false);
+  m_tickrateSlider.setDrawVLine(false);
+  m_tickrateSlider.setSelection(0, 30);
+
+  COLORREF *cols = new COLORREF[tickrateSliderWidth * tickrateSliderHeight];
+  if (!cols) {
+    return false;
+  }
+  // clear and re-generate the pattern strip
+  for (int x = 0; x < tickrateSliderWidth; ++x) {
+    // fill the entire column of the bitmap with this color
+    for (int y = 0; y < tickrateSliderHeight; ++y) {
+      cols[(y * tickrateSliderWidth) + x] = RGB(30, 30, 30);
+    }
+  }
+  // create a bitmap out of the array of colors
+  HBITMAP bitmap = CreateBitmap(tickrateSliderWidth, tickrateSliderHeight, 1, 32, cols);
+  m_tickrateSlider.setBackground(bitmap);
+  m_tickrateSlider.setSelection(0, 240);
+  Vortex::setTickrate(150);
+
+  m_button.init(m_hInst, m_window, "Click", BACK_COL, 48, 24, 198, 312, CLICK_BUTTON_ID, buttonClickCallback);
+  m_IRLaunchButton.init(m_hInst, m_window, "Connect IR", BACK_COL, 80, 24, 350, 340, LAUNCH_IR_ID, launchIRCallback);
+  m_IRLaunchButton.setVisible(false);
+
+  // initialize the positions of all the leds
+  uint32_t base_left = 92;
+  uint32_t base_top = 50;
+  uint32_t radius = 15;
+  uint32_t dx = 24;
+  uint32_t dy = 30;
+
+  // thumb top/tip
+  m_ledPos[0].left = 95;
+  m_ledPos[0].top = 175;
+  m_ledPos[1].top = m_ledPos[0].top - 20;
+  m_ledPos[1].left = m_ledPos[0].left - 20;
+
+  // index top/tip
+  m_ledPos[2].left = 135;
+  m_ledPos[2].top = 60;
+  m_ledPos[3].top = m_ledPos[2].top - 30;
+  m_ledPos[3].left = m_ledPos[2].left - 8;
+
+  // middle top/tip
+  m_ledPos[4].left = 195;
+  m_ledPos[4].top = 40;
+  m_ledPos[5].top = m_ledPos[4].top - 30;
+  m_ledPos[5].left = m_ledPos[4].left;
+
+  // ring top/tip
+  m_ledPos[6].left = 254;
+  m_ledPos[6].top = 60;
+  m_ledPos[7].top = m_ledPos[6].top - 30;
+  m_ledPos[7].left = m_ledPos[6].left + 8;
+
+  // pinky top/tip
+  m_ledPos[8].left = 300;
+  m_ledPos[8].top = 95;
+  m_ledPos[9].top = m_ledPos[8].top - 22;
+  m_ledPos[9].left = m_ledPos[8].left + 16;
+
+  for (uint32_t i = 0; i < LED_COUNT; ++i) {
+    m_ledPos[i].right = m_ledPos[i].left + (radius * 2);
+    m_ledPos[i].bottom = m_ledPos[i].top + (radius * 2);
+  }
+
+  for (uint32_t i = 0; i < LED_COUNT; ++i) {
+    m_leds[i].init(m_hInst, m_window, to_string(0),
+      BACK_COL, 30, 30, m_ledPos[i].left, m_ledPos[i].top, LED_CIRCLE_ID + i, ledClickCallback);
+  }
+
+    
+  // create an accelerator table for dispatching hotkeys as WM_COMMANDS
+  // for specific menu IDs
+  ACCEL accelerators[] = {
+    // ctrl + shift + I   open the IR connection
+    { FCONTROL | FSHIFT | FVIRTKEY, 'I', LAUNCH_IR_ID },
+  };
+  m_accelTable = CreateAcceleratorTable(accelerators, sizeof(accelerators) / sizeof(accelerators[0]));
+  if (!m_accelTable) {
+    // error!
+  }
+
+  // launch the 'loop' thread
+  m_loopThread = CreateThread(NULL, 0, TestFramework::arduino_loop_thread, this, 0, NULL);
+  if (!m_loopThread) {
+    // error
+    return false;
+  }
+
+  return true;
+}
+
+void TestFramework::cleanup()
+{
+  // turn off the loops and unpause
+  m_keepGoing = false;
+  m_isPaused = false;
+  // wait for the loop to finish, 3 seconds I guess
+  WaitForSingleObject(m_loopThread, 3000);
+}
+
+void TestFramework::buttonClick(VButton *button, VButton::ButtonEvent type)
+{
+  switch (type) {
+  case VButton::ButtonEvent::BUTTON_EVENT_CLICK:
+    break;
+  case VButton::ButtonEvent::BUTTON_EVENT_PRESS:
+    Vortex::pressButton();
+    break;
+  case VButton::ButtonEvent::BUTTON_EVENT_RELEASE:
+    Vortex::releaseButton();
+    break;
+  default:
+    break;
+  }
+}
+
+void TestFramework::launchIR(VButton *window, VButton::ButtonEvent type)
+{
+  if (!g_pCallbacks) {
+    return;
+  }
+  g_pCallbacks->initServer();
+  m_IRLaunchButton.setEnabled(false);
+  Menus::openMenu(MENU_MODE_SHARING);
+}
+
+void TestFramework::patternStripSelect(uint32_t x, uint32_t y, VSelectBox::SelectEvent sevent)
+{
+  // can't drag it yet
+}
+
+void TestFramework::ledClick(VWindow *window)
+{
+  uint32_t led = (uint32_t)GetMenu(window->hwnd()) - LED_CIRCLE_ID;
+  printf("Clicked led %u\n", led);
+  m_curSelectedLed = (LedPos)led;
+  handlePatternChange(true);
+}
+
+void TestFramework::setTickrate(uint32_t x, uint32_t y, VSelectBox::SelectEvent sevent)
+{
+  // wait for a tick to finish
+  pause();
+
+  // height of the tickrate slider
+  float rate = (float)y / (float)tickrateSliderHeight;
+  uint32_t newTickrate = 1000 - (uint32_t)(rate * 1000);
+  if (newTickrate < 120) {
+    newTickrate = 120;
+  }
+  Vortex::setTickrate(newTickrate);
+
+  // resume
+  unpause();
+}
+
+void TestFramework::run()
+{
+  // main message loop
+  MSG msg;
+  while (GetMessage(&msg, NULL, 0, 0)) {
+    if (GetForegroundWindow() == m_window.hwnd()) {
+      if (TranslateAccelerator(m_window.hwnd(), m_accelTable, &msg)) {
+        continue;
+      }
+    }
+    // pass message to main window otherwise process it
+    if (!m_window.process(msg)) {
+      TranslateMessage(&msg);
+      DispatchMessage(&msg);
+    }
+  }
+}
 
 void TestFramework::installLeds(CRGB *leds, uint32_t count)
 {
@@ -590,9 +670,12 @@ void TestFramework::show()
   if (!m_initialized) {
     return;
   }
-  // redraw the leds
-  for (int i = 0; i < LED_COUNT; ++i) {
-    m_leds[i].setColor(m_ledList[i].raw());
+  // update the colors with the colors in the led list
+  for (LedPos i = LED_FIRST; i < LED_COUNT; ++i) {
+    uint32_t raw = m_ledList[i].raw();
+    if (m_leds[i].getColor() != raw) {
+      m_leds[i].setColor(raw);
+    }
   }
 }
 
@@ -610,34 +693,6 @@ bool TestFramework::isButtonPressed() const
 {
   // spacebar also works
   return m_buttonPressed;
-}
-
-void TestFramework::setTickrate()
-{
-#if 0
-  uint32_t tickrate = TrackBar_GetPos(g_pTestFramework->m_hwndTickrateSlider);
-  if (tickrate > 20) {
-    tickrate *= (tickrate / 10);
-  }
-  if (tickrate < 1) {
-    tickrate = 1;
-  }
-  // baseline allowable tickrate
-  tickrate += 60;
-  if (tickrate > 1000) {
-    tickrate = 1000;
-  }
-  pause();
-  Time::setTickrate(tickrate);
-  unpause();
-  RECT rateRect;
-  rateRect.top = 310;
-  rateRect.bottom = 375;
-  rateRect.left = 10;
-  rateRect.right = 600;
-  InvalidateRect(m_hwnd, &rateRect, TRUE);
-  DEBUG_LOGF("Set tickrate: %u", tickrate);
-#endif
 }
 
 void TestFramework::pause()
@@ -674,14 +729,13 @@ bool TestFramework::handlePatternChange(bool force)
   }
   // cant do this it causes too much lag in the editor
   Menu *curMenu = Menus::curMenu();
-  if (curMenu && Menus::curMenuID() == MENU_RANDOMIZER) {
-    // Literal hack to get the m_curMode out of the randomizer lol
-    // I don't really want to make an api to fetch this
-    targetMode = (Mode *)((uintptr_t)curMenu + sizeof(Menu));
+  Mode *menuMode = Vortex::getMenuDemoMode();
+  if (menuMode) {
+    targetMode = menuMode;
   }
 
   // scroll the background a little
-  m_patternStrip.addBackgroundOffset(1, 0);
+  m_patternStrip.addBackgroundOffset(1, 0, patternStripExtensionMultiplier - 1);
   m_patternStrip.redraw();
 
   // check to see if the mode changed
@@ -708,7 +762,7 @@ bool TestFramework::handlePatternChange(bool force)
   // begin the time simulation so we can tick forward
   Time::startSimulation();
   // the actual strip is twice the width of the window to allow scrolling
-  uint32_t patternStripWidth = width * 10;
+  uint32_t patternStripWidth = width * patternStripExtensionMultiplier;
   COLORREF *cols = new COLORREF[patternStripWidth * patternStripHeight];
   if (!cols) {
     return false;
@@ -739,11 +793,6 @@ bool TestFramework::handlePatternChange(bool force)
   // update the background of the pattern strip
   m_patternStrip.setBackground(bitmap);
   m_patternStrip.redraw();
-  // idk why this sleep is necessary, bad synchronization
-  //Sleep(100);
-  // redraw the pattern strip
-  //RECT stripRect = { 0, patternStripStart, width, patternStripEnd };
-  //InvalidateRect(m_hwnd, &stripRect, TRUE);
   return true;
 }
 
@@ -764,11 +813,12 @@ DWORD __stdcall TestFramework::arduino_loop_thread(void *arg)
   TestFramework *framework = (TestFramework *)arg;
   // init the vortex engine
   Vortex::init<TestFrameworkCallbacks>();
-  //TrackBar_SetPos(framework->m_hwndTickrateSlider, 30);
-  //TrackBar_SetPos(m_hwndTickOffsetSlider, 0);
+  g_pCallbacks = (TestFrameworkCallbacks *)Vortex::vcallbacks();
+  if (g_pCallbacks->is_connected) {
+    framework->m_IRLaunchButton.setEnabled(false);
+    Menus::openMenu(MENU_MODE_SHARING);
+  }
   // init tickrate and time offset to match the sliders
-  framework->setTickrate();
-  //setTickOffset();
   while (framework->m_initialized && framework->m_keepGoing) {
     DWORD dwWaitResult = WaitForSingleObject(framework->m_pauseMutex, INFINITE);  // no time-out interval
     if (dwWaitResult == WAIT_OBJECT_0) {

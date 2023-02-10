@@ -52,9 +52,6 @@ public:
   // whether the button is pressed
   bool isButtonPressed() const;
 
-  // change the tick rate based on slider (ticks per second)
-  void setTickrate();
-
   // pause and unpause the main arduino loop
   void pause();
   void unpause();
@@ -85,27 +82,44 @@ private:
   static void buttonClickCallback(void *arg, VButton *window, VButton::ButtonEvent type) {
     ((TestFramework *)arg)->buttonClick(window, type);
   }
+  static void launchIRCallback(void *arg, VButton *window, VButton::ButtonEvent type) {
+    ((TestFramework *)arg)->launchIR(window, type);
+  }
   static void patternStripSelectCallback(void *arg, uint32_t x, uint32_t y, VSelectBox::SelectEvent sevent) {
     ((TestFramework *)arg)->patternStripSelect(x, y, sevent);
   }
   static void ledClickCallback(void *arg, VWindow *window) {
     ((TestFramework *)arg)->ledClick(window);
   }
+  static void setTickrateCallback(void *arg, uint32_t x, uint32_t y, VSelectBox::SelectEvent sevent) {
+    ((TestFramework *)arg)->setTickrate(x, y, sevent);
+  }
 
   void buttonClick(VButton *window, VButton::ButtonEvent type);
+  void launchIR(VButton *window, VButton::ButtonEvent type);
   void patternStripSelect(uint32_t x, uint32_t y, VSelectBox::SelectEvent sevent);
   void ledClick(VWindow *window);
+  void setTickrate(uint32_t x, uint32_t y, VSelectBox::SelectEvent sevent);
 
-  static const int width = 460;
-  static const int height = 460;
+  static const uint32_t width = 460;
+  static const uint32_t height = 460;
 
-  static const int patternStripHeight = 30;
+  static const uint32_t patternStripHeight = 30;
+
+  static const uint32_t tickrateSliderWidth = 24;
+  static const uint32_t tickrateSliderHeight = 260;
+
+  // how many times the length of the pattern strip is extended
+  // in order to simulate the scrolling effect
+  static const uint32_t patternStripExtensionMultiplier = 10;
 
   // new stuff
   VWindow m_window;
-  VButton m_button;
   VSelectBox m_gloveBox;
   VSelectBox m_patternStrip;
+  VSelectBox m_tickrateSlider;
+  VButton m_button;
+  VButton m_IRLaunchButton;
   VCircle m_leds[LED_COUNT];
 
   RECT m_ledPos[LED_COUNT];
@@ -135,6 +149,8 @@ private:
   Mode m_curMode;
 
   std::map<COLORREF, HBRUSH> m_brushmap;
+
+  HACCEL m_accelTable;
 };
 
 extern TestFramework *g_pTestFramework;
