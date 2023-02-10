@@ -20,6 +20,8 @@
 #include "Patterns/Patterns.h"
 #include "Modes/Mode.h"
 
+#include "VortexLib.h"
+
 #include <string>
 #include <vector>
 #include <map>
@@ -45,10 +47,6 @@ public:
   void setBrightness(int brightness);
   void show();
 
-  // pause and unpause the main arduino loop
-  bool pause();
-  void unpause();
-
   // reload the pattern strip with the new patternID
   bool handlePatternChange(bool force = false);
 
@@ -67,6 +65,23 @@ public:
   static DWORD __stdcall arduino_loop_thread(void *arg);
 
 private:
+  class TestFrameworkCallbacks : public VortexCallbacks
+  {
+  public:
+    virtual long checkPinHook(uint32_t pin) override;
+    virtual void infraredWrite(bool mark, uint32_t amount) override;
+    virtual bool serialCheck() override;
+    virtual int32_t serialAvail() override;
+    virtual size_t serialRead(char *buf, size_t amt) override;
+    virtual uint32_t serialWrite(const uint8_t *buf, size_t len) override;
+    virtual void ledsInit(void *cl, int count) override;
+    virtual void ledsBrightness(int brightness) override;
+    virtual void ledsShow() override;
+  };
+
+  // the callbacks instance that is returned by init
+  TestFrameworkCallbacks *m_pCallbacks;
+
   static void buttonClickCallback(void *arg, VButton *window, VButton::ButtonEvent type) {
     ((TestFramework *)arg)->buttonClick(window, type);
   }
@@ -88,7 +103,6 @@ private:
   void patternStripSelect(uint32_t x, uint32_t y, VSelectBox::SelectEvent sevent);
   void ledClick(VWindow *window);
   void setTickrate(uint32_t x, uint32_t y, VSelectBox::SelectEvent sevent);
-  static DWORD __stdcall do_tickrate(void *arg);
 
   static const uint32_t width = 610;
   static const uint32_t height = 460;

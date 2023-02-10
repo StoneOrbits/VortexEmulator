@@ -153,19 +153,23 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="EditorPipe.cpp" />
     <ClCompile Include="GUI\VButton.cpp" />
     <ClCompile Include="GUI\VLabel.cpp" />
     <ClCompile Include="GUI\VSelectBox.cpp" />
     <ClCompile Include="GUI\VWindow.cpp" />
+    <ClCompile Include="IRSimulator.cpp" />
     <ClCompile Include="TestFramework.cpp" />
     <ClCompile Include="GUI\VCircle.cpp" />
     <ClCompile Include="WinMain.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="EditorPipe.h" />
     <ClInclude Include="GUI\VButton.h" />
     <ClInclude Include="GUI\VLabel.h" />
     <ClInclude Include="GUI\VSelectBox.h" />
     <ClInclude Include="GUI\VWindow.h" />
+    <ClInclude Include="IRSimulator.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="TestFramework.h" />
     <ClInclude Include="GUI\VCircle.h" />
