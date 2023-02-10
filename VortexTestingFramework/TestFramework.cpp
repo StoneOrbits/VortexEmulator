@@ -412,19 +412,34 @@ private:
 TestFrameworkCallbacks *g_pCallbacks = nullptr;
 
 TestFramework::TestFramework() :
-  m_loopThread(nullptr),
-  m_orbitBMP(nullptr),
+  m_window(),
+  m_gloveBox(),
+  m_patternStrip(),
+  m_tickrateSlider(),
+  m_button(),
+  m_IRLaunchButton(),
+  m_leds(),
+  m_ledPos(),
+  m_pauseMutex(nullptr),
+  m_hInst(nullptr),
+  m_consoleHandle(nullptr),
+  m_gloveBMP(nullptr),
   m_hIcon(nullptr),
+  m_loopThread(nullptr),
+  m_tickrate(150),
   m_brightness(255),
   m_ledList(nullptr),
   m_numLeds(0),
+  m_lastLedColor(nullptr),
+  m_curSelectedLed(LED_FIRST),
   m_initialized(false),
   m_buttonPressed(false),
   m_buttonPressed2(false),
   m_keepGoing(true),
   m_isPaused(false),
   m_curMode(),
-  m_curSelectedLed(LED_FIRST)
+  m_brushmap(),
+  m_accelTable()
 {
 }
 
@@ -656,29 +671,26 @@ void TestFramework::patternStripSelect(uint32_t x, uint32_t y, VSelectBox::Selec
 
 void TestFramework::ledClick(VWindow *window)
 {
-  uint32_t led = (uint32_t)GetMenu(window->hwnd()) - LED_CIRCLE_ID;
+  uint32_t led = LED_LAST - ((uint32_t)GetMenu(window->hwnd()) - LED_CIRCLE_ID);
   printf("Clicked led %u\n", led);
   m_curSelectedLed = (LedPos)led;
   handlePatternChange(true);
 }
 
-void TestFramework::setTickrate(uint32_t x, uint32_t y, VSelectBox::SelectEvent sevent)
+DWORD __stdcall TestFramework::do_tickrate(void *arg)
 {
   // wait for a tick to finish
-  pause();
-
-  // height of the tickrate slider
-  float rate = (float)y / (float)tickrateSliderHeight;
-  uint32_t newTickrate = 1000 - (uint32_t)(rate * 1000);
-  if (!newTickrate) {
-  }
-  if (newTickrate < 120) {
-    newTickrate = 120;
-  }
-  Vortex::setTickrate(newTickrate);
-
+  while (!g_pTestFramework->pause());
+  printf("Set tickrate to: %u\n", (uintptr_t)arg);
   // resume
-  unpause();
+  g_pTestFramework->unpause();
+  return 0;
+}
+
+void TestFramework::setTickrate(uint32_t x, uint32_t y, VSelectBox::SelectEvent sevent)
+{
+  // tickrate is up to 1000 but it needs to be flipped because y+ is down
+  m_tickrate = 1000 - (uint32_t)((float)y / tickrateSliderHeight * 1000.0);
 }
 
 void TestFramework::run()
@@ -732,23 +744,16 @@ void TestFramework::show()
   }
 }
 
-void TestFramework::pause()
+bool TestFramework::pause()
 {
-  if (m_isPaused) {
-    return;
-  }
-  if (WaitForSingleObject(m_pauseMutex, INFINITE) != WAIT_OBJECT_0) {
+  if (WaitForSingleObject(m_pauseMutex, 100) != WAIT_OBJECT_0) {
     DEBUG_LOG("Failed to pause");
-    return;
+    return false;
   }
-  m_isPaused = true;
 }
 
 void TestFramework::unpause()
 {
-  if (!m_isPaused) {
-    return;
-  }
   ReleaseMutex(m_pauseMutex);
   m_isPaused = false;
 }
@@ -770,10 +775,6 @@ bool TestFramework::handlePatternChange(bool force)
   if (menuMode) {
     targetMode = menuMode;
   }
-
-  // scroll the background a little
-  m_patternStrip.addBackgroundOffset(1, 0, patternStripExtensionMultiplier - 1);
-  m_patternStrip.redraw();
 
   // check to see if the mode changed
   if (!force && m_curMode.equals(targetMode)) {
@@ -858,17 +859,28 @@ DWORD __stdcall TestFramework::arduino_loop_thread(void *arg)
   // init tickrate and time offset to match the sliders
   while (framework->m_initialized && framework->m_keepGoing) {
     DWORD dwWaitResult = WaitForSingleObject(framework->m_pauseMutex, INFINITE);  // no time-out interval
-    if (dwWaitResult == WAIT_OBJECT_0) {
-      // run the tick
-      Vortex::tick();
-      // backup the colors
-      if (framework->m_lastLedColor && framework->m_ledList) {
-        memcpy(framework->m_lastLedColor, framework->m_ledList, sizeof(RGBColor) * LED_COUNT);
-      }
-      // if pattern changes we need to reload the pattern strip
-      framework->handlePatternChange();
-      ReleaseMutex(framework->m_pauseMutex);
+    if (dwWaitResult != WAIT_OBJECT_0) {
+      //  only run the tick if we acquire the pause mutex
+      continue;
     }
+    // run the tick
+    Vortex::tick();
+    // backup the colors
+    if (framework->m_lastLedColor && framework->m_ledList) {
+      memcpy(framework->m_lastLedColor, framework->m_ledList, sizeof(RGBColor) * LED_COUNT);
+    }
+    // handle any tickrate changes
+    uintptr_t newTickrate = framework->m_tickrate > 10 ? framework->m_tickrate : 10;
+    if (newTickrate != Vortex::getTickrate()) {
+      Vortex::setTickrate(newTickrate);
+    }
+    // scroll the background a little
+    if (newTickrate > 10) {
+      framework->m_patternStrip.addBackgroundOffset(1, 0, patternStripExtensionMultiplier - 1);
+    }
+    // if pattern changes we need to reload the pattern strip
+    framework->handlePatternChange();
+    ReleaseMutex(framework->m_pauseMutex);
   }
   // cleanup
   Vortex::cleanup();

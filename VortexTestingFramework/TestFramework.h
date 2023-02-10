@@ -45,11 +45,8 @@ public:
   void setBrightness(int brightness);
   void show();
 
-  // whether the button is pressed
-  bool isButtonPressed(uint8_t button) const;
-
   // pause and unpause the main arduino loop
-  void pause();
+  bool pause();
   void unpause();
 
   // reload the pattern strip with the new patternID
@@ -91,6 +88,7 @@ private:
   void patternStripSelect(uint32_t x, uint32_t y, VSelectBox::SelectEvent sevent);
   void ledClick(VWindow *window);
   void setTickrate(uint32_t x, uint32_t y, VSelectBox::SelectEvent sevent);
+  static DWORD __stdcall do_tickrate(void *arg);
 
   static const uint32_t width = 610;
   static const uint32_t height = 460;
@@ -122,6 +120,8 @@ private:
   HBITMAP m_orbitBMP;
   HICON m_hIcon;
   HANDLE m_loopThread;
+
+  volatile uint32_t m_tickrate;
 
   int m_brightness;
 
