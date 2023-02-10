@@ -106,7 +106,7 @@ public:
   {
     if (pin == 1) {
       // get button state
-      if (g_pTestFramework->isButtonPressed()) {
+      if (Vortex::isButtonPressed()) {
         return LOW;
       }
       return HIGH;
@@ -399,19 +399,33 @@ private:
 TestFrameworkCallbacks *g_pCallbacks = nullptr;
 
 TestFramework::TestFramework() :
-  m_loopThread(nullptr),
+  m_window(),
+  m_gloveBox(),
+  m_patternStrip(),
+  m_tickrateSlider(),
+  m_button(),
+  m_IRLaunchButton(),
+  m_leds(),
+  m_ledPos(),
+  m_pauseMutex(nullptr),
+  m_hInst(nullptr),
+  m_consoleHandle(nullptr),
   m_gloveBMP(nullptr),
   m_hIcon(nullptr),
+  m_loopThread(nullptr),
   m_brightness(255),
-  m_ledPos(),
-  m_ledList(nullptr),
-  m_numLeds(0),
+  m_ledList(),
+  m_numLeds(LED_COUNT),
+  m_lastLedColor(nullptr),
+  m_curSelectedLed(LED_FIRST),
   m_initialized(false),
   m_buttonPressed(false),
   m_keepGoing(true),
+  m_freezeStrip(false),
   m_isPaused(false),
   m_curMode(),
-  m_curSelectedLed(LED_FIRST)
+  m_brushmap(),
+  m_accelTable()
 {
 }
 
@@ -611,21 +625,32 @@ void TestFramework::ledClick(VWindow *window)
   handlePatternChange(true);
 }
 
-void TestFramework::setTickrate(uint32_t x, uint32_t y, VSelectBox::SelectEvent sevent)
+DWORD __stdcall TestFramework::do_tickrate(void *arg)
 {
   // wait for a tick to finish
-  pause();
-
-  // height of the tickrate slider
-  float rate = (float)y / (float)tickrateSliderHeight;
-  uint32_t newTickrate = 1000 - (uint32_t)(rate * 1000);
-  if (newTickrate < 120) {
-    newTickrate = 120;
+  if (!g_pTestFramework->pause()) {
+    return 0;
   }
-  Vortex::setTickrate(newTickrate);
+
+  Vortex::setTickrate((uintptr_t)arg);
 
   // resume
-  unpause();
+  g_pTestFramework->unpause();
+
+  return 0;
+}
+
+void TestFramework::setTickrate(uint32_t x, uint32_t y, VSelectBox::SelectEvent sevent)
+{
+  // height of the tickrate slider
+  float rate = (float)y / (float)tickrateSliderHeight;
+  uintptr_t newTickrate = 1000 - (uint32_t)(rate * 1000);
+  g_pTestFramework->m_freezeStrip = (newTickrate < 10);
+  if (newTickrate < 10) {
+    newTickrate = 10;
+  }
+  HANDLE hThread = CreateThread(NULL, 0, do_tickrate, (void *)newTickrate, 0, NULL);
+  CloseHandle(hThread);
 }
 
 void TestFramework::run()
@@ -679,30 +704,11 @@ void TestFramework::show()
   }
 }
 
-void TestFramework::pressButton()
+bool TestFramework::pause()
 {
-  m_buttonPressed = true;
-}
-
-void TestFramework::releaseButton()
-{
-  m_buttonPressed = false;
-}
-
-bool TestFramework::isButtonPressed() const
-{
-  // spacebar also works
-  return m_buttonPressed;
-}
-
-void TestFramework::pause()
-{
-  if (m_isPaused) {
-    return;
-  }
-  if (WaitForSingleObject(m_pauseMutex, INFINITE) != WAIT_OBJECT_0) {
+  if (WaitForSingleObject(m_pauseMutex, 10000) != WAIT_OBJECT_0) {
     DEBUG_LOG("Failed to pause");
-    return;
+    return false;
   }
   m_isPaused = true;
 }
@@ -735,7 +741,9 @@ bool TestFramework::handlePatternChange(bool force)
   }
 
   // scroll the background a little
-  m_patternStrip.addBackgroundOffset(1, 0, patternStripExtensionMultiplier - 1);
+  if (!m_freezeStrip) {
+    m_patternStrip.addBackgroundOffset(1, 0, patternStripExtensionMultiplier - 1);
+  }
   m_patternStrip.redraw();
 
   // check to see if the mode changed

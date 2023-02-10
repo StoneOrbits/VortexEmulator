@@ -337,6 +337,9 @@ LRESULT CALLBACK VWindow::window_proc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
     pWindow->command(wParam, lParam);
     break;
   case WM_DEVICECHANGE:
+    if (!pWindow->m_deviceCallback) {
+      break;
+    }
     // Output some messages to the window.
     if (wParam == DBT_DEVICEARRIVAL) {
       pWindow->m_deviceCallback(pWindow->m_callbackArg, (DEV_BROADCAST_HDR *)lParam, true);
