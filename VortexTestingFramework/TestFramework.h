@@ -45,10 +45,6 @@ public:
   void setBrightness(int brightness);
   void show();
 
-  // control the button
-  void pressButton(uint8_t button);
-  void releaseButton(uint8_t button);
-
   // whether the button is pressed
   bool isButtonPressed(uint8_t button) const;
 
@@ -96,7 +92,7 @@ private:
   void ledClick(VWindow *window);
   void setTickrate(uint32_t x, uint32_t y, VSelectBox::SelectEvent sevent);
 
-  static const uint32_t width = 460;
+  static const uint32_t width = 610;
   static const uint32_t height = 460;
 
   static const uint32_t patternStripHeight = 30;
@@ -110,24 +106,20 @@ private:
 
   // new stuff
   VWindow m_window;
-  VSelectBox m_gloveBox;
+  VSelectBox m_orbitBox;
   VSelectBox m_patternStrip;
   VSelectBox m_tickrateSlider;
   VButton m_button;
+  VButton m_button2;
   VButton m_IRLaunchButton;
   VCircle m_leds[LED_COUNT];
-
-  static const int width = 518;
-  static const int height = 460;
-  
-  static const int patternStripStart = 375;
-  static const int patternStripEnd = 405;
+  RECT m_ledPos[LED_COUNT];
 
   HANDLE m_pauseMutex;
 
   HINSTANCE m_hInst;
   FILE *m_consoleHandle;
-  HBITMAP m_gloveBMP;
+  HBITMAP m_orbitBMP;
   HICON m_hIcon;
   HANDLE m_loopThread;
 

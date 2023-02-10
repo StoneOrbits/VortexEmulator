@@ -44,10 +44,8 @@ TestFramework *g_pTestFramework = nullptr;
 using namespace std;
 
 #define CLICK_BUTTON_ID 10001
-#define TICKRATE_SLIDER_ID 10002
 #define LED_CIRCLE_ID 20003
 #define LAUNCH_IR_ID  30001
-#define CLICK_BUTTON_ID2 10005
 
 #define BACK_COL        RGB(40, 40, 40)
 
@@ -114,14 +112,14 @@ public:
   {
     if (pin == 19) {
       // get button state
-      if (g_pTestFramework->isButtonPressed(0)) {
+      if (Vortex::isButtonPressed(0)) {
         return LOW;
       }
       return HIGH;
     }
     if (pin == 20) {
       // get button state
-      if (g_pTestFramework->isButtonPressed(1)) {
+      if (Vortex::isButtonPressed(1)) {
         return LOW;
       }
       return HIGH;
@@ -415,7 +413,7 @@ TestFrameworkCallbacks *g_pCallbacks = nullptr;
 
 TestFramework::TestFramework() :
   m_loopThread(nullptr),
-  m_gloveBMP(nullptr),
+  m_orbitBMP(nullptr),
   m_hIcon(nullptr),
   m_brightness(255),
   m_ledList(nullptr),
@@ -461,22 +459,22 @@ bool TestFramework::init(HINSTANCE hInstance)
   }
 
   // load the main window
-  m_window.init(m_hInst, "Vortex Glove Emulator", BACK_COL, width, height, this);
+  m_window.init(m_hInst, "Vortex Orbit Emulator", BACK_COL, width, height, this);
 
   // load the icon and background image
   m_hIcon = LoadIcon(m_hInst, MAKEINTRESOURCE(IDI_ICON1));
   // set the icon
   SendMessage(m_window.hwnd(), WM_SETICON, ICON_BIG, (LPARAM)m_hIcon);
-  m_gloveBMP = (HBITMAP)LoadImage(m_hInst, MAKEINTRESOURCE(IDB_BITMAP1), IMAGE_BITMAP, 0, 0, 0);
+  m_orbitBMP = (HBITMAP)LoadImage(m_hInst, MAKEINTRESOURCE(IDB_BITMAP1), IMAGE_BITMAP, 0, 0, 0);
 
-  m_gloveBox.init(m_hInst, m_window, "Glove", BACK_COL, 250, 320, 86, 30, 0, 0, nullptr);
-  m_gloveBox.setDoCapture(false);
-  m_gloveBox.setDrawHLine(false);
-  m_gloveBox.setDrawVLine(false);
-  m_gloveBox.setDrawCircle(false);
-  m_gloveBox.setBackground(m_gloveBMP);
+  m_orbitBox.init(m_hInst, m_window, "Orbit", BACK_COL, 500, 250, 66, 30, 0, 0, nullptr);
+  m_orbitBox.setDoCapture(false);
+  m_orbitBox.setDrawHLine(false);
+  m_orbitBox.setDrawVLine(false);
+  m_orbitBox.setDrawCircle(false);
+  m_orbitBox.setBackground(m_orbitBMP);
   // disable the glove so it doesn't steal clicks from the leds
-  m_gloveBox.setEnabled(false);
+  m_orbitBox.setEnabled(false);
 
   m_patternStrip.init(m_hInst, m_window, "Pattern Strip", BACK_COL, width, patternStripHeight, -2, 375, 2, 11234, patternStripSelectCallback); 
   m_patternStrip.setDrawHLine(false);
@@ -505,7 +503,8 @@ bool TestFramework::init(HINSTANCE hInstance)
   m_tickrateSlider.setSelection(0, 240);
   Vortex::setTickrate(150);
 
-  m_button.init(m_hInst, m_window, "Click", BACK_COL, 48, 24, 198, 312, CLICK_BUTTON_ID, buttonClickCallback);
+  m_button.init(m_hInst, m_window, "Click", BACK_COL, 48, 24, 290, 308, CLICK_BUTTON_ID, buttonClickCallback);
+  m_button2.init(m_hInst, m_window, "Click2", BACK_COL, 48, 24, 290, 336, CLICK_BUTTON_ID + 1, buttonClickCallback);
   m_IRLaunchButton.init(m_hInst, m_window, "Connect IR", BACK_COL, 80, 24, 350, 340, LAUNCH_IR_ID, launchIRCallback);
   m_IRLaunchButton.setVisible(false);
 
@@ -587,10 +586,11 @@ bool TestFramework::init(HINSTANCE hInstance)
   }
 
   for (uint32_t i = 0; i < LED_COUNT; ++i) {
+    // super lazy reposition of + 67 because I don't want to go 
+    // adjust all the values in the above statements
     m_leds[i].init(m_hInst, m_window, to_string(0),
-      BACK_COL, 30, 30, m_ledPos[i].left, m_ledPos[i].top, LED_CIRCLE_ID + i, ledClickCallback);
+      BACK_COL, 21, 21, m_ledPos[i].left + 67, m_ledPos[i].top, LED_CIRCLE_ID + i, ledClickCallback);
   }
-
     
   // create an accelerator table for dispatching hotkeys as WM_COMMANDS
   // for specific menu IDs
@@ -624,14 +624,15 @@ void TestFramework::cleanup()
 
 void TestFramework::buttonClick(VButton *button, VButton::ButtonEvent type)
 {
+  uint32_t buttonID = ((uint32_t)GetMenu(button->hwnd())) - CLICK_BUTTON_ID;
   switch (type) {
   case VButton::ButtonEvent::BUTTON_EVENT_CLICK:
     break;
   case VButton::ButtonEvent::BUTTON_EVENT_PRESS:
-    Vortex::pressButton();
+    Vortex::pressButton(buttonID);
     break;
   case VButton::ButtonEvent::BUTTON_EVENT_RELEASE:
-    Vortex::releaseButton();
+    Vortex::releaseButton(buttonID);
     break;
   default:
     break;
@@ -669,6 +670,8 @@ void TestFramework::setTickrate(uint32_t x, uint32_t y, VSelectBox::SelectEvent 
   // height of the tickrate slider
   float rate = (float)y / (float)tickrateSliderHeight;
   uint32_t newTickrate = 1000 - (uint32_t)(rate * 1000);
+  if (!newTickrate) {
+  }
   if (newTickrate < 120) {
     newTickrate = 120;
   }
@@ -727,34 +730,6 @@ void TestFramework::show()
       m_leds[i].setColor(raw);
     }
   }
-}
-
-void TestFramework::pressButton(uint8_t button)
-{
-  if (button == 0) {
-    m_buttonPressed = true;
-  } else if (button == 1) {
-    m_buttonPressed2 = true;
-  }
-}
-
-void TestFramework::releaseButton(uint8_t button)
-{
-  if (button == 0) {
-    m_buttonPressed = false;
-  } else if (button == 1) {
-    m_buttonPressed2 = false;
-  }
-}
-
-bool TestFramework::isButtonPressed(uint8_t button) const
-{
-  if (button == 0) {
-    return m_buttonPressed;
-  } else if (button == 1) {
-    return m_buttonPressed2;
-  }
-  return false;
 }
 
 void TestFramework::pause()
