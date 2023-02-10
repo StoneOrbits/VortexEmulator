@@ -413,7 +413,7 @@ TestFrameworkCallbacks *g_pCallbacks = nullptr;
 
 TestFramework::TestFramework() :
   m_window(),
-  m_gloveBox(),
+  m_orbitBox(),
   m_patternStrip(),
   m_tickrateSlider(),
   m_button(),
@@ -423,7 +423,7 @@ TestFramework::TestFramework() :
   m_pauseMutex(nullptr),
   m_hInst(nullptr),
   m_consoleHandle(nullptr),
-  m_gloveBMP(nullptr),
+  m_orbitBMP(nullptr),
   m_hIcon(nullptr),
   m_loopThread(nullptr),
   m_tickrate(150),
