@@ -126,6 +126,8 @@ private:
   HICON m_hIcon;
   HANDLE m_loopThread;
 
+  volatile uint32_t m_tickrate;
+
   int m_brightness;
 
   RGBColor *m_ledList;
@@ -137,7 +139,6 @@ private:
   bool m_initialized;
   bool m_buttonPressed;
   bool m_keepGoing;
-  bool m_freezeStrip;
 
   volatile bool m_isPaused;
 
