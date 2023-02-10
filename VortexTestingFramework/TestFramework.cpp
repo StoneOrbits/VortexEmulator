@@ -98,13 +98,6 @@ bool TestFramework::init(HINSTANCE hInstance)
   DeleteFile("VortexEditor.dat");
 #endif
 
-  if (!IRSimulator::init()) {
-    return false;
-  }
-  if (!EditorPipe::init()) {
-    return false;
-  }
-
   // create the pause mutex
   m_pauseMutex = CreateMutex(NULL, false, NULL);
   if (!m_pauseMutex) {
@@ -216,6 +209,16 @@ bool TestFramework::init(HINSTANCE hInstance)
   m_accelTable = CreateAcceleratorTable(accelerators, sizeof(accelerators) / sizeof(accelerators[0]));
   if (!m_accelTable) {
     // error!
+  }
+
+  if (!IRSimulator::init()) {
+    printf("IRSim failed to init\n");
+  }
+
+  if (!EditorPipe::init()) {
+    if (!IRSimulator::isConnected()) {
+      printf("Pipe failed to init\n");
+    }
   }
 
   // launch the 'loop' thread
