@@ -539,9 +539,16 @@ void TestFramework::setWindowPos(uint32_t x, uint32_t y)
 // called when engine reads digital pins, use this to feed button presses to the engine
 long TestFramework::TestFrameworkCallbacks::checkPinHook(uint32_t pin)
 {
-  if (pin == 1) {
+  if (pin == 19) {
     // get button state
-    if (Vortex::isButtonPressed()) {
+    if (Vortex::isButtonPressed(0)) {
+      return LOW;
+    }
+    return HIGH;
+  }
+  if (pin == 20) {
+    // get button state
+    if (Vortex::isButtonPressed(1)) {
       return LOW;
     }
     return HIGH;
