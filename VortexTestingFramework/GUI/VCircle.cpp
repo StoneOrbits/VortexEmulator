@@ -12,7 +12,6 @@
 using namespace std;
 
 WNDCLASS VCircle::m_wc = {0};
-HBITMAP VCircle::hMask = nullptr;
 
 VCircle::VCircle() :
   VWindow(),
@@ -74,9 +73,6 @@ void VCircle::init(HINSTANCE hInstance, VWindow &parent, const string &title,
   HRGN hRegion = CreateEllipticRgn(1, 1, m_width-1, m_height - 1);
   SetWindowRgn(m_hwnd, hRegion, true);
   DeleteObject(hRegion);
-
-  // generate the mask
-  hMask = genMask(m_width, m_height);
 }
 
 void VCircle::cleanup()
@@ -98,30 +94,6 @@ static HBRUSH getBrushCol(DWORD rgbcol)
   }
   br = m_brushmap[col];
   return br;
-}
-
-HBITMAP VCircle::genMask(uint32_t width, uint32_t height)
-{
-  COLORREF *cols = new COLORREF[width * height];
-  if (!cols) {
-    return nullptr;
-  }
-  // the real x and y are the internal coords inside the border where as
-  // m_width and m_height contain the border size in them
-  for (uint32_t x = 0; x < width; ++x) {
-    RGBColor rgbCol;
-    for (uint32_t y = 0; y < height; ++y) {
-      float xd = (float)x - (width / 2);
-      float xy = (float)y - (height / 2);
-      float dist = sqrt((xd * xd) + (xd * xd));
-      uint8_t val = (uint8_t)dist;
-      COLORREF col = val << 16 | val << 8 | val;
-      cols[(y * width) + x] = 0;
-    }
-  }
-  HBITMAP bitmap = CreateBitmap(width, height, 1, 32, cols);
-  delete[] cols;
-  return bitmap;
 }
 
 void VCircle::paint()

@@ -34,9 +34,6 @@ public:
   uint32_t getColor() const;
 
 private:
-  static HBITMAP genMask(uint32_t width, uint32_t height);
-  static HBITMAP hMask;
-
   static LRESULT CALLBACK window_proc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
   static void registerWindowClass(HINSTANCE hInstance, COLORREF backcol);
   static WNDCLASS m_wc;
