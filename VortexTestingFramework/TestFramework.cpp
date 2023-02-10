@@ -807,7 +807,7 @@ bool TestFramework::handlePatternChange(bool force)
   }
   targetPat->bind(LED_FIRST);
   // clear and re-generate the pattern strip
-  for (int x = 0; x < patternStripWidth; ++x) {
+  for (uint32_t x = 0; x < patternStripWidth; ++x) {
     // run the pattern like normal
     targetPat->play();
     // tick the virtual time forward so that next play()
@@ -816,7 +816,7 @@ bool TestFramework::handlePatternChange(bool force)
     // sample the color for the selected LED
     COLORREF col = Leds::getLed(LED_FIRST).raw();
     // fill the entire column of the bitmap with this color
-    for (int y = 0; y < patternStripHeight; ++y) {
+    for (uint32_t y = 0; y < patternStripHeight; ++y) {
       cols[(y * patternStripWidth) + x] = col;
     }
   }
