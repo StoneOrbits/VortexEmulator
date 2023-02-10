@@ -34,24 +34,12 @@ public:
   void run();
   void cleanup();
 
-  // arduino setup/loop
-  void arduino_setup();
-  void arduino_loop();
-
   // handlers for the arduino routines
   void show();
-
-  // control the button
-  void pressButton();
-  void releaseButton();
 
   // whether the button is pressed
   bool isButtonPressed() const;
 
-  // called by engine Buttons::check right after buttons are checked
-  void injectButtons();
-
-  void handleLetter(char ch);
   bool stillRunning() const;
 
   static void printlog(const char *file, const char *func, int line, const char *msg, va_list list);
