@@ -38,36 +38,12 @@ using namespace std;
 
 static EM_BOOL key_callback(int eventType, const EmscriptenKeyboardEvent *e, void *userData)
 {
-  switch (e->key[0]) {
-  case 'a':
-    if (eventType == EMSCRIPTEN_EVENT_KEYDOWN) {
-      Vortex::shortClick();
-    }
-    break;
-  case 's':
-    if (eventType == EMSCRIPTEN_EVENT_KEYDOWN) {
-      Vortex::longClick();
-    }
-    break;
-  case 'd':
-    if (eventType == EMSCRIPTEN_EVENT_KEYDOWN) {
-      Vortex::menuEnterClick();
-    }
-    break;
-  case 'f':
+  if (e->key[0] == ' ') {
     if (eventType == EMSCRIPTEN_EVENT_KEYDOWN) {
       Vortex::pressButton();
     } else if (eventType == EMSCRIPTEN_EVENT_KEYUP) {
       Vortex::releaseButton();
     }
-    break;
-  case 'q':
-    if (eventType == EMSCRIPTEN_EVENT_KEYDOWN) {
-      Vortex::quitClick();
-    }
-    break;
-  default:
-    break;
   }
   return 0;
 }
