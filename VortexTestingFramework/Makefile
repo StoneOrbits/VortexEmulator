@@ -5,24 +5,39 @@
 .PHONY: all tests clean wasm
 
 # compiler tool definitions
+ifdef WASM
+CC=em++
+AR=emar cru
+else
 CC=g++
+AR=ar cru
+endif
+
 MAKE=make
 RM=rm -rf
-AR=ar cru
 RANLIB=ranlib
 
-CFLAGS=-g -O2 -Wall
+CFLAGS=-O2 -Wall
 
 # compiler defines
 DEFINES=\
-	-D LINUX_FRAMEWORK \
-	-D TEST_FRAMEWORK \
 
 # compiler include paths
 INCLUDES=\
+	-I ./VortexEngine/VortexEngine/VortexLib/EngineDependencies/ \
+	-I ./VortexEngine/VortexEngine/VortexLib/ \
 	-I ./VortexEngine/VortexEngine/src/ \
 	-I ./EngineDependencies/ \
 	-I ./ \
+
+# output filename
+OUTTARGET=vortex
+
+ifdef WASM
+OUTTARGET=vortex.html
+DEFINES += -D WASM
+LIBS += --bind
+endif
 
 # only set them if they're not empty to prevent unnecessary whitespace
 ifneq ($(DEFINES),)
@@ -41,6 +56,7 @@ endif
 # You should NOT need to add a make target to build
 # this library if you have added it correctly.
 LLIBS=\
+	./VortexEngine/VortexEngine/vortex.a \
 
 # STANDARD libraries to link with (-l is fine here)
 # MUST have LLIBS BEFORE the standard libraries
@@ -52,10 +68,6 @@ LIBS=\
 SRC=\
     ./LinuxMain.cpp \
     ./TestFrameworkLinux.cpp \
-    ./EngineDependencies/Arduino.cpp \
-    ./EngineDependencies/FastLED.cpp \
-    ./EngineDependencies/FlashStorage.cpp \
-    $(shell find ./VortexEngine/VortexEngine/src/ -type f -name '*.cpp') \
 
 # object files are source files with .c replaced with .o
 OBJS=\
@@ -77,7 +89,7 @@ TESTS=\
 
 # target files
 TARGETS=\
-    vortex \
+    $(OUTTARGET) \
 
 # Default target for 'make' command
 all: $(TARGETS)
@@ -86,17 +98,12 @@ all: $(TARGETS)
 tests: $(TESTS)
 
 # target for detect_gibberish
-vortex: $(DEPS)
+$(OUTTARGET): $(DEPS)
 	$(CC) $(CFLAGS) $^ -o $@ $(LIBS)
 
-vortex.html: $(DEPS)
-	$(CC) $(CFLAGS) $^ -o $@ $(LIBS)
-
-wasm: CC=em++
-wasm: DEFINES += -D WASM
-wasm: INCLUDES += -I ../../emcc/emsdk/upstream/emscripten/cache/sysroot/include/
-wasm: $(DEPS) vortex.html
-	tar -zcvf vortex.tar.gz vortex.html vortex.js vortex.wasm
+# force sub-build of wasm
+wasm: FORCE
+	env WASM=1 TESTFRAMEWORK=1 $(MAKE)
 
 valgrind: vortex
 	rm -f valg.out
@@ -118,12 +125,17 @@ valgrind: vortex
 # <directory>/<library.a>
 # this expects that the makefile in <directory> has a
 # make target named <library>
-%.a:
-	$(MAKE) -C $(dir $@) $(notdir $@)
+%.a: FORCE
+	# run make with VortexTestingFramework=1 in the environment
+	env TESTFRAMEWORK=1 $(MAKE) -C $(dir $@) $(notdir $@)
+
+# Empty rule that forces %.a to run all the time
+FORCE:
 
 # generic clean target
 clean:
-	@$(RM) $(DFILES) $(OBJS) $(TARGETS) $(TESTS) *.txt FlashStorage.flash
+	@$(RM) $(DFILES) $(OBJS) $(TARGETS) $(TESTS) vortex.html vortex.js vortex.wasm *.txt FlashStorage.flash
+	$(MAKE) -C ./VortexEngine/VortexEngine clean
 
 # Now include our target dependency files
 # the hyphen means ignore non-existent files

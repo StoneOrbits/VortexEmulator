@@ -86,13 +86,15 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions);TEST_FRAMEWORK</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions);</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)\EngineDependencies\;$(ProjectDir)\VortexEngine\VortexEngine\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)\EngineDependencies\;$(ProjectDir)\VortexEngine\VortexEngine\src;$(ProjectDir)\VortexEngine\VortexEngine\VortexLib;$(ProjectDir)\VortexEngine\VortexEngine\VortexLib\EngineDependencies;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>VortexEngine.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -101,9 +103,9 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions);TEST_FRAMEWORK</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions);</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)\EngineDependencies\;$(ProjectDir)\VortexEngine\VortexEngine\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)\EngineDependencies\;$(ProjectDir)\VortexEngine\VortexEngine\src;$(ProjectDir)\VortexEngine\VortexEngine\VortexLib;$(ProjectDir)\VortexEngine\VortexEngine\VortexLib\EngineDependencies;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -111,19 +113,23 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>VortexEngine.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions);TEST_FRAMEWORK</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions);</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)\EngineDependencies\;$(ProjectDir)\VortexEngine\VortexEngine\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)\EngineDependencies\;$(ProjectDir)\VortexEngine\VortexEngine\src;$(ProjectDir)\VortexEngine\VortexEngine\VortexLib;$(ProjectDir)\VortexEngine\VortexEngine\VortexLib\EngineDependencies;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>VortexEngine.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -132,9 +138,9 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions);TEST_FRAMEWORK</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions);</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)\EngineDependencies\;$(ProjectDir)\VortexEngine\VortexEngine\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)\EngineDependencies\;$(ProjectDir)\VortexEngine\VortexEngine\src;$(ProjectDir)\VortexEngine\VortexEngine\VortexLib;$(ProjectDir)\VortexEngine\VortexEngine\VortexLib\EngineDependencies;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -142,175 +148,31 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>VortexEngine.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="EngineDependencies\Arduino.cpp" />
-    <ClCompile Include="EngineDependencies\ArduinoSerial.cpp" />
-    <ClCompile Include="EngineDependencies\FastLED.cpp" />
-    <ClCompile Include="EngineDependencies\FlashStorage.cpp" />
-    <ClCompile Include="VortexEngine\VortexEngine\src\Infrared\IRReceiver.cpp" />
+    <ClCompile Include="EditorPipe.cpp" />
+    <ClCompile Include="GUI\VButton.cpp" />
+    <ClCompile Include="GUI\VLabel.cpp" />
+    <ClCompile Include="GUI\VSelectBox.cpp" />
+    <ClCompile Include="GUI\VWindow.cpp" />
+    <ClCompile Include="IRSimulator.cpp" />
     <ClCompile Include="TestFramework.cpp" />
-    <ClCompile Include="VortexEngine\VortexEngine\src\Infrared\IRSender.cpp" />
-    <ClCompile Include="VortexEngine\VortexEngine\src\Leds\LedStash.cpp" />
-    <ClCompile Include="VortexEngine\VortexEngine\src\Menus\MenuList\EditorConnection.cpp" />
-    <ClCompile Include="VortexEngine\VortexEngine\src\Modes\DefaultModes.cpp" />
-    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\MateriaPattern.cpp" />
-    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\Sequencer\ChaserPattern.cpp" />
-    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\PatternArgs.cpp" />
-    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Single\DashDopsPattern.cpp" />
-    <ClCompile Include="VortexEngine\VortexEngine\src\Serial\BitStream.cpp" />
-    <ClCompile Include="VortexEngine\VortexEngine\src\Buttons\Button.cpp" />
-    <ClCompile Include="VortexEngine\VortexEngine\src\Buttons\Buttons.cpp" />
-    <ClCompile Include="VortexEngine\VortexEngine\src\Colors\Colorset.cpp" />
-    <ClCompile Include="VortexEngine\VortexEngine\src\Colors\ColorTypes.cpp" />
-    <ClCompile Include="VortexEngine\VortexEngine\src\Leds\Leds.cpp" />
-    <ClCompile Include="VortexEngine\VortexEngine\src\Log\Log.cpp" />
-    <ClCompile Include="VortexEngine\VortexEngine\src\Memory\Memory.cpp" />
-    <ClCompile Include="VortexEngine\VortexEngine\src\Menus\Menus.cpp" />
-    <ClCompile Include="VortexEngine\VortexEngine\src\Menus\MenuList\ColorSelect.cpp" />
-    <ClCompile Include="VortexEngine\VortexEngine\src\Menus\MenuList\FactoryReset.cpp" />
-    <ClCompile Include="VortexEngine\VortexEngine\src\Menus\MenuList\GlobalBrightness.cpp" />
-    <ClCompile Include="VortexEngine\VortexEngine\src\Menus\Menu.cpp" />
-    <ClCompile Include="VortexEngine\VortexEngine\src\Menus\MenuList\ModeSharing.cpp" />
-    <ClCompile Include="VortexEngine\VortexEngine\src\Menus\MenuList\PatternSelect.cpp" />
-    <ClCompile Include="VortexEngine\VortexEngine\src\Menus\MenuList\Randomizer.cpp" />
-    <ClCompile Include="VortexEngine\VortexEngine\src\Modes\Mode.cpp" />
-    <ClCompile Include="VortexEngine\VortexEngine\src\Modes\Modes.cpp" />
-    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\PatternBuilder.cpp" />
-    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\BackStrobePattern.cpp" />
-    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\BlinkStepPattern.cpp" />
-    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\BouncePattern.cpp" />
-    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\CrossDopsPattern.cpp" />
-    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\DoubleStrobePattern.cpp" />
-    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\DripMorphPattern.cpp" />
-    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\DripPattern.cpp" />
-    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\FlowersPattern.cpp" />
-    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\HueShiftPattern.cpp" />
-    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\HybridPattern.cpp" />
-    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\ImpactPattern.cpp" />
-    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\JestPattern.cpp" />
-    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\LighthousePattern.cpp" />
-    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\MeteorPattern.cpp" />
-    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\MultiLedPattern.cpp" />
-    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\PulsishPattern.cpp" />
-    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\RabbitPattern.cpp" />
-    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\Sequencer\SequencedPattern.cpp" />
-    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\SnowballPattern.cpp" />
-    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\SparkleTracePattern.cpp" />
-    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\SplitStrobiePattern.cpp" />
-    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\TheaterChasePattern.cpp" />
-    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\TipTopPattern.cpp" />
-    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\FillPattern.cpp" />
-    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\VortexWipePattern.cpp" />
-    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\WarpPattern.cpp" />
-    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\WarpWormPattern.cpp" />
-    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\ZigzagPattern.cpp" />
-    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Pattern.cpp" />
-    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Single\AdvancedPattern.cpp" />
-    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Single\BasicPattern.cpp" />
-    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Single\BlendPattern.cpp" />
-    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Single\BracketsPattern.cpp" />
-    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Single\ComplementaryBlendPattern.cpp" />
-    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Single\SingleLedPattern.cpp" />
-    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Single\SolidPattern.cpp" />
-    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Single\TracerPattern.cpp" />
-    <ClCompile Include="VortexEngine\VortexEngine\src\Patterns\Multi\Sequencer\Sequence.cpp" />
-    <ClCompile Include="VortexEngine\VortexEngine\src\Serial\ByteStream.cpp" />
-    <ClCompile Include="VortexEngine\VortexEngine\src\Serial\Compression.cpp" />
-    <ClCompile Include="VortexEngine\VortexEngine\src\Serial\Serial.cpp" />
-    <ClCompile Include="VortexEngine\VortexEngine\src\Storage\Storage.cpp" />
-    <ClCompile Include="VortexEngine\VortexEngine\src\Time\TimeControl.cpp" />
-    <ClCompile Include="VortexEngine\VortexEngine\src\Time\Timer.cpp" />
-    <ClCompile Include="VortexEngine\VortexEngine\src\VortexEngine.cpp" />
+    <ClCompile Include="GUI\VCircle.cpp" />
     <ClCompile Include="WinMain.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="EngineDependencies\Adafruit_Dotstar.h" />
-    <ClInclude Include="EngineDependencies\Arduino.h" />
-    <ClInclude Include="EngineDependencies\ArduinoSerial.h" />
-    <ClInclude Include="EngineDependencies\FastLED.h" />
+    <ClInclude Include="EditorPipe.h" />
+    <ClInclude Include="GUI\VButton.h" />
+    <ClInclude Include="GUI\VLabel.h" />
+    <ClInclude Include="GUI\VSelectBox.h" />
+    <ClInclude Include="GUI\VWindow.h" />
+    <ClInclude Include="IRSimulator.h" />
     <ClInclude Include="resource.h" />
-    <ClInclude Include="VortexEngine\VortexEngine\src\Infrared\IRReceiver.h" />
     <ClInclude Include="TestFramework.h" />
-    <ClInclude Include="VortexEngine\VortexEngine\src\Infrared\IRConfig.h" />
-    <ClInclude Include="VortexEngine\VortexEngine\src\Infrared\IRSender.h" />
-    <ClInclude Include="VortexEngine\VortexEngine\src\Leds\LedStash.h" />
-    <ClInclude Include="VortexEngine\VortexEngine\src\Leds\LedTypes.h" />
-    <ClInclude Include="VortexEngine\VortexEngine\src\Menus\MenuList\EditorConnection.h" />
-    <ClInclude Include="VortexEngine\VortexEngine\src\Modes\DefaultModes.h" />
-    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\MateriaPattern.h" />
-    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\Sequencer\ChaserPattern.h" />
-    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\PatternArgs.h" />
-    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Single\DashDopsPattern.h" />
-    <ClInclude Include="VortexEngine\VortexEngine\src\Serial\BitStream.h" />
-    <ClInclude Include="VortexEngine\VortexEngine\src\Buttons\Button.h" />
-    <ClInclude Include="VortexEngine\VortexEngine\src\Buttons\Buttons.h" />
-    <ClInclude Include="VortexEngine\VortexEngine\src\Colors\Colorset.h" />
-    <ClInclude Include="VortexEngine\VortexEngine\src\Colors\ColorTypes.h" />
-    <ClInclude Include="VortexEngine\VortexEngine\src\Leds\Leds.h" />
-    <ClInclude Include="VortexEngine\VortexEngine\src\Log\Log.h" />
-    <ClInclude Include="VortexEngine\VortexEngine\src\Memory\Memory.h" />
-    <ClInclude Include="VortexEngine\VortexEngine\src\Menus\Menus.h" />
-    <ClInclude Include="VortexEngine\VortexEngine\src\Menus\MenuList\ColorSelect.h" />
-    <ClInclude Include="VortexEngine\VortexEngine\src\Menus\MenuList\FactoryReset.h" />
-    <ClInclude Include="VortexEngine\VortexEngine\src\Menus\MenuList\GlobalBrightness.h" />
-    <ClInclude Include="VortexEngine\VortexEngine\src\Menus\Menu.h" />
-    <ClInclude Include="VortexEngine\VortexEngine\src\Menus\MenuList\ModeSharing.h" />
-    <ClInclude Include="VortexEngine\VortexEngine\src\Menus\MenuList\PatternSelect.h" />
-    <ClInclude Include="VortexEngine\VortexEngine\src\Menus\MenuList\Randomizer.h" />
-    <ClInclude Include="VortexEngine\VortexEngine\src\Modes\Mode.h" />
-    <ClInclude Include="VortexEngine\VortexEngine\src\Modes\Modes.h" />
-    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\PatternBuilder.h" />
-    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Patterns.h" />
-    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\BackStrobePattern.h" />
-    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\BlinkStepPattern.h" />
-    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\BouncePattern.h" />
-    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\CrossDopsPattern.h" />
-    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\DoubleStrobePattern.h" />
-    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\DripMorphPattern.h" />
-    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\DripPattern.h" />
-    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\FlowersPattern.h" />
-    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\HueShiftPattern.h" />
-    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\HybridPattern.h" />
-    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\ImpactPattern.h" />
-    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\JestPattern.h" />
-    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\LighthousePattern.h" />
-    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\MeteorPattern.h" />
-    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\MultiLedPattern.h" />
-    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\PulsishPattern.h" />
-    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\RabbitPattern.h" />
-    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\Sequencer\SequencedPattern.h" />
-    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\SnowballPattern.h" />
-    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\SparkleTracePattern.h" />
-    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\SplitStrobiePattern.h" />
-    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\TheaterChasePattern.h" />
-    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\TipTopPattern.h" />
-    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\FillPattern.h" />
-    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\VortexWipePattern.h" />
-    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\WarpPattern.h" />
-    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\WarpWormPattern.h" />
-    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\ZigzagPattern.h" />
-    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Pattern.h" />
-    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Single\AdvancedPattern.h" />
-    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Single\BasicPattern.h" />
-    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Single\BlendPattern.h" />
-    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Single\BracketsPattern.h" />
-    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Single\ComplementaryBlendPattern.h" />
-    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Single\SingleLedPattern.h" />
-    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Single\SolidPattern.h" />
-    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Single\TracerPattern.h" />
-    <ClInclude Include="VortexEngine\VortexEngine\src\Patterns\Multi\Sequencer\Sequence.h" />
-    <ClInclude Include="VortexEngine\VortexEngine\src\Serial\ByteStream.h" />
-    <ClInclude Include="VortexEngine\VortexEngine\src\Serial\Compression.h" />
-    <ClInclude Include="VortexEngine\VortexEngine\src\Serial\Serial.h" />
-    <ClInclude Include="VortexEngine\VortexEngine\src\Storage\Storage.h" />
-    <ClInclude Include="VortexEngine\VortexEngine\src\Time\TimeControl.h" />
-    <ClInclude Include="VortexEngine\VortexEngine\src\Time\Timer.h" />
-    <ClInclude Include="VortexEngine\VortexEngine\src\Time\Timings.h" />
-    <ClInclude Include="VortexEngine\VortexEngine\src\VortexConfig.h" />
-    <ClInclude Include="VortexEngine\VortexEngine\src\VortexEngine.h" />
-    <ClInclude Include="EngineDependencies\FlashStorage.h" />
+    <ClInclude Include="GUI\VCircle.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="VortexTestingFramework.rc" />

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "VortexEngine.h"
+#include "VortexLib.h"
 
 #include "Patterns/Patterns.h"
 #include "Colors/ColorTypes.h"
@@ -34,33 +34,34 @@ public:
   void run();
   void cleanup();
 
-  // arduino setup/loop
-  void arduino_setup();
-  void arduino_loop();
-
   // handlers for the arduino routines
   void show();
-
-  // control the button
-  void pressButton();
-  void releaseButton();
 
   // whether the button is pressed
   bool isButtonPressed() const;
 
-  // called by engine Buttons::check right after buttons are checked
-  void injectButtons();
-
-  void handleLetter(char ch);
+  // whether the test framework is still running
   bool stillRunning() const;
+
+  // setup the array of leds
+  void installLeds(CRGB *leds, uint32_t count);
 
   static void printlog(const char *file, const char *func, int line, const char *msg, va_list list);
 
 private:
+  class TestFrameworkCallbacks : public VortexCallbacks
+  {
+  public:
+    TestFrameworkCallbacks() {}
+    virtual ~TestFrameworkCallbacks() {}
+    virtual long checkPinHook(uint32_t pin) override;
+    virtual void ledsInit(void *cl, int count) override;
+    virtual void ledsShow() override;
+  private:
+    // receive a message from client
+  };
+
   // these are in no particular order
-  //HANDLE m_loopThread;
-  //FILE *m_logHandle;
-  //RECT m_ledPos[LED_COUNT];
   RGBColor *m_ledList;
   uint32_t m_numLeds;
   bool m_initialized;
