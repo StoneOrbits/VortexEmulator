@@ -70,6 +70,8 @@ private:
   class TestFrameworkCallbacks : public VortexCallbacks
   {
   public:
+    TestFrameworkCallbacks() {}
+    virtual ~TestFrameworkCallbacks() {}
     virtual long checkPinHook(uint32_t pin) override;
     virtual void infraredWrite(bool mark, uint32_t amount) override;
     virtual bool serialCheck() override;

@@ -228,6 +228,8 @@ bool TestFramework::init(HINSTANCE hInstance)
     return false;
   }
 
+  m_initialized = true;
+
   return true;
 }
 
@@ -312,8 +314,6 @@ void TestFramework::installLeds(CRGB *leds, uint32_t count)
   if (!m_lastLedColor) {
     return;
   }
-
-  m_initialized = true;
 }
 
 void TestFramework::setBrightness(int brightness)
