@@ -405,6 +405,8 @@ bool TestFramework::handlePatternChange(bool force)
   Time::endSimulation();
   // restore original color on the target led
   m_ledList[m_curSelectedLed] = backupCol;
+  // redraw this led because it was written to to generate pattern strip
+  m_leds[m_curSelectedLed].redraw();
   // update the background of the pattern strip
   m_patternStrip.setBackground(bitmap);
   m_patternStrip.redraw();
