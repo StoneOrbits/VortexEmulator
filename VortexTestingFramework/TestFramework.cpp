@@ -24,13 +24,6 @@
 #include "Modes/Modes.h"
 #include "Modes/Mode.h"
 
-#include "Menus/MenuList/EditorConnection.h"
-#include "Menus/MenuList/PatternSelect.h"
-#include "Menus/MenuList/ColorSelect.h"
-#include "Menus/MenuList/Randomizer.h"
-
-#include "VortexEngine.h"
-
 #include "patterns/Pattern.h"
 #include "patterns/single/SingleLedPattern.h"
 
