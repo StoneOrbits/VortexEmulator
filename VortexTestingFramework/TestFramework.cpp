@@ -374,7 +374,7 @@ bool TestFramework::handlePatternChange(bool force)
     return false;
   }
   // backup the selected led
-  RGBColor backupCol = m_ledList[m_curSelectedLed];
+  RGBColor backupCol = m_ledList[LED_FIRST];
   // begin the time simulation so we can tick forward
   Time::startSimulation();
   // the actual strip is twice the width of the window to allow scrolling
