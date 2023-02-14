@@ -321,7 +321,7 @@ void TestFramework::patternStripSelect(uint32_t x, uint32_t y, VSelectBox::Selec
 
 void TestFramework::ledClick(VWindow *window)
 {
-  uint32_t led = LED_LAST - ((uint32_t)GetMenu(window->hwnd()) - LED_CIRCLE_ID);
+  uint32_t led = ((uint32_t)GetMenu(window->hwnd()) - LED_CIRCLE_ID);
   printf("Clicked led %u\n", led);
   m_curSelectedLed = (LedPos)led;
   handlePatternChange(true);
