@@ -273,6 +273,8 @@ bool TestFramework::init(HINSTANCE hInstance)
     return false;
   }
 
+  m_initialized = true;
+
   return true;
 }
 
@@ -358,8 +360,6 @@ void TestFramework::installLeds(CRGB *leds, uint32_t count)
   if (!m_lastLedColor) {
     return;
   }
-
-  m_initialized = true;
 }
 
 void TestFramework::setBrightness(int brightness)
@@ -409,8 +409,8 @@ bool TestFramework::handlePatternChange(bool force)
   m_curMode = *targetMode;
   m_curMode.init();
   // the realpos is used to target the actual index of pattern to run
-  LedPos realPos = (LedPos)(LED_LAST - m_curSelectedLed);
-  if (isMultiLedPatternID(m_curMode.getPatternID())) {
+  LedPos realPos = (LedPos)(m_curSelectedLed);
+  if (isMultiLedPatternID(m_curMode.getPatternID(realPos))) {
     // if it's multi led then the real pos is just the first
     realPos = (LedPos)(LED_FIRST);
   }
@@ -429,7 +429,6 @@ bool TestFramework::handlePatternChange(bool force)
   if (!cols) {
     return false;
   }
-  targetPat->bind(LED_FIRST);
   // clear and re-generate the pattern strip
   for (uint32_t x = 0; x < patternStripWidth; ++x) {
     // run the pattern like normal
@@ -438,7 +437,7 @@ bool TestFramework::handlePatternChange(bool force)
     // the engine will think a tick has passed
     Time::tickSimulation();
     // sample the color for the selected LED
-    COLORREF col = Leds::getLed(LED_FIRST).raw();
+    COLORREF col = Leds::getLed(m_curSelectedLed).raw();
     // fill the entire column of the bitmap with this color
     for (uint32_t y = 0; y < patternStripHeight; ++y) {
       cols[(y * patternStripWidth) + x] = col;
@@ -451,7 +450,9 @@ bool TestFramework::handlePatternChange(bool force)
   // back to where it was before starting the sim
   Time::endSimulation();
   // restore original color on the target led
-  m_ledList[LED_FIRST] = backupCol;
+  m_ledList[m_curSelectedLed] = backupCol;
+  // redraw this led because it was written to to generate pattern strip
+  m_leds[m_curSelectedLed].redraw();
   // update the background of the pattern strip
   m_patternStrip.setBackground(bitmap);
   m_patternStrip.redraw();

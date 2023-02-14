@@ -38,36 +38,12 @@ using namespace std;
 
 static EM_BOOL key_callback(int eventType, const EmscriptenKeyboardEvent *e, void *userData)
 {
-  switch (e->key[0]) {
-  case 'a':
-    if (eventType == EMSCRIPTEN_EVENT_KEYDOWN) {
-      Vortex::shortClick();
-    }
-    break;
-  case 's':
-    if (eventType == EMSCRIPTEN_EVENT_KEYDOWN) {
-      Vortex::longClick();
-    }
-    break;
-  case 'd':
-    if (eventType == EMSCRIPTEN_EVENT_KEYDOWN) {
-      Vortex::menuEnterClick();
-    }
-    break;
-  case 'f':
+  if (e->key[0] == ' ') {
     if (eventType == EMSCRIPTEN_EVENT_KEYDOWN) {
       Vortex::pressButton();
     } else if (eventType == EMSCRIPTEN_EVENT_KEYUP) {
       Vortex::releaseButton();
     }
-    break;
-  case 'q':
-    if (eventType == EMSCRIPTEN_EVENT_KEYDOWN) {
-      Vortex::quitClick();
-    }
-    break;
-  default:
-    break;
   }
   return 0;
 }
@@ -86,7 +62,6 @@ static void wasm_init()
 #endif // ifdef WASM
 
 TestFramework::TestFramework() :
-  m_ledList(nullptr),
   m_numLeds(0),
   m_initialized(false),
   m_buttonPressed(false),
@@ -101,63 +76,6 @@ TestFramework::~TestFramework()
 {
 }
 
-class TestFrameworkCallbacks : public VortexCallbacks
-{
-public:
-  TestFrameworkCallbacks() :
-    VortexCallbacks(),
-    m_leds(nullptr),
-    m_count(0)
-  {
-  }
-  virtual ~TestFrameworkCallbacks() {}
-
-  // called when the LED strip is initialized
-  virtual void ledsInit(void *cl, int count) override
-  {
-    //g_pTestFramework->installLeds((RGBColor *)cl, count);
-    m_leds = (RGBColor *)cl;
-    m_count = count;
-  }
-  // called when the brightness is changed
-  virtual void ledsBrightness(int brightness) override
-  {
-    //g_pTestFramework->setBrightness(brightness);
-  }
-  // called when the leds are shown
-  virtual void ledsShow() override
-  {
-    string out;
-#ifdef WASM
-    for (uint32_t i = 0; i < m_count; ++i) {
-      char buf[128] = {0};
-      snprintf(buf, sizeof(buf), "#%06X|", m_leds[i].raw());
-      out += buf;
-    }
-    out += "\n";
-#else
-    out += "\33[2K\033[A\r";
-    for (uint32_t i = 0; i < m_count; ++i) {
-      out += "\x1B[0m|"; // opening |
-      out += "\x1B[48;2;"; // colorcode start
-      out += to_string(m_leds[i].red) + ";"; // col red
-      out += to_string(m_leds[i].green) + ";"; // col green
-      out += to_string(m_leds[i].blue) + "m"; // col blue
-      out += "  "; // colored space
-      out += "\x1B[0m|"; // ending |
-    }
-    out += USAGE;
-#endif
-    printf("%s", out.c_str());
-    fflush(stdout);
-  }
-
-private:
-  // receive a message from client
-  RGBColor *m_leds;
-  uint32_t m_count;
-};
-
 bool TestFramework::init()
 {
   if (g_pTestFramework) {
@@ -171,13 +89,16 @@ bool TestFramework::init()
 
   // do the arduino init/setup
   Vortex::init<TestFrameworkCallbacks>();
-  m_initialized = true;
 
   printf("Initialized!\n");
   printf("%s\n", USAGE);
 
+  m_initialized = true;
+
 #ifndef WASM
 #else
+  // NOTE: This call does not return and will instead automatically 
+  // call the TestFramework::run() in a loop
   wasm_init();
 #endif
 
@@ -211,6 +132,29 @@ void TestFramework::show()
   if (!m_initialized) {
     return;
   }
+  string out;
+#ifdef WASM
+  for (uint32_t i = 0; i < m_numLeds; ++i) {
+    char buf[128] = { 0 };
+    snprintf(buf, sizeof(buf), "#%06X|", m_ledList[i].raw());
+    out += buf;
+  }
+  out += "\n";
+#else
+  out += "\33[2K\033[A\r";
+  for (uint32_t i = 0; i < m_numLeds; ++i) {
+    out += "\x1B[0m|"; // opening |
+    out += "\x1B[48;2;"; // colorcode start
+    out += to_string(m_ledList[i].red) + ";"; // col red
+    out += to_string(m_ledList[i].green) + ";"; // col green
+    out += to_string(m_ledList[i].blue) + "m"; // col blue
+    out += "  "; // colored space
+    out += "\x1B[0m|"; // ending |
+  }
+  out += USAGE;
+#endif
+  printf("%s", out.c_str());
+  fflush(stdout);
 }
 
 bool TestFramework::isButtonPressed() const
@@ -221,4 +165,26 @@ bool TestFramework::isButtonPressed() const
 bool TestFramework::stillRunning() const
 {
   return (m_initialized && m_keepGoing);
+}
+
+void TestFramework::installLeds(CRGB *leds, uint32_t count)
+{
+  m_ledList = (RGBColor *)leds;
+  m_numLeds = count;
+}
+
+long TestFramework::TestFrameworkCallbacks::checkPinHook(uint32_t pin)
+{
+  // TODO: check realtime key press? ncurses?
+  return HIGH;
+}
+
+void TestFramework::TestFrameworkCallbacks::ledsInit(void *cl, int count)
+{
+  g_pTestFramework->installLeds((CRGB *)cl, count);
+}
+
+void TestFramework::TestFrameworkCallbacks::ledsShow()
+{
+  g_pTestFramework->show();
 }
