@@ -33,10 +33,10 @@ VWindow::VWindow() :
 
 VWindow::VWindow(HINSTANCE hinstance, const string &title,
   COLORREF backcol, uint32_t width, uint32_t height,
-  void *callbackArg) :
+  void *callbackArg, const string &className) :
   VWindow()
 {
-  init(hinstance, title, backcol, width, height, callbackArg);
+  init(hinstance, title, backcol, width, height, callbackArg, className);
 }
 
 VWindow::~VWindow()
@@ -46,7 +46,7 @@ VWindow::~VWindow()
 
 void VWindow::init(HINSTANCE hInstance, const string &title,
   COLORREF backcol, uint32_t width, uint32_t height,
-  void *callbackArg)
+  void *callbackArg, const string &className)
 {
   // store callback
   m_callbackArg = callbackArg;
@@ -57,14 +57,14 @@ void VWindow::init(HINSTANCE hInstance, const string &title,
   m_foreEnabled = true;
 
   // register a window class for the window if not done yet
-  registerWindowClass(hInstance, backcol);
+  registerWindowClass(hInstance, backcol, className);
 
   // get desktop rect so we can center the window
   RECT desktop;
   GetClientRect(GetDesktopWindow(), &desktop);
 
   // create the window
-  m_hwnd = CreateWindow(WC_VWINDOW, title.c_str(),
+  m_hwnd = CreateWindow(className.c_str(), title.c_str(),
     WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX | WS_VISIBLE,
     (desktop.right / 2) - (width / 2), (desktop.bottom / 2) - (height / 2),
     width, height, nullptr, nullptr, hInstance, nullptr);
@@ -358,7 +358,7 @@ LRESULT CALLBACK VWindow::window_proc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARA
   return DefWindowProc(hWnd, uMsg, wParam, lParam);
 }
 
-void VWindow::registerWindowClass(HINSTANCE hInstance, COLORREF backcol)
+void VWindow::registerWindowClass(HINSTANCE hInstance, COLORREF backcol, const string &className)
 {
   if (m_wc.lpfnWndProc == VWindow::window_proc) {
     // alredy registered
@@ -367,7 +367,7 @@ void VWindow::registerWindowClass(HINSTANCE hInstance, COLORREF backcol)
   // class registration
   m_wc.lpfnWndProc = VWindow::window_proc;
   m_wc.hInstance = hInstance;
-  m_wc.lpszClassName = WC_VWINDOW;
+  m_wc.lpszClassName = className.c_str();
   m_wc.hbrBackground = CreateSolidBrush(backcol);
   RegisterClass(&m_wc);
 }

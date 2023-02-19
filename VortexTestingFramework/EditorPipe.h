@@ -18,6 +18,9 @@ public:
   static bool isConnected() { return m_serialConnected; }
 
 private:
+  // callback to find the editor window
+  static BOOL CALLBACK findEditorWindow(HWND hwnd, LPARAM lParam);
+
   static HANDLE hPipe;
   static bool m_serialConnected;
 };
