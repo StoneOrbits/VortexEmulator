@@ -338,7 +338,7 @@ void TestFramework::show()
 
 bool TestFramework::handlePatternChange(bool force)
 {
-  if (!VortexEngine::curMode() || !m_ledList) {
+  if (!Modes::curMode() || !m_ledList) {
     return false;
   }
   // don't want to create a callback mechanism just for the test framework to be

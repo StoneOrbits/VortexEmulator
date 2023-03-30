@@ -22,28 +22,12 @@ bool EditorPipe::init()
     return false;
   }
   // try to find editor window
-  HWND hwnd = FindWindow("VWINDOW", NULL);
+  HWND hwnd = FindWindow("VortexEditor", NULL);
   if (hwnd != NULL) {
     // send it a message to tell it the test framework is here
     PostMessage(hwnd, WM_USER + 1, 0, 0);
   }
   return true;
-}
-
-BOOL CALLBACK EditorPipe::findEditorWindow(HWND hwnd, LPARAM lParam)
-{
-  char text[256] = {0};
-  if (!GetWindowText(hwnd, text, sizeof(text) - 1) || !text[0]) {
-    return true;
-  }
-  // try to find the word editor in the window so we don't send the message
-  // to the color picker or something
-  if (!strstr(text, "Editor")) {
-    return true;
-  }
-  // success
-  *(HWND *)lParam = hwnd;
-  return false;
 }
 
 bool EditorPipe::connect()
@@ -59,8 +43,7 @@ bool EditorPipe::connect()
     }
   }
   HWND editor_hwnd = NULL;
-  EnumWindows(findEditorWindow, (LPARAM)&editor_hwnd);
-  HWND hwnd = FindWindow("VWINDOW", NULL);
+  HWND hwnd = FindWindow("VortexEditor", NULL);
   if (hwnd != NULL) {
     // send it a message to tell it the test framework is here
     PostMessage(hwnd, WM_USER + 1, 0, 0);
