@@ -22,7 +22,7 @@ bool EditorPipe::init()
     return false;
   }
   // try to find editor window
-  HWND hwnd = FindWindow("VWINDOW", NULL);
+  HWND hwnd = FindWindow("VortexEditor", NULL);
   if (hwnd != NULL) {
     // send it a message to tell it the test framework is here
     PostMessage(hwnd, WM_USER + 1, 0, 0);
@@ -32,12 +32,21 @@ bool EditorPipe::init()
 
 bool EditorPipe::connect()
 {
+  if (m_serialConnected) {
+    return true;
+  }
   // create a global pipe
   if (!ConnectNamedPipe(hPipe, NULL)) {
     int err = GetLastError();
     if (err != ERROR_PIPE_CONNECTED && err != ERROR_PIPE_LISTENING) {
       return false;
     }
+  }
+  HWND editor_hwnd = NULL;
+  HWND hwnd = FindWindow("VortexEditor", NULL);
+  if (hwnd != NULL) {
+    // send it a message to tell it the test framework is here
+    PostMessage(hwnd, WM_USER + 1, 0, 0);
   }
   m_serialConnected = true;
   return true;

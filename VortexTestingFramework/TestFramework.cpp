@@ -105,7 +105,7 @@ bool TestFramework::init(HINSTANCE hInstance)
   }
 
   // load the main window
-  m_window.init(m_hInst, "Vortex Orbit Emulator", BACK_COL, width, height, this);
+  m_window.init(m_hInst, "Vortex Orbit Emulator", BACK_COL, width, height, this, "VortexTestFramework");
 
   // load the icon and background image
   m_hIcon = LoadIcon(m_hInst, MAKEINTRESOURCE(IDI_ICON1));
@@ -363,7 +363,7 @@ void TestFramework::setBrightness(int brightness)
 // when the glove framework calls 'FastLED.show'
 void TestFramework::show()
 {
-  if (!m_initialized) {
+  if (!m_initialized || !m_ledList) {
     return;
   }
   // update the colors with the colors in the led list
@@ -377,7 +377,7 @@ void TestFramework::show()
 
 bool TestFramework::handlePatternChange(bool force)
 {
-  if (!Modes::curMode()) {
+  if (!Modes::curMode() || !m_ledList) {
     return false;
   }
   // don't want to create a callback mechanism just for the test framework to be

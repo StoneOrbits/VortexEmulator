@@ -6,9 +6,6 @@
 #include <map>
 #include <string>
 
-// The window class
-#define WC_VWINDOW      "VWINDOW"
-
 // The VWindow is the main window, there's only really supposed to be one
 // if you want child windows that is a separate class. This is also the base
 // class of all other GUI objects
@@ -23,12 +20,12 @@ public:
   VWindow();
   VWindow(HINSTANCE hinstance, const std::string &title, 
     COLORREF backcol, uint32_t width, uint32_t height,
-    void *callbackArg);
+    void *callbackArg, const std::string &className);
   virtual ~VWindow();
 
   virtual void init(HINSTANCE hinstance, const std::string &title, 
     COLORREF backcol, uint32_t width, uint32_t height,
-    void *callbackArg);
+    void *callbackArg, const std::string &className);
   virtual void cleanup();
 
   virtual bool process(MSG &msg);
@@ -116,7 +113,7 @@ protected:
 
 private:
   static LRESULT CALLBACK window_proc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
-  static void registerWindowClass(HINSTANCE hInstance, COLORREF backcol);
+  static void registerWindowClass(HINSTANCE hInstance, COLORREF backcol, const std::string &className);
   static WNDCLASS m_wc;
 };
 
