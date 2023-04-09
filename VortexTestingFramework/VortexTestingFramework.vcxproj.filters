@@ -84,10 +84,10 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="glove.bmp">
+    <Image Include="icon.ico">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="icon.ico">
+    <Image Include="..\handle.bmp">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

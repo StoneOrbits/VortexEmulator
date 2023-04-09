@@ -178,7 +178,7 @@
     <ResourceCompile Include="VortexTestingFramework.rc" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="glove.bmp" />
+    <Image Include="..\handle.bmp" />
     <Image Include="icon.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

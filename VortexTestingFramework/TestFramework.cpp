@@ -43,7 +43,7 @@ using namespace std;
 TestFramework::TestFramework() :
   m_pCallbacks(nullptr),
   m_window(),
-  m_gloveBox(),
+  m_handleBox(),
   m_patternStrip(),
   m_tickrateSlider(),
   m_button(),
@@ -53,7 +53,7 @@ TestFramework::TestFramework() :
   m_pauseMutex(nullptr),
   m_hInst(nullptr),
   m_consoleHandle(nullptr),
-  m_gloveBMP(nullptr),
+  m_handleBMP(nullptr),
   m_hIcon(nullptr),
   m_loopThread(nullptr),
   m_tickrate(150),
@@ -103,22 +103,22 @@ bool TestFramework::init(HINSTANCE hInstance)
   }
 
   // load the main window
-  m_window.init(m_hInst, "Vortex Glove Emulator", BACK_COL, width, height, this, "VortexTestFramework");
+  m_window.init(m_hInst, "Vortex Handle Emulator", BACK_COL, width, height, this, "VortexTestFramework");
 
   // load the icon and background image
   m_hIcon = LoadIcon(m_hInst, MAKEINTRESOURCE(IDI_ICON1));
   // set the icon
   SendMessage(m_window.hwnd(), WM_SETICON, ICON_BIG, (LPARAM)m_hIcon);
-  m_gloveBMP = (HBITMAP)LoadImage(m_hInst, MAKEINTRESOURCE(IDB_BITMAP1), IMAGE_BITMAP, 0, 0, 0);
+  m_handleBMP = (HBITMAP)LoadImage(m_hInst, MAKEINTRESOURCE(IDB_BITMAP1), IMAGE_BITMAP, 0, 0, 0);
 
-  m_gloveBox.init(m_hInst, m_window, "Glove", BACK_COL, 250, 320, 86, 30, 0, 0, nullptr);
-  m_gloveBox.setDoCapture(false);
-  m_gloveBox.setDrawHLine(false);
-  m_gloveBox.setDrawVLine(false);
-  m_gloveBox.setDrawCircle(false);
-  m_gloveBox.setBackground(m_gloveBMP);
+  m_handleBox.init(m_hInst, m_window, "Handle", BACK_COL, 285, 187, 87, 90, 0, 0, nullptr);
+  m_handleBox.setDoCapture(false);
+  m_handleBox.setDrawHLine(false);
+  m_handleBox.setDrawVLine(false);
+  m_handleBox.setDrawCircle(false);
+  m_handleBox.setBackground(m_handleBMP);
   // disable the glove so it doesn't steal clicks from the leds
-  m_gloveBox.setEnabled(false);
+  m_handleBox.setEnabled(false);
 
   m_patternStrip.init(m_hInst, m_window, "Pattern Strip", BACK_COL, width, patternStripHeight, -2, 375, 2, 11234, patternStripSelectCallback); 
   m_patternStrip.setDrawHLine(false);
@@ -154,15 +154,17 @@ bool TestFramework::init(HINSTANCE hInstance)
   // initialize the positions of all the leds
   uint32_t base_left = 92;
   uint32_t base_top = 50;
-  uint32_t radius = 15;
+  uint32_t radius = 18;
   uint32_t dx = 24;
   uint32_t dy = 30;
 
   // thumb top/tip
-  m_ledPos[1].left = 196;
-  m_ledPos[1].top = 38;
-  m_ledPos[0].top = m_ledPos[1].top - 20;
-  m_ledPos[0].left = m_ledPos[1].left;
+  m_ledPos[0].left = 165;
+  m_ledPos[0].top = 95;
+  m_ledPos[1].left = 112;
+  m_ledPos[1].top = 178;
+  m_ledPos[2].left = 186;
+  m_ledPos[2].top = 230;
 
   for (uint32_t i = 0; i < LED_COUNT; ++i) {
     m_ledPos[i].right = m_ledPos[i].left + (radius * 2);
@@ -171,7 +173,7 @@ bool TestFramework::init(HINSTANCE hInstance)
 
   for (uint32_t i = 0; i < LED_COUNT; ++i) {
     m_leds[i].init(m_hInst, m_window, to_string(0),
-      BACK_COL, 30, 30, m_ledPos[i].left, m_ledPos[i].top, LED_CIRCLE_ID + i, ledClickCallback);
+      BACK_COL, radius * 2, radius * 2, m_ledPos[i].left, m_ledPos[i].top, LED_CIRCLE_ID + i, ledClickCallback);
   }
     
   // create an accelerator table for dispatching hotkeys as WM_COMMANDS
