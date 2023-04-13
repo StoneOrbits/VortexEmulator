@@ -43,6 +43,9 @@ TestFramework::TestFramework() :
   m_pCallbacks(nullptr),
   m_window(),
   m_orbitBox(),
+  m_gloveBox(),
+  m_handleBox(),
+  m_fingerBox(),
   m_patternStrip(),
   m_tickrateSlider(),
   m_button(),
@@ -53,6 +56,9 @@ TestFramework::TestFramework() :
   m_hInst(nullptr),
   m_consoleHandle(nullptr),
   m_orbitBMP(nullptr),
+  m_gloveBMP(nullptr),
+  m_handleBMP(),
+  m_fingerBMP(),
   m_hIcon(nullptr),
   m_loopThread(nullptr),
   m_tickrate(150),
@@ -103,13 +109,17 @@ bool TestFramework::init(HINSTANCE hInstance)
   }
 
   // load the main window
-  m_window.init(m_hInst, "Vortex Orbit Emulator", BACK_COL, width, height, this, "VortexTestFramework");
+  m_window.init(m_hInst, "Vortex Emulator", BACK_COL, width, height, this, "VortexTestFramework");
 
   // load the icon and background image
   m_hIcon = LoadIcon(m_hInst, MAKEINTRESOURCE(IDI_ICON1));
   // set the icon
   SendMessage(m_window.hwnd(), WM_SETICON, ICON_BIG, (LPARAM)m_hIcon);
+
   m_orbitBMP = (HBITMAP)LoadImage(m_hInst, MAKEINTRESOURCE(IDB_BITMAP1), IMAGE_BITMAP, 0, 0, 0);
+  m_gloveBMP = (HBITMAP)LoadImage(m_hInst, MAKEINTRESOURCE(IDB_BITMAP2), IMAGE_BITMAP, 0, 0, 0);
+  m_handleBMP = (HBITMAP)LoadImage(m_hInst, MAKEINTRESOURCE(IDB_BITMAP3), IMAGE_BITMAP, 0, 0, 0);
+  m_fingerBMP = (HBITMAP)LoadImage(m_hInst, MAKEINTRESOURCE(IDB_BITMAP4), IMAGE_BITMAP, 0, 0, 0);
 
   m_orbitBox.init(m_hInst, m_window, "Orbit", BACK_COL, 500, 250, 66, 30, 0, 0, nullptr);
   m_orbitBox.setDoCapture(false);
@@ -119,6 +129,30 @@ bool TestFramework::init(HINSTANCE hInstance)
   m_orbitBox.setBackground(m_orbitBMP);
   // disable the glove so it doesn't steal clicks from the leds
   m_orbitBox.setEnabled(false);
+
+  m_gloveBox.init(m_hInst, m_window, "Glove", BACK_COL, 250, 320, 86, 30, 0, 0, nullptr);
+  m_gloveBox.setDoCapture(false);
+  m_gloveBox.setDrawHLine(false);
+  m_gloveBox.setDrawVLine(false);
+  m_gloveBox.setDrawCircle(false);
+  m_gloveBox.setBackground(m_gloveBMP);
+  m_gloveBox.setEnabled(false);
+
+  m_handleBox.init(m_hInst, m_window, "Handle", BACK_COL, 285, 187, 87, 90, 0, 0, nullptr);
+  m_handleBox.setDoCapture(false);
+  m_handleBox.setDrawHLine(false);
+  m_handleBox.setDrawVLine(false);
+  m_handleBox.setDrawCircle(false);
+  m_handleBox.setBackground(m_handleBMP);
+  m_handleBox.setEnabled(false);
+
+  m_fingerBox.init(m_hInst, m_window, "Finger", BACK_COL, 250, 320, 86, 30, 0, 0, nullptr);
+  m_fingerBox.setDoCapture(false);
+  m_fingerBox.setDrawHLine(false);
+  m_fingerBox.setDrawVLine(false);
+  m_fingerBox.setDrawCircle(false);
+  m_fingerBox.setBackground(m_fingerBMP);
+  m_fingerBox.setEnabled(false);
 
   m_patternStrip.init(m_hInst, m_window, "Pattern Strip", BACK_COL, width, patternStripHeight, -2, 375, 2, 11234, patternStripSelectCallback); 
   m_patternStrip.setDrawHLine(false);

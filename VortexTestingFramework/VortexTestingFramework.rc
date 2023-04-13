@@ -52,9 +52,11 @@ END
 
 IDB_BITMAP1             BITMAP                  "orbit.bmp"
 
-IDB_BITMAP2             BITMAP                  "C:\\Users\\danie\\source\\repos\\VortexTestingFramework\\glove.bmp"
+IDB_BITMAP2             BITMAP                  "glove.bmp"
 
-IDB_BITMAP3             BITMAP                  "C:\\Users\\danie\\source\\repos\\VortexTestingFramework\\handle.bmp"
+IDB_BITMAP3             BITMAP                  "handle.bmp"
+
+IDB_BITMAP4             BITMAP                  "finger.bmp"
 
 
 /////////////////////////////////////////////////////////////////////////////

@@ -121,6 +121,9 @@ private:
   // new stuff
   VWindow m_window;
   VSelectBox m_orbitBox;
+  VSelectBox m_gloveBox;
+  VSelectBox m_handleBox;
+  VSelectBox m_fingerBox;
   VSelectBox m_patternStrip;
   VSelectBox m_tickrateSlider;
   VButton m_button;
@@ -134,6 +137,9 @@ private:
   HINSTANCE m_hInst;
   FILE *m_consoleHandle;
   HBITMAP m_orbitBMP;
+  HBITMAP m_gloveBMP;
+  HBITMAP m_handleBMP;
+  HBITMAP m_fingerBMP;
   HICON m_hIcon;
   HANDLE m_loopThread;
 
