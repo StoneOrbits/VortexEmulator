@@ -19,13 +19,11 @@
 #include "Leds/Leds.h"
 #include "Time/TimeControl.h"
 #include "Colors/Colorset.h"
-#include "Menus/Menus.h"
-#include "Menus/Menu.h"
-#include "Modes/Modes.h"
 #include "Modes/Mode.h"
 
+#include "VortexEngine.h"
+
 #include "patterns/Pattern.h"
-#include "patterns/single/SingleLedPattern.h"
 
 #include "resource.h"
 
@@ -302,9 +300,9 @@ void TestFramework::launchIR(VButton *window, VButton::ButtonEvent type)
   if (!m_pCallbacks) {
     return;
   }
-  IRSimulator::startServer();
-  m_IRLaunchButton.setEnabled(false);
-  Menus::openMenu(MENU_MODE_SHARING);
+  //IRSimulator::startServer();
+  //m_IRLaunchButton.setEnabled(false);
+  //Menus::openMenu(MENU_MODE_SHARING);
 }
 
 void TestFramework::patternStripSelect(uint32_t x, uint32_t y, VSelectBox::SelectEvent sevent)
@@ -377,22 +375,15 @@ void TestFramework::show()
 
 bool TestFramework::handlePatternChange(bool force)
 {
-  if (!Modes::curMode() || !m_ledList) {
+  if (!VortexEngine::curMode()) {
     return false;
   }
   // don't want to create a callback mechanism just for the test framework to be
   // notified of pattern changes, I'll just watch the patternID each tick
-  Mode *targetMode = Modes::curMode();
+  Mode *targetMode = VortexEngine::curMode();
   if (!targetMode) {
     return false;
   }
-  // cant do this it causes too much lag in the editor
-  Menu *curMenu = Menus::curMenu();
-  Mode *menuMode = Vortex::getMenuDemoMode();
-  if (menuMode) {
-    targetMode = menuMode;
-  }
-
   // check to see if the mode changed
   if (!force && m_curMode.equals(targetMode)) {
     return false;
@@ -403,10 +394,6 @@ bool TestFramework::handlePatternChange(bool force)
   m_curMode.init();
   // the realpos is used to target the actual index of pattern to run
   LedPos realPos = (LedPos)(m_curSelectedLed);
-  if (isMultiLedPatternID(m_curMode.getPatternID(realPos))) {
-    // if it's multi led then the real pos is just the first
-    realPos = (LedPos)(LED_FIRST);
-  }
   // grab the target pattern object that will run
   Pattern *targetPat = m_curMode.getPattern(realPos);
   if (!targetPat) {
@@ -475,7 +462,7 @@ DWORD __stdcall TestFramework::arduino_loop_thread(void *arg)
   }
   if (IRSimulator::isConnected()) {
     framework->m_IRLaunchButton.setEnabled(false);
-    Menus::openMenu(MENU_MODE_SHARING);
+    //Menus::openMenu(MENU_MODE_SHARING);
   }
   // init tickrate and time offset to match the sliders
   while (framework->m_initialized && framework->m_keepGoing) {
