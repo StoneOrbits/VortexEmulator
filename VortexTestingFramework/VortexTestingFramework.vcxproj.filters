@@ -84,7 +84,16 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
+    <Image Include="orbit.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
     <Image Include="glove.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="handle.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="finger.bmp">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="icon.ico">

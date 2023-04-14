@@ -19,13 +19,10 @@
 #include "Leds/Leds.h"
 #include "Time/TimeControl.h"
 #include "Colors/Colorset.h"
-#include "Menus/Menus.h"
-#include "Menus/Menu.h"
-#include "Modes/Modes.h"
 #include "Modes/Mode.h"
+#include "VortexEngine.h"
 
 #include "patterns/Pattern.h"
-#include "patterns/single/SingleLedPattern.h"
 
 #include "resource.h"
 
@@ -36,16 +33,20 @@ TestFramework *g_pTestFramework = nullptr;
 using namespace std;
 
 #define CLICK_BUTTON_ID 10001
-#define TICKRATE_SLIDER_ID 10002
+#define TICKRATE_SLIDER_ID 15001
 #define LED_CIRCLE_ID 20003
 #define LAUNCH_IR_ID  30001
+#define PATTERN_STRIP_ID  35001
 
 #define BACK_COL        RGB(40, 40, 40)
 
 TestFramework::TestFramework() :
   m_pCallbacks(nullptr),
   m_window(),
+  m_orbitBox(),
   m_gloveBox(),
+  m_handleBox(),
+  m_fingerBox(),
   m_patternStrip(),
   m_tickrateSlider(),
   m_button(),
@@ -55,7 +56,10 @@ TestFramework::TestFramework() :
   m_pauseMutex(nullptr),
   m_hInst(nullptr),
   m_consoleHandle(nullptr),
+  m_orbitBMP(nullptr),
   m_gloveBMP(nullptr),
+  m_handleBMP(nullptr),
+  m_fingerBMP(nullptr),
   m_hIcon(nullptr),
   m_loopThread(nullptr),
   m_tickrate(150),
@@ -66,6 +70,7 @@ TestFramework::TestFramework() :
   m_curSelectedLed(LED_FIRST),
   m_initialized(false),
   m_buttonPressed(false),
+  m_buttonPressed2(false),
   m_keepGoing(true),
   m_isPaused(false),
   m_curMode(),
@@ -105,29 +110,71 @@ bool TestFramework::init(HINSTANCE hInstance)
   }
 
   // load the main window
-  m_window.init(m_hInst, "Vortex Glove Emulator", BACK_COL, width, height, this, "VortexTestFramework");
+  m_window.init(m_hInst, "Vortex Emulator", BACK_COL, width, height, this, "VortexTestFramework");
 
   // load the icon and background image
   m_hIcon = LoadIcon(m_hInst, MAKEINTRESOURCE(IDI_ICON1));
   // set the icon
   SendMessage(m_window.hwnd(), WM_SETICON, ICON_BIG, (LPARAM)m_hIcon);
-  m_gloveBMP = (HBITMAP)LoadImage(m_hInst, MAKEINTRESOURCE(IDB_BITMAP1), IMAGE_BITMAP, 0, 0, 0);
 
-  m_gloveBox.init(m_hInst, m_window, "Glove", BACK_COL, 250, 320, 86, 30, 0, 0, nullptr);
-  m_gloveBox.setDoCapture(false);
-  m_gloveBox.setDrawHLine(false);
-  m_gloveBox.setDrawVLine(false);
-  m_gloveBox.setDrawCircle(false);
-  m_gloveBox.setBackground(m_gloveBMP);
-  // disable the glove so it doesn't steal clicks from the leds
-  m_gloveBox.setEnabled(false);
+  switch (LED_COUNT) {
+  case 28: // orbit
+    m_orbitBMP = (HBITMAP)LoadImage(m_hInst, MAKEINTRESOURCE(IDB_BITMAP1), IMAGE_BITMAP, 0, 0, 0);
+    m_orbitBox.init(m_hInst, m_window, "Orbit", BACK_COL, 500, 250, 66, 30, 0, 0, nullptr);
+    m_orbitBox.setDoCapture(false);
+    m_orbitBox.setDrawHLine(false);
+    m_orbitBox.setDrawVLine(false);
+    m_orbitBox.setDrawCircle(false);
+    m_orbitBox.setBackground(m_orbitBMP);
+    m_orbitBox.setEnabled(false);
+    m_orbitBox.setVisible(LED_COUNT == 28);
+    m_button.init(m_hInst, m_window, "Click", BACK_COL, 48, 24, 290, 308, CLICK_BUTTON_ID, buttonClickCallback);
+    m_button2.init(m_hInst, m_window, "Click2", BACK_COL, 48, 24, 290, 336, CLICK_BUTTON_ID + 1, buttonClickCallback);
+    break;
+  case 10: // glove
+    m_gloveBMP = (HBITMAP)LoadImage(m_hInst, MAKEINTRESOURCE(IDB_BITMAP2), IMAGE_BITMAP, 0, 0, 0);
+    m_gloveBox.init(m_hInst, m_window, "Glove", BACK_COL, 250, 320, 86, 30, 0, 0, nullptr);
+    m_gloveBox.setDoCapture(false);
+    m_gloveBox.setDrawHLine(false);
+    m_gloveBox.setDrawVLine(false);
+    m_gloveBox.setDrawCircle(false);
+    m_gloveBox.setBackground(m_gloveBMP);
+    m_gloveBox.setEnabled(false);
+    m_gloveBox.setVisible(LED_COUNT == 10);
+    m_button.init(m_hInst, m_window, "Click", BACK_COL, 48, 24, 198, 312, CLICK_BUTTON_ID, buttonClickCallback);
+    break;
+  case 3: // handle
+    m_handleBMP = (HBITMAP)LoadImage(m_hInst, MAKEINTRESOURCE(IDB_BITMAP3), IMAGE_BITMAP, 0, 0, 0);
+    m_handleBox.init(m_hInst, m_window, "Handle", BACK_COL, 285, 187, 87, 90, 0, 0, nullptr);
+    m_handleBox.setDoCapture(false);
+    m_handleBox.setDrawHLine(false);
+    m_handleBox.setDrawVLine(false);
+    m_handleBox.setDrawCircle(false);
+    m_handleBox.setBackground(m_handleBMP);
+    m_handleBox.setEnabled(false);
+    m_handleBox.setVisible(LED_COUNT == 3);
+    m_button.init(m_hInst, m_window, "Click", BACK_COL, 48, 24, 198, 312, CLICK_BUTTON_ID, buttonClickCallback);
+    break;
+  case 2: // finger
+    m_fingerBMP = (HBITMAP)LoadImage(m_hInst, MAKEINTRESOURCE(IDB_BITMAP4), IMAGE_BITMAP, 0, 0, 0);
+    m_fingerBox.init(m_hInst, m_window, "Finger", BACK_COL, 250, 320, 86, 30, 0, 0, nullptr);
+    m_fingerBox.setDoCapture(false);
+    m_fingerBox.setDrawHLine(false);
+    m_fingerBox.setDrawVLine(false);
+    m_fingerBox.setDrawCircle(false);
+    m_fingerBox.setBackground(m_fingerBMP);
+    m_fingerBox.setEnabled(false);
+    m_fingerBox.setVisible(LED_COUNT == 2);
+    m_button.init(m_hInst, m_window, "Click", BACK_COL, 48, 24, 198, 312, CLICK_BUTTON_ID, buttonClickCallback);
+    break;
+  }
 
-  m_patternStrip.init(m_hInst, m_window, "Pattern Strip", BACK_COL, width, patternStripHeight, -2, 375, 2, 11234, patternStripSelectCallback); 
+  m_patternStrip.init(m_hInst, m_window, "Pattern Strip", BACK_COL, width, patternStripHeight, -2, 375, 2, PATTERN_STRIP_ID, patternStripSelectCallback); 
   m_patternStrip.setDrawHLine(false);
   m_patternStrip.setDrawVLine(false);
   m_patternStrip.setDrawCircle(false);
 
-  m_tickrateSlider.init(m_hInst, m_window, "Tickrate", BACK_COL, tickrateSliderWidth, tickrateSliderHeight, 30, 100, 1, 123433, setTickrateCallback);
+  m_tickrateSlider.init(m_hInst, m_window, "Tickrate", BACK_COL, tickrateSliderWidth, tickrateSliderHeight, 30, 100, 1, TICKRATE_SLIDER_ID, setTickrateCallback);
   m_tickrateSlider.setDrawCircle(false);
   m_tickrateSlider.setDrawVLine(false);
   m_tickrateSlider.setSelection(0, 30);
@@ -149,11 +196,153 @@ bool TestFramework::init(HINSTANCE hInstance)
   m_tickrateSlider.setSelection(0, 240);
   Vortex::setTickrate(150);
 
-  m_button.init(m_hInst, m_window, "Click", BACK_COL, 48, 24, 198, 312, CLICK_BUTTON_ID, buttonClickCallback);
-  m_IRLaunchButton.init(m_hInst, m_window, "Connect IR", BACK_COL, 80, 24, 350, 340, LAUNCH_IR_ID, launchIRCallback);
-  m_IRLaunchButton.setVisible(false);
+  // move the IR launch button over to the right on the orbit build
+  m_IRLaunchButton.init(m_hInst, m_window, "Connect IR", BACK_COL, 80, 24, 
+    350 + ((LED_COUNT == 28) * 150), 340, LAUNCH_IR_ID, launchIRCallback);
+  // the IR can only be launched on devices besides the microlight
+  m_IRLaunchButton.setVisible(LED_COUNT != 2);
+   
+  // hardcoded switch optimizes to a single call based on engine led count
+  switch (LED_COUNT) {
+  case 28:
+    setupLedPositionsOrbit();
+    break;
+  case 10:
+    setupLedPositionsGlove();
+    break;
+  case 3:
+    setupLedPositionsHandle();
+    break;
+  case 2:
+    setupLedPositionsFinger();
+    break;
+  default:
+    break;
+  }
 
+  // create an accelerator table for dispatching hotkeys as WM_COMMANDS
+  // for specific menu IDs
+  ACCEL accelerators[] = {
+    // ctrl + shift + I   open the IR connection
+    { FCONTROL | FSHIFT | FVIRTKEY, 'I', LAUNCH_IR_ID },
+  };
+  m_accelTable = CreateAcceleratorTable(accelerators, sizeof(accelerators) / sizeof(accelerators[0]));
+  if (!m_accelTable) {
+    // error!
+  }
+
+  if (!IRSimulator::init()) {
+    printf("IRSim failed to init\n");
+  }
+
+  if (!EditorPipe::init()) {
+    if (!IRSimulator::isConnected()) {
+      printf("Pipe failed to init\n");
+    }
+  }
+
+  // launch the 'loop' thread
+  m_loopThread = CreateThread(NULL, 0, TestFramework::arduino_loop_thread, this, 0, NULL);
+  if (!m_loopThread) {
+    // error
+    return false;
+  }
+
+  m_initialized = true;
+
+  return true;
+}
+
+void TestFramework::setupLedPositionsOrbit()
+{
   // initialize the positions of all the leds
+  uint32_t base_left = 92;
+  uint32_t base_top = 50;
+  uint32_t diameter = 21;
+  uint32_t dx = 24;
+  uint32_t dy = 30;
+
+  // quadrant 1 top
+  for (uint32_t i = 0; i < 3; ++i) {
+    m_ledPos[i].left = 150 + (i * 17);
+    m_ledPos[i].top = 181 + (i * 17);
+  }
+
+  // quadrant 1 edge
+  m_ledPos[3].left = m_ledPos[2].left + 25;
+  m_ledPos[3].top = m_ledPos[2].top + 25;
+  
+  // quadrant 1 bot
+  for (uint32_t i = 0; i < 3; ++i) {
+    m_ledPos[6 - i].left = 332 - (i * 17);
+    m_ledPos[6 - i].top = 181 + (i * 17);
+  }
+
+  // quadrant 2 bot
+  for (uint32_t i = 0; i < 3; ++i) {
+    m_ledPos[7 + i].left = 400 + (i * 17);
+    m_ledPos[7 + i].top = 181 + (i * 17);
+  }
+  
+  // quadrant 2 top
+  for (uint32_t i = 0; i < 3; ++i) {
+    m_ledPos[13 - i].left = 82 - (i * 17);
+    m_ledPos[13 - i].top = 181 + (i * 17);
+  }
+
+  // quadrant 2 edge
+  m_ledPos[10].left = m_ledPos[11].left - 25;
+  m_ledPos[10].top = m_ledPos[11].top + 25;
+
+  // quadrant 3 top
+  for (uint32_t i = 0; i < 3; ++i) {
+    m_ledPos[i + 14].left = 82 - (i * 17);
+    m_ledPos[i + 14].top = 113 - (i * 17);
+  }
+
+  // quadrant 3 edge
+  m_ledPos[17].left = m_ledPos[16].left - 25;
+  m_ledPos[17].top = m_ledPos[16].top - 25;
+
+  // quadrant 3 bot
+  for (uint32_t i = 0; i < 3; ++i) {
+    m_ledPos[20 - i].left = 400 + (i * 17);
+    m_ledPos[20 - i].top = 113 - (i * 17);
+  }
+
+  // quadrant 4 bot
+  for (uint32_t i = 0; i < 3; ++i) { 
+    m_ledPos[21 + i].left = 332 - (i * 17);
+    m_ledPos[21 + i].top = 113 - (i * 17);
+  }
+
+  // quadrant 4 top
+
+  for (uint32_t i = 0; i < 3; ++i) {
+    m_ledPos[27 - i].left = 150 + (i * 17);
+    m_ledPos[27 - i].top = 113 - (i * 17);
+  }
+
+  // quadrant 4 edge
+  m_ledPos[24].left = m_ledPos[25].left + 25;
+  m_ledPos[24].top = m_ledPos[25].top - 25;
+
+  for (uint32_t i = 0; i < LED_COUNT; ++i) {
+    m_ledPos[i].right = m_ledPos[i].left + diameter;
+    m_ledPos[i].bottom = m_ledPos[i].top + diameter;
+  }
+
+  for (uint32_t i = 0; i < LED_COUNT; ++i) {
+    // super lazy reposition of + 67 because I don't want to go 
+    // adjust all the values in the above statements
+    m_leds[i].init(m_hInst, m_window, to_string(0),
+      BACK_COL, 21, 21, m_ledPos[i].left + 67, m_ledPos[i].top, LED_CIRCLE_ID + i, ledClickCallback);
+  }
+}
+
+void TestFramework::setupLedPositionsGlove()
+{
+    // initialize the positions of all the leds
   uint32_t base_left = 92;
   uint32_t base_top = 50;
   uint32_t radius = 15;
@@ -199,38 +388,60 @@ bool TestFramework::init(HINSTANCE hInstance)
     m_leds[i].init(m_hInst, m_window, to_string(0),
       BACK_COL, 30, 30, m_ledPos[i].left, m_ledPos[i].top, LED_CIRCLE_ID + i, ledClickCallback);
   }
-    
-  // create an accelerator table for dispatching hotkeys as WM_COMMANDS
-  // for specific menu IDs
-  ACCEL accelerators[] = {
-    // ctrl + shift + I   open the IR connection
-    { FCONTROL | FSHIFT | FVIRTKEY, 'I', LAUNCH_IR_ID },
-  };
-  m_accelTable = CreateAcceleratorTable(accelerators, sizeof(accelerators) / sizeof(accelerators[0]));
-  if (!m_accelTable) {
-    // error!
+}
+
+void TestFramework::setupLedPositionsHandle()
+{
+  // initialize the positions of all the leds
+  uint32_t base_left = 92;
+  uint32_t base_top = 50;
+  uint32_t radius = 18;
+  uint32_t dx = 24;
+  uint32_t dy = 30;
+
+  // thumb top/tip
+  m_ledPos[0].left = 165;
+  m_ledPos[0].top = 95;
+  m_ledPos[1].left = 112;
+  m_ledPos[1].top = 178;
+  m_ledPos[2].left = 186;
+  m_ledPos[2].top = 230;
+
+  for (uint32_t i = 0; i < LED_COUNT; ++i) {
+    m_ledPos[i].right = m_ledPos[i].left + (radius * 2);
+    m_ledPos[i].bottom = m_ledPos[i].top + (radius * 2);
   }
 
-  if (!IRSimulator::init()) {
-    printf("IRSim failed to init\n");
+  for (uint32_t i = 0; i < LED_COUNT; ++i) {
+    m_leds[i].init(m_hInst, m_window, to_string(0),
+      BACK_COL, radius * 2, radius * 2, m_ledPos[i].left, m_ledPos[i].top, LED_CIRCLE_ID + i, ledClickCallback);
+  }
+}
+
+void TestFramework::setupLedPositionsFinger()
+{
+  // initialize the positions of all the leds
+  uint32_t base_left = 92;
+  uint32_t base_top = 50;
+  uint32_t radius = 15;
+  uint32_t dx = 24;
+  uint32_t dy = 30;
+
+  // thumb top/tip
+  m_ledPos[1].left = 196;
+  m_ledPos[1].top = 38;
+  m_ledPos[0].top = m_ledPos[1].top - 20;
+  m_ledPos[0].left = m_ledPos[1].left;
+
+  for (uint32_t i = 0; i < LED_COUNT; ++i) {
+    m_ledPos[i].right = m_ledPos[i].left + (radius * 2);
+    m_ledPos[i].bottom = m_ledPos[i].top + (radius * 2);
   }
 
-  if (!EditorPipe::init()) {
-    if (!IRSimulator::isConnected()) {
-      printf("Pipe failed to init\n");
-    }
+  for (uint32_t i = 0; i < LED_COUNT; ++i) {
+    m_leds[i].init(m_hInst, m_window, to_string(0),
+      BACK_COL, 30, 30, m_ledPos[i].left, m_ledPos[i].top, LED_CIRCLE_ID + i, ledClickCallback);
   }
-
-  // launch the 'loop' thread
-  m_loopThread = CreateThread(NULL, 0, TestFramework::arduino_loop_thread, this, 0, NULL);
-  if (!m_loopThread) {
-    // error
-    return false;
-  }
-
-  m_initialized = true;
-
-  return true;
 }
 
 void TestFramework::cleanup()
@@ -244,14 +455,15 @@ void TestFramework::cleanup()
 
 void TestFramework::buttonClick(VButton *button, VButton::ButtonEvent type)
 {
+  uint32_t buttonID = ((uint32_t)GetMenu(button->hwnd())) - CLICK_BUTTON_ID;
   switch (type) {
   case VButton::ButtonEvent::BUTTON_EVENT_CLICK:
     break;
   case VButton::ButtonEvent::BUTTON_EVENT_PRESS:
-    Vortex::pressButton();
+    Vortex::pressButton(buttonID);
     break;
   case VButton::ButtonEvent::BUTTON_EVENT_RELEASE:
-    Vortex::releaseButton();
+    Vortex::releaseButton(buttonID);
     break;
   default:
     break;
@@ -265,7 +477,7 @@ void TestFramework::launchIR(VButton *window, VButton::ButtonEvent type)
   }
   IRSimulator::startServer();
   m_IRLaunchButton.setEnabled(false);
-  Menus::openMenu(MENU_MODE_SHARING);
+  Vortex::openModeSharing();
 }
 
 void TestFramework::patternStripSelect(uint32_t x, uint32_t y, VSelectBox::SelectEvent sevent)
@@ -275,7 +487,13 @@ void TestFramework::patternStripSelect(uint32_t x, uint32_t y, VSelectBox::Selec
 
 void TestFramework::ledClick(VWindow *window)
 {
-  uint32_t led = LED_LAST - ((uint32_t)GetMenu(window->hwnd()) - LED_CIRCLE_ID);
+  uint32_t led;
+  if (LED_COUNT == 10) {
+    // the glove leds are reverse order
+    led = LED_LAST - ((uint32_t)GetMenu(window->hwnd()) - LED_CIRCLE_ID);
+  } else {
+    led = ((uint32_t)GetMenu(window->hwnd()) - LED_CIRCLE_ID);
+  }
   printf("Clicked led %u\n", led);
   m_curSelectedLed = (LedPos)led;
   handlePatternChange(true);
@@ -338,22 +556,23 @@ void TestFramework::show()
 
 bool TestFramework::handlePatternChange(bool force)
 {
-  if (!Modes::curMode() || !m_ledList) {
+  if (!VortexEngine::curMode()) {
     return false;
   }
   // don't want to create a callback mechanism just for the test framework to be
   // notified of pattern changes, I'll just watch the patternID each tick
-  Mode *targetMode = Modes::curMode();
+  Mode *targetMode = VortexEngine::curMode();
   if (!targetMode) {
     return false;
   }
   // cant do this it causes too much lag in the editor
+#if 0
   Menu *curMenu = Menus::curMenu();
   Mode *menuMode = Vortex::getMenuDemoMode();
   if (menuMode) {
     targetMode = menuMode;
   }
-
+#endif
   // check to see if the mode changed
   if (!force && m_curMode.equals(targetMode)) {
     return false;
@@ -364,7 +583,7 @@ bool TestFramework::handlePatternChange(bool force)
   m_curMode.init();
   // the realpos is used to target the actual index of pattern to run
   LedPos realPos = (LedPos)(m_curSelectedLed);
-  if (isMultiLedPatternID(m_curMode.getPatternID(realPos))) {
+  if (m_curMode.isMultiLed()) {
     // if it's multi led then the real pos is just the first
     realPos = (LedPos)(LED_FIRST);
   }
@@ -436,7 +655,7 @@ DWORD __stdcall TestFramework::arduino_loop_thread(void *arg)
   }
   if (IRSimulator::isConnected()) {
     framework->m_IRLaunchButton.setEnabled(false);
-    Menus::openMenu(MENU_MODE_SHARING);
+    Vortex::openModeSharing();
   }
   // init tickrate and time offset to match the sliders
   while (framework->m_initialized && framework->m_keepGoing) {
@@ -494,12 +713,27 @@ void TestFramework::setWindowPos(uint32_t x, uint32_t y)
 // called when engine reads digital pins, use this to feed button presses to the engine
 long TestFramework::TestFrameworkCallbacks::checkPinHook(uint32_t pin)
 {
-  if (pin == 1) {
-    // get button state
-    if (Vortex::isButtonPressed()) {
+  switch (LED_COUNT) {
+  case 28: // orbit
+    if (pin == 19 && Vortex::isButtonPressed(0)) {
       return LOW;
     }
-    return HIGH;
+    if (pin == 20 && Vortex::isButtonPressed(1)) {
+      return LOW;
+    }
+    break;
+  case 10: // glove
+  case 3:  // handle
+    if (pin == 1 && Vortex::isButtonPressed()) {
+      return LOW;
+    }
+    break;
+  case 2:  // finger
+    if (pin == 9 && Vortex::isButtonPressed()) {
+      return LOW;
+    }
+  default:
+    break;
   }
   return HIGH;
 }

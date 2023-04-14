@@ -65,6 +65,12 @@ public:
   static DWORD __stdcall arduino_loop_thread(void *arg);
 
 private:
+  // initializes the led positions for various devices
+  void setupLedPositionsOrbit();
+  void setupLedPositionsGlove();
+  void setupLedPositionsHandle();
+  void setupLedPositionsFinger();
+
   class TestFrameworkCallbacks : public VortexCallbacks
   {
   public:
@@ -106,7 +112,7 @@ private:
   void ledClick(VWindow *window);
   void setTickrate(uint32_t x, uint32_t y, VSelectBox::SelectEvent sevent);
 
-  static const uint32_t width = 460;
+  static const uint32_t width = LED_COUNT == 28 ? 610 : 460;
   static const uint32_t height = 460;
 
   static const uint32_t patternStripHeight = 30;
@@ -120,20 +126,26 @@ private:
 
   // new stuff
   VWindow m_window;
+  VSelectBox m_orbitBox;
   VSelectBox m_gloveBox;
+  VSelectBox m_handleBox;
+  VSelectBox m_fingerBox;
   VSelectBox m_patternStrip;
   VSelectBox m_tickrateSlider;
   VButton m_button;
+  VButton m_button2;
   VButton m_IRLaunchButton;
   VCircle m_leds[LED_COUNT];
-
   RECT m_ledPos[LED_COUNT];
 
   HANDLE m_pauseMutex;
 
   HINSTANCE m_hInst;
   FILE *m_consoleHandle;
+  HBITMAP m_orbitBMP;
   HBITMAP m_gloveBMP;
+  HBITMAP m_handleBMP;
+  HBITMAP m_fingerBMP;
   HICON m_hIcon;
   HANDLE m_loopThread;
 
@@ -149,6 +161,8 @@ private:
 
   bool m_initialized;
   bool m_buttonPressed;
+  bool m_buttonPressed2;
+
   bool m_keepGoing;
 
   volatile bool m_isPaused;
