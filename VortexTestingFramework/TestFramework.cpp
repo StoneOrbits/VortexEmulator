@@ -127,8 +127,8 @@ bool TestFramework::init(HINSTANCE hInstance)
   m_orbitBox.setDrawVLine(false);
   m_orbitBox.setDrawCircle(false);
   m_orbitBox.setBackground(m_orbitBMP);
-  // disable the glove so it doesn't steal clicks from the leds
   m_orbitBox.setEnabled(false);
+  m_orbitBox.setVisible(LED_COUNT == 28);
 
   m_gloveBox.init(m_hInst, m_window, "Glove", BACK_COL, 250, 320, 86, 30, 0, 0, nullptr);
   m_gloveBox.setDoCapture(false);
@@ -137,6 +137,7 @@ bool TestFramework::init(HINSTANCE hInstance)
   m_gloveBox.setDrawCircle(false);
   m_gloveBox.setBackground(m_gloveBMP);
   m_gloveBox.setEnabled(false);
+  m_gloveBox.setVisible(LED_COUNT == 10);
 
   m_handleBox.init(m_hInst, m_window, "Handle", BACK_COL, 285, 187, 87, 90, 0, 0, nullptr);
   m_handleBox.setDoCapture(false);
@@ -145,6 +146,7 @@ bool TestFramework::init(HINSTANCE hInstance)
   m_handleBox.setDrawCircle(false);
   m_handleBox.setBackground(m_handleBMP);
   m_handleBox.setEnabled(false);
+  m_handleBox.setVisible(LED_COUNT == 3);
 
   m_fingerBox.init(m_hInst, m_window, "Finger", BACK_COL, 250, 320, 86, 30, 0, 0, nullptr);
   m_fingerBox.setDoCapture(false);
@@ -153,6 +155,7 @@ bool TestFramework::init(HINSTANCE hInstance)
   m_fingerBox.setDrawCircle(false);
   m_fingerBox.setBackground(m_fingerBMP);
   m_fingerBox.setEnabled(false);
+  m_fingerBox.setVisible(LED_COUNT == 2);
 
   m_patternStrip.init(m_hInst, m_window, "Pattern Strip", BACK_COL, width, patternStripHeight, -2, 375, 2, 11234, patternStripSelectCallback); 
   m_patternStrip.setDrawHLine(false);
