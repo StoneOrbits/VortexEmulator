@@ -117,13 +117,9 @@ bool TestFramework::init(HINSTANCE hInstance)
   // set the icon
   SendMessage(m_window.hwnd(), WM_SETICON, ICON_BIG, (LPARAM)m_hIcon);
 
-  m_orbitBMP = (HBITMAP)LoadImage(m_hInst, MAKEINTRESOURCE(IDB_BITMAP1), IMAGE_BITMAP, 0, 0, 0);
-  m_gloveBMP = (HBITMAP)LoadImage(m_hInst, MAKEINTRESOURCE(IDB_BITMAP2), IMAGE_BITMAP, 0, 0, 0);
-  m_handleBMP = (HBITMAP)LoadImage(m_hInst, MAKEINTRESOURCE(IDB_BITMAP3), IMAGE_BITMAP, 0, 0, 0);
-  m_fingerBMP = (HBITMAP)LoadImage(m_hInst, MAKEINTRESOURCE(IDB_BITMAP4), IMAGE_BITMAP, 0, 0, 0);
-
   switch (LED_COUNT) {
   case 28: // orbit
+    m_orbitBMP = (HBITMAP)LoadImage(m_hInst, MAKEINTRESOURCE(IDB_BITMAP1), IMAGE_BITMAP, 0, 0, 0);
     m_orbitBox.init(m_hInst, m_window, "Orbit", BACK_COL, 500, 250, 66, 30, 0, 0, nullptr);
     m_orbitBox.setDoCapture(false);
     m_orbitBox.setDrawHLine(false);
@@ -136,6 +132,7 @@ bool TestFramework::init(HINSTANCE hInstance)
     m_button2.init(m_hInst, m_window, "Click2", BACK_COL, 48, 24, 290, 336, CLICK_BUTTON_ID + 1, buttonClickCallback);
     break;
   case 10: // glove
+    m_gloveBMP = (HBITMAP)LoadImage(m_hInst, MAKEINTRESOURCE(IDB_BITMAP2), IMAGE_BITMAP, 0, 0, 0);
     m_gloveBox.init(m_hInst, m_window, "Glove", BACK_COL, 250, 320, 86, 30, 0, 0, nullptr);
     m_gloveBox.setDoCapture(false);
     m_gloveBox.setDrawHLine(false);
@@ -144,11 +141,10 @@ bool TestFramework::init(HINSTANCE hInstance)
     m_gloveBox.setBackground(m_gloveBMP);
     m_gloveBox.setEnabled(false);
     m_gloveBox.setVisible(LED_COUNT == 10);
-
-
     m_button.init(m_hInst, m_window, "Click", BACK_COL, 48, 24, 198, 312, CLICK_BUTTON_ID, buttonClickCallback);
     break;
   case 3: // handle
+    m_handleBMP = (HBITMAP)LoadImage(m_hInst, MAKEINTRESOURCE(IDB_BITMAP3), IMAGE_BITMAP, 0, 0, 0);
     m_handleBox.init(m_hInst, m_window, "Handle", BACK_COL, 285, 187, 87, 90, 0, 0, nullptr);
     m_handleBox.setDoCapture(false);
     m_handleBox.setDrawHLine(false);
@@ -160,6 +156,7 @@ bool TestFramework::init(HINSTANCE hInstance)
     m_button.init(m_hInst, m_window, "Click", BACK_COL, 48, 24, 198, 312, CLICK_BUTTON_ID, buttonClickCallback);
     break;
   case 2: // finger
+    m_fingerBMP = (HBITMAP)LoadImage(m_hInst, MAKEINTRESOURCE(IDB_BITMAP4), IMAGE_BITMAP, 0, 0, 0);
     m_fingerBox.init(m_hInst, m_window, "Finger", BACK_COL, 250, 320, 86, 30, 0, 0, nullptr);
     m_fingerBox.setDoCapture(false);
     m_fingerBox.setDrawHLine(false);
