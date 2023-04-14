@@ -148,7 +148,7 @@ bool IRSimulator::startServer()
   printf("Success listening on *:8080\n");
   m_isServer = true;
   g_pTestFramework->setWindowTitle(g_pTestFramework->getWindowTitle() + " Receiver");
-  g_pTestFramework->setWindowPos(975, 350);
+  g_pTestFramework->setWindowPos(LED_COUNT == 28 ? 975 : 900, 350);
 
   // launch another instance of the test framwork to act as the sender
   if (m_isServer) {
@@ -214,7 +214,7 @@ bool IRSimulator::startClient()
   }
   printf("Success initializing network client\n");
   g_pTestFramework->setWindowTitle(g_pTestFramework->getWindowTitle() + " Sender");
-  g_pTestFramework->setWindowPos(375, 350);
+  g_pTestFramework->setWindowPos(LED_COUNT == 28 ? 375 : 450, 350);
   m_isConnected = true;
   //info("Connected to server %s", config.server_ip.c_str());
   return true;
