@@ -682,19 +682,27 @@ void TestFramework::setWindowPos(uint32_t x, uint32_t y)
 // called when engine reads digital pins, use this to feed button presses to the engine
 long TestFramework::TestFrameworkCallbacks::checkPinHook(uint32_t pin)
 {
-  if (pin == 19) {
-    // get button state
-    if (Vortex::isButtonPressed(0)) {
+  switch (LED_COUNT) {
+  case 28: // orbit
+    if (pin == 19 && Vortex::isButtonPressed(0)) {
       return LOW;
     }
-    return HIGH;
-  }
-  if (pin == 20) {
-    // get button state
-    if (Vortex::isButtonPressed(1)) {
+    if (pin == 20 && Vortex::isButtonPressed(1)) {
       return LOW;
     }
-    return HIGH;
+    break;
+  case 10: // glove
+  case 3:  // handle
+    if (pin == 1 && Vortex::isButtonPressed()) {
+      return LOW;
+    }
+    break;
+  case 2:  // finger
+    if (pin == 9 && Vortex::isButtonPressed()) {
+      return LOW;
+    }
+  default:
+    break;
   }
   return HIGH;
 }
