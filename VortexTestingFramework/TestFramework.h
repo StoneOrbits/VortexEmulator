@@ -65,6 +65,12 @@ public:
   static DWORD __stdcall arduino_loop_thread(void *arg);
 
 private:
+  // initializes the led positions for various devices
+  void setupLedPositionsOrbit();
+  void setupLedPositionsGlove();
+  void setupLedPositionsHandle();
+  void setupLedPositionsFinger();
+
   class TestFrameworkCallbacks : public VortexCallbacks
   {
   public:

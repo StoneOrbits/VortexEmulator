@@ -188,7 +188,45 @@ bool TestFramework::init(HINSTANCE hInstance)
   m_button2.init(m_hInst, m_window, "Click2", BACK_COL, 48, 24, 290, 336, CLICK_BUTTON_ID + 1, buttonClickCallback);
   m_IRLaunchButton.init(m_hInst, m_window, "Connect IR", BACK_COL, 80, 24, 350, 340, LAUNCH_IR_ID, launchIRCallback);
   m_IRLaunchButton.setVisible(false);
+   
+  // =====
+  setupLedPositions();
 
+  // create an accelerator table for dispatching hotkeys as WM_COMMANDS
+  // for specific menu IDs
+  ACCEL accelerators[] = {
+    // ctrl + shift + I   open the IR connection
+    { FCONTROL | FSHIFT | FVIRTKEY, 'I', LAUNCH_IR_ID },
+  };
+  m_accelTable = CreateAcceleratorTable(accelerators, sizeof(accelerators) / sizeof(accelerators[0]));
+  if (!m_accelTable) {
+    // error!
+  }
+
+  if (!IRSimulator::init()) {
+    printf("IRSim failed to init\n");
+  }
+
+  if (!EditorPipe::init()) {
+    if (!IRSimulator::isConnected()) {
+      printf("Pipe failed to init\n");
+    }
+  }
+
+  // launch the 'loop' thread
+  m_loopThread = CreateThread(NULL, 0, TestFramework::arduino_loop_thread, this, 0, NULL);
+  if (!m_loopThread) {
+    // error
+    return false;
+  }
+
+  m_initialized = true;
+
+  return true;
+}
+
+void TestFramework::setupLedPositionsOrbit()
+{
   // initialize the positions of all the leds
   uint32_t base_left = 92;
   uint32_t base_top = 50;
@@ -272,38 +310,18 @@ bool TestFramework::init(HINSTANCE hInstance)
     m_leds[i].init(m_hInst, m_window, to_string(0),
       BACK_COL, 21, 21, m_ledPos[i].left + 67, m_ledPos[i].top, LED_CIRCLE_ID + i, ledClickCallback);
   }
-    
-  // create an accelerator table for dispatching hotkeys as WM_COMMANDS
-  // for specific menu IDs
-  ACCEL accelerators[] = {
-    // ctrl + shift + I   open the IR connection
-    { FCONTROL | FSHIFT | FVIRTKEY, 'I', LAUNCH_IR_ID },
-  };
-  m_accelTable = CreateAcceleratorTable(accelerators, sizeof(accelerators) / sizeof(accelerators[0]));
-  if (!m_accelTable) {
-    // error!
-  }
+}
 
-  if (!IRSimulator::init()) {
-    printf("IRSim failed to init\n");
-  }
+void TestFramework::setupLedPositionsGlove()
+{
+}
 
-  if (!EditorPipe::init()) {
-    if (!IRSimulator::isConnected()) {
-      printf("Pipe failed to init\n");
-    }
-  }
+void TestFramework::setupLedPositionsHandle()
+{
+}
 
-  // launch the 'loop' thread
-  m_loopThread = CreateThread(NULL, 0, TestFramework::arduino_loop_thread, this, 0, NULL);
-  if (!m_loopThread) {
-    // error
-    return false;
-  }
-
-  m_initialized = true;
-
-  return true;
+void TestFramework::setupLedPositionsFinger()
+{
 }
 
 void TestFramework::cleanup()
