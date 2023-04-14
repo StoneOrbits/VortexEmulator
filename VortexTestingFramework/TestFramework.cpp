@@ -110,7 +110,7 @@ bool TestFramework::init(HINSTANCE hInstance)
 
   // load the main window
   m_window.init(m_hInst, "Vortex Emulator", BACK_COL, width, height, this, "VortexTestFramework");
-
+  
   // load the icon and background image
   m_hIcon = LoadIcon(m_hInst, MAKEINTRESOURCE(IDI_ICON1));
   // set the icon
@@ -189,8 +189,23 @@ bool TestFramework::init(HINSTANCE hInstance)
   m_IRLaunchButton.init(m_hInst, m_window, "Connect IR", BACK_COL, 80, 24, 350, 340, LAUNCH_IR_ID, launchIRCallback);
   m_IRLaunchButton.setVisible(false);
    
-  // =====
-  setupLedPositions();
+  // hardcoded switch optimizes to a single call based on engine led count
+  switch (LED_COUNT) {
+  case 28:
+    setupLedPositionsOrbit();
+    break;
+  case 10:
+    setupLedPositionsGlove();
+    break;
+  case 3:
+    setupLedPositionsHandle();
+    break;
+  case 2:
+    setupLedPositionsFinger();
+    break;
+  default:
+    break;
+  }
 
   // create an accelerator table for dispatching hotkeys as WM_COMMANDS
   // for specific menu IDs
@@ -392,6 +407,28 @@ void TestFramework::setupLedPositionsHandle()
 
 void TestFramework::setupLedPositionsFinger()
 {
+  // initialize the positions of all the leds
+  uint32_t base_left = 92;
+  uint32_t base_top = 50;
+  uint32_t radius = 15;
+  uint32_t dx = 24;
+  uint32_t dy = 30;
+
+  // thumb top/tip
+  m_ledPos[1].left = 196;
+  m_ledPos[1].top = 38;
+  m_ledPos[0].top = m_ledPos[1].top - 20;
+  m_ledPos[0].left = m_ledPos[1].left;
+
+  for (uint32_t i = 0; i < LED_COUNT; ++i) {
+    m_ledPos[i].right = m_ledPos[i].left + (radius * 2);
+    m_ledPos[i].bottom = m_ledPos[i].top + (radius * 2);
+  }
+
+  for (uint32_t i = 0; i < LED_COUNT; ++i) {
+    m_leds[i].init(m_hInst, m_window, to_string(0),
+      BACK_COL, 30, 30, m_ledPos[i].left, m_ledPos[i].top, LED_CIRCLE_ID + i, ledClickCallback);
+  }
 }
 
 void TestFramework::cleanup()
