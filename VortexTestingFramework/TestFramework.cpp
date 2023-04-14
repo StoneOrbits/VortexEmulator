@@ -121,41 +121,55 @@ bool TestFramework::init(HINSTANCE hInstance)
   m_handleBMP = (HBITMAP)LoadImage(m_hInst, MAKEINTRESOURCE(IDB_BITMAP3), IMAGE_BITMAP, 0, 0, 0);
   m_fingerBMP = (HBITMAP)LoadImage(m_hInst, MAKEINTRESOURCE(IDB_BITMAP4), IMAGE_BITMAP, 0, 0, 0);
 
-  m_orbitBox.init(m_hInst, m_window, "Orbit", BACK_COL, 500, 250, 66, 30, 0, 0, nullptr);
-  m_orbitBox.setDoCapture(false);
-  m_orbitBox.setDrawHLine(false);
-  m_orbitBox.setDrawVLine(false);
-  m_orbitBox.setDrawCircle(false);
-  m_orbitBox.setBackground(m_orbitBMP);
-  m_orbitBox.setEnabled(false);
-  m_orbitBox.setVisible(LED_COUNT == 28);
+  switch (LED_COUNT) {
+  case 28: // orbit
+    m_orbitBox.init(m_hInst, m_window, "Orbit", BACK_COL, 500, 250, 66, 30, 0, 0, nullptr);
+    m_orbitBox.setDoCapture(false);
+    m_orbitBox.setDrawHLine(false);
+    m_orbitBox.setDrawVLine(false);
+    m_orbitBox.setDrawCircle(false);
+    m_orbitBox.setBackground(m_orbitBMP);
+    m_orbitBox.setEnabled(false);
+    m_orbitBox.setVisible(LED_COUNT == 28);
+    m_button.init(m_hInst, m_window, "Click", BACK_COL, 48, 24, 290, 308, CLICK_BUTTON_ID, buttonClickCallback);
+    m_button2.init(m_hInst, m_window, "Click2", BACK_COL, 48, 24, 290, 336, CLICK_BUTTON_ID + 1, buttonClickCallback);
+    break;
+  case 10: // glove
+    m_gloveBox.init(m_hInst, m_window, "Glove", BACK_COL, 250, 320, 86, 30, 0, 0, nullptr);
+    m_gloveBox.setDoCapture(false);
+    m_gloveBox.setDrawHLine(false);
+    m_gloveBox.setDrawVLine(false);
+    m_gloveBox.setDrawCircle(false);
+    m_gloveBox.setBackground(m_gloveBMP);
+    m_gloveBox.setEnabled(false);
+    m_gloveBox.setVisible(LED_COUNT == 10);
 
-  m_gloveBox.init(m_hInst, m_window, "Glove", BACK_COL, 250, 320, 86, 30, 0, 0, nullptr);
-  m_gloveBox.setDoCapture(false);
-  m_gloveBox.setDrawHLine(false);
-  m_gloveBox.setDrawVLine(false);
-  m_gloveBox.setDrawCircle(false);
-  m_gloveBox.setBackground(m_gloveBMP);
-  m_gloveBox.setEnabled(false);
-  m_gloveBox.setVisible(LED_COUNT == 10);
 
-  m_handleBox.init(m_hInst, m_window, "Handle", BACK_COL, 285, 187, 87, 90, 0, 0, nullptr);
-  m_handleBox.setDoCapture(false);
-  m_handleBox.setDrawHLine(false);
-  m_handleBox.setDrawVLine(false);
-  m_handleBox.setDrawCircle(false);
-  m_handleBox.setBackground(m_handleBMP);
-  m_handleBox.setEnabled(false);
-  m_handleBox.setVisible(LED_COUNT == 3);
-
-  m_fingerBox.init(m_hInst, m_window, "Finger", BACK_COL, 250, 320, 86, 30, 0, 0, nullptr);
-  m_fingerBox.setDoCapture(false);
-  m_fingerBox.setDrawHLine(false);
-  m_fingerBox.setDrawVLine(false);
-  m_fingerBox.setDrawCircle(false);
-  m_fingerBox.setBackground(m_fingerBMP);
-  m_fingerBox.setEnabled(false);
-  m_fingerBox.setVisible(LED_COUNT == 2);
+    m_button.init(m_hInst, m_window, "Click", BACK_COL, 48, 24, 198, 312, CLICK_BUTTON_ID, buttonClickCallback);
+    break;
+  case 3: // handle
+    m_handleBox.init(m_hInst, m_window, "Handle", BACK_COL, 285, 187, 87, 90, 0, 0, nullptr);
+    m_handleBox.setDoCapture(false);
+    m_handleBox.setDrawHLine(false);
+    m_handleBox.setDrawVLine(false);
+    m_handleBox.setDrawCircle(false);
+    m_handleBox.setBackground(m_handleBMP);
+    m_handleBox.setEnabled(false);
+    m_handleBox.setVisible(LED_COUNT == 3);
+    m_button.init(m_hInst, m_window, "Click", BACK_COL, 48, 24, 198, 312, CLICK_BUTTON_ID, buttonClickCallback);
+    break;
+  case 2: // finger
+    m_fingerBox.init(m_hInst, m_window, "Finger", BACK_COL, 250, 320, 86, 30, 0, 0, nullptr);
+    m_fingerBox.setDoCapture(false);
+    m_fingerBox.setDrawHLine(false);
+    m_fingerBox.setDrawVLine(false);
+    m_fingerBox.setDrawCircle(false);
+    m_fingerBox.setBackground(m_fingerBMP);
+    m_fingerBox.setEnabled(false);
+    m_fingerBox.setVisible(LED_COUNT == 2);
+    m_button.init(m_hInst, m_window, "Click", BACK_COL, 48, 24, 198, 312, CLICK_BUTTON_ID, buttonClickCallback);
+    break;
+  }
 
   m_patternStrip.init(m_hInst, m_window, "Pattern Strip", BACK_COL, width, patternStripHeight, -2, 375, 2, 11234, patternStripSelectCallback); 
   m_patternStrip.setDrawHLine(false);
@@ -184,8 +198,6 @@ bool TestFramework::init(HINSTANCE hInstance)
   m_tickrateSlider.setSelection(0, 240);
   Vortex::setTickrate(150);
 
-  m_button.init(m_hInst, m_window, "Click", BACK_COL, 48, 24, 290, 308, CLICK_BUTTON_ID, buttonClickCallback);
-  m_button2.init(m_hInst, m_window, "Click2", BACK_COL, 48, 24, 290, 336, CLICK_BUTTON_ID + 1, buttonClickCallback);
   m_IRLaunchButton.init(m_hInst, m_window, "Connect IR", BACK_COL, 80, 24, 350, 340, LAUNCH_IR_ID, launchIRCallback);
   m_IRLaunchButton.setVisible(false);
    

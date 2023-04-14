@@ -112,7 +112,11 @@ private:
   void ledClick(VWindow *window);
   void setTickrate(uint32_t x, uint32_t y, VSelectBox::SelectEvent sevent);
 
+#if LED_COUNT == 28
   static const uint32_t width = 610;
+#else
+  static const uint32_t width = 460;
+#endif
   static const uint32_t height = 460;
 
   static const uint32_t patternStripHeight = 30;
