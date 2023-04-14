@@ -111,7 +111,7 @@ bool TestFramework::init(HINSTANCE hInstance)
 
   // load the main window
   m_window.init(m_hInst, "Vortex Emulator", BACK_COL, width, height, this, "VortexTestFramework");
-  
+
   // load the icon and background image
   m_hIcon = LoadIcon(m_hInst, MAKEINTRESOURCE(IDI_ICON1));
   // set the icon
@@ -565,6 +565,14 @@ bool TestFramework::handlePatternChange(bool force)
   if (!targetMode) {
     return false;
   }
+  // cant do this it causes too much lag in the editor
+#if 0
+  Menu *curMenu = Menus::curMenu();
+  Mode *menuMode = Vortex::getMenuDemoMode();
+  if (menuMode) {
+    targetMode = menuMode;
+  }
+#endif
   // check to see if the mode changed
   if (!force && m_curMode.equals(targetMode)) {
     return false;
@@ -575,6 +583,10 @@ bool TestFramework::handlePatternChange(bool force)
   m_curMode.init();
   // the realpos is used to target the actual index of pattern to run
   LedPos realPos = (LedPos)(m_curSelectedLed);
+  if (m_curMode.isMultiLed()) {
+    // if it's multi led then the real pos is just the first
+    realPos = (LedPos)(LED_FIRST);
+  }
   // grab the target pattern object that will run
   Pattern *targetPat = m_curMode.getPattern(realPos);
   if (!targetPat) {
