@@ -33,8 +33,10 @@ TestFramework *g_pTestFramework = nullptr;
 using namespace std;
 
 #define CLICK_BUTTON_ID 10001
+#define TICKRATE_SLIDER_ID 15001
 #define LED_CIRCLE_ID 20003
 #define LAUNCH_IR_ID  30001
+#define PATTERN_STRIP_ID  35001
 
 #define BACK_COL        RGB(40, 40, 40)
 
@@ -170,12 +172,12 @@ bool TestFramework::init(HINSTANCE hInstance)
     break;
   }
 
-  m_patternStrip.init(m_hInst, m_window, "Pattern Strip", BACK_COL, width, patternStripHeight, -2, 375, 2, 11234, patternStripSelectCallback); 
+  m_patternStrip.init(m_hInst, m_window, "Pattern Strip", BACK_COL, width, patternStripHeight, -2, 375, 2, PATTERN_STRIP_ID, patternStripSelectCallback); 
   m_patternStrip.setDrawHLine(false);
   m_patternStrip.setDrawVLine(false);
   m_patternStrip.setDrawCircle(false);
 
-  m_tickrateSlider.init(m_hInst, m_window, "Tickrate", BACK_COL, tickrateSliderWidth, tickrateSliderHeight, 30, 100, 1, 123433, setTickrateCallback);
+  m_tickrateSlider.init(m_hInst, m_window, "Tickrate", BACK_COL, tickrateSliderWidth, tickrateSliderHeight, 30, 100, 1, TICKRATE_SLIDER_ID, setTickrateCallback);
   m_tickrateSlider.setDrawCircle(false);
   m_tickrateSlider.setDrawVLine(false);
   m_tickrateSlider.setSelection(0, 30);
@@ -488,7 +490,12 @@ void TestFramework::patternStripSelect(uint32_t x, uint32_t y, VSelectBox::Selec
 
 void TestFramework::ledClick(VWindow *window)
 {
-  uint32_t led = ((uint32_t)GetMenu(window->hwnd()) - LED_CIRCLE_ID);
+  if (LED_COUNT == 10) {
+    // the glove leds are reverse order
+    uint32_t led = LED_LAST - ((uint32_t)GetMenu(window->hwnd()) - LED_CIRCLE_ID);
+  } else {
+    uint32_t led = ((uint32_t)GetMenu(window->hwnd()) - LED_CIRCLE_ID);
+  }
   printf("Clicked led %u\n", led);
   m_curSelectedLed = (LedPos)led;
   handlePatternChange(true);
