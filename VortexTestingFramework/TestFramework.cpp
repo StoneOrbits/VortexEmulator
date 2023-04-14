@@ -490,11 +490,12 @@ void TestFramework::patternStripSelect(uint32_t x, uint32_t y, VSelectBox::Selec
 
 void TestFramework::ledClick(VWindow *window)
 {
+  uint32_t led;
   if (LED_COUNT == 10) {
     // the glove leds are reverse order
-    uint32_t led = LED_LAST - ((uint32_t)GetMenu(window->hwnd()) - LED_CIRCLE_ID);
+    led = LED_LAST - ((uint32_t)GetMenu(window->hwnd()) - LED_CIRCLE_ID);
   } else {
-    uint32_t led = ((uint32_t)GetMenu(window->hwnd()) - LED_CIRCLE_ID);
+    led = ((uint32_t)GetMenu(window->hwnd()) - LED_CIRCLE_ID);
   }
   printf("Clicked led %u\n", led);
   m_curSelectedLed = (LedPos)led;
