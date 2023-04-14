@@ -197,7 +197,9 @@ bool TestFramework::init(HINSTANCE hInstance)
   m_tickrateSlider.setSelection(0, 240);
   Vortex::setTickrate(150);
 
-  m_IRLaunchButton.init(m_hInst, m_window, "Connect IR", BACK_COL, 80, 24, 350, 340, LAUNCH_IR_ID, launchIRCallback);
+  // move the IR launch button over to the right on the orbit build
+  m_IRLaunchButton.init(m_hInst, m_window, "Connect IR", BACK_COL, 80, 24, 
+    350 + ((LED_COUNT == 28) * 150), 340, LAUNCH_IR_ID, launchIRCallback);
   // the IR can only be launched on devices besides the microlight
   m_IRLaunchButton.setVisible(LED_COUNT != 2);
    
