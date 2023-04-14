@@ -314,6 +314,52 @@ void TestFramework::setupLedPositionsOrbit()
 
 void TestFramework::setupLedPositionsGlove()
 {
+    // initialize the positions of all the leds
+  uint32_t base_left = 92;
+  uint32_t base_top = 50;
+  uint32_t radius = 15;
+  uint32_t dx = 24;
+  uint32_t dy = 30;
+
+  // thumb top/tip
+  m_ledPos[0].left = 95;
+  m_ledPos[0].top = 175;
+  m_ledPos[1].top = m_ledPos[0].top - 20;
+  m_ledPos[1].left = m_ledPos[0].left - 20;
+
+  // index top/tip
+  m_ledPos[2].left = 135;
+  m_ledPos[2].top = 60;
+  m_ledPos[3].top = m_ledPos[2].top - 30;
+  m_ledPos[3].left = m_ledPos[2].left - 8;
+
+  // middle top/tip
+  m_ledPos[4].left = 195;
+  m_ledPos[4].top = 40;
+  m_ledPos[5].top = m_ledPos[4].top - 30;
+  m_ledPos[5].left = m_ledPos[4].left;
+
+  // ring top/tip
+  m_ledPos[6].left = 254;
+  m_ledPos[6].top = 60;
+  m_ledPos[7].top = m_ledPos[6].top - 30;
+  m_ledPos[7].left = m_ledPos[6].left + 8;
+
+  // pinky top/tip
+  m_ledPos[8].left = 300;
+  m_ledPos[8].top = 95;
+  m_ledPos[9].top = m_ledPos[8].top - 22;
+  m_ledPos[9].left = m_ledPos[8].left + 16;
+
+  for (uint32_t i = 0; i < LED_COUNT; ++i) {
+    m_ledPos[i].right = m_ledPos[i].left + (radius * 2);
+    m_ledPos[i].bottom = m_ledPos[i].top + (radius * 2);
+  }
+
+  for (uint32_t i = 0; i < LED_COUNT; ++i) {
+    m_leds[i].init(m_hInst, m_window, to_string(0),
+      BACK_COL, 30, 30, m_ledPos[i].left, m_ledPos[i].top, LED_CIRCLE_ID + i, ledClickCallback);
+  }
 }
 
 void TestFramework::setupLedPositionsHandle()
