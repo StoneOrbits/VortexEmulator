@@ -582,6 +582,7 @@ bool TestFramework::handlePatternChange(bool force)
   m_curMode = *targetMode;
   m_curMode.init();
   // the realpos is used to target the actual index of pattern to run
+  // where as the cur selected led might be the middle finger for example
   LedPos realPos = (LedPos)(m_curSelectedLed);
   if (m_curMode.isMultiLed()) {
     // if it's multi led then the real pos is just the first
@@ -593,7 +594,7 @@ bool TestFramework::handlePatternChange(bool force)
     return false;
   }
   // backup the selected led
-  RGBColor backupCol = m_ledList[LED_FIRST];
+  RGBColor backupCol = m_ledList[m_curSelectedLed];
   // begin the time simulation so we can tick forward
   Time::startSimulation();
   // the actual strip is twice the width of the window to allow scrolling
