@@ -565,14 +565,12 @@ bool TestFramework::handlePatternChange(bool force)
   if (!targetMode) {
     return false;
   }
-  // cant do this it causes too much lag in the editor
-#if 0
-  Menu *curMenu = Menus::curMenu();
+  // this causes lag in editor when the tickrate is low
+  // TODO: Find a way to detach this
   Mode *menuMode = Vortex::getMenuDemoMode();
   if (menuMode) {
     targetMode = menuMode;
   }
-#endif
   // check to see if the mode changed
   if (!force && m_curMode.equals(targetMode)) {
     return false;
