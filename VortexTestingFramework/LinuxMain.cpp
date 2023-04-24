@@ -3,7 +3,7 @@
 int main(int argc, char *argv[])
 {
   TestFramework framework;
-  framework.init();
+  framework.init(argc, argv);
 #ifndef WASM
   while (framework.stillRunning()) {
     framework.run();

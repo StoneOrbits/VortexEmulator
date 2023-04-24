@@ -29,7 +29,8 @@ public:
   ~TestFramework();
 
   // initialize the test framework
-  bool init();
+  bool init(int argc, char *argv[]);
+
   // run the test framework
   void run();
   void cleanup();
@@ -47,6 +48,8 @@ public:
   void installLeds(CRGB *leds, uint32_t count);
 
   static void printlog(const char *file, const char *func, int line, const char *msg, va_list list);
+
+  void setColoredOutput(bool output) { m_colored_output = output; }
 
 private:
   class TestFrameworkCallbacks : public VortexCallbacks
@@ -70,6 +73,7 @@ private:
   volatile bool m_isPaused;
   PatternID m_curPattern;
   Colorset m_curColorset;
+  bool m_colored_output;
 };
 
 extern TestFramework *g_pTestFramework;

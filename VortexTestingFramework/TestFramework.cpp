@@ -579,20 +579,9 @@ bool TestFramework::handlePatternChange(bool force)
   // update current mode
   m_curMode = *targetMode;
   m_curMode.init();
-  // the realpos is used to target the actual index of pattern to run
-  // where as the cur selected led might be the middle finger for example
-  LedPos realPos = (LedPos)(m_curSelectedLed);
-  if (m_curMode.isMultiLed()) {
-    // if it's multi led then the real pos is just the first
-    realPos = (LedPos)(LED_FIRST);
-  }
-  // grab the target pattern object that will run
-  Pattern *targetPat = m_curMode.getPattern(realPos);
-  if (!targetPat) {
-    return false;
-  }
-  // backup the selected led
-  RGBColor backupCol = m_ledList[m_curSelectedLed];
+  // backup the led colors
+  RGBColor backupCols[LED_COUNT];
+  memcpy(backupCols, m_ledList, sizeof(RGBColor) * LED_COUNT);
   // begin the time simulation so we can tick forward
   Time::startSimulation();
   // the actual strip is twice the width of the window to allow scrolling
@@ -603,8 +592,8 @@ bool TestFramework::handlePatternChange(bool force)
   }
   // clear and re-generate the pattern strip
   for (uint32_t x = 0; x < patternStripWidth; ++x) {
-    // run the pattern like normal
-    targetPat->play();
+    // run the current mode like normal
+    m_curMode.play();
     // tick the virtual time forward so that next play()
     // the engine will think a tick has passed
     Time::tickSimulation();
@@ -622,8 +611,8 @@ bool TestFramework::handlePatternChange(bool force)
   // back to where it was before starting the sim
   Time::endSimulation();
   // restore original color on the target led
-  m_ledList[m_curSelectedLed] = backupCol;
-  // redraw this led because it was written to to generate pattern strip
+  memcpy(m_ledList, backupCols, sizeof(RGBColor) * LED_COUNT);
+  // redraw this led because it was written to generate pattern strip
   m_leds[m_curSelectedLed].redraw();
   // update the background of the pattern strip
   m_patternStrip.setBackground(bitmap);

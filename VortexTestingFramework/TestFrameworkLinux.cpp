@@ -4,6 +4,7 @@
 #include <string>
 #include <ctime>
 
+#include <getopt.h>
 #include <stdio.h>
 
 #include "TestFrameworkLinux.h"
@@ -58,6 +59,8 @@ static void wasm_init()
   emscripten_set_keydown_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW, 0, 1, key_callback);
   emscripten_set_keyup_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW, 0, 1, key_callback);
   emscripten_set_main_loop(do_run, 0, true);
+  // turn colored output off in the wasm version
+  g_pTestFramework->setColoredOuptut(false);
 }
 #endif // ifdef WASM
 
@@ -68,7 +71,8 @@ TestFramework::TestFramework() :
   m_keepGoing(true),
   m_isPaused(true),
   m_curPattern(PATTERN_FIRST),
-  m_curColorset()
+  m_curColorset(),
+  m_colored_output(false)
 {
 }
 
@@ -76,7 +80,7 @@ TestFramework::~TestFramework()
 {
 }
 
-bool TestFramework::init()
+bool TestFramework::init(int argc, char *argv[])
 {
   if (g_pTestFramework) {
     return false;
@@ -86,6 +90,18 @@ bool TestFramework::init()
 #ifndef WASM
   printf("Initializing...\n");
 #endif
+
+  int opt;
+  while ((opt = getopt(argc, argv, "c")) != -1) {
+    switch (opt) {
+    case 'c':
+      m_colored_output = true;
+      break;
+    default: // '?' for unrecognized options
+      fprintf(stderr, "Usage: %s [-c]\n", argv[0]);
+      exit(EXIT_FAILURE);
+    }
+  }
 
   // do the arduino init/setup
   Vortex::init<TestFrameworkCallbacks>();
@@ -133,26 +149,26 @@ void TestFramework::show()
     return;
   }
   string out;
-#ifdef WASM
-  for (uint32_t i = 0; i < m_numLeds; ++i) {
-    char buf[128] = { 0 };
-    snprintf(buf, sizeof(buf), "#%06X|", m_ledList[i].raw());
-    out += buf;
+  if (m_colored_output) {
+    out += "\33[2K\033[A\r";
+    for (uint32_t i = 0; i < m_numLeds; ++i) {
+      out += "\x1B[0m|"; // opening |
+      out += "\x1B[48;2;"; // colorcode start
+      out += to_string(m_ledList[i].red) + ";"; // col red
+      out += to_string(m_ledList[i].green) + ";"; // col green
+      out += to_string(m_ledList[i].blue) + "m"; // col blue
+      out += "  "; // colored space
+      out += "\x1B[0m|"; // ending |
+    }
+    out += USAGE;
+  } else {
+    for (uint32_t i = 0; i < m_numLeds; ++i) {
+      char buf[128] = { 0 };
+      snprintf(buf, sizeof(buf), "#%06X|", m_ledList[i].raw());
+      out += buf;
+    }
+    out += "\n";
   }
-  out += "\n";
-#else
-  out += "\33[2K\033[A\r";
-  for (uint32_t i = 0; i < m_numLeds; ++i) {
-    out += "\x1B[0m|"; // opening |
-    out += "\x1B[48;2;"; // colorcode start
-    out += to_string(m_ledList[i].red) + ";"; // col red
-    out += to_string(m_ledList[i].green) + ";"; // col green
-    out += to_string(m_ledList[i].blue) + "m"; // col blue
-    out += "  "; // colored space
-    out += "\x1B[0m|"; // ending |
-  }
-  out += USAGE;
-#endif
   printf("%s", out.c_str());
   fflush(stdout);
 }
