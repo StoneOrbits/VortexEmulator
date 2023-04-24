@@ -95,7 +95,8 @@ TARGETS=\
 all: $(TARGETS)
 
 # unit test target
-tests: $(TESTS)
+tests:
+	cd tests/ && ./runtests.sh
 
 # target for detect_gibberish
 $(OUTTARGET): $(DEPS)

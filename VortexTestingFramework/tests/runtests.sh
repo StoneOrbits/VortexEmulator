@@ -1,6 +1,7 @@
 #!/bin/bash
 
-VORTEX=../vortex
+VALGRIND="valgrind --quiet --leak-check=full --show-leak-kinds=all"
+VORTEX="../vortex"
 
 if [ ! -x $VORTEX ]; then
   make -C ../
@@ -25,7 +26,7 @@ for FILE in *.test; do
   OUTPUT="tmp/${FILE}.output"
   DIFF="tmp/${FILE}.diff"
   tail -n +$DIVIDER "$FILE" &> $EXPECTED
-  $VORTEX <<< $INPUT &> $OUTPUT
+  $VALGRIND $VORTEX <<< $INPUT &> $OUTPUT
   diff -q $EXPECTED $OUTPUT &> $DIFF
   if [ $? -eq 0 ]; then
     echo -e "\e[32mSUCCESS\e[0m"
