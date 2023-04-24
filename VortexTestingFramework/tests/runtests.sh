@@ -31,7 +31,7 @@ for FILE in *.test; do
   OUTPUT="tmp/${FILE}.output"
   DIFF="tmp/${FILE}.diff"
   tail -n +$DIVIDER "$FILE" &> $EXPECTED
-  $VALGRIND $VORTEX <<< $INPUT &> $OUTPUT
+  $VALGRIND $VORTEX -t <<< $INPUT &> $OUTPUT
   diff -q $EXPECTED $OUTPUT &> $DIFF
   if [ $? -eq 0 ]; then
     echo -e "\e[32mSUCCESS\e[0m"

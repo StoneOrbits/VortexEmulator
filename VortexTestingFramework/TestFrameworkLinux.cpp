@@ -31,7 +31,7 @@ TestFramework *g_pTestFramework = nullptr;
 
 using namespace std;
 
-#define USAGE   "a = short press | s = med press | d = enter ringmenu | f = toggle pressed | q = quit"
+#define USAGE   "[a] short press | [s] med press | [d] enter menus | [f] toggle pressed | [w] wait | [<digit>] repeat last | [q] quit"
 
 #ifdef WASM // Web assembly glue
 #include <emscripten/html5.h>
@@ -72,7 +72,9 @@ TestFramework::TestFramework() :
   m_isPaused(true),
   m_curPattern(PATTERN_FIRST),
   m_curColorset(),
-  m_colored_output(false)
+  m_coloredOutput(false),
+  m_noTimestep(false),
+  m_inPlace(false)
 {
 }
 
@@ -92,19 +94,31 @@ bool TestFramework::init(int argc, char *argv[])
 #endif
 
   int opt;
-  while ((opt = getopt(argc, argv, "c")) != -1) {
+  while ((opt = getopt(argc, argv, "cti")) != -1) {
     switch (opt) {
     case 'c':
-      m_colored_output = true;
+      // if the user wants pretty colors
+      m_coloredOutput = true;
+      break;
+    case 't':
+      // if the user wants to bypass timestep
+      m_noTimestep = true;
+      break;
+    case 'i':
+      // if the user wants to print in-place (on one line)
+      m_inPlace = true;
       break;
     default: // '?' for unrecognized options
-      fprintf(stderr, "Usage: %s [-c]\n", argv[0]);
+      fprintf(stderr, "Usage: %s [-cti]\n", argv[0]);
       exit(EXIT_FAILURE);
     }
   }
 
   // do the arduino init/setup
   Vortex::init<TestFrameworkCallbacks>();
+
+  // whether to tick instantly or not
+  Vortex::setInstantTimestep(m_noTimestep);
 
   printf("Initialized!\n");
   printf("%s\n", USAGE);
@@ -134,6 +148,9 @@ void TestFramework::run()
 void TestFramework::cleanup()
 {
   DEBUG_LOG("Quitting...");
+  if (m_inPlace) {
+    printf("\n");
+  }
   m_keepGoing = false;
   m_isPaused = false;
   Vortex::cleanup();
@@ -149,8 +166,10 @@ void TestFramework::show()
     return;
   }
   string out;
-  if (m_colored_output) {
+  if (m_inPlace) {
     out += "\33[2K\033[A\r";
+  }
+  if (m_coloredOutput) {
     for (uint32_t i = 0; i < m_numLeds; ++i) {
       out += "\x1B[0m|"; // opening |
       out += "\x1B[48;2;"; // colorcode start
@@ -160,14 +179,17 @@ void TestFramework::show()
       out += "  "; // colored space
       out += "\x1B[0m|"; // ending |
     }
-    out += USAGE;
   } else {
     for (uint32_t i = 0; i < m_numLeds; ++i) {
       char buf[128] = { 0 };
       snprintf(buf, sizeof(buf), "#%06X|", m_ledList[i].raw());
       out += buf;
     }
+  }
+  if (!m_inPlace) {
     out += "\n";
+  } else {
+    out += USAGE;
   }
   printf("%s", out.c_str());
   fflush(stdout);

@@ -49,7 +49,9 @@ public:
 
   static void printlog(const char *file, const char *func, int line, const char *msg, va_list list);
 
-  void setColoredOutput(bool output) { m_colored_output = output; }
+  void setColoredOutput(bool output) { m_coloredOutput = output; }
+  void setNoTimestep(bool timestep) { m_noTimestep = timestep; }
+  void setInPlace(bool inplace) { m_inPlace = inplace; }
 
 private:
   class TestFrameworkCallbacks : public VortexCallbacks
@@ -73,7 +75,9 @@ private:
   volatile bool m_isPaused;
   PatternID m_curPattern;
   Colorset m_curColorset;
-  bool m_colored_output;
+  bool m_coloredOutput;
+  bool m_noTimestep;
+  bool m_inPlace;
 };
 
 extern TestFramework *g_pTestFramework;
