@@ -3,11 +3,11 @@
 VALGRIND="valgrind --quiet --leak-check=full --show-leak-kinds=all"
 VORTEX="../vortex"
 
-if [ ! -x $VORTEX ]; then
+if [ ! -x "$VORTEX" ]; then
   make -C ../
 fi
 
-if [ ! -x $VORTEX ]; then
+if [ ! -x "$VORTEX" ]; then
   echo "Could not find $VORTEX"
   exit
 fi
@@ -37,6 +37,11 @@ for FILE in *.test; do
   fi
 done
 
+# check if all test succeeded
 if [ $ALLSUCCES -eq 1 ]; then
+  # if so clear the tmp folder
   rm -rf tmp
+else
+  # otherwise cat the last diff
+  cat $DIFF
 fi
