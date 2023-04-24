@@ -3,23 +3,24 @@
 VALGRIND="valgrind --quiet --leak-check=full --show-leak-kinds=all"
 VORTEX="../vortex"
 
+echo -e -n "\e[33mBuilding Vortex...\e[0m"
 make -C ../ &> /dev/null
 if [ $? -ne 0 ]; then
-  echo "Failed to build Vortex!"
+  echo -e "\e[31mFailed to build Vortex!\e[0m"
   exit
 fi
-
 if [ ! -x "$VORTEX" ]; then
-  echo "Could not find $VORTEX"
+  echo -e "\e[31mCould not find Vortex!\e[0m"
   exit
 fi
+echo -e "\e[32mSuccess\e[0m"
 
 rm -rf tmp
 mkdir tmp
 
 ALLSUCCES=1
 
-echo -e "\e[33m== [\e[97mVORTEX INTEGRATION TESTS\e[33m] ==\e[0m"
+echo -e "\e[33m== [\e[97mRUNNING INTEGRATION TESTS\e[33m] ==\e[0m"
 
 for FILE in *.test; do
   INPUT="$(grep "Input=" $FILE | cut -d= -f2)"
