@@ -18,6 +18,11 @@ echo -e "\e[32mSuccess\e[0m"
 rm -rf tmp
 mkdir tmp
 
+FILES=*.test
+NUMFILES="$(echo $FILES | wc -w)"
+
+echo -e "\e[33m== [\e[31mRECORDING \e[97m$NUMFILES INTEGRATION TESTS\e[33m] ==\e[0m"
+
 for FILE in *.test; do
   INPUT="$(grep "Input=" $FILE | cut -d= -f2)"
   BRIEF="$(grep "Brief=" $FILE | cut -d= -f2)"

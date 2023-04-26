@@ -20,12 +20,16 @@ mkdir tmp
 
 ALLSUCCES=1
 
-echo -e "\e[33m== [\e[97mRUNNING INTEGRATION TESTS\e[33m] ==\e[0m"
+FILES=*.test
+NUMFILES="$(echo $FILES | wc -w)"
 
-for FILE in *.test; do
+echo -e "\e[33m== [\e[97mRUNNING $NUMFILES INTEGRATION TESTS\e[33m] ==\e[0m"
+
+for FILE in $FILES; do
   INPUT="$(grep "Input=" $FILE | cut -d= -f2)"
   BRIEF="$(grep "Brief=" $FILE | cut -d= -f2)"
-  echo -e -n "\e[33mTesting [\e[97m$BRIEF\e[33m]... \e[0m"
+  TESTNUM="$(echo $FILE | cut -d_ -f1)"
+  echo -e -n "\e[33mTesting $TESTNUM [\e[97m$BRIEF\e[33m]... \e[0m"
   DIVIDER=$(grep -n "Initializing..." $FILE | cut -f1 -d:)
   EXPECTED="tmp/${FILE}.expected"
   OUTPUT="tmp/${FILE}.output"
