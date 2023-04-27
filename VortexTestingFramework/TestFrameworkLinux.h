@@ -78,6 +78,11 @@ private:
   bool m_coloredOutput;
   bool m_noTimestep;
   bool m_inPlace;
+  bool m_record;
+  // to pipe stuff into the engine
+  int m_pipe_fd[2];
+  int m_saved_stdin;
+  std::string m_inputBuffer;
 };
 
 extern TestFramework *g_pTestFramework;

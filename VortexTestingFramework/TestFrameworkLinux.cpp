@@ -1,10 +1,13 @@
+#include <algorithm>
 #include <iostream>
 #include <sstream>
 #include <iomanip>
 #include <string>
 #include <ctime>
 
+#include <unistd.h>
 #include <getopt.h>
+#include <fcntl.h>
 #include <stdio.h>
 
 #include "TestFrameworkLinux.h"
@@ -26,6 +29,8 @@
 
 #include "Patterns/Pattern.h"
 #include "Patterns/single/SingleLedPattern.h"
+
+#define RECORD_FILE "recorded_input.txt"
 
 TestFramework *g_pTestFramework = nullptr;
 
@@ -74,12 +79,33 @@ TestFramework::TestFramework() :
   m_curColorset(),
   m_coloredOutput(false),
   m_noTimestep(false),
-  m_inPlace(false)
+  m_inPlace(false),
+  m_record(false)
 {
 }
 
 TestFramework::~TestFramework()
 {
+}
+
+// Define the long options
+static struct option long_options[] = {
+  {"color", no_argument, nullptr, 'c'},
+  {"no-timestep", no_argument, nullptr, 't'},
+  {"in-place", no_argument, nullptr, 'i'},
+  {"record", no_argument, nullptr, 'r'},
+  {nullptr, 0, nullptr, 0}
+};
+
+static void print_usage(const char* program_name) 
+{
+  fprintf(stderr, "Usage: %s [options]\n", program_name);
+  fprintf(stderr, "Options:\n");
+  fprintf(stderr, "  -c, --color             Use console color codes to represent led colors\n");
+  fprintf(stderr, "  -t, --no-timestep      Bypass the timestep and run as fast as possible\n");
+  fprintf(stderr, "  -i, --in-place         Print the output in-place (interactive mode)\n");
+  fprintf(stderr, "  -r, --record           Record the inputs and dump to a file after (" RECORD_FILE ")\n");
+  fprintf(stderr, "  -h, --help             Display this help message\n");
 }
 
 bool TestFramework::init(int argc, char *argv[])
@@ -94,7 +120,8 @@ bool TestFramework::init(int argc, char *argv[])
 #endif
 
   int opt;
-  while ((opt = getopt(argc, argv, "cti")) != -1) {
+  int option_index = 0;
+  while ((opt = getopt_long(argc, argv, "ctirh", long_options, &option_index)) != -1) {
     switch (opt) {
     case 'c':
       // if the user wants pretty colors
@@ -108,8 +135,16 @@ bool TestFramework::init(int argc, char *argv[])
       // if the user wants to print in-place (on one line)
       m_inPlace = true;
       break;
+    case 'r':
+      // record the inputs and dump them to a file after
+      m_record = true;
+      break;
+    case 'h':
+      // print usage and exit
+      print_usage(argv[0]);
+      exit(EXIT_SUCCESS);
     default: // '?' for unrecognized options
-      fprintf(stderr, "Usage: %s [-cti]\n", argv[0]);
+      print_usage(argv[0]);
       exit(EXIT_FAILURE);
     }
   }
@@ -117,8 +152,9 @@ bool TestFramework::init(int argc, char *argv[])
   // do the arduino init/setup
   Vortex::init<TestFrameworkCallbacks>();
 
-  // whether to tick instantly or not
+  // whether to tick instantly or not, and whether to record commands
   Vortex::setInstantTimestep(m_noTimestep);
+  Vortex::enableCommandLog(m_record);
 
   printf("Initialized!\n");
   printf("%s\n", USAGE);
@@ -135,6 +171,8 @@ bool TestFramework::init(int argc, char *argv[])
   return true;
 }
 
+
+
 void TestFramework::run()
 {
   if (!stillRunning()) {
@@ -150,6 +188,17 @@ void TestFramework::cleanup()
   DEBUG_LOG("Quitting...");
   if (m_inPlace) {
     printf("\n");
+  }
+  if (m_record) {
+    // Open the file in write mode
+    FILE *outputFile = fopen(RECORD_FILE, "w");
+    if (outputFile) {
+      // Print the recorded input to the file
+      fprintf(outputFile, "%s", Vortex::getCommandLog().c_str());
+      // Close the output file
+      fclose(outputFile);
+    }
+    printf("Wrote recorded input to " RECORD_FILE "\n");
   }
   m_keepGoing = false;
   m_isPaused = false;
