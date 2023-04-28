@@ -5,8 +5,11 @@
 #include <string>
 #include <ctime>
 
+#include <sys/ioctl.h>
+#include <termios.h>
 #include <unistd.h>
 #include <getopt.h>
+#include <stdlib.h>
 #include <fcntl.h>
 #include <stdio.h>
 
@@ -36,7 +39,13 @@ TestFramework *g_pTestFramework = nullptr;
 
 using namespace std;
 
-#define USAGE   "[a] short press | [s] med press | [d] enter menus | [f] toggle pressed | [w] wait | [<digit>] repeat last | [q] quit"
+#define USAGE   "\n[a] click                                     " \
+                "\n[s] long click                                " \
+                "\n[d] enter menus                               " \
+                "\n[f] toggle pressed                            " \
+                "\n[w] wait                                      " \
+                "\n[<digit>] repeat last command n times         " \
+                "\n[q] quit                                      "
 
 #ifdef WASM // Web assembly glue
 #include <emscripten/html5.h>
@@ -79,6 +88,7 @@ TestFramework::TestFramework() :
   m_curColorset(),
   m_coloredOutput(false),
   m_noTimestep(false),
+  m_lockstep(false),
   m_inPlace(false),
   m_record(false)
 {
@@ -101,11 +111,46 @@ static void print_usage(const char* program_name)
 {
   fprintf(stderr, "Usage: %s [options]\n", program_name);
   fprintf(stderr, "Options:\n");
-  fprintf(stderr, "  -c, --color             Use console color codes to represent led colors\n");
+  fprintf(stderr, "  -c, --color            Use console color codes to represent led colors\n");
   fprintf(stderr, "  -t, --no-timestep      Bypass the timestep and run as fast as possible\n");
+  fprintf(stderr, "  -l, --lockstep         Only step once each time an input is received\n");
   fprintf(stderr, "  -i, --in-place         Print the output in-place (interactive mode)\n");
   fprintf(stderr, "  -r, --record           Record the inputs and dump to a file after (" RECORD_FILE ")\n");
   fprintf(stderr, "  -h, --help             Display this help message\n");
+}
+
+struct termios orig_term_attr = {0};
+
+static void restore_terminal()
+{
+  tcsetattr(STDIN_FILENO, TCSANOW, &orig_term_attr);
+}
+
+void set_terminal_nonblocking() {
+  struct termios term_attr = {0};
+
+  // Get the current terminal attributes and store them
+  tcgetattr(STDIN_FILENO, &term_attr);
+  orig_term_attr = term_attr;
+
+  // Set the terminal in non-canonical mode (raw mode)
+  term_attr.c_lflag &= ~(ICANON | ECHO);
+
+  // Set the minimum number of input bytes read at a time to 1
+  term_attr.c_cc[VMIN] = 1;
+
+  // Set the timeout for read to 0 (no waiting)
+  term_attr.c_cc[VTIME] = 0;
+
+  // Apply the new terminal attributes
+  tcsetattr(STDIN_FILENO, TCSANOW, &term_attr);
+
+  // Set the terminal to non-blocking mode
+  int flags = fcntl(STDIN_FILENO, F_GETFL, 0);
+  fcntl(STDIN_FILENO, F_SETFL, flags | O_NONBLOCK);
+
+  // Register the restore_terminal function to be called at exit
+  atexit(restore_terminal);
 }
 
 bool TestFramework::init(int argc, char *argv[])
@@ -114,10 +159,6 @@ bool TestFramework::init(int argc, char *argv[])
     return false;
   }
   g_pTestFramework = this;
-
-#ifndef WASM
-  printf("Initializing...\n");
-#endif
 
   int opt;
   int option_index = 0;
@@ -130,6 +171,10 @@ bool TestFramework::init(int argc, char *argv[])
     case 't':
       // if the user wants to bypass timestep
       m_noTimestep = true;
+      break;
+    case 'l':
+      // if the user wants to step in lockstep with the engine
+      m_lockstep = true;
       break;
     case 'i':
       // if the user wants to print in-place (on one line)
@@ -155,9 +200,18 @@ bool TestFramework::init(int argc, char *argv[])
   // whether to tick instantly or not, and whether to record commands
   Vortex::setInstantTimestep(m_noTimestep);
   Vortex::enableCommandLog(m_record);
+  Vortex::enableLockstep(m_lockstep);
 
-  printf("Initialized!\n");
-  printf("%s\n", USAGE);
+  if (m_inPlace && !system("clear")) {
+    printf("Failed to clear\n");
+  }
+
+  if (m_inPlace) {
+    printf("Initialized!\n");
+    printf("%s\n", USAGE);
+  }
+
+  set_terminal_nonblocking();
 
   m_initialized = true;
 
@@ -170,8 +224,6 @@ bool TestFramework::init(int argc, char *argv[])
 
   return true;
 }
-
-
 
 void TestFramework::run()
 {
@@ -216,7 +268,7 @@ void TestFramework::show()
   }
   string out;
   if (m_inPlace) {
-    out += "\33[2K\033[A\r";
+    out += "\33[2K\033[8A\r";
   }
   if (m_coloredOutput) {
     for (uint32_t i = 0; i < m_numLeds; ++i) {

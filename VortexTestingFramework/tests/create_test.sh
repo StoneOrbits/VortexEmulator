@@ -1,19 +1,31 @@
 #!/bin/bash
 
+# Color definitions
+RED="$(tput setaf 1)"
+GREEN="$(tput setaf 2)"
+YELLOW="$(tput setaf 3)"
+WHITE="$(tput setaf 7)"
+NC="$(tput sgr0)" # No Color
+
+# Function to display colored text
+colored() {
+  printf "%s%s%s" "${!1}" "${2}" "${NC}"
+}
+
 VORTEX="../vortex"
 OUTPUT_FILE="recorded_input.txt"
 
-echo -e -n "\e[33mBuilding Vortex...\e[0m"
-make -C ../ &> /dev/null
-if [ $? -ne 0 ]; then
-  echo -e "\e[31mFailed to build Vortex!\e[0m"
-  exit
-fi
-if [ ! -x "$VORTEX" ]; then
-  echo -e "\e[31mCould not find Vortex!\e[0m"
-  exit
-fi
-echo -e "\e[32mSuccess\e[0m"
+#echo -e -n "\e[33mBuilding Vortex...\e[0m"
+#make -C ../ &> /dev/null
+#if [ $? -ne 0 ]; then
+#  echo -e "\e[31mFailed to build Vortex!\e[0m"
+#  exit
+#fi
+#if [ ! -x "$VORTEX" ]; then
+#  echo -e "\e[31mCould not find Vortex!\e[0m"
+#  exit
+#fi
+#echo -e "\e[32mSuccess\e[0m"
 
 # Run the Vortex program
 $VORTEX --color --in-place --record
@@ -25,7 +37,12 @@ if [ ! -f "$OUTPUT_FILE" ]; then
 fi
 
 RESULT=$(cat "$OUTPUT_FILE")
-echo "result: $RESULT"
+echo -n "${YELLOW}Use Result [${WHITE}$RESULT${YELLOW}]? (Y/n): ${WHITE}"
+
+read -e CONFIRM
+if [[ $CONFIRM == [nN] || $CONFIRM == [nN][oO] ]]; then
+  exit
+fi
 
 # a helper function to insert w10 and w100 between characters in the input string
 function insert_w10_w100() {
@@ -56,12 +73,13 @@ function insert_w10_w100() {
 
 NEW_INPUT=$(insert_w10_w100 "$RESULT")
 
-echo "Modified Input: $NEW_INPUT"
+echo -e "\n${WHITE}================================================================================${NC}"
+echo -e "Processed Input: ${WHITE}$NEW_INPUT${NC}"
 
 # Prompt for test name and description
-echo -en "\e[33mEnter the name of the test: \e[97m"
+echo -en "${YELLOW}Enter the name of the test:${WHITE} "
 read -e TEST_NAME
-echo -en "\e[33mEEnter the description: \e[97m"
+echo -en "${YELLOW}Enter the description:${WHITE} "
 read -e DESCRIPTION
 
 # replace spaces with underscores

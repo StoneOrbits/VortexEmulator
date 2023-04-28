@@ -1,9 +1,6 @@
 Input=w15dw15aw15aw15sw15q
 Brief=Can enter pattern select
 --------------------------------------------------------------------------------
-Initializing...
-Initialized!
-[a] short press | [s] med press | [d] enter menus | [f] toggle pressed | [w] wait | [<digit>] repeat last | [q] quit
 #FF0000|#FF0000|#FF0000|#FF0000|#FF0000|#FF0000|#FF0000|#FF0000|#FF0000|#FF0000|
 #FF0000|#FF0000|#FF0000|#FF0000|#FF0000|#FF0000|#FF0000|#FF0000|#FF0000|#FF0000|
 #FF0000|#FF0000|#FF0000|#FF0000|#FF0000|#FF0000|#FF0000|#FF0000|#FF0000|#FF0000|

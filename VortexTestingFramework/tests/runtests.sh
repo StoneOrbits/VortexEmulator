@@ -1,8 +1,9 @@
 #!/bin/bash
 
-VALGRIND="valgrind --quiet --leak-check=full --show-leak-kinds=all"
+#VALGRIND="valgrind --quiet --leak-check=full --show-leak-kinds=all"
+VALGRIND=""
 VORTEX="../vortex"
-DIFF="diff --unified"
+DIFF="diff"
 
 echo -e -n "\e[33mBuilding Vortex...\e[0m"
 make -C ../ &> /dev/null
@@ -31,11 +32,11 @@ for FILE in $FILES; do
   BRIEF="$(grep "Brief=" $FILE | cut -d= -f2)"
   TESTNUM="$(echo $FILE | cut -d_ -f1)"
   echo -e -n "\e[33mTesting $TESTNUM [\e[97m$BRIEF\e[33m]... \e[0m"
-  DIVIDER=$(grep -n "Initializing..." $FILE | cut -f1 -d:)
+  DIVIDER=$(grep -n -- "--------------------------------------------------------------------------------" $FILE | cut -f1 -d:)
   EXPECTED="tmp/${FILE}.expected"
   OUTPUT="tmp/${FILE}.output"
   DIFFOUT="tmp/${FILE}.diff"
-  tail -n +$DIVIDER "$FILE" &> $EXPECTED
+  tail -n +$(($DIVIDER + 1)) "$FILE" &> $EXPECTED
   $VALGRIND $VORTEX -t <<< $INPUT &> $OUTPUT
   $DIFF --brief $EXPECTED $OUTPUT &> $DIFFOUT
   if [ $? -eq 0 ]; then

@@ -77,6 +77,7 @@ private:
   Colorset m_curColorset;
   bool m_coloredOutput;
   bool m_noTimestep;
+  bool m_lockstep;
   bool m_inPlace;
   bool m_record;
   // to pipe stuff into the engine
