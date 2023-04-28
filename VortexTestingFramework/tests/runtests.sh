@@ -1,9 +1,94 @@
 #!/bin/bash
 
-#VALGRIND="valgrind --quiet --leak-check=full --show-leak-kinds=all"
-VALGRIND=""
+VALGRIND="valgrind --quiet --leak-check=full --show-leak-kinds=all"
 VORTEX="../vortex"
 DIFF="diff"
+
+REPOS=(
+  "core"
+  "gloves"
+  "orbit"
+  "handle"
+  "finger"
+)
+
+select_repo() {
+  local original_PS3=$PS3
+  local repo
+
+  PS3='Please choose a repository: '
+
+  select repo in "${REPOS[@]}"; do
+    if [ -n "$repo" ]; then
+      break
+    fi
+  done
+
+  PS3=$original_PS3
+
+  echo $repo
+}
+
+function run_tests() {
+  PROJECT=$1
+
+  ALLSUCCES=1
+
+	# Initialize a counter
+	NUMFILES=0
+	FILES=
+	
+	# Iterate through the test files
+	for file in "$PROJECT"/*.test; do
+	  # Check if the file exists
+	  if [ -e "$file" ]; then
+	    NUMFILES=$((NUMFILES + 1))
+			FILES="${FILES} $file"	
+	  fi
+	done
+
+	if [ $NUMFILES -eq 0 ]; then
+		echo -e "\e[31mNo tests found in $PROJECT folder\e[0m"
+		exit
+	fi
+
+  echo -e "\e[33m== [\e[97mRUNNING $NUMFILES $PROJECT INTEGRATION TESTS\e[33m] ==\e[0m"
+
+	# clear tmp folder
+	rm -rf tmp/$PROJECT
+	mkdir -p tmp/$PROJECT
+
+  for FILE in $FILES; do
+    INPUT="$(grep "Input=" $FILE | cut -d= -f2)"
+    BRIEF="$(grep "Brief=" $FILE | cut -d= -f2)"
+    TESTNUM="$(echo $FILE | cut -d_ -f1)"
+    echo -e -n "\e[33mTesting $TESTNUM [\e[97m$BRIEF\e[33m]... \e[0m"
+    DIVIDER=$(grep -n -- "--------------------------------------------------------------------------------" $FILE | cut -f1 -d:)
+    EXPECTED="tmp/${FILE}.expected"
+    OUTPUT="tmp/${FILE}.output"
+    DIFFOUT="tmp/${FILE}.diff"
+    tail -n +$(($DIVIDER + 1)) "$FILE" &> $EXPECTED
+    $VALGRIND $VORTEX -t <<< $INPUT &> $OUTPUT
+    $DIFF --brief $EXPECTED $OUTPUT &> $DIFFOUT
+    if [ $? -eq 0 ]; then
+      echo -e "\e[32mSUCCESS\e[0m"
+    else
+      echo -e "\e[31mFAILURE\e[0m"
+      ALLSUCCES=0
+      break
+    fi
+  done
+
+  # check if all test succeeded
+  if [ $ALLSUCCES -eq 1 ]; then
+    echo -e "\e[33m== [\e[32mSUCCESS ALL TESTS PASSED\e[33m] ==\e[0m"
+    # if so clear the tmp folder
+    rm -rf tmp
+  else
+    # otherwise cat the last diff
+    $DIFF $EXPECTED $OUTPUT
+  fi
+}
 
 echo -e -n "\e[33mBuilding Vortex...\e[0m"
 make -C ../ &> /dev/null
@@ -17,43 +102,12 @@ if [ ! -x "$VORTEX" ]; then
 fi
 echo -e "\e[32mSuccess\e[0m"
 
-rm -rf tmp
-mkdir tmp
-
-ALLSUCCES=1
-
-FILES=*.test
-NUMFILES="$(echo $FILES | wc -w)"
-
-echo -e "\e[33m== [\e[97mRUNNING $NUMFILES INTEGRATION TESTS\e[33m] ==\e[0m"
-
-for FILE in $FILES; do
-  INPUT="$(grep "Input=" $FILE | cut -d= -f2)"
-  BRIEF="$(grep "Brief=" $FILE | cut -d= -f2)"
-  TESTNUM="$(echo $FILE | cut -d_ -f1)"
-  echo -e -n "\e[33mTesting $TESTNUM [\e[97m$BRIEF\e[33m]... \e[0m"
-  DIVIDER=$(grep -n -- "--------------------------------------------------------------------------------" $FILE | cut -f1 -d:)
-  EXPECTED="tmp/${FILE}.expected"
-  OUTPUT="tmp/${FILE}.output"
-  DIFFOUT="tmp/${FILE}.diff"
-  tail -n +$(($DIVIDER + 1)) "$FILE" &> $EXPECTED
-  $VALGRIND $VORTEX -t <<< $INPUT &> $OUTPUT
-  $DIFF --brief $EXPECTED $OUTPUT &> $DIFFOUT
-  if [ $? -eq 0 ]; then
-    echo -e "\e[32mSUCCESS\e[0m"
-  else
-    echo -e "\e[31mFAILURE\e[0m"
-    ALLSUCCES=0
-    break
-  fi
-done
-
-# check if all test succeeded
-if [ $ALLSUCCES -eq 1 ]; then
-  echo -e "\e[33m== [\e[32mSUCCESS ALL TESTS PASSED\e[33m] ==\e[0m"
-  # if so clear the tmp folder
-  rm -rf tmp
+# select the target repo to create a test for
+if [ -z $1 ]; then
+  TARGETREPO=$(select_repo)
 else
-  # otherwise cat the last diff
-  $DIFF $EXPECTED $OUTPUT
+  TARGETREPO=$1
 fi
+
+# select repo and run tests with it
+run_tests $TARGETREPO
