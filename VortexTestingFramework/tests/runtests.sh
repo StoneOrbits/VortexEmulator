@@ -2,6 +2,7 @@
 
 VALGRIND="valgrind --quiet --leak-check=full --show-leak-kinds=all"
 VORTEX="../vortex"
+DIFF="diff --unified"
 
 echo -e -n "\e[33mBuilding Vortex...\e[0m"
 make -C ../ &> /dev/null
@@ -33,10 +34,10 @@ for FILE in $FILES; do
   DIVIDER=$(grep -n "Initializing..." $FILE | cut -f1 -d:)
   EXPECTED="tmp/${FILE}.expected"
   OUTPUT="tmp/${FILE}.output"
-  DIFF="tmp/${FILE}.diff"
+  DIFFOUT="tmp/${FILE}.diff"
   tail -n +$DIVIDER "$FILE" &> $EXPECTED
   $VALGRIND $VORTEX -t <<< $INPUT &> $OUTPUT
-  diff -q $EXPECTED $OUTPUT &> $DIFF
+  $DIFF --brief $EXPECTED $OUTPUT &> $DIFFOUT
   if [ $? -eq 0 ]; then
     echo -e "\e[32mSUCCESS\e[0m"
   else
@@ -53,5 +54,5 @@ if [ $ALLSUCCES -eq 1 ]; then
   rm -rf tmp
 else
   # otherwise cat the last diff
-  diff $EXPECTED $OUTPUT
+  $DIFF $EXPECTED $OUTPUT
 fi
