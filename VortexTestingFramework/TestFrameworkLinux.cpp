@@ -102,6 +102,7 @@ TestFramework::~TestFramework()
 static struct option long_options[] = {
   {"color", no_argument, nullptr, 'c'},
   {"no-timestep", no_argument, nullptr, 't'},
+  {"lockstep", no_argument, nullptr, 'l'},
   {"in-place", no_argument, nullptr, 'i'},
   {"record", no_argument, nullptr, 'r'},
   {nullptr, 0, nullptr, 0}
@@ -162,7 +163,7 @@ bool TestFramework::init(int argc, char *argv[])
 
   int opt;
   int option_index = 0;
-  while ((opt = getopt_long(argc, argv, "ctirh", long_options, &option_index)) != -1) {
+  while ((opt = getopt_long(argc, argv, "ctlirh", long_options, &option_index)) != -1) {
     switch (opt) {
     case 'c':
       // if the user wants pretty colors
