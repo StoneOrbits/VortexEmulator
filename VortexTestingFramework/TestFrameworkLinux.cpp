@@ -283,7 +283,7 @@ void TestFramework::show()
   } else {
     for (uint32_t i = 0; i < m_numLeds; ++i) {
       char buf[128] = { 0 };
-      snprintf(buf, sizeof(buf), "#%06X|", m_ledList[i].raw());
+      snprintf(buf, sizeof(buf), "%06X", m_ledList[i].raw());
       out += buf;
     }
   }

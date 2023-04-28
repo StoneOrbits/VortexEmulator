@@ -28,8 +28,8 @@ for FILE in *.test; do
   BRIEF="$(grep "Brief=" $FILE | cut -d= -f2)"
   echo -e -n "\e[31mRecording \e[33m[\e[97m$BRIEF\e[33m]...\e[0m"
   TEMP_FILE="tmp/${FILE}.out"
-  # Truncate everything after and including the line with "Initializing..."
-  awk '/Initializing.../{exit} 1' $FILE > $TEMP_FILE
+  # Truncate everything after and including the line with ""
+  awk '/^[-]{80}$/{print; exit} 1' $FILE > $TEMP_FILE
   # Append the output of the $VORTEX command to the temp file
   # NOTE: When recording the tests we don't use valgrind because
   #       the valgrind output should be clean anyway. But when running
