@@ -67,6 +67,15 @@ function insert_w10_w100() {
   echo "$output_string"
 }
 
+# select the target repo to create a test for
+if [ -z $1 ]; then
+  TARGETREPO=$(select_repo)
+else
+  TARGETREPO=$1
+fi
+
+mkdir $TARGETREPO
+
 echo -e -n "\e[33mBuilding Vortex...\e[0m"
 make -C ../ &> /dev/null
 if [ $? -ne 0 ]; then
@@ -78,15 +87,6 @@ if [ ! -x "$VORTEX" ]; then
   exit
 fi
 echo -e "\e[32mSuccess\e[0m"
-
-# select the target repo to create a test for
-if [ -z $1 ]; then
-  TARGETREPO=$(select_repo)
-else
-  TARGETREPO=$1
-fi
-
-mkdir $TARGETREPO
 
 # =====================================================================
 #  repeat everything below here if they say yes to making another test

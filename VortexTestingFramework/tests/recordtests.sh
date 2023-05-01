@@ -3,6 +3,45 @@
 VALGRIND="valgrind --quiet --leak-check=full --show-leak-kinds=all"
 VORTEX="../vortex"
 
+REPOS=(
+  "core"
+  "gloves"
+  "orbit"
+  "handle"
+  "finger"
+)
+
+# Function to display colored text
+colored() {
+  printf "%s%s%s" "${!1}" "${2}" "${NC}"
+}
+
+select_repo() {
+  local original_PS3=$PS3
+  local repo
+
+  PS3='Please choose a repository: '
+
+  select repo in "${REPOS[@]}"; do
+    if [ -n "$repo" ]; then
+      break
+    fi
+  done
+
+  PS3=$original_PS3
+
+  echo $repo
+}
+
+# select the target repo to create a test for
+if [ -z $1 ]; then
+  TARGETREPO=$(select_repo)
+else
+  TARGETREPO=$1
+fi
+
+mkdir $TARGETREPO
+
 echo -e -n "\e[33mBuilding Vortex...\e[0m"
 make -C ../ &> /dev/null
 if [ $? -ne 0 ]; then
