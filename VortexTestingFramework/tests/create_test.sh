@@ -86,6 +86,8 @@ else
   TARGETREPO=$1
 fi
 
+mkdir $TARGETREPO
+
 # =====================================================================
 #  repeat everything below here if they say yes to making another test
 while true; do
