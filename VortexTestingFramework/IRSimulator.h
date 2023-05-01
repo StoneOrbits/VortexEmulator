@@ -10,6 +10,7 @@ class IRSimulator
 {
 public:
   static bool init();
+  static void cleanup();
 
   static bool send_message(uint32_t message);
 
@@ -20,6 +21,7 @@ public:
 
 private:
   static DWORD __stdcall wait_connection(void *arg);
+  static void process_incoming_messages();
   static bool accept_connection();
   static bool receive_message(uint32_t &out_message);
 

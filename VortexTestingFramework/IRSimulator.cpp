@@ -42,7 +42,10 @@ bool IRSimulator::receive_message(uint32_t &out_message)
     target_sock = m_clientSock;
   }
   if (recv(target_sock, (char *)&out_message, sizeof(out_message), 0) <= 0) {
-    printf("Recv failed with error: %d\n", WSAGetLastError());
+    int err = WSAGetLastError();
+    if (err != 10035) {
+      printf("Recv failed with error: %d\n", err);
+    }
     return false;
   }
   return true;
@@ -90,20 +93,28 @@ DWORD __stdcall IRSimulator::wait_connection(void *arg)
   // idk when another one launches the first ones strip unpaints
   PostMessage(NULL, WM_PAINT, NULL, NULL);
 
-  // each message received will get passed into the logging system
+  process_incoming_messages();
+
+  printf("Connection closed\n");
+  return 0;
+}
+
+void IRSimulator::process_incoming_messages()
+{
+  if (!m_isConnected) {
+    return;
+  }
+
   while (1) {
     uint32_t message = 0;
     if (!receive_message(message)) {
-      break;
+      //break;
+      continue;
     }
     bool is_mark = (message & (1 << 31)) != 0;
     message &= ~(1 << 31);
     Vortex::IRDeliver(message);
-    //printf("Received %s: %u\n", is_mark ? "mark" : "space", message);
   }
-
-  printf("Connection closed\n");
-  return 0;
 }
 
 // initialize the server
@@ -160,6 +171,7 @@ bool IRSimulator::startServer()
     memset(&startInfo, 0, sizeof(startInfo));
     CreateProcess(filename, NULL, NULL, NULL, false, 0, NULL, NULL, &startInfo, &procInfo);
   }
+  m_isConnected = true;
   return true;
 }
 
@@ -182,27 +194,32 @@ bool IRSimulator::startClient()
     return false;
   }
   //info("Attempting to connect to %s", config.server_ip.c_str());
-  // try connecting to all the addrs
+    // Attempt to connect to an address until one succeeds
   for (ptr = addrs; ptr != NULL; ptr = ptr->ai_next) {
+    // Create a SOCKET for connecting to server
     m_sock = socket(ptr->ai_family, ptr->ai_socktype, ptr->ai_protocol);
     if (m_sock == INVALID_SOCKET) {
-      printf("Error creating socket: %d\n", GetLastError());
-      freeaddrinfo(addrs);
+      printf("socket failed with error: %ld\n", WSAGetLastError());
+      WSACleanup();
       return false;
     }
-    if (connect(m_sock, ptr->ai_addr, (int)ptr->ai_addrlen) == SOCKET_ERROR) {
-      // try again
+
+    // Attempt to connect to the server
+    res = connect(m_sock, ptr->ai_addr, (int)ptr->ai_addrlen);
+    if (res == SOCKET_ERROR) {
       closesocket(m_sock);
       m_sock = INVALID_SOCKET;
       continue;
     }
-    // Success!
     break;
   }
   freeaddrinfo(addrs);
   if (m_sock == INVALID_SOCKET) {
+    printf("Unable to connect to server!\n");
     return false;
   }
+  printf("Connected to server!\n");
+  m_isConnected = true;
   // turn on non-blocking for the socket so the module cannot
   // get stuck in the send() call if the server is closed
   u_long iMode = 1; // 1 = non-blocking mode
@@ -212,13 +229,26 @@ bool IRSimulator::startClient()
     closesocket(m_sock);
     return false;
   }
-  printf("Success initializing network client\n");
+  CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)process_incoming_messages, NULL, 0, NULL);
   g_pTestFramework->setWindowTitle(g_pTestFramework->getWindowTitle() + " Sender");
-  g_pTestFramework->setWindowPos(LED_COUNT == 28 ? 375 : 450, 350);
-  m_isConnected = true;
-  //info("Connected to server %s", config.server_ip.c_str());
+  g_pTestFramework->setWindowPos(LED_COUNT == 28 ? 300 : 250, 350);
   return true;
 }
 
-
+void IRSimulator::cleanup()
+{
+  if (m_sock != -1) {
+    closesocket(m_sock);
+    m_sock = -1;
+  }
+  if (m_clientSock != -1) {
+    closesocket(m_clientSock);
+    m_clientSock = -1;
+  }
+  if (m_isServer) {
+    // give the server time to shutdown before another instance takes its place
+    Sleep(100);
+  }
+  WSACleanup();
+}
 
