@@ -39,13 +39,13 @@ TestFramework *g_pTestFramework = nullptr;
 
 using namespace std;
 
-#define USAGE   "\n[a] click                                     " \
-                "\n[s] long click                                " \
-                "\n[d] enter menus                               " \
-                "\n[f] toggle pressed                            " \
-                "\n[w] wait                                      " \
-                "\n[<digit>] repeat last command n times         " \
-                "\n[q] quit                                      "
+#define USAGE   "\n[a] click                                                                                  " \
+                "\n[s] long click                                                                             " \
+                "\n[d] enter menus                                                                            " \
+                "\n[f] toggle pressed                                                                         " \
+                "\n[w] wait                                                                                   " \
+                "\n[<digit>] repeat last command n times                                                      " \
+                "\n[q] quit                                                                                   "
 
 #ifdef WASM // Web assembly glue
 #include <emscripten/html5.h>
