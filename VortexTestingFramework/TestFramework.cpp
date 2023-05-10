@@ -157,7 +157,7 @@ bool TestFramework::init(HINSTANCE hInstance)
     m_handleBox.setEnabled(false);
     m_handleBox.setVisible(LED_COUNT == 3);
     m_button.init(m_hInst, m_window, "Click", BACK_COL, 48, 24, 198, 312, CLICK_BUTTON_ID, buttonClickCallback);
-    m_button2.init(m_hInst, m_window, "Long Click", BACK_COL, 48, 24, 290, 336, CLICK_BUTTON_ID + 1, longClickCallback);
+    m_button2.init(m_hInst, m_window, "Long", BACK_COL, 48, 24, 290, 336, CLICK_BUTTON_ID + 1, longClickCallback);
     break;
   case 2: // finger
     m_fingerBMP = (HBITMAP)LoadImage(m_hInst, MAKEINTRESOURCE(IDB_BITMAP4), IMAGE_BITMAP, 0, 0, 0);
@@ -170,7 +170,7 @@ bool TestFramework::init(HINSTANCE hInstance)
     m_fingerBox.setEnabled(false);
     m_fingerBox.setVisible(LED_COUNT == 2);
     m_button.init(m_hInst, m_window, "Click", BACK_COL, 48, 24, 198, 312, CLICK_BUTTON_ID, buttonClickCallback);
-    m_button2.init(m_hInst, m_window, "Long Click", BACK_COL, 48, 24, 290, 336, CLICK_BUTTON_ID + 1, longClickCallback);
+    m_button2.init(m_hInst, m_window, "Long", BACK_COL, 48, 24, 198, 346, CLICK_BUTTON_ID + 1, longClickCallback);
     break;
   }
 
