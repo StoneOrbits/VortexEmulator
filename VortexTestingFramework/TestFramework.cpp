@@ -128,8 +128,10 @@ bool TestFramework::init(HINSTANCE hInstance)
     m_orbitBox.setBackground(m_orbitBMP);
     m_orbitBox.setEnabled(false);
     m_orbitBox.setVisible(LED_COUNT == 28);
-    m_button.init(m_hInst, m_window, "Click", BACK_COL, 48, 24, 290, 308, CLICK_BUTTON_ID, buttonClickCallback);
-    m_button2.init(m_hInst, m_window, "Click2", BACK_COL, 48, 24, 290, 336, CLICK_BUTTON_ID + 1, buttonClickCallback);
+    m_button.init(m_hInst, m_window, "Click", BACK_COL, 48, 24, 270, 308, CLICK_BUTTON_ID, buttonClickCallback);
+    m_button2.init(m_hInst, m_window, "Click2", BACK_COL, 48, 24, 270, 336, CLICK_BUTTON_ID + 1, buttonClickCallback);
+    m_button3.init(m_hInst, m_window, "Long", BACK_COL, 52, 24, 328, 308, CLICK_BUTTON_ID + 2, longClickCallback);
+    m_button4.init(m_hInst, m_window, "Long2", BACK_COL, 52, 24, 328, 336, CLICK_BUTTON_ID + 3, longClickCallback2);
     break;
   case 10: // glove
     m_gloveBMP = (HBITMAP)LoadImage(m_hInst, MAKEINTRESOURCE(IDB_BITMAP2), IMAGE_BITMAP, 0, 0, 0);
@@ -142,6 +144,7 @@ bool TestFramework::init(HINSTANCE hInstance)
     m_gloveBox.setEnabled(false);
     m_gloveBox.setVisible(LED_COUNT == 10);
     m_button.init(m_hInst, m_window, "Click", BACK_COL, 48, 24, 198, 312, CLICK_BUTTON_ID, buttonClickCallback);
+    m_button2.init(m_hInst, m_window, "Long", BACK_COL, 52, 24, 348, 308, CLICK_BUTTON_ID + 2, longClickCallback);
     break;
   case 3: // handle
     m_handleBMP = (HBITMAP)LoadImage(m_hInst, MAKEINTRESOURCE(IDB_BITMAP3), IMAGE_BITMAP, 0, 0, 0);
@@ -154,6 +157,7 @@ bool TestFramework::init(HINSTANCE hInstance)
     m_handleBox.setEnabled(false);
     m_handleBox.setVisible(LED_COUNT == 3);
     m_button.init(m_hInst, m_window, "Click", BACK_COL, 48, 24, 198, 312, CLICK_BUTTON_ID, buttonClickCallback);
+    m_button2.init(m_hInst, m_window, "Long Click", BACK_COL, 48, 24, 290, 336, CLICK_BUTTON_ID + 1, longClickCallback);
     break;
   case 2: // finger
     m_fingerBMP = (HBITMAP)LoadImage(m_hInst, MAKEINTRESOURCE(IDB_BITMAP4), IMAGE_BITMAP, 0, 0, 0);
@@ -166,6 +170,7 @@ bool TestFramework::init(HINSTANCE hInstance)
     m_fingerBox.setEnabled(false);
     m_fingerBox.setVisible(LED_COUNT == 2);
     m_button.init(m_hInst, m_window, "Click", BACK_COL, 48, 24, 198, 312, CLICK_BUTTON_ID, buttonClickCallback);
+    m_button2.init(m_hInst, m_window, "Long Click", BACK_COL, 48, 24, 290, 336, CLICK_BUTTON_ID + 1, longClickCallback);
     break;
   }
 
@@ -468,6 +473,11 @@ void TestFramework::buttonClick(VButton *button, VButton::ButtonEvent type)
   default:
     break;
   }
+}
+
+void TestFramework::longClick(VButton *window, uint32_t buttonIndex)
+{
+  Vortex::longClick(buttonIndex);
 }
 
 void TestFramework::launchIR(VButton *window, VButton::ButtonEvent type)

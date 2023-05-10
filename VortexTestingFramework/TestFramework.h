@@ -93,6 +93,16 @@ private:
   static void buttonClickCallback(void *arg, VButton *window, VButton::ButtonEvent type) {
     ((TestFramework *)arg)->buttonClick(window, type);
   }
+  static void longClickCallback(void *arg, VButton *window, VButton::ButtonEvent type) {
+    if (type == VButton::ButtonEvent::BUTTON_EVENT_CLICK) {
+      ((TestFramework *)arg)->longClick(window, 0);
+    }
+  }
+  static void longClickCallback2(void *arg, VButton *window, VButton::ButtonEvent type) {
+    if (type == VButton::ButtonEvent::BUTTON_EVENT_CLICK) {
+      ((TestFramework *)arg)->longClick(window, 1);
+    }
+  }
   static void launchIRCallback(void *arg, VButton *window, VButton::ButtonEvent type) {
     ((TestFramework *)arg)->launchIR(window, type);
   }
@@ -107,6 +117,7 @@ private:
   }
 
   void buttonClick(VButton *window, VButton::ButtonEvent type);
+  void longClick(VButton *window, uint32_t buttonIndex);
   void launchIR(VButton *window, VButton::ButtonEvent type);
   void patternStripSelect(uint32_t x, uint32_t y, VSelectBox::SelectEvent sevent);
   void ledClick(VWindow *window);
@@ -134,6 +145,8 @@ private:
   VSelectBox m_tickrateSlider;
   VButton m_button;
   VButton m_button2;
+  VButton m_button3;
+  VButton m_button4;
   VButton m_IRLaunchButton;
   VCircle m_leds[LED_COUNT];
   RECT m_ledPos[LED_COUNT];
