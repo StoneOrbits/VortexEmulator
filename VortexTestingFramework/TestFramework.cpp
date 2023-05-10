@@ -144,7 +144,7 @@ bool TestFramework::init(HINSTANCE hInstance)
     m_gloveBox.setEnabled(false);
     m_gloveBox.setVisible(LED_COUNT == 10);
     m_button.init(m_hInst, m_window, "Click", BACK_COL, 48, 24, 198, 312, CLICK_BUTTON_ID, buttonClickCallback);
-    m_button2.init(m_hInst, m_window, "Long", BACK_COL, 52, 24, 348, 308, CLICK_BUTTON_ID + 2, longClickCallback);
+    m_button2.init(m_hInst, m_window, "Long", BACK_COL, 48, 24, 198, 346, CLICK_BUTTON_ID + 2, longClickCallback);
     break;
   case 3: // handle
     m_handleBMP = (HBITMAP)LoadImage(m_hInst, MAKEINTRESOURCE(IDB_BITMAP3), IMAGE_BITMAP, 0, 0, 0);
