@@ -4,6 +4,7 @@
 #include <iomanip>
 #include <string>
 #include <ctime>
+#include <map>
 
 #include <sys/ioctl.h>
 #include <termios.h>
@@ -98,26 +99,56 @@ TestFramework::~TestFramework()
 {
 }
 
-// Define the long options
 static struct option long_options[] = {
   {"color", no_argument, nullptr, 'c'},
   {"no-timestep", no_argument, nullptr, 't'},
   {"lockstep", no_argument, nullptr, 'l'},
   {"in-place", no_argument, nullptr, 'i'},
   {"record", no_argument, nullptr, 'r'},
+  {"pattern", required_argument, nullptr, 'P'},
+  {"colorset", required_argument, nullptr, 'C'},
+  {"arguments", required_argument, nullptr, 'A'},
+  {"help", no_argument, nullptr, 'h'},
   {nullptr, 0, nullptr, 0}
+};
+
+// all the available colors that can be used to make colorsets
+std::map<std::string, int> color_map = {
+    {"black",   0x000000},
+    {"white",   0xFFFFFF},
+    {"red",     0xFF0000},
+    {"lime",    0x00FF00},
+    {"blue",    0x0000FF},
+    {"yellow",  0xFFFF00},
+    {"cyan",    0x00FFFF},
+    {"magenta", 0xFF00FF},
+    {"silver",  0xC0C0C0},
+    {"gray",    0x808080},
+    {"maroon",  0x800000},
+    {"olive",   0x808000},
+    {"green",   0x008000},
+    {"purple",  0x800080},
+    {"teal",    0x008080},
+    {"navy",    0x000080},
+    {"orange",  0xFFA500},
+    {"pink",    0xFFC0CB},
+    {"brown",   0xA52A2A}
+    //...add more as needed
 };
 
 static void print_usage(const char* program_name) 
 {
   fprintf(stderr, "Usage: %s [options]\n", program_name);
   fprintf(stderr, "Options:\n");
-  fprintf(stderr, "  -c, --color            Use console color codes to represent led colors\n");
-  fprintf(stderr, "  -t, --no-timestep      Bypass the timestep and run as fast as possible\n");
-  fprintf(stderr, "  -l, --lockstep         Only step once each time an input is received\n");
-  fprintf(stderr, "  -i, --in-place         Print the output in-place (interactive mode)\n");
-  fprintf(stderr, "  -r, --record           Record the inputs and dump to a file after (" RECORD_FILE ")\n");
-  fprintf(stderr, "  -h, --help             Display this help message\n");
+  fprintf(stderr, "  -c, --color              Use console color codes to represent led colors\n");
+  fprintf(stderr, "  -t, --no-timestep        Bypass the timestep and run as fast as possible\n");
+  fprintf(stderr, "  -l, --lockstep           Only step once each time an input is received\n");
+  fprintf(stderr, "  -i, --in-place           Print the output in-place (interactive mode)\n");
+  fprintf(stderr, "  -r, --record             Record the inputs and dump to a file after (" RECORD_FILE ")\n");
+  fprintf(stderr, "  -P, --pattern <id>       Preset the pattern ID on the first mode\n");
+  fprintf(stderr, "  -C, --colorset c1,c2...  Preset the colorset on the first mode (csv list of hex codes or color names)\n");
+  fprintf(stderr, "  -A, --arguments a1,a2... Preset the arguments on the first mode (csv list of arguments)\n");
+  fprintf(stderr, "  -h, --help               Display this help message\n");
 }
 
 struct termios orig_term_attr = {0};
@@ -163,7 +194,7 @@ bool TestFramework::init(int argc, char *argv[])
 
   int opt;
   int option_index = 0;
-  while ((opt = getopt_long(argc, argv, "ctlirh", long_options, &option_index)) != -1) {
+  while ((opt = getopt_long(argc, argv, "ctlirP:C:A:h", long_options, &option_index)) != -1) {
     switch (opt) {
     case 'c':
       // if the user wants pretty colors
@@ -185,12 +216,24 @@ bool TestFramework::init(int argc, char *argv[])
       // record the inputs and dump them to a file after
       m_record = true;
       break;
+    case 'P':
+      // preset the pattern ID on the first mode
+      m_patternIDStr = optarg;
+      break;
+    case 'C':
+      // preset the colorset on the first mode
+      m_colorsetStr = optarg;
+      break;
+    case 'A':
+      // preset the arguments on the first mode
+      m_argumentsStr = optarg;
+      break;
     case 'h':
       // print usage and exit
       print_usage(argv[0]);
       exit(EXIT_SUCCESS);
     default: // '?' for unrecognized options
-      print_usage(argv[0]);
+      printf("Unknown arg: -%c\n", opt);
       exit(EXIT_FAILURE);
     }
   }
@@ -203,6 +246,36 @@ bool TestFramework::init(int argc, char *argv[])
   Vortex::enableCommandLog(m_record);
   Vortex::enableLockstep(m_lockstep);
 
+  if (m_patternIDStr.length() > 0) {
+    PatternID id = (PatternID)strtoul(m_patternIDStr.c_str(), nullptr, 10);
+    // TODO: add arg for the led position
+    Vortex::setPatternAt(LED_ALL, id);
+  }
+  if (m_colorsetStr.length() > 0) {
+    stringstream ss(m_colorsetStr);
+    string color;
+    Colorset set;
+    while (getline(ss, color, ',')) {
+      if (color_map.count(color) > 0) {
+        set.addColor(color_map[color]);
+      } else {
+        set.addColor(strtoul(color.c_str(), nullptr, 16));
+      }
+    }
+    // TODO: add arg for the led position
+    Vortex::setColorset(LED_ALL, set);
+  }
+  if (m_argumentsStr.length() > 0) {
+    stringstream ss(m_argumentsStr);
+    string arg;
+    PatternArgs args;
+    while (getline(ss, arg, ',')) {
+      printf("arg %d: %s\n", args.numArgs, arg.c_str());
+      args.args[args.numArgs++] = strtoul(arg.c_str(), nullptr, 10);
+    }
+    // TODO: add arg for the led position
+    Vortex::setPatternArgs(LED_ALL, args);
+  }
   if (m_inPlace && !system("clear")) {
     printf("Failed to clear\n");
   }

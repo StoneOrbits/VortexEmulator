@@ -80,6 +80,9 @@ private:
   bool m_lockstep;
   bool m_inPlace;
   bool m_record;
+  std::string m_patternIDStr;
+  std::string m_colorsetStr;
+  std::string m_argumentsStr;
   // to pipe stuff into the engine
   int m_pipe_fd[2];
   int m_saved_stdin;
