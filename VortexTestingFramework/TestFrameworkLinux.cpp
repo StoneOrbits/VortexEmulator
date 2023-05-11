@@ -270,7 +270,6 @@ bool TestFramework::init(int argc, char *argv[])
     string arg;
     PatternArgs args;
     while (getline(ss, arg, ',')) {
-      printf("arg %d: %s\n", args.numArgs, arg.c_str());
       args.args[args.numArgs++] = strtoul(arg.c_str(), nullptr, 10);
     }
     // TODO: add arg for the led position
