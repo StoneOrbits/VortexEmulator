@@ -256,6 +256,8 @@ bool TestFramework::init(int argc, char *argv[])
     string color;
     Colorset set;
     while (getline(ss, color, ',')) {
+      // iterate letters and lowercase them
+      transform(color.begin(), color.end(), color.begin(), [](unsigned char c){ return tolower(c); });
       if (color_map.count(color) > 0) {
         set.addColor(color_map[color]);
       } else {
