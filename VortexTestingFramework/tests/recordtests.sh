@@ -40,7 +40,7 @@ else
   TARGETREPO=$1
 fi
 
-mkdir $TARGETREPO
+mkdir -p $TARGETREPO
 
 echo -e -n "\e[33mBuilding Vortex...\e[0m"
 make -C ../ &> /dev/null
@@ -54,34 +54,57 @@ if [ ! -x "$VORTEX" ]; then
 fi
 echo -e "\e[32mSuccess\e[0m"
 
-rm -rf tmp
-mkdir tmp
+function record_tests() {
+  PROJECT=$1
 
-FILES=*.test
-NUMFILES="$(echo $FILES | wc -w)"
+	FILES=
 
-echo -e "\e[33m== [\e[31mRECORDING \e[97m$NUMFILES INTEGRATION TESTS\e[33m] ==\e[0m"
+  rm -rf tmp/$PROJECT
+  mkdir -p tmp/$PROJECT
+	
+	# Iterate through the test files
+	for file in "$PROJECT"/*.test; do
+	  # Check if the file exists
+	  if [ -e "$file" ]; then
+	    NUMFILES=$((NUMFILES + 1))
+			FILES="${FILES} $file"	
+	  fi
+	done
 
-for FILE in *.test; do
-  INPUT="$(grep "Input=" $FILE | cut -d= -f2)"
-  BRIEF="$(grep "Brief=" $FILE | cut -d= -f2)"
-  echo -e -n "\e[31mRecording \e[33m[\e[97m$BRIEF\e[33m]...\e[0m"
-  TEMP_FILE="tmp/${FILE}.out"
-  # Truncate everything after and including the line with ""
-  awk '/^[-]{80}$/{print; exit} 1' $FILE > $TEMP_FILE
-  # Append the output of the $VORTEX command to the temp file
-  # NOTE: When recording the tests we don't use valgrind because
-  #       the valgrind output should be clean anyway. But when running
-  #       the test valgrind is used with --leak-check=full --show-leak-kinds=all
-  $VORTEX -t <<< $INPUT >> $TEMP_FILE
-  # Replace the original file with the modified temp file
-  mv $TEMP_FILE $FILE
-  echo -e "\e[96mOK\e[0m"
+  NUMFILES="$(echo $FILES | wc -w)"
 
-  # print out colorful if in verbose
-  if [ "$1" == "-v" ]; then
-    $VORTEX -tc <<< $INPUT
-  fi
-done
+	if [ $NUMFILES -eq 0 ]; then
+		echo -e "\e[31mNo tests found in $PROJECT folder\e[0m"
+		exit
+	fi
 
-rm -rf tmp
+  echo -e "\e[33m== [\e[31mRECORDING \e[97m$NUMFILES INTEGRATION TESTS\e[33m] ==\e[0m"
+
+  for FILE in $FILES; do
+    INPUT="$(grep "Input=" $FILE | cut -d= -f2)"
+    BRIEF="$(grep "Brief=" $FILE | cut -d= -f2)"
+    ARGS="$(grep "Args=" $FILE | cut -d= -f2)"
+    echo -e -n "\e[31mRecording \e[33m[\e[97m$BRIEF\e[33m] \e[33m[\e[97m$ARGS\e[33m]...\e[0m"
+    TEMP_FILE="tmp/${FILE}.out"
+    # Append the output of the $VORTEX command to the temp file
+    # NOTE: When recording the tests we don't use valgrind because
+    #       the valgrind output should be clean anyway. But when running
+    #       the test valgrind is used with --leak-check=full --show-leak-kinds=all
+    echo "Input=${INPUT}" > "$TEMP_FILE"
+    echo "Brief=${BRIEF}" >> "$TEMP_FILE"
+    echo "Args=${ARGS}" >> "$TEMP_FILE"
+    echo "--------------------------------------------------------------------------------" >> "$TEMP_FILE"
+    $VORTEX $ARGS -t <<< $INPUT >> $TEMP_FILE
+    # Replace the original file with the modified temp file
+    mv $TEMP_FILE $FILE
+    echo -e "\e[96mOK\e[0m"
+    # print out colorful if in verbose
+    if [ "$1" == "-v" ]; then
+      $VORTEX $ARGS -tc <<< $INPUT
+    fi
+  done
+
+  #rm -rf tmp/$PROJECT
+}
+
+record_tests $TARGETREPO

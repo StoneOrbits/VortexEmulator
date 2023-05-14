@@ -10,6 +10,11 @@ YELLOW="$(tput setaf 3)"
 WHITE="$(tput setaf 7)"
 NC="$(tput sgr0)" # No Color
 
+INTERACTIVE=0
+if [ "$1" == "-i" ]; then
+  INTERACTIVE=1
+fi
+
 REPOS=(
   "core"
   "gloves"
@@ -49,7 +54,7 @@ function insert_w10_w100() {
 
   for (( i=0; i<$length; i++ )); do
       char=${input_string:$i:1}
-      
+
       if [[ $char =~ [0-9] ]]; then
           output_string+="$char"
       else
@@ -74,7 +79,7 @@ else
   TARGETREPO=$1
 fi
 
-mkdir $TARGETREPO
+mkdir -p $TARGETREPO
 
 echo -e -n "\e[33mBuilding Vortex...\e[0m"
 make -C ../ &> /dev/null
@@ -92,40 +97,62 @@ echo -e "\e[32mSuccess\e[0m"
 #  repeat everything below here if they say yes to making another test
 while true; do
 
-  # Run the Vortex program
-  $VORTEX --color --in-place --record
-  
-  # Check if the output file exists and read the result from it
-  if [ ! -f "$OUTPUT_FILE" ]; then
-    echo "Output file not found"
-  	exit
+  ARGS=""
+
+  if [ $INTERACTIVE -eq 1 ]; then
+    echo -en "${YELLOW}Enter the Args:${WHITE} "
+    read -e ARGS
+
+    # Run the Vortex program
+    $VORTEX $ARGS --color --in-place --record
+
+    # Check if the output file exists and read the result from it
+    if [ ! -f "$OUTPUT_FILE" ]; then
+      echo "Output file not found"
+      exit
+    fi
+
+    RESULT=$(cat "$OUTPUT_FILE")
+    echo -n "${YELLOW}Use Result [${WHITE}$RESULT${YELLOW}]? (Y/n): ${WHITE}"
+
+    read -e CONFIRM
+    if [[ $CONFIRM == [nN] || $CONFIRM == [nN][oO] ]]; then
+      exit
+    fi
+
+    NEW_INPUT=$(insert_w10_w100 "$RESULT")
+
+    echo -e "\n${WHITE}================================================================================${NC}"
+    echo -e "Processed Input: ${WHITE}$NEW_INPUT${NC}"
+  else
+    # print a helpful help message
+    $VORTEX --help
+
+    echo -en "${YELLOW}Enter the Args:${WHITE} "
+    read -e ARGS
+
+    echo -en "${YELLOW}Enter the Input:${WHITE} "
+    read -e NEW_INPUT
   fi
-  
-  RESULT=$(cat "$OUTPUT_FILE")
-  echo -n "${YELLOW}Use Result [${WHITE}$RESULT${YELLOW}]? (Y/n): ${WHITE}"
-  
-  read -e CONFIRM
-  if [[ $CONFIRM == [nN] || $CONFIRM == [nN][oO] ]]; then
-    exit
-  fi
-  
-  NEW_INPUT=$(insert_w10_w100 "$RESULT")
-  
-  echo -e "\n${WHITE}================================================================================${NC}"
-  echo -e "Processed Input: ${WHITE}$NEW_INPUT${NC}"
-  
-  # Prompt for test name and description
+
+  # Prompt for test name description and args
   echo -en "${YELLOW}Enter the name of the test:${WHITE} "
   read -e TEST_NAME
   echo -en "${YELLOW}Enter the description:${WHITE} "
   read -e DESCRIPTION
-  
+
+  echo "========================================="
+  echo "Name: $TEST_NAME"
+  echo "Desc: $DESCRIPTION"
+  echo "Input: $NEW_INPUT"
+  echo "Args: $ARGS"
+
   # replace spaces with underscores
   TEST_NAME="${TEST_NAME// /_}"
 
   # cd to test dir
   cd $TARGETREPO
-  
+
   # Create the test file with an incremented prefix number
   PREFIX=0
   MAX_PREFIX=0
@@ -139,27 +166,28 @@ while true; do
   done
   NEXT_PREFIX=$((10#$MAX_PREFIX + 1))
   TEST_FILE="$(printf "%04d" $NEXT_PREFIX)_${TEST_NAME}.test"
-  
+
   # Write the test information to the test file
   echo "Input=${NEW_INPUT}" > "$TEST_FILE"
   echo "Brief=${DESCRIPTION}" >> "$TEST_FILE"
+  echo "Args=${ARGS}" >> "$TEST_FILE"
   echo "--------------------------------------------------------------------------------" >> "$TEST_FILE"
-  
+
   # generate the history for the test and append it to the test file
-  echo "${NEW_INPUT}" | $VORTEX --no-timestep >> "$TEST_FILE"
+  echo "${NEW_INPUT}" | $VORTEX $ARGS --no-timestep >> "$TEST_FILE"
 
   # cd back
   cd -
-  
+
   # done
   echo "Test file created: ${TEST_FILE}"
-  
+
   # run again?
-  echo -n "${YELLOW}Create another test? (Y/n): ${WHITE}"
+  echo -n "${YELLOW}Create another test? (y/N): ${WHITE}"
   read -e CONFIRM
-  if [[ $CONFIRM == [nN] || $CONFIRM == [nN][oO] ]]; then
+  if [[ $CONFIRM != [yY] || $CONFIRM != [yY][eE][sS] ]]; then
     exit
   fi
-  
+
 # end while true
 done

@@ -61,14 +61,15 @@ function run_tests() {
   for FILE in $FILES; do
     INPUT="$(grep "Input=" $FILE | cut -d= -f2)"
     BRIEF="$(grep "Brief=" $FILE | cut -d= -f2)"
+    ARGS="$(grep "Args=" $FILE | cut -d= -f2)"
     TESTNUM="$(echo $FILE | cut -d_ -f1)"
-    echo -e -n "\e[33mTesting $TESTNUM [\e[97m$BRIEF\e[33m]... \e[0m"
+    echo -e -n "\e[33mTesting $TESTNUM [\e[97m$BRIEF\e[33m] [\e[97m$ARGS\e[33m] ... \e[0m"
     DIVIDER=$(grep -n -- "--------------------------------------------------------------------------------" $FILE | cut -f1 -d:)
     EXPECTED="tmp/${FILE}.expected"
     OUTPUT="tmp/${FILE}.output"
     DIFFOUT="tmp/${FILE}.diff"
     tail -n +$(($DIVIDER + 1)) "$FILE" &> $EXPECTED
-    $VALGRIND $VORTEX -t <<< $INPUT &> $OUTPUT
+    $VALGRIND $VORTEX $ARGS -t <<< $INPUT &> $OUTPUT
     $DIFF --brief $EXPECTED $OUTPUT &> $DIFFOUT
     if [ $? -eq 0 ]; then
       echo -e "\e[32mSUCCESS\e[0m"
@@ -83,7 +84,7 @@ function run_tests() {
   if [ $ALLSUCCES -eq 1 ]; then
     echo -e "\e[33m== [\e[32mSUCCESS ALL TESTS PASSED\e[33m] ==\e[0m"
     # if so clear the tmp folder
-    rm -rf tmp
+    rm -rf tmp/$PROJECT
   else
     # otherwise cat the last diff
     $DIFF $EXPECTED $OUTPUT

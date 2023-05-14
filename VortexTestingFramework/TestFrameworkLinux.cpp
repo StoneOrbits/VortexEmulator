@@ -40,13 +40,17 @@ TestFramework *g_pTestFramework = nullptr;
 
 using namespace std;
 
-#define USAGE   "\n[a] click                                                                                                                             " \
-                "\n[s] long click                                                                                                                        " \
-                "\n[d] enter menus                                                                                                                       " \
-                "\n[f] toggle pressed                                                                                                                    " \
-                "\n[w] wait                                                                                                                              " \
-                "\n[<digit>] repeat last command n times                                                                                                 " \
-                "\n[q] quit                                                                                                                              "
+// This is re-printed over and over in in-place mode to give an active usage
+// TODO: calculate number of spaces based on terminal width
+#define USAGE \
+"\n   c         click                                                                                                                    " \
+"\n   l         long click                                                                                                               " \
+"\n   m         enter menus                                                                                                              " \
+"\n   t         toggle pressed                                                                                                           " \
+"\n   w         wait                                                                                                                     " \
+"\n   <digit>   repeat last command n times                                                                                              " \
+"\n   q         quit                                                                                                                     "
+
 
 #ifdef WASM // Web assembly glue
 #include <emscripten/html5.h>
@@ -138,7 +142,7 @@ std::map<std::string, int> color_map = {
 
 static void print_usage(const char* program_name) 
 {
-  fprintf(stderr, "Usage: %s [options]\n", program_name);
+  fprintf(stderr, "Usage: %s [options] < input commands\n", program_name);
   fprintf(stderr, "Options:\n");
   fprintf(stderr, "  -c, --color              Use console color codes to represent led colors\n");
   fprintf(stderr, "  -t, --no-timestep        Bypass the timestep and run as fast as possible\n");
@@ -149,6 +153,19 @@ static void print_usage(const char* program_name)
   fprintf(stderr, "  -C, --colorset c1,c2...  Preset the colorset on the first mode (csv list of hex codes or color names)\n");
   fprintf(stderr, "  -A, --arguments a1,a2... Preset the arguments on the first mode (csv list of arguments)\n");
   fprintf(stderr, "  -h, --help               Display this help message\n");
+  fprintf(stderr, "\n");
+  fprintf(stderr, "Input Commands:\n");
+  fprintf(stderr, "   c         click\n");
+  fprintf(stderr, "   l         long click\n");
+  fprintf(stderr, "   m         enter menus\n");
+  fprintf(stderr, "   t         toggle pressed\n");
+  fprintf(stderr, "   w         wait\n");
+  fprintf(stderr, "   <digit>   repeat last command n times\n");
+  fprintf(stderr, "   q         quit\n");
+  fprintf(stderr, "\n");
+  fprintf(stderr, "Example Usage:\n");
+  fprintf(stderr, "   ./vortex -ct -P0 -Cred,green -A1,2 <<< w10q\n");
+  fprintf(stderr, "   ./vortex -ci -P40 -Ccyan,purple\n");
 }
 
 struct termios orig_term_attr = {0};
