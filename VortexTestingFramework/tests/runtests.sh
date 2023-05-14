@@ -4,6 +4,10 @@ VALGRIND="valgrind --quiet --leak-check=full --show-leak-kinds=all"
 VORTEX="../vortex"
 DIFF="diff"
 
+if [ "$1" == "-f" ]; then
+  VALGRIND=
+fi
+
 REPOS=(
   "core"
   "gloves"
@@ -92,11 +96,7 @@ function run_tests() {
 }
 
 # select the target repo to create a test for
-if [ -z $1 ]; then
-  TARGETREPO=$(select_repo)
-else
-  TARGETREPO=$1
-fi
+TARGETREPO=$(select_repo)
 
 echo -e -n "\e[33mBuilding Vortex...\e[0m"
 make -C ../ &> /dev/null

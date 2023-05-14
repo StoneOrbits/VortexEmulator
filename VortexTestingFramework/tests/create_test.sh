@@ -15,6 +15,11 @@ if [ "$1" == "-i" ]; then
   INTERACTIVE=1
 fi
 
+NOMAKE=0
+if [ "$1" == "-n" ]; then
+  NOMAKE=1
+fi
+
 REPOS=(
   "core"
   "gloves"
@@ -73,25 +78,23 @@ function insert_w10_w100() {
 }
 
 # select the target repo to create a test for
-if [ -z $1 ]; then
-  TARGETREPO=$(select_repo)
-else
-  TARGETREPO=$1
-fi
+TARGETREPO=$(select_repo)
 
 mkdir -p $TARGETREPO
 
-echo -e -n "\e[33mBuilding Vortex...\e[0m"
-make -C ../ &> /dev/null
-if [ $? -ne 0 ]; then
-  echo -e "\e[31mFailed to build Vortex!\e[0m"
-  exit
+if [ $NOMAKE -eq 0 ]; then
+  echo -e -n "\e[33mBuilding Vortex...\e[0m"
+  make -C ../ &> /dev/null
+  if [ $? -ne 0 ]; then
+    echo -e "\e[31mFailed to build Vortex!\e[0m"
+    exit
+  fi
+  if [ ! -x "$VORTEX" ]; then
+    echo -e "\e[31mCould not find Vortex!\e[0m"
+    exit
+  fi
+  echo -e "\e[32mSuccess\e[0m"
 fi
-if [ ! -x "$VORTEX" ]; then
-  echo -e "\e[31mCould not find Vortex!\e[0m"
-  exit
-fi
-echo -e "\e[32mSuccess\e[0m"
 
 # =====================================================================
 #  repeat everything below here if they say yes to making another test
@@ -181,6 +184,9 @@ while true; do
 
   # done
   echo "Test file created: ${TEST_FILE}"
+
+  # add to git?
+  #git add $TEST_FILE
 
   # run again?
   echo -n "${YELLOW}Create another test? (y/N): ${WHITE}"
