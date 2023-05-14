@@ -3,6 +3,11 @@
 VALGRIND="valgrind --quiet --leak-check=full --show-leak-kinds=all"
 VORTEX="../vortex"
 
+VALIDATE=0
+if [ $1 == "-v" ]; then
+  VALIDATE=1
+fi
+
 REPOS=(
   "core"
   "gloves"
@@ -34,11 +39,7 @@ select_repo() {
 }
 
 # select the target repo to create a test for
-if [ -z $1 ]; then
-  TARGETREPO=$(select_repo)
-else
-  TARGETREPO=$1
-fi
+TARGETREPO=$(select_repo)
 
 mkdir -p $TARGETREPO
 
@@ -99,8 +100,14 @@ function record_tests() {
     mv $TEMP_FILE $FILE
     echo -e "\e[96mOK\e[0m"
     # print out colorful if in verbose
-    if [ "$1" == "-v" ]; then
+    if [ "$VALIDATE" -eq 1 ]; then
       $VORTEX $ARGS -tc <<< $INPUT
+      echo -e "\e[31mRecorded \e[33m[\e[97m$BRIEF\e[33m] \e[33m[\e[97m$ARGS\e[33m]\e[0m"
+      echo -en "${YELLOW}Is this correct? (Y/n):${WHITE} "
+      read -e CONFIRM
+      if [[ $CONFIRM == [nN] || $CONFIRM == [nN][oO] ]]; then
+        exit
+      fi
     fi
   done
 

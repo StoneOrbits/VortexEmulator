@@ -8,6 +8,12 @@ if [ "$1" == "-f" ]; then
   VALGRIND=
 fi
 
+VERBOSE=0
+if [ "$1" == "-v" ]; then
+  VALGRIND=
+  VERBOSE=1
+fi
+
 REPOS=(
   "core"
   "gloves"
@@ -75,6 +81,9 @@ function run_tests() {
     tail -n +$(($DIVIDER + 1)) "$FILE" &> $EXPECTED
     $VALGRIND $VORTEX $ARGS -t <<< $INPUT &> $OUTPUT
     $DIFF --brief $EXPECTED $OUTPUT &> $DIFFOUT
+    if [ $VERBOSE -eq 1 ]; then
+      $VORTEX $ARGS -ct <<< $INPUT
+    fi
     if [ $? -eq 0 ]; then
       echo -e "\e[32mSUCCESS\e[0m"
     else

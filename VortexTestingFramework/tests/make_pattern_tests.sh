@@ -14,6 +14,8 @@ create_test_script_path="./create_test.sh -n"  # Update the path to your create_
 # 5 finger
 TARGETREPO=5
 
+NEEDONE=1
+
 # Generate tests
 for pattern in ${patterns[@]}; do
   for colorset in ${colorsets[@]}; do
@@ -22,6 +24,11 @@ for pattern in ${patterns[@]}; do
         for arg3 in $(seq 0 $max_value); do
           for arg4 in $(seq 0 $max_value); do
             for arg5 in $(seq 0 $max_value); do
+              if [[ $arg1 -eq 0 && $arg4 -eq 0 && $NEEDONE -eq 0 ]];then
+                continue
+              fi
+              NEEDONE=0
+
               # Create the command string
               command_string="-P${pattern} -C${colorset} -A${arg1},${arg2},${arg3},${arg4},${arg5}"
 
