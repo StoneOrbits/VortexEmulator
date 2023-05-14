@@ -15,7 +15,7 @@ It should build without any issues or dependencies
 
 The test framework works by wrapping around the core VortexLib library
 and utilizing the Vortex Engine apis to run a desktop based Vortex Engine
-that rendered the output and accepts inputs through the button press.
+that renders the output and accepts inputs through the button presses.
 
 There is a feature to simulate IR communications between two devices,
 it will open a pipe from the first program to the second program allowing
