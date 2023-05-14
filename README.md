@@ -1,7 +1,7 @@
 # Vortex Emulator
 A test framework for the Vortex Engine
 
-<img src="/Screenshot.png" />
+<img src="/screenshot.png" />
 
 To pull the VortexEngine branch inside do:
 ```
