@@ -204,8 +204,6 @@ bool TestFramework::init(HINSTANCE hInstance)
   // move the IR launch button over to the right on the orbit build
   m_IRLaunchButton.init(m_hInst, m_window, "Connect IR", BACK_COL, 80, 24, 
     350 + ((LED_COUNT == 28) * 150), 340, LAUNCH_IR_ID, launchIRCallback);
-  // the IR can only be launched on devices besides the microlight
-  m_IRLaunchButton.setVisible(LED_COUNT != 2);
    
   // hardcoded switch optimizes to a single call based on engine led count
   switch (LED_COUNT) {
@@ -674,7 +672,7 @@ DWORD __stdcall TestFramework::arduino_loop_thread(void *arg)
       Vortex::setTickrate(newTickrate);
     }
     // scroll the background a little
-    if (newTickrate > 10) {
+    if (newTickrate > 10 && !Vortex::isSleeping()) {
       framework->m_patternStrip.addBackgroundOffset(1, 0, patternStripExtensionMultiplier - 1);
     }
     // if pattern changes we need to reload the pattern strip
