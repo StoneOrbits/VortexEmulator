@@ -2,6 +2,7 @@
 #include <CommCtrl.h>
 
 #include <iostream>
+#include <fstream>
 #include <sstream>
 #include <iomanip>
 #include <string>
@@ -16,11 +17,13 @@
 #include "Log/Log.h"
 
 #include "Patterns/PatternBuilder.h"
-#include "Leds/Leds.h"
+#include "Menus/MenuList/Randomizer.h"
 #include "Time/TimeControl.h"
 #include "Colors/Colorset.h"
-#include "Modes/Mode.h"
 #include "VortexEngine.h"
+#include "Menus/Menus.h"
+#include "Modes/Mode.h"
+#include "Leds/Leds.h"
 
 #include "patterns/Pattern.h"
 
@@ -36,6 +39,7 @@ using namespace std;
 #define TICKRATE_SLIDER_ID 15001
 #define LED_CIRCLE_ID 20003
 #define LAUNCH_IR_ID  30001
+#define GEN_PATS_ID  30002
 #define PATTERN_STRIP_ID  35001
 
 #define BACK_COL        RGB(40, 40, 40)
@@ -174,7 +178,7 @@ bool TestFramework::init(HINSTANCE hInstance)
     break;
   }
 
-  m_patternStrip.init(m_hInst, m_window, "Pattern Strip", BACK_COL, width, patternStripHeight, -2, 375, 2, PATTERN_STRIP_ID, patternStripSelectCallback); 
+  m_patternStrip.init(m_hInst, m_window, "Pattern Strip", BACK_COL, width, patternStripHeight, -2, 375, 2, PATTERN_STRIP_ID, patternStripSelectCallback);
   m_patternStrip.setDrawHLine(false);
   m_patternStrip.setDrawVLine(false);
   m_patternStrip.setDrawCircle(false);
@@ -201,10 +205,14 @@ bool TestFramework::init(HINSTANCE hInstance)
   m_tickrateSlider.setSelection(0, 240);
   Vortex::setTickrate(150);
 
+  // the generate patterns button
+  m_generatePats.init(m_hInst, m_window, "Gen Pats", BACK_COL, 80, 24,
+    350 + ((LED_COUNT == 28) * 150), 310, GEN_PATS_ID, generatePatsCallback);
+
   // move the IR launch button over to the right on the orbit build
-  m_IRLaunchButton.init(m_hInst, m_window, "Connect IR", BACK_COL, 80, 24, 
+  m_IRLaunchButton.init(m_hInst, m_window, "Connect IR", BACK_COL, 80, 24,
     350 + ((LED_COUNT == 28) * 150), 340, LAUNCH_IR_ID, launchIRCallback);
-   
+
   // hardcoded switch optimizes to a single call based on engine led count
   switch (LED_COUNT) {
   case 28:
@@ -226,8 +234,10 @@ bool TestFramework::init(HINSTANCE hInstance)
   // create an accelerator table for dispatching hotkeys as WM_COMMANDS
   // for specific menu IDs
   ACCEL accelerators[] = {
+    // ctrl + shift + P   dumps patterns
+    { FCONTROL | FSHIFT | FVIRTKEY, 'p', GEN_PATS_ID },
     // ctrl + shift + I   open the IR connection
-    { FCONTROL | FSHIFT | FVIRTKEY, 'I', LAUNCH_IR_ID },
+    { FCONTROL | FSHIFT | FVIRTKEY, 'i', LAUNCH_IR_ID },
   };
   m_accelTable = CreateAcceleratorTable(accelerators, sizeof(accelerators) / sizeof(accelerators[0]));
   if (!m_accelTable) {
@@ -274,7 +284,7 @@ void TestFramework::setupLedPositionsOrbit()
   // quadrant 1 edge
   m_ledPos[3].left = m_ledPos[2].left + 25;
   m_ledPos[3].top = m_ledPos[2].top + 25;
-  
+
   // quadrant 1 bot
   for (uint32_t i = 0; i < 3; ++i) {
     m_ledPos[6 - i].left = 332 - (i * 17);
@@ -286,7 +296,7 @@ void TestFramework::setupLedPositionsOrbit()
     m_ledPos[7 + i].left = 400 + (i * 17);
     m_ledPos[7 + i].top = 181 + (i * 17);
   }
-  
+
   // quadrant 2 top
   for (uint32_t i = 0; i < 3; ++i) {
     m_ledPos[13 - i].left = 82 - (i * 17);
@@ -314,7 +324,7 @@ void TestFramework::setupLedPositionsOrbit()
   }
 
   // quadrant 4 bot
-  for (uint32_t i = 0; i < 3; ++i) { 
+  for (uint32_t i = 0; i < 3; ++i) {
     m_ledPos[21 + i].left = 332 - (i * 17);
     m_ledPos[21 + i].top = 113 - (i * 17);
   }
@@ -336,7 +346,7 @@ void TestFramework::setupLedPositionsOrbit()
   }
 
   for (uint32_t i = 0; i < LED_COUNT; ++i) {
-    // super lazy reposition of + 67 because I don't want to go 
+    // super lazy reposition of + 67 because I don't want to go
     // adjust all the values in the above statements
     m_leds[i].init(m_hInst, m_window, to_string(0),
       BACK_COL, 21, 21, m_ledPos[i].left + 67, m_ledPos[i].top, LED_CIRCLE_ID + i, ledClickCallback);
@@ -480,12 +490,134 @@ void TestFramework::longClick(VButton *window, uint32_t buttonIndex)
 
 void TestFramework::launchIR(VButton *window, VButton::ButtonEvent type)
 {
-  if (!m_pCallbacks) {
+  if (!m_pCallbacks || type != VButton::ButtonEvent::BUTTON_EVENT_RELEASE) {
     return;
   }
   IRSimulator::startServer();
   m_IRLaunchButton.setEnabled(false);
   Vortex::openModeSharing();
+}
+
+void TestFramework::genPats(VButton *window, VButton::ButtonEvent type)
+{
+  if (type != VButton::ButtonEvent::BUTTON_EVENT_RELEASE) {
+    return;
+  }
+  // Generate a unique filename
+  string baseFilename = "patterns";
+  string extension = ".bmp";
+  string filename = baseFilename + extension;
+  int counter = 1;
+  while (ifstream(filename)) {
+    filename = baseFilename + to_string(counter++) + extension;
+  }
+  DWORD dwWaitResult = WaitForSingleObject(m_pauseMutex, INFINITE);  // no time-out interval
+  if (dwWaitResult != WAIT_OBJECT_0) {
+    //  only run the tick if we acquire the pause mutex
+    return;
+  }
+  if (!generatePatternBMP(filename)) {
+    // failure!
+  }
+  ReleaseMutex(m_pauseMutex);
+  system(("start " + filename).c_str());
+}
+
+bool TestFramework::generatePatternBMP(const string &filename)
+{
+  if (!Menus::checkInMenu()) {
+    return false;
+  }
+  // The width of the bitmap is the same as the width of a single pattern strip
+  uint32_t bitmapWidth = width * patternStripExtensionMultiplier;
+  // The height of the bitmap is 100 times the height of a single pattern strip
+  uint32_t bitmapHeight = patternStripHeight * 100;  // 100 pattern strips
+  COLORREF *cols = new COLORREF[bitmapWidth * bitmapHeight];
+  if (!cols) {
+    return false;
+  }
+  // the current mode of the randomizer menu
+  Mode *menuMode = Vortex::getMenuDemoMode();
+  // Clear and re-generate the pattern strip
+  for (uint32_t i = 0; i < 100; ++i) {  // 100 pattern strips
+    // reset the mode
+    menuMode->init();
+    // Begin the time simulation so we can tick forward
+    Time::startSimulation();
+    for (uint32_t x = 0; x < bitmapWidth; ++x) {
+      // Run the current mode like normal
+      menuMode->play();
+      // Tick the virtual time forward so that next play()
+      // the engine will think a tick has passed
+      Time::tickSimulation();
+      // Sample the color for the selected LED
+      COLORREF col = Leds::getLed(m_curSelectedLed).raw();
+      // Fill the entire column of the bitmap with this color
+      for (uint32_t y = 0; y < patternStripHeight; ++y) {
+        cols[((i * patternStripHeight + y) * bitmapWidth) + x] = col;
+      }
+    }
+    // End the time simulation, this snaps the tickcount
+    // back to where it was before starting the sim
+    Time::endSimulation();
+    // force randomizer to randomize lol
+    ((Randomizer *)Menus::curMenu())->reRoll();
+  }
+  bool rv = writeBMPtoFile(filename, bitmapWidth, bitmapHeight, cols);
+  delete[] cols;
+  return rv;
+}
+
+// func to write bitmap to file
+bool TestFramework::writeBMPtoFile(const string &filename, uint32_t bitmapWidth, uint32_t bitmapHeight, COLORREF *cols)
+{
+  // Create a bitmap out of the array of colors
+  HBITMAP bitmap = CreateBitmap(bitmapWidth, bitmapHeight, 1, 32, cols);
+  if (!bitmap) {
+    return false;
+  }
+  BITMAPFILEHEADER fileHeader;
+  BITMAPINFOHEADER infoHeader;
+  // Configure the headers
+  fileHeader.bfType = 0x4D42;  // BM
+  fileHeader.bfSize = sizeof(BITMAPFILEHEADER) + sizeof(BITMAPINFOHEADER) + bitmapWidth * bitmapHeight * 4;
+  fileHeader.bfOffBits = sizeof(BITMAPFILEHEADER) + sizeof(BITMAPINFOHEADER);
+  infoHeader.biSize = sizeof(BITMAPINFOHEADER);
+  infoHeader.biWidth = bitmapWidth;
+  infoHeader.biHeight = bitmapHeight;
+  infoHeader.biPlanes = 1;
+  infoHeader.biBitCount = 32;  // Assuming the bitmap is 32-bit
+  infoHeader.biCompression = BI_RGB;
+  infoHeader.biSizeImage = bitmapWidth * bitmapHeight * 4;
+  infoHeader.biXPelsPerMeter = 0;
+  infoHeader.biYPelsPerMeter = 0;
+  infoHeader.biClrUsed = 0;
+  infoHeader.biClrImportant = 0;
+  // Open the file
+  ofstream bmpFile(filename, ios::out | ios::binary);
+  if (!bmpFile) {
+    cerr << "Could not open the .bmp file." << endl;
+    return false;
+  }
+  // Write the headers
+  bmpFile.write(reinterpret_cast<char *>(&fileHeader), sizeof(fileHeader));
+  bmpFile.write(reinterpret_cast<char *>(&infoHeader), sizeof(infoHeader));
+  // Get the device context
+  HDC hdc = GetDC(NULL);
+  // Prepare the structure for GetDIBits
+  BITMAPINFO bmi;
+  ZeroMemory(&bmi, sizeof(BITMAPINFO));
+  bmi.bmiHeader = infoHeader;
+  // Use GetDIBits to retrieve the bitmap data
+  BYTE *pPixels = new BYTE[bitmapWidth * bitmapHeight * 4];
+  GetDIBits(hdc, bitmap, 0, bitmapHeight, pPixels, &bmi, DIB_RGB_COLORS);
+  // Write the bitmap data
+  bmpFile.write(reinterpret_cast<char *>(pPixels), bitmapWidth * bitmapHeight * 4);
+  // Clean up
+  delete[] pPixels;
+  ReleaseDC(NULL, hdc);
+  bmpFile.close();
+  return true;
 }
 
 void TestFramework::patternStripSelect(uint32_t x, uint32_t y, VSelectBox::SelectEvent sevent)
@@ -684,14 +816,14 @@ DWORD __stdcall TestFramework::arduino_loop_thread(void *arg)
   return 0;
 }
 
-std::string TestFramework::getWindowTitle()
+string TestFramework::getWindowTitle()
 {
   char text[2048] = {0};
   GetWindowText(m_window.hwnd(), text, sizeof(text));
   return text;
 }
 
-void TestFramework::setWindowTitle(std::string title)
+void TestFramework::setWindowTitle(string title)
 {
   SetWindowTextA(m_window.hwnd(), title.c_str());
 }

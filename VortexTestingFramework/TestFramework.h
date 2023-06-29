@@ -106,6 +106,9 @@ private:
   static void launchIRCallback(void *arg, VButton *window, VButton::ButtonEvent type) {
     ((TestFramework *)arg)->launchIR(window, type);
   }
+  static void generatePatsCallback(void *arg, VButton *window, VButton::ButtonEvent type) {
+    ((TestFramework *)arg)->genPats(window, type);
+  }
   static void patternStripSelectCallback(void *arg, uint32_t x, uint32_t y, VSelectBox::SelectEvent sevent) {
     ((TestFramework *)arg)->patternStripSelect(x, y, sevent);
   }
@@ -119,9 +122,13 @@ private:
   void buttonClick(VButton *window, VButton::ButtonEvent type);
   void longClick(VButton *window, uint32_t buttonIndex);
   void launchIR(VButton *window, VButton::ButtonEvent type);
+  void genPats(VButton *window, VButton::ButtonEvent type);
   void patternStripSelect(uint32_t x, uint32_t y, VSelectBox::SelectEvent sevent);
   void ledClick(VWindow *window);
   void setTickrate(uint32_t x, uint32_t y, VSelectBox::SelectEvent sevent);
+
+  bool generatePatternBMP(const std::string &filename);
+  bool writeBMPtoFile(const std::string &filename, uint32_t bitmapWidth, uint32_t bitmapHeight, COLORREF *cols);
 
   static const uint32_t width = LED_COUNT == 28 ? 610 : 460;
   static const uint32_t height = 460;
@@ -148,6 +155,7 @@ private:
   VButton m_button3;
   VButton m_button4;
   VButton m_IRLaunchButton;
+  VButton m_generatePats;
   VCircle m_leds[LED_COUNT];
   RECT m_ledPos[LED_COUNT];
 
