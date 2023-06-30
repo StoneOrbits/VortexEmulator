@@ -127,7 +127,7 @@ private:
   void ledClick(VWindow *window);
   void setTickrate(uint32_t x, uint32_t y, VSelectBox::SelectEvent sevent);
 
-  bool generatePatternBMP(const std::string &filename);
+  bool generatePatternBMP(const std::string &filename, uint32_t numStrips = 100);
   bool writeBMPtoFile(const std::string &filename, uint32_t bitmapWidth, uint32_t bitmapHeight, COLORREF *cols);
 
   static const uint32_t width = LED_COUNT == 28 ? 610 : 460;

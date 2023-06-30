@@ -206,7 +206,7 @@ bool TestFramework::init(HINSTANCE hInstance)
   Vortex::setTickrate(150);
 
   // the generate patterns button
-  m_generatePats.init(m_hInst, m_window, "Gen Pats", BACK_COL, 80, 24,
+  m_generatePats.init(m_hInst, m_window, "Make Art", BACK_COL, 80, 24,
     350 + ((LED_COUNT == 28) * 150), 310, GEN_PATS_ID, generatePatsCallback);
 
   // move the IR launch button over to the right on the orbit build
@@ -516,14 +516,14 @@ void TestFramework::genPats(VButton *window, VButton::ButtonEvent type)
     //  only run the tick if we acquire the pause mutex
     return;
   }
-  if (!generatePatternBMP(filename)) {
+  if (!generatePatternBMP(filename, 100)) {
     // failure!
   }
   ReleaseMutex(m_pauseMutex);
   system(("start " + filename).c_str());
 }
 
-bool TestFramework::generatePatternBMP(const string &filename)
+bool TestFramework::generatePatternBMP(const string &filename, uint32_t numStrips)
 {
   if (!Menus::checkInMenu()) {
     return false;
@@ -531,7 +531,7 @@ bool TestFramework::generatePatternBMP(const string &filename)
   // The width of the bitmap is the same as the width of a single pattern strip
   uint32_t bitmapWidth = width * patternStripExtensionMultiplier;
   // The height of the bitmap is 100 times the height of a single pattern strip
-  uint32_t bitmapHeight = patternStripHeight * 100;  // 100 pattern strips
+  uint32_t bitmapHeight = patternStripHeight * numStrips;  // 100 pattern strips
   COLORREF *cols = new COLORREF[bitmapWidth * bitmapHeight];
   if (!cols) {
     return false;
@@ -539,7 +539,7 @@ bool TestFramework::generatePatternBMP(const string &filename)
   // the current mode of the randomizer menu
   Mode *menuMode = Vortex::getMenuDemoMode();
   // Clear and re-generate the pattern strip
-  for (uint32_t i = 0; i < 100; ++i) {  // 100 pattern strips
+  for (uint32_t i = 0; i < numStrips; ++i) {  // 100 pattern strips
     // reset the mode
     menuMode->init();
     // Begin the time simulation so we can tick forward
