@@ -532,12 +532,15 @@ bool TestFramework::generatePatternBMP(const string &filename, uint32_t numStrip
   uint32_t bitmapWidth = width * patternStripExtensionMultiplier;
   // The height of the bitmap is 100 times the height of a single pattern strip
   uint32_t bitmapHeight = patternStripHeight * numStrips;  // 100 pattern strips
+  // the current mode of the randomizer menu
+  Mode *menuMode = Vortex::getMenuDemoMode();
+  if (!menuMode) {
+    return false;
+  }
   COLORREF *cols = new COLORREF[bitmapWidth * bitmapHeight];
   if (!cols) {
     return false;
   }
-  // the current mode of the randomizer menu
-  Mode *menuMode = Vortex::getMenuDemoMode();
   // Clear and re-generate the pattern strip
   for (uint32_t i = 0; i < numStrips; ++i) {  // 100 pattern strips
     // reset the mode
