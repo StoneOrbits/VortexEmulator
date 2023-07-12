@@ -685,7 +685,7 @@ void TestFramework::setBrightness(int brightness)
 // when the glove framework calls 'FastLED.show'
 void TestFramework::show()
 {
-  if (!m_initialized || !m_ledList) {
+  if (!m_initialized || !m_ledList || Time::isSimulation()) {
     return;
   }
   // update the colors with the colors in the led list
