@@ -468,7 +468,7 @@ void TestFramework::cleanup()
 
 void TestFramework::buttonClick(VButton *button, VButton::ButtonEvent type)
 {
-  uint32_t buttonID = ((uint32_t)GetMenu(button->hwnd())) - CLICK_BUTTON_ID;
+  uint32_t buttonID = ((uint32_t)(uintptr_t)GetMenu(button->hwnd())) - CLICK_BUTTON_ID;
   switch (type) {
   case VButton::ButtonEvent::BUTTON_EVENT_CLICK:
     break;
@@ -516,16 +516,18 @@ void TestFramework::genPats(VButton *window, VButton::ButtonEvent type)
     //  only run the tick if we acquire the pause mutex
     return;
   }
-  if (!generatePatternBMP(filename, 100)) {
-    // failure!
-  }
+  bool success = generatePatternBMP(filename, 100);
   ReleaseMutex(m_pauseMutex);
-  system(("start " + filename).c_str());
+  if (success) {
+    // launch the file
+    system(("start " + filename).c_str());
+  }
 }
 
 bool TestFramework::generatePatternBMP(const string &filename, uint32_t numStrips)
 {
   if (!Menus::checkInMenu()) {
+    MessageBox(NULL, "Please enter the randomizer to generate art", "Error", 0);
     return false;
   }
   // The width of the bitmap is the same as the width of a single pattern strip
@@ -633,9 +635,9 @@ void TestFramework::ledClick(VWindow *window)
   uint32_t led;
   if (LED_COUNT == 10) {
     // the glove leds are reverse order
-    led = LED_LAST - ((uint32_t)GetMenu(window->hwnd()) - LED_CIRCLE_ID);
+    led = LED_LAST - ((uint32_t)(uintptr_t)GetMenu(window->hwnd()) - LED_CIRCLE_ID);
   } else {
-    led = ((uint32_t)GetMenu(window->hwnd()) - LED_CIRCLE_ID);
+    led = ((uint32_t)(uintptr_t)GetMenu(window->hwnd()) - LED_CIRCLE_ID);
   }
   printf("Clicked led %u\n", led);
   m_curSelectedLed = (LedPos)led;
@@ -802,7 +804,7 @@ DWORD __stdcall TestFramework::arduino_loop_thread(void *arg)
       memcpy(framework->m_lastLedColor, framework->m_ledList, sizeof(RGBColor) * LED_COUNT);
     }
     // handle any tickrate changes
-    uintptr_t newTickrate = framework->m_tickrate > 10 ? framework->m_tickrate : 10;
+    uint32_t newTickrate = framework->m_tickrate > 10 ? framework->m_tickrate : 10;
     if (newTickrate != Vortex::getTickrate()) {
       Vortex::setTickrate(newTickrate);
     }

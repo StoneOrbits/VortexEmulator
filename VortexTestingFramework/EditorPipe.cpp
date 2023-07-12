@@ -66,7 +66,7 @@ size_t EditorPipe::read(char *buf, size_t amt)
   DWORD total = 0;
   DWORD numRead = 0;
   do {
-    if (!ReadFile(hPipe, buf + total, amt - total, &numRead, NULL)) {
+    if (!ReadFile(hPipe, buf + total, (DWORD)(amt - total), &numRead, NULL)) {
       int err = GetLastError();
       if (err == ERROR_PIPE_NOT_CONNECTED) {
         printf("Fail\n");
@@ -83,7 +83,7 @@ uint32_t EditorPipe::write(const uint8_t *buf, size_t len)
   DWORD total = 0;
   DWORD written = 0;
   do {
-    if (!WriteFile(hPipe, buf + total, len - total, &written, NULL)) {
+    if (!WriteFile(hPipe, buf + total, (DWORD)(len - total), &written, NULL)) {
       break;
     }
     total += written;
