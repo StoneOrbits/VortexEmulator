@@ -11,7 +11,7 @@ create_test_script_path="./create_test.sh -n"  # Update the path to your create_
 # 2 gloves
 # 3 orbit
 # 4 handle
-# 5 finger
+# 5 duo
 TARGETREPO=5
 
 NEEDONE=1

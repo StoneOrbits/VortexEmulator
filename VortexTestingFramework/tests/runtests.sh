@@ -19,7 +19,7 @@ REPOS=(
   "gloves"
   "orbit"
   "handle"
-  "finger"
+  "duo"
 )
 
 select_repo() {

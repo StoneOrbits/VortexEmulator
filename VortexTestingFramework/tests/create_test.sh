@@ -25,7 +25,7 @@ REPOS=(
   "gloves"
   "orbit"
   "handle"
-  "finger"
+  "duo"
 )
 
 # Function to display colored text
