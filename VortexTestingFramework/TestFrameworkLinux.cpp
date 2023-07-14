@@ -380,7 +380,8 @@ void TestFramework::show()
     }
   }
   if (!m_inPlace) {
-    out += "\n";
+    // \r\n because this is often run in WSL and without the \r weird stuff happens
+    out += "\r\n";
   } else {
     out += USAGE;
   }
