@@ -165,7 +165,7 @@ static void print_usage(const char* program_name)
   fprintf(stderr, "\n");
   fprintf(stderr, "Example Usage:\n");
   fprintf(stderr, "   ./vortex -ct -P0 -Cred,green -A1,2 <<< w10q\n");
-  fprintf(stderr, "   ./vortex -ci -P40 -Ccyan,purple\n");
+  fprintf(stderr, "   ./vortex -ci -P43 -Ccyan,purple\n");
 }
 
 struct termios orig_term_attr = {0};
@@ -380,8 +380,7 @@ void TestFramework::show()
     }
   }
   if (!m_inPlace) {
-    // \r\n because this is often run in WSL and without the \r weird stuff happens
-    out += "\r\n";
+    out += "\n";
   } else {
     out += USAGE;
   }
