@@ -406,8 +406,11 @@ void TestFramework::installLeds(CRGB *leds, uint32_t count)
 
 long TestFramework::TestFrameworkCallbacks::checkPinHook(uint32_t pin)
 {
-  // TODO: check realtime key press? ncurses?
-  return HIGH;
+  if (pin == 20) {
+    // orbit button 2
+    return Vortex::isButtonPressed(1) ? LOW : HIGH;
+  }
+  return Vortex::isButtonPressed(0) ? LOW : HIGH;
 }
 
 void TestFramework::TestFrameworkCallbacks::ledsInit(void *cl, int count)
