@@ -102,10 +102,13 @@ while true; do
 
   ARGS=""
 
-  if [ $INTERACTIVE -eq 1 ]; then
-    echo -en "${YELLOW}Enter the Args:${WHITE} "
-    read -e ARGS
+  # print a helpful help message
+  $VORTEX --help
 
+  echo -en "${YELLOW}Enter the Args:${WHITE} "
+  read -e ARGS
+
+  if [ $INTERACTIVE -eq 1 ]; then
     # Run the Vortex program
     $VORTEX $ARGS --color --in-place --record
 
@@ -128,12 +131,6 @@ while true; do
     echo -e "\n${WHITE}================================================================================${NC}"
     echo -e "Processed Input: ${WHITE}$NEW_INPUT${NC}"
   else
-    # print a helpful help message
-    $VORTEX --help
-
-    echo -en "${YELLOW}Enter the Args:${WHITE} "
-    read -e ARGS
-
     echo -en "${YELLOW}Enter the Input:${WHITE} "
     read -e NEW_INPUT
   fi
