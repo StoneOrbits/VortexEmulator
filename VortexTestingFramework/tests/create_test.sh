@@ -26,6 +26,7 @@ REPOS=(
   "orbit"
   "handle"
   "duo"
+  "duo_basicpattern"
 )
 
 # Function to display colored text

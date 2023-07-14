@@ -95,7 +95,8 @@ TestFramework::TestFramework() :
   m_noTimestep(false),
   m_lockstep(false),
   m_inPlace(false),
-  m_record(false)
+  m_record(false),
+  m_storage(false)
 {
 }
 
@@ -109,6 +110,7 @@ static struct option long_options[] = {
   {"lockstep", no_argument, nullptr, 'l'},
   {"in-place", no_argument, nullptr, 'i'},
   {"record", no_argument, nullptr, 'r'},
+  {"storage", no_argument, nullptr, 's'},
   {"pattern", required_argument, nullptr, 'P'},
   {"colorset", required_argument, nullptr, 'C'},
   {"arguments", required_argument, nullptr, 'A'},
@@ -149,12 +151,17 @@ static void print_usage(const char* program_name)
   fprintf(stderr, "  -l, --lockstep           Only step once each time an input is received\n");
   fprintf(stderr, "  -i, --in-place           Print the output in-place (interactive mode)\n");
   fprintf(stderr, "  -r, --record             Record the inputs and dump to a file after (" RECORD_FILE ")\n");
+  fprintf(stderr, "  -s, --storage            Enable persistent storage to file (FlashStorage.flash)\n");
+  fprintf(stderr, "\n");
+  fprintf(stderr, "Initial Pattern Options:\n");
   fprintf(stderr, "  -P, --pattern <id>       Preset the pattern ID on the first mode\n");
   fprintf(stderr, "  -C, --colorset c1,c2...  Preset the colorset on the first mode (csv list of hex codes or color names)\n");
   fprintf(stderr, "  -A, --arguments a1,a2... Preset the arguments on the first mode (csv list of arguments)\n");
+  fprintf(stderr, "\n");
+  fprintf(stderr, "Other Options:\n");
   fprintf(stderr, "  -h, --help               Display this help message\n");
   fprintf(stderr, "\n");
-  fprintf(stderr, "Input Commands:\n");
+  fprintf(stderr, "Input Commands (pass to stdin):\n");
   fprintf(stderr, "   c         click\n");
   fprintf(stderr, "   l         long click\n");
   fprintf(stderr, "   m         enter menus\n");
@@ -211,7 +218,7 @@ bool TestFramework::init(int argc, char *argv[])
 
   int opt;
   int option_index = 0;
-  while ((opt = getopt_long(argc, argv, "ctlirP:C:A:h", long_options, &option_index)) != -1) {
+  while ((opt = getopt_long(argc, argv, "ctlirsP:C:A:h", long_options, &option_index)) != -1) {
     switch (opt) {
     case 'c':
       // if the user wants pretty colors
@@ -232,6 +239,10 @@ bool TestFramework::init(int argc, char *argv[])
     case 'r':
       // record the inputs and dump them to a file after
       m_record = true;
+      break;
+    case 's':
+      // enable persistent storage to file
+      m_storage = true;
       break;
     case 'P':
       // preset the pattern ID on the first mode
@@ -262,6 +273,7 @@ bool TestFramework::init(int argc, char *argv[])
   Vortex::setInstantTimestep(m_noTimestep);
   Vortex::enableCommandLog(m_record);
   Vortex::enableLockstep(m_lockstep);
+  Vortex::enableStorage(m_storage);
 
   if (m_patternIDStr.length() > 0) {
     PatternID id = (PatternID)strtoul(m_patternIDStr.c_str(), nullptr, 10);

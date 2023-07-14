@@ -12,6 +12,7 @@ create_test_script_path="./create_test.sh -n"  # Update the path to your create_
 # 3 orbit
 # 4 handle
 # 5 duo
+# 6 duo_basicpattern
 TARGETREPO=5
 
 NEEDONE=1

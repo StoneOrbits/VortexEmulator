@@ -20,6 +20,7 @@ REPOS=(
   "orbit"
   "handle"
   "duo"
+  "duo_basicpattern"
 )
 
 select_repo() {
@@ -73,7 +74,11 @@ function run_tests() {
     BRIEF="$(grep "Brief=" $FILE | cut -d= -f2)"
     ARGS="$(grep "Args=" $FILE | cut -d= -f2)"
     TESTNUM="$(echo $FILE | cut -d_ -f1)"
-    echo -e -n "\e[33mTesting $TESTNUM [\e[97m$BRIEF\e[33m] [\e[97m$ARGS\e[33m] ... \e[0m"
+    echo -e -n "\e[33mTesting $TESTNUM [\e[97m$BRIEF\e[33m] "
+    if [ "$ARGS" != "" ]; then
+      echo -e -n "[\e[97m$ARGS\e[33m] "
+    fi
+    echo -e -n "... \e[0m"
     DIVIDER=$(grep -n -- "--------------------------------------------------------------------------------" $FILE | cut -f1 -d:)
     EXPECTED="tmp/${FILE}.expected"
     OUTPUT="tmp/${FILE}.output"
