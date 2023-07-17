@@ -190,7 +190,7 @@ while true; do
   # run again?
   echo -n "${YELLOW}Create another test? (y/N): ${WHITE}"
   read -e CONFIRM
-  if [[ $CONFIRM != [yY] || $CONFIRM != [yY][eE][sS] ]]; then
+  if [[ $CONFIRM != [yY] && $CONFIRM != [yY][eE][sS] ]]; then
     exit
   fi
 
