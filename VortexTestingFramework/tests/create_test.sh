@@ -10,9 +10,10 @@ YELLOW="$(tput setaf 3)"
 WHITE="$(tput setaf 7)"
 NC="$(tput sgr0)" # No Color
 
-INTERACTIVE=0
-if [ "$1" == "-i" ]; then
-  INTERACTIVE=1
+INTERACTIVE=1
+# manual mode for losers
+if [ "$1" == "-m" ]; then
+  INTERACTIVE=0
 fi
 
 NOMAKE=0
