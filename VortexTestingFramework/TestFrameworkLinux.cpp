@@ -43,17 +43,17 @@ using namespace std;
 // This is re-printed over and over in in-place mode to give an active usage
 // TODO: calculate number of spaces based on terminal width
 #define USAGE \
-"\n   c         standard short click                                                                                       " \
-"\n   l         standard long click                                                                                        " \
-"\n   m         open menus length click                                                                                    " \
-"\n   a         enter adv menu length click                                                                                " \
-"\n   s         enter sleep length click                                                                                   " \
-"\n   f         force sleep length click                                                                                   " \
-"\n   t         toggle button pressed                                                                                      " \
-"\n   r         rapid button click (ex r5)                                                                                 " \
-"\n   w         wait 1 tick                                                                                                " \
-"\n   <digit>   repeat last command n times (NOTE! Only single digits in interactive mode)                                 " \
-"\n   q         quit                                                                                                       "
+  "\n   c         standard short click                                                                                      " \
+  "\n   l         standard long click                                                                                       " \
+  "\n   m         open menus length click                                                                                   " \
+  "\n   a         enter adv menu length click (enter adv menu from menus)                                                   " \
+  "\n   s         enter sleep length click (enter sleep at main modes)                                                      " \
+  "\n   f         force sleep length click (force sleep anywhere)                                                           " \
+  "\n   t         toggle button pressed (only way to wake after sleep)                                                      " \
+  "\n   r         rapid button click (ex: r15)                                                                              " \
+  "\n   w         wait 1 tick                                                                                               " \
+  "\n   <digits>  repeat command n times (only single digits in interactive mode                                            " \
+  "\n   q         quit                                                                                                      " \
 
 
 #ifdef WASM // Web assembly glue
@@ -169,10 +169,10 @@ static void print_usage(const char* program_name)
   fprintf(stderr, "   c         standard short click\n");
   fprintf(stderr, "   l         standard long click\n");
   fprintf(stderr, "   m         open menus length click\n");
-  fprintf(stderr, "   a         enter adv menu length click\n");
-  fprintf(stderr, "   s         enter sleep length click\n");
-  fprintf(stderr, "   f         force sleep length click\n");
-  fprintf(stderr, "   t         toggle button pressed\n");
+  fprintf(stderr, "   a         enter adv menu length click (enter adv menu from menus)\n");
+  fprintf(stderr, "   s         enter sleep length click (enter sleep at main modes)\n");
+  fprintf(stderr, "   f         force sleep length click (force sleep anywhere)\n");
+  fprintf(stderr, "   t         toggle button pressed (only way to wake after sleep)\n");
   fprintf(stderr, "   r         rapid button click (ex: r15)\n");
   fprintf(stderr, "   w         wait 1 tick\n");
   fprintf(stderr, "   <digits>  repeat command n times (only single digits in interactive mode\n");
