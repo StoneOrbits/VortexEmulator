@@ -163,9 +163,9 @@ bool TestFramework::init(HINSTANCE hInstance)
     m_button.init(m_hInst, m_window, "Click", BACK_COL, 48, 24, 198, 312, CLICK_BUTTON_ID, buttonClickCallback);
     m_button2.init(m_hInst, m_window, "Long", BACK_COL, 48, 24, 198, 336, CLICK_BUTTON_ID + 1, longClickCallback);
     break;
-  case 2: // finger
+  case 2: // duo
     m_fingerBMP = (HBITMAP)LoadImage(m_hInst, MAKEINTRESOURCE(IDB_BITMAP4), IMAGE_BITMAP, 0, 0, 0);
-    m_fingerBox.init(m_hInst, m_window, "Finger", BACK_COL, 250, 320, 86, 30, 0, 0, nullptr);
+    m_fingerBox.init(m_hInst, m_window, "Duo", BACK_COL, 250, 320, 86, 30, 0, 0, nullptr);
     m_fingerBox.setDoCapture(false);
     m_fingerBox.setDrawHLine(false);
     m_fingerBox.setDrawVLine(false);
@@ -213,6 +213,9 @@ bool TestFramework::init(HINSTANCE hInstance)
   m_IRLaunchButton.init(m_hInst, m_window, "Connect IR", BACK_COL, 80, 24,
     350 + ((LED_COUNT == 28) * 150), 340, LAUNCH_IR_ID, launchIRCallback);
 
+  // TODO: storage enabled tickbox?
+  //Vortex::enableStorage(true);
+
   // hardcoded switch optimizes to a single call based on engine led count
   switch (LED_COUNT) {
   case 28:
@@ -255,7 +258,7 @@ bool TestFramework::init(HINSTANCE hInstance)
   }
 
   // launch the 'loop' thread
-  m_loopThread = CreateThread(NULL, 0, TestFramework::arduino_loop_thread, this, 0, NULL);
+  m_loopThread = CreateThread(NULL, 0, TestFramework::main_loop_thread, this, 0, NULL);
   if (!m_loopThread) {
     // error
     return false;
@@ -777,7 +780,7 @@ HBRUSH TestFramework::getBrushCol(RGBColor rgbcol)
   return br;
 }
 
-DWORD __stdcall TestFramework::arduino_loop_thread(void *arg)
+DWORD __stdcall TestFramework::main_loop_thread(void *arg)
 {
   TestFramework *framework = (TestFramework *)arg;
   // init the vortex engine

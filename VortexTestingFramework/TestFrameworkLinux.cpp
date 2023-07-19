@@ -43,13 +43,17 @@ using namespace std;
 // This is re-printed over and over in in-place mode to give an active usage
 // TODO: calculate number of spaces based on terminal width
 #define USAGE \
-"\n   c         click                                                                                                                    " \
-"\n   l         long click                                                                                                               " \
-"\n   m         enter menus                                                                                                              " \
-"\n   t         toggle pressed                                                                                                           " \
-"\n   w         wait                                                                                                                     " \
-"\n   <digit>   repeat last command n times                                                                                              " \
-"\n   q         quit                                                                                                                     "
+"\n   c         standard short click                                                                                       " \
+"\n   l         standard long click                                                                                        " \
+"\n   m         open menus length click                                                                                    " \
+"\n   a         enter adv menu length click                                                                                " \
+"\n   s         enter sleep length click                                                                                   " \
+"\n   f         force sleep length click                                                                                   " \
+"\n   t         toggle button pressed                                                                                      " \
+"\n   r         rapid button click (ex r5)                                                                                 " \
+"\n   w         wait 1 tick                                                                                                " \
+"\n   <digit>   repeat last command n times (NOTE! Only single digits in interactive mode)                                 " \
+"\n   q         quit                                                                                                       "
 
 
 #ifdef WASM // Web assembly glue
@@ -162,12 +166,16 @@ static void print_usage(const char* program_name)
   fprintf(stderr, "  -h, --help               Display this help message\n");
   fprintf(stderr, "\n");
   fprintf(stderr, "Input Commands (pass to stdin):\n");
-  fprintf(stderr, "   c         click\n");
-  fprintf(stderr, "   l         long click\n");
-  fprintf(stderr, "   m         enter menus\n");
-  fprintf(stderr, "   t         toggle pressed\n");
-  fprintf(stderr, "   w         wait\n");
-  fprintf(stderr, "   <digit>   repeat last command n times\n");
+  fprintf(stderr, "   c         standard short click\n");
+  fprintf(stderr, "   l         standard long click\n");
+  fprintf(stderr, "   m         open menus length click\n");
+  fprintf(stderr, "   a         enter adv menu length click\n");
+  fprintf(stderr, "   s         enter sleep length click\n");
+  fprintf(stderr, "   f         force sleep length click\n");
+  fprintf(stderr, "   t         toggle button pressed\n");
+  fprintf(stderr, "   r         rapid button click (ex: r15)\n");
+  fprintf(stderr, "   w         wait 1 tick\n");
+  fprintf(stderr, "   <digits>  repeat command n times (only single digits in interactive mode\n");
   fprintf(stderr, "   q         quit\n");
   fprintf(stderr, "\n");
   fprintf(stderr, "Example Usage:\n");
@@ -372,7 +380,8 @@ void TestFramework::show()
   }
   string out;
   if (m_inPlace) {
-    out += "\33[2K\033[8A\r";
+    // this resets the cursor back to the beginning of the line and moves it up 12 lines
+    out += "\33[2K\033[12A\r";
   }
   if (m_coloredOutput) {
     for (uint32_t i = 0; i < m_numLeds; ++i) {
@@ -384,6 +393,7 @@ void TestFramework::show()
       out += "  "; // colored space
       out += "\x1B[0m|"; // ending |
     }
+    out += "                   "; // ending
   } else {
     for (uint32_t i = 0; i < m_numLeds; ++i) {
       char buf[128] = { 0 };

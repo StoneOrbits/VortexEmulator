@@ -62,7 +62,7 @@ public:
   void setWindowPos(uint32_t x, uint32_t y);
 
   // loop that runs arduino code
-  static DWORD __stdcall arduino_loop_thread(void *arg);
+  static DWORD __stdcall main_loop_thread(void *arg);
 
 private:
   // initializes the led positions for various devices
