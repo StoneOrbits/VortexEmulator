@@ -175,12 +175,13 @@ static void print_usage(const char* program_name)
   fprintf(stderr, "   t         toggle button pressed (only way to wake after sleep)\n");
   fprintf(stderr, "   r         rapid button click (ex: r15)\n");
   fprintf(stderr, "   w         wait 1 tick\n");
-  fprintf(stderr, "   <digits>  repeat command n times (only single digits in interactive mode\n");
+  fprintf(stderr, "   <digits>  repeat command n times (only single digits in interactive mode)\n");
   fprintf(stderr, "   q         quit\n");
   fprintf(stderr, "\n");
   fprintf(stderr, "Example Usage:\n");
-  fprintf(stderr, "   ./vortex -ct -P0 -Cred,green -A1,2 <<< w10q\n");
+  fprintf(stderr, "   ./vortex -ci\n");
   fprintf(stderr, "   ./vortex -ci -P43 -Ccyan,purple\n");
+  fprintf(stderr, "   ./vortex -ct -P0 -Cred,green -A1,2 <<< w10q\n");
 }
 
 struct termios orig_term_attr = {0};
