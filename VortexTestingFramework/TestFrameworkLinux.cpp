@@ -196,7 +196,7 @@ std::map<std::string, int> color_map = {
 static void print_usage(const char* program_name) 
 {
   fprintf(stderr, "Usage: %s [options] < input commands\n", program_name);
-  fprintf(stderr, "Options:\n");
+  fprintf(stderr, "Options (at least one required):\n");
   fprintf(stderr, "  -c, --color              Use console color codes to represent led colors\n");
   fprintf(stderr, "  -t, --no-timestep        Bypass the timestep and run as fast as possible\n");
   fprintf(stderr, "  -l, --lockstep           Only step once each time an input is received\n");
@@ -204,7 +204,7 @@ static void print_usage(const char* program_name)
   fprintf(stderr, "  -r, --record             Record the inputs and dump to a file after (" RECORD_FILE ")\n");
   fprintf(stderr, "  -s, --storage            Enable persistent storage to file (FlashStorage.flash)\n");
   fprintf(stderr, "\n");
-  fprintf(stderr, "Initial Pattern Options:\n");
+  fprintf(stderr, "Initial Pattern Options (optional):\n");
   fprintf(stderr, "  -P, --pattern <id>       Preset the pattern ID on the first mode\n");
   fprintf(stderr, "  -C, --colorset c1,c2...  Preset the colorset on the first mode (csv list of hex codes or color names)\n");
   fprintf(stderr, "  -A, --arguments a1,a2... Preset the arguments on the first mode (csv list of arguments)\n");
@@ -219,7 +219,7 @@ static void print_usage(const char* program_name)
   fprintf(stderr, "\n");
   fprintf(stderr, "Example Usage:\n");
   fprintf(stderr, "   ./vortex -ci\n");
-  fprintf(stderr, "   ./vortex -ci -P43 -Ccyan,purple\n");
+  fprintf(stderr, "   ./vortex -ci -P42 -Ccyan,purple\n");
   fprintf(stderr, "   ./vortex -ct -P0 -Cred,green -A1,2 <<< w10q\n");
 }
 
@@ -270,6 +270,11 @@ bool TestFramework::init(int argc, char *argv[])
     return false;
   }
   g_pTestFramework = this;
+
+  if (argc == 1) {
+    print_usage(argv[0]);
+    exit(EXIT_SUCCESS);
+  }
 
   int opt;
   int option_index = 0;
