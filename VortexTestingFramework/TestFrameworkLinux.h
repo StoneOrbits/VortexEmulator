@@ -66,6 +66,9 @@ private:
     // receive a message from client
   };
 
+  // internal helper for updating terminal size
+  void get_terminal_size();
+
   // these are in no particular order
   RGBColor *m_ledList;
   uint32_t m_numLeds;

@@ -259,9 +259,16 @@ void set_terminal_nonblocking()
   atexit(restore_terminal);
 }
 
-void get_terminal_size()
+void TestFramework::get_terminal_size()
 {
-  ioctl(STDOUT_FILENO, TIOCGWINSZ, &terminal_size);
+  struct winsize new_terminal_size = { 0 };
+  ioctl(STDOUT_FILENO, TIOCGWINSZ, &new_terminal_size);
+  if (terminal_size.ws_col != new_terminal_size.ws_col) {
+    terminal_size = new_terminal_size;
+    if (m_inPlace && !system("clear")) {
+      // failure but don't care
+    }
+  }
 }
 
 bool TestFramework::init(int argc, char *argv[])
@@ -431,7 +438,7 @@ void TestFramework::show()
   uint32_t wid = terminal_size.ws_col;// & 0xFFFFFFFC;
   uint32_t odd = (wid) % 2;
   uint32_t halfwid = wid / 2;
-  uint32_t midWid = (halfwid - (2 * LED_COUNT)) - 1;
+  uint32_t midWid = (halfwid - ((2 + (!m_coloredOutput)) * LED_COUNT)) - 1;
   if (m_inPlace) {
     // this resets the cursor back to the beginning of the line and moves it up 12 lines
     out += "\33[2K\033[17A\r";
