@@ -463,7 +463,6 @@ void TestFramework::show()
     } else {
       out += INPUT_USAGE;
     }
-    out += to_string(wid);
   }
   printf("%s", out.c_str());
   fflush(stdout);
