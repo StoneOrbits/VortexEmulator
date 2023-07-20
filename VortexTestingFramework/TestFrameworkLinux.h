@@ -49,7 +49,8 @@ public:
 
   static void printlog(const char *file, const char *func, int line, const char *msg, va_list list);
 
-  void setColoredOutput(bool output) { m_coloredOutput = output; }
+  void setColoredOutput(bool output) { m_outputType = OUTPUT_TYPE_COLOR; }
+  void setHexOutput(bool output) { m_outputType = OUTPUT_TYPE_HEX; }
   void setNoTimestep(bool timestep) { m_noTimestep = timestep; }
   void setInPlace(bool inplace) { m_inPlace = inplace; }
 
@@ -78,7 +79,12 @@ private:
   volatile bool m_isPaused;
   PatternID m_curPattern;
   Colorset m_curColorset;
-  bool m_coloredOutput;
+  enum OutputType {
+    OUTPUT_TYPE_NONE,
+    OUTPUT_TYPE_HEX,
+    OUTPUT_TYPE_COLOR,
+  };
+  OutputType m_outputType;
   bool m_noTimestep;
   bool m_lockstep;
   bool m_inPlace;

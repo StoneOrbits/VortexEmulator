@@ -142,7 +142,7 @@ TestFramework::TestFramework() :
   m_isPaused(true),
   m_curPattern(PATTERN_FIRST),
   m_curColorset(),
-  m_coloredOutput(false),
+  m_outputType(OUTPUT_TYPE_NONE),
   m_noTimestep(false),
   m_lockstep(false),
   m_inPlace(false),
@@ -156,6 +156,7 @@ TestFramework::~TestFramework()
 }
 
 static struct option long_options[] = {
+  {"hex", no_argument, nullptr, 'x'},
   {"color", no_argument, nullptr, 'c'},
   {"no-timestep", no_argument, nullptr, 't'},
   {"lockstep", no_argument, nullptr, 'l'},
@@ -196,8 +197,11 @@ std::map<std::string, int> color_map = {
 static void print_usage(const char* program_name) 
 {
   fprintf(stderr, "Usage: %s [options] < input commands\n", program_name);
-  fprintf(stderr, "Options (at least one required):\n");
+  fprintf(stderr, "Output Selection (at least one required):\n");
+  fprintf(stderr, "  -x, --hex                Use hex values to represent led colors\n");
   fprintf(stderr, "  -c, --color              Use console color codes to represent led colors\n");
+  fprintf(stderr, "\n");
+  fprintf(stderr, "Engine Control Flags (optional):\n");
   fprintf(stderr, "  -t, --no-timestep        Bypass the timestep and run as fast as possible\n");
   fprintf(stderr, "  -l, --lockstep           Only step once each time an input is received\n");
   fprintf(stderr, "  -i, --in-place           Print the output in-place (interactive mode)\n");
@@ -278,18 +282,17 @@ bool TestFramework::init(int argc, char *argv[])
   }
   g_pTestFramework = this;
 
-  if (argc == 1) {
-    print_usage(argv[0]);
-    exit(EXIT_SUCCESS);
-  }
-
-  int opt;
+  int opt = -1;
   int option_index = 0;
-  while ((opt = getopt_long(argc, argv, "ctlirsP:C:A:h", long_options, &option_index)) != -1) {
+  while ((opt = getopt_long(argc, argv, "xctlirsP:C:A:h", long_options, &option_index)) != -1) {
     switch (opt) {
+    case 'x':
+      // if the user wants pretty colors or hex codes
+      m_outputType = OUTPUT_TYPE_HEX;
+      break;
     case 'c':
       // if the user wants pretty colors
-      m_coloredOutput = true;
+      m_outputType = OUTPUT_TYPE_COLOR;
       break;
     case 't':
       // if the user wants to bypass timestep
@@ -331,6 +334,19 @@ bool TestFramework::init(int argc, char *argv[])
       printf("Unknown arg: -%c\n", opt);
       exit(EXIT_FAILURE);
     }
+  }
+
+  switch (m_outputType) {
+  case OUTPUT_TYPE_NONE:
+    print_usage(argv[0]);
+    exit(EXIT_SUCCESS);
+    break;
+  case OUTPUT_TYPE_COLOR:
+    setColoredOutput(true);
+    break;
+  case OUTPUT_TYPE_HEX:
+    setHexOutput(true);
+    break;
   }
 
   // do the arduino init/setup
@@ -438,7 +454,7 @@ void TestFramework::show()
   uint32_t wid = terminal_size.ws_col;// & 0xFFFFFFFC;
   uint32_t odd = (wid) % 2;
   uint32_t halfwid = wid / 2;
-  uint32_t midWid = (halfwid - ((2 + (!m_coloredOutput)) * LED_COUNT)) - 1;
+  uint32_t midWid = (halfwid - ((2 + (m_outputType == OUTPUT_TYPE_HEX)) * LED_COUNT)) - 1;
   if (m_inPlace) {
     // this resets the cursor back to the beginning of the line and moves it up 12 lines
     out += "\33[2K\033[17A\r";
@@ -450,7 +466,7 @@ void TestFramework::show()
     out += LINE(midWid + odd);
     out += "=";
   }
-  if (m_coloredOutput) {
+  if (m_outputType == OUTPUT_TYPE_COLOR) {
     // the color strip itself
     for (uint32_t i = 0; i < m_numLeds; ++i) {
       out += "\x1B[0m["; // opening |
@@ -461,13 +477,15 @@ void TestFramework::show()
       out += "  "; // colored space
       out += "\x1B[0m]"; // ending |
     }
-  } else {
+  } else if (m_outputType == OUTPUT_TYPE_HEX) {
     // otherwise this just prints out the raw hex code if not in color mode
     for (uint32_t i = 0; i < m_numLeds; ++i) {
       char buf[128] = { 0 };
       snprintf(buf, sizeof(buf), "%06X", m_ledList[i].raw());
       out += buf;
     }
+  } else { // OUTPUT_TYPE_NONE
+    // do nothing
   }
   if (!m_inPlace) {
     out += "\n";
