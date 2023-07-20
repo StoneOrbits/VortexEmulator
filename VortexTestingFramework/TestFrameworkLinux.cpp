@@ -11,6 +11,7 @@
 #include <unistd.h>
 #include <getopt.h>
 #include <stdlib.h>
+#include <string.h>
 #include <fcntl.h>
 #include <stdio.h>
 
@@ -41,32 +42,37 @@ TestFramework *g_pTestFramework = nullptr;
 using namespace std;
 
 // the usage for the input strings
-#define INPUT_USAGE \
-  "\n   c         standard short click" \
-  "\n   l         standard long click" \
-  "\n   m         open menus length click" \
-  "\n   a         enter adv menu length click (enter adv menu from menus)" \
-  "\n   s         enter sleep length click (enter sleep at main modes)" \
-  "\n   f         force sleep length click (force sleep anywhere)" \
-  "\n   t         toggle button pressed (only way to wake after sleep)" \
-  "\n   r         rapid button click (ex: r15)" \
-  "\n   w         wait 1 tick" \
-  "\n   <digits>  repeat command n times (only single digits in -i mode)" \
-  "\n   q         quit" \
+const char *input_usage[] = {
+  "\n   c         standard short click",
+  "\n   l         standard long click",
+  "\n   m         open menus length click",
+  "\n   a         enter adv menu length click (enter adv menu from menus)",
+  "\n   s         enter sleep length click (enter sleep at main modes)",
+  "\n   f         force sleep length click (force sleep anywhere)",
+  "\n   t         toggle button pressed (only way to wake after sleep)",
+  "\n   r         rapid button click (ex: r15)",
+  "\n   w         wait 1 tick",
+  "\n   <digits>  repeat command n times (only single digits in -i mode)",
+  "\n   q         quit",
+};
+
+#define NUM_USAGE (sizeof(input_usage) / sizeof(input_usage[0]))
 
 // the usage for the input strings but in a brief format
-#define INPUT_USAGE_BRIEF \
-  "\n   c         short" \
-  "\n   l         long" \
-  "\n   m         menus" \
-  "\n   a         adv menu" \
-  "\n   s         sleep" \
-  "\n   f         force sleep" \
-  "\n   t         toggle" \
-  "\n   r         rapid" \
-  "\n   w         wait" \
-  "\n   <digits>  repeat" \
-  "\n   q         quit" \
+const char *input_usage_brief[NUM_USAGE] = {
+  "\n   c         short",
+  "\n   l         long",
+  "\n   m         menus",
+  "\n   a         adv menu",
+  "\n   s         sleep",
+  "\n   f         force sleep",
+  "\n   t         toggle",
+  "\n   r         rapid",
+  "\n   w         wait",
+  "\n   <digits>  repeat",
+  "\n   q         quit",
+};
+
 
 // 1000 spaces, used for efficiently printing any number of spaces up to 1000 by
 // offsetting from the start of this string with the SPACES() macro below
@@ -206,7 +212,10 @@ static void print_usage(const char* program_name)
   fprintf(stderr, "Other Options:\n");
   fprintf(stderr, "  -h, --help               Display this help message\n");
   fprintf(stderr, "\n");
-  fprintf(stderr, "Input Commands (pass to stdin):" INPUT_USAGE "\n");
+  fprintf(stderr, "Input Commands (pass to stdin):");
+  for (uint32_t i = 0; i < NUM_USAGE; ++i) {
+    fprintf(stderr, "%s", input_usage[i]);
+  }
   fprintf(stderr, "\n");
   fprintf(stderr, "Example Usage:\n");
   fprintf(stderr, "   ./vortex -ci\n");
@@ -356,11 +365,6 @@ bool TestFramework::init(int argc, char *argv[])
     printf("Failed to clear\n");
   }
 
-  if (m_inPlace) {
-    printf("Initialized!\n");
-    printf("%s\n", INPUT_USAGE_BRIEF);
-  }
-
   set_terminal_nonblocking();
   get_terminal_size();
 
@@ -418,20 +422,24 @@ void TestFramework::show()
     return;
   }
   string out;
-  uint32_t wid = terminal_size.ws_col & 0xFFFFFFFC;
+  get_terminal_size();
+  uint32_t wid = terminal_size.ws_col;// & 0xFFFFFFFC;
   uint32_t odd = (wid) % 2;
   uint32_t halfwid = wid / 2;
   uint32_t midWid = (halfwid - (2 * LED_COUNT)) - 1;
   if (m_inPlace) {
     // this resets the cursor back to the beginning of the line and moves it up 12 lines
     out += "\33[2K\033[17A\r";
+    // this is the top border line
     out += "+";
-    out += LINE(wid - 2);
+    out += LINE((wid + odd) - 2);
     out += "+\n|";
+    // this is the left inner line
     out += LINE(midWid + odd);
     out += "=";
   }
   if (m_coloredOutput) {
+    // the color strip itself
     for (uint32_t i = 0; i < m_numLeds; ++i) {
       out += "\x1B[0m["; // opening |
       out += "\x1B[48;2;"; // colorcode start
@@ -441,14 +449,8 @@ void TestFramework::show()
       out += "  "; // colored space
       out += "\x1B[0m]"; // ending |
     }
-    if (m_inPlace) {
-      out += "=";
-      out += LINE((midWid - 1) + odd);
-      out += "|\n+";
-      out += LINE(wid - 2);
-      out += "+\n";
-    }
   } else {
+    // otherwise this just prints out the raw hex code if not in color mode
     for (uint32_t i = 0; i < m_numLeds; ++i) {
       char buf[128] = { 0 };
       snprintf(buf, sizeof(buf), "%06X", m_ledList[i].raw());
@@ -458,10 +460,20 @@ void TestFramework::show()
   if (!m_inPlace) {
     out += "\n";
   } else {
-    if (wid < 70) {
-      out += INPUT_USAGE_BRIEF;
-    } else {
-      out += INPUT_USAGE;
+    // the right inner line
+    out += "=";
+    out += LINE((midWid - 1) + odd);
+    // the end of middle line, fold and start of 3rd line
+    out += "|\n+";
+    out += LINE((wid + odd) - 2);
+    // space line after the box and before usage
+    out += "+\n";
+    out += SPACES(wid + odd);
+    // the usage message
+    for (uint32_t i = 0; i < NUM_USAGE; ++i) {
+      const char *brief = (wid < 70) ? input_usage_brief[i] : input_usage[i];
+      out += brief;
+      out += SPACES((wid + odd + 1) - strlen(brief));
     }
   }
   printf("%s", out.c_str());
