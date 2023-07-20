@@ -40,21 +40,62 @@ TestFramework *g_pTestFramework = nullptr;
 
 using namespace std;
 
-// This is re-printed over and over in in-place mode to give an active usage
-// TODO: calculate number of spaces based on terminal width
-#define USAGE \
-  "\n   c         standard short click                                                                                      " \
-  "\n   l         standard long click                                                                                       " \
-  "\n   m         open menus length click                                                                                   " \
-  "\n   a         enter adv menu length click (enter adv menu from menus)                                                   " \
-  "\n   s         enter sleep length click (enter sleep at main modes)                                                      " \
-  "\n   f         force sleep length click (force sleep anywhere)                                                           " \
-  "\n   t         toggle button pressed (only way to wake after sleep)                                                      " \
-  "\n   r         rapid button click (ex: r15)                                                                              " \
-  "\n   w         wait 1 tick                                                                                               " \
-  "\n   <digits>  repeat command n times (only single digits in interactive mode                                            " \
-  "\n   q         quit                                                                                                      " \
+// the usage for the input strings
+#define INPUT_USAGE \
+  "\n   c         standard short click" \
+  "\n   l         standard long click" \
+  "\n   m         open menus length click" \
+  "\n   a         enter adv menu length click (enter adv menu from menus)" \
+  "\n   s         enter sleep length click (enter sleep at main modes)" \
+  "\n   f         force sleep length click (force sleep anywhere)" \
+  "\n   t         toggle button pressed (only way to wake after sleep)" \
+  "\n   r         rapid button click (ex: r15)" \
+  "\n   w         wait 1 tick" \
+  "\n   <digits>  repeat command n times (only single digits in -i mode)" \
+  "\n   q         quit" \
 
+// the usage for the input strings but in a brief format
+#define INPUT_USAGE_BRIEF \
+  "\n   c         short" \
+  "\n   l         long" \
+  "\n   m         menus" \
+  "\n   a         adv menu" \
+  "\n   s         sleep" \
+  "\n   f         force sleep" \
+  "\n   t         toggle" \
+  "\n   r         rapid" \
+  "\n   w         wait" \
+  "\n   <digits>  repeat" \
+  "\n   q         quit" \
+
+// 1000 spaces, used for efficiently printing any number of spaces up to 1000 by
+// offsetting from the start of this string with the SPACES() macro below
+#define SPACESTR "                                                                                                                                                     " \
+                 "                                                                                                                                                     " \
+                 "                                                                                                                                                     " \
+                 "                                                                                                                                                     " \
+                 "                                                                                                                                                     " \
+                 "                                                                                                                                                     " \
+                 "                                                                                                                                                     " \
+                 "                                                                                                                                                     " \
+                 "                                                                                                                                                     " \
+                 "                                                                                                                                                     "
+
+// 1000 hyphens for a long line
+#define LINESTR  "-----------------------------------------------------------------------------------------------------------------------------------------------------" \
+                 "-----------------------------------------------------------------------------------------------------------------------------------------------------" \
+                 "-----------------------------------------------------------------------------------------------------------------------------------------------------" \
+                 "-----------------------------------------------------------------------------------------------------------------------------------------------------" \
+                 "-----------------------------------------------------------------------------------------------------------------------------------------------------" \
+                 "-----------------------------------------------------------------------------------------------------------------------------------------------------" \
+                 "-----------------------------------------------------------------------------------------------------------------------------------------------------" \
+                 "-----------------------------------------------------------------------------------------------------------------------------------------------------" \
+                 "-----------------------------------------------------------------------------------------------------------------------------------------------------"
+
+// some amount of spaces, if you pass in an amount greater than 1000 you will die
+#define SPACES(amt) SPACESTR + (sizeof(SPACESTR) - (amt))
+// some length of line, if you pass in an amount greater than 1000 you will die
+#define LINE(amt) LINESTR + (sizeof(LINESTR) - (amt))
 
 #ifdef WASM // Web assembly glue
 #include <emscripten/html5.h>
@@ -165,18 +206,7 @@ static void print_usage(const char* program_name)
   fprintf(stderr, "Other Options:\n");
   fprintf(stderr, "  -h, --help               Display this help message\n");
   fprintf(stderr, "\n");
-  fprintf(stderr, "Input Commands (pass to stdin):\n");
-  fprintf(stderr, "   c         standard short click\n");
-  fprintf(stderr, "   l         standard long click\n");
-  fprintf(stderr, "   m         open menus length click\n");
-  fprintf(stderr, "   a         enter adv menu length click (enter adv menu from menus)\n");
-  fprintf(stderr, "   s         enter sleep length click (enter sleep at main modes)\n");
-  fprintf(stderr, "   f         force sleep length click (force sleep anywhere)\n");
-  fprintf(stderr, "   t         toggle button pressed (only way to wake after sleep)\n");
-  fprintf(stderr, "   r         rapid button click (ex: r15)\n");
-  fprintf(stderr, "   w         wait 1 tick\n");
-  fprintf(stderr, "   <digits>  repeat command n times (only single digits in interactive mode)\n");
-  fprintf(stderr, "   q         quit\n");
+  fprintf(stderr, "Input Commands (pass to stdin):" INPUT_USAGE "\n");
   fprintf(stderr, "\n");
   fprintf(stderr, "Example Usage:\n");
   fprintf(stderr, "   ./vortex -ci\n");
@@ -185,13 +215,15 @@ static void print_usage(const char* program_name)
 }
 
 struct termios orig_term_attr = {0};
+struct winsize terminal_size = {0};
 
 static void restore_terminal()
 {
   tcsetattr(STDIN_FILENO, TCSANOW, &orig_term_attr);
 }
 
-void set_terminal_nonblocking() {
+void set_terminal_nonblocking()
+{
   struct termios term_attr = {0};
 
   // Get the current terminal attributes and store them
@@ -216,6 +248,11 @@ void set_terminal_nonblocking() {
 
   // Register the restore_terminal function to be called at exit
   atexit(restore_terminal);
+}
+
+void get_terminal_size()
+{
+  ioctl(STDOUT_FILENO, TIOCGWINSZ, &terminal_size);
 }
 
 bool TestFramework::init(int argc, char *argv[])
@@ -321,10 +358,11 @@ bool TestFramework::init(int argc, char *argv[])
 
   if (m_inPlace) {
     printf("Initialized!\n");
-    printf("%s\n", USAGE);
+    printf("%s\n", INPUT_USAGE_BRIEF);
   }
 
   set_terminal_nonblocking();
+  get_terminal_size();
 
   m_initialized = true;
 
@@ -380,21 +418,36 @@ void TestFramework::show()
     return;
   }
   string out;
+  uint32_t wid = terminal_size.ws_col & 0xFFFFFFFC;
+  uint32_t odd = (wid) % 2;
+  uint32_t halfwid = wid / 2;
+  uint32_t midWid = (halfwid - (2 * LED_COUNT)) - 1;
   if (m_inPlace) {
     // this resets the cursor back to the beginning of the line and moves it up 12 lines
-    out += "\33[2K\033[12A\r";
+    out += "\33[2K\033[17A\r";
+    out += "+";
+    out += LINE(wid - 2);
+    out += "+\n|";
+    out += LINE(midWid + odd);
+    out += "=";
   }
   if (m_coloredOutput) {
     for (uint32_t i = 0; i < m_numLeds; ++i) {
-      out += "\x1B[0m|"; // opening |
+      out += "\x1B[0m["; // opening |
       out += "\x1B[48;2;"; // colorcode start
       out += to_string(m_ledList[i].red) + ";"; // col red
       out += to_string(m_ledList[i].green) + ";"; // col green
       out += to_string(m_ledList[i].blue) + "m"; // col blue
       out += "  "; // colored space
-      out += "\x1B[0m|"; // ending |
+      out += "\x1B[0m]"; // ending |
     }
-    out += "                   "; // ending
+    if (m_inPlace) {
+      out += "=";
+      out += LINE((midWid - 1) + odd);
+      out += "|\n+";
+      out += LINE(wid - 2);
+      out += "+\n";
+    }
   } else {
     for (uint32_t i = 0; i < m_numLeds; ++i) {
       char buf[128] = { 0 };
@@ -405,7 +458,12 @@ void TestFramework::show()
   if (!m_inPlace) {
     out += "\n";
   } else {
-    out += USAGE;
+    if (wid < 70) {
+      out += INPUT_USAGE_BRIEF;
+    } else {
+      out += INPUT_USAGE;
+    }
+    out += to_string(wid);
   }
   printf("%s", out.c_str());
   fflush(stdout);
