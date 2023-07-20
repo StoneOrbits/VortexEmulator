@@ -84,12 +84,13 @@ function run_tests() {
     OUTPUT="tmp/${FILE}.output"
     DIFFOUT="tmp/${FILE}.diff"
     tail -n +$(($DIVIDER + 1)) "$FILE" &> $EXPECTED
-    $VALGRIND $VORTEX $ARGS -t <<< $INPUT &> $OUTPUT
+    $VALGRIND $VORTEX $ARGS --no-timestep --hex <<< $INPUT &> $OUTPUT
     $DIFF --brief $EXPECTED $OUTPUT &> $DIFFOUT
+    RESULT=$?
     if [ $VERBOSE -eq 1 ]; then
-      $VORTEX $ARGS -ct <<< $INPUT
+      $VORTEX $ARGS --no-timestep --color <<< $INPUT
     fi
-    if [ $? -eq 0 ]; then
+    if [ $RESULT -eq 0 ]; then
       echo -e "\e[32mSUCCESS\e[0m"
     else
       echo -e "\e[31mFAILURE\e[0m"

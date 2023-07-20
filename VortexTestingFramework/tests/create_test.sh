@@ -176,7 +176,7 @@ while true; do
   echo "--------------------------------------------------------------------------------" >> "$TEST_FILE"
 
   # generate the history for the test and append it to the test file
-  echo "${NEW_INPUT}" | $VORTEX $ARGS --no-timestep >> "$TEST_FILE"
+  echo "${NEW_INPUT}" | $VORTEX $ARGS --hex --no-timestep >> "$TEST_FILE"
 
   # cd back
   cd -
