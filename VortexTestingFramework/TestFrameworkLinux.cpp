@@ -148,7 +148,14 @@ TestFramework::TestFramework() :
   m_inPlace(false),
   m_record(false),
   m_storage(false),
-  m_sleepEnabled(true)
+  m_sleepEnabled(true),
+  m_storageFile("FlashStorage.flash"),
+  m_patternIDStr(),
+  m_colorsetStr(),
+  m_argumentsStr(),
+  m_pipe_fd{-1, -1},
+  m_saved_stdin(),
+  m_inputBuffer()
 {
 }
 
@@ -320,7 +327,9 @@ bool TestFramework::init(int argc, char *argv[])
     case 's':
       // enable persistent storage to file
       m_storage = true;
-      m_storageFile = optarg ? optarg : "FlashStorage.flash";
+      if (optarg) {
+        m_storageFile = optarg;
+      }
       break;
     case 'P':
       // preset the pattern ID on the first mode
@@ -365,7 +374,13 @@ bool TestFramework::init(int argc, char *argv[])
   Vortex::enableCommandLog(m_record);
   Vortex::enableLockstep(m_lockstep);
   Vortex::enableStorage(m_storage);
-  Vortex::setStorageFilename(m_storageFile);
+  if (m_storage) {
+    Vortex::setStorageFilename(m_storageFile);
+    if (access(m_storageFile.c_str(), F_OK) == 0) {
+      // load storage if the file exists
+      Vortex::loadStorage();
+    }
+  }
   Vortex::setSleepEnabled(m_sleepEnabled);
 
   if (m_patternIDStr.length() > 0) {
