@@ -90,6 +90,7 @@ private:
   bool m_inPlace;
   bool m_record;
   bool m_storage;
+  bool m_sleepEnabled;
   std::string m_storageFile;
   std::string m_patternIDStr;
   std::string m_colorsetStr;

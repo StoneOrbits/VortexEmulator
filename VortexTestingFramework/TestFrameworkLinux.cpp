@@ -147,7 +147,8 @@ TestFramework::TestFramework() :
   m_lockstep(false),
   m_inPlace(false),
   m_record(false),
-  m_storage(false)
+  m_storage(false),
+  m_sleepEnabled(true)
 {
 }
 
@@ -162,6 +163,7 @@ static struct option long_options[] = {
   {"lockstep", no_argument, nullptr, 'l'},
   {"in-place", no_argument, nullptr, 'i'},
   {"record", no_argument, nullptr, 'r'},
+  {"autowake", no_argument, nullptr, 'a'},
   {"storage", optional_argument, nullptr, 's'},
   {"pattern", required_argument, nullptr, 'P'},
   {"colorset", required_argument, nullptr, 'C'},
@@ -206,6 +208,7 @@ static void print_usage(const char* program_name)
   fprintf(stderr, "  -l, --lockstep           Only step once each time an input is received\n");
   fprintf(stderr, "  -i, --in-place           Print the output in-place (interactive mode)\n");
   fprintf(stderr, "  -r, --record             Record the inputs and dump to a file after (" RECORD_FILE ")\n");
+  fprintf(stderr, "  -a, --autowake           Automatically and instantly wake on sleep (disable sleep)\n");
   fprintf(stderr, "  -s, --storage [file]     Persistent storage to file (default file: FlashStorage.flash)\n");
   fprintf(stderr, "\n");
   fprintf(stderr, "Initial Pattern Options (optional):\n");
@@ -310,6 +313,10 @@ bool TestFramework::init(int argc, char *argv[])
       // record the inputs and dump them to a file after
       m_record = true;
       break;
+    case 'a':
+      // autuowake prevents sleep
+      m_sleepEnabled = false;
+      break;
     case 's':
       // enable persistent storage to file
       m_storage = true;
@@ -350,15 +357,16 @@ bool TestFramework::init(int argc, char *argv[])
     break;
   }
 
-  // do the arduino init/setup
+  // do the vortex init/setup
   Vortex::init<TestFrameworkCallbacks>();
 
-  // whether to tick instantly or not, and whether to record commands
+  // configure the vortex engine as the parameters dictate
   Vortex::setInstantTimestep(m_noTimestep);
   Vortex::enableCommandLog(m_record);
   Vortex::enableLockstep(m_lockstep);
   Vortex::enableStorage(m_storage);
   Vortex::setStorageFilename(m_storageFile);
+  Vortex::setSleepEnabled(m_sleepEnabled);
 
   if (m_patternIDStr.length() > 0) {
     PatternID id = (PatternID)strtoul(m_patternIDStr.c_str(), nullptr, 10);
