@@ -48,7 +48,7 @@ function fuzz() {
     truncated_input=$(truncate_input "$input")
     echo -e "\e[33mWorker \e[97m$worker_id\e[33m - Running test \e[97m$test_number\e[33m with input: \e[97m$truncated_input\e[0m"
     VALGRIND_OUTPUT="valgrind_output_${BASHPID}.txt"
-    if ! $VALGRIND $VORTEX --hex --no-timestep <<< "$input" &> "$VALGRIND_OUTPUT"; then
+    if ! $VALGRIND $VORTEX --hex --no-timestep --autowake <<< "$input" &> "$VALGRIND_OUTPUT"; then
       if [ ! -e "$FLAG_FILE" ]; then
         touch "$FLAG_FILE"
         echo -e "\e[31mValgrind run failed on worker \e[97m$worker_id\e[31m, test \e[97m$test_number\e[31m with input: \e[97m$input\e[0m"
