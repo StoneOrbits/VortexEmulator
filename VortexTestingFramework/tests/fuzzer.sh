@@ -3,7 +3,7 @@
 VALGRIND="valgrind --quiet --leak-check=full --show-leak-kinds=all --error-exitcode=1"
 VORTEX="../vortex"
 NUM_WORKERS=32
-NUM_JOBS=1000
+NUM_JOBS=3000
 PIDS=()
 FLAG_FILE="fuzz_failure.flag"
 rm -f "$FLAG_FILE"
@@ -14,7 +14,7 @@ function generate_random_input()
 {
   local length="$((RANDOM % 1000 + 1))"
   local input=""
-  local letters=('c' 'l' 'm' 'a' 's' 't' 'r' 'w')
+  local letters=('c' 'l' 'm' 'a' 's' 't' 'r')
 
   for ((i = 0; i < length; i++)); do
     local letter="${letters[RANDOM % 4]}"
