@@ -10,16 +10,15 @@ YELLOW="$(tput setaf 3)"
 WHITE="$(tput setaf 7)"
 NC="$(tput sgr0)" # No Color
 
-INTERACTIVE=1
-# manual mode for losers
-if [ "$1" == "-m" ]; then
-  INTERACTIVE=0
-fi
-
-NOMAKE=0
-if [ "$1" == "-n" ]; then
-  NOMAKE=1
-fi
+for arg in "$@"
+do
+    if [ "$arg" == "-m" ]; then
+        INTERACTIVE=0
+    fi
+    if [ "$arg" == "-n" ]; then
+        NOMAKE=1
+    fi
+done
 
 REPOS=(
   "core"
@@ -188,10 +187,12 @@ while true; do
   #git add $TEST_FILE
 
   # run again?
-  echo -n "${YELLOW}Create another test? (y/N): ${WHITE}"
-  read -e CONFIRM
-  if [[ $CONFIRM != [yY] && $CONFIRM != [yY][eE][sS] ]]; then
-    exit
+  if [ $INTERACTIVE -ne 1 ]; then
+    echo -n "${YELLOW}Create another test? (y/N): ${WHITE}"
+    read -e CONFIRM
+    if [[ $CONFIRM != [yY] && $CONFIRM != [yY][eE][sS] ]]; then
+      exit
+    fi
   fi
 
 # end while true

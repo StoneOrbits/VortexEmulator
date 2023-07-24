@@ -91,6 +91,7 @@ private:
   bool m_record;
   bool m_storage;
   bool m_sleepEnabled;
+  bool m_lockEnabled;
   std::string m_storageFile;
   std::string m_patternIDStr;
   std::string m_colorsetStr;

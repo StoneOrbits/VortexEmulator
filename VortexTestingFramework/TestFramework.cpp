@@ -215,6 +215,13 @@ bool TestFramework::init(HINSTANCE hInstance)
 
   // TODO: storage enabled tickbox?
   //Vortex::enableStorage(true);
+  //Vortex::setStorageFilename(m_storageFile);
+  //if (access(m_storageFile.c_str(), F_OK) == 0) {
+  //  // load storage if the file exists
+  //  Vortex::loadStorage();
+  //}
+  Vortex::setSleepEnabled(true);
+  Vortex::setLockEnabled(true);
 
   // hardcoded switch optimizes to a single call based on engine led count
   switch (LED_COUNT) {

@@ -5,7 +5,7 @@ patterns=(0)
 colorsets=("red" "red,green" "red,green,blue")
 max_args=5
 max_value=3
-create_test_script_path="./create_test.sh -n"  # Update the path to your create_test.sh script if needed
+create_test_script_path="./create_test.sh -n -m"  # Update the path to your create_test.sh script if needed
 
 # 1 core
 # 2 gloves
