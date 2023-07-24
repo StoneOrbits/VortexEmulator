@@ -4,15 +4,18 @@ VALGRIND="valgrind --quiet --leak-check=full --show-leak-kinds=all"
 VORTEX="../vortex"
 DIFF="diff"
 
-if [ "$1" == "-f" ]; then
-  VALGRIND=
-fi
-
 VERBOSE=0
-if [ "$1" == "-v" ]; then
-  VALGRIND=
-  VERBOSE=1
-fi
+
+for arg in "$@"
+do
+  if [ "$arg" == "-v" ]; then
+    VALGRIND=
+    VERBOSE=1
+  fi
+  if [ "$arg" == "-f" ]; then
+    VALGRIND=
+  fi
+done
 
 REPOS=(
   "core"
