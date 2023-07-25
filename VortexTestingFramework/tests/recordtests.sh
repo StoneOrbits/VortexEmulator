@@ -3,9 +3,6 @@
 VALGRIND="valgrind --quiet --leak-check=full --show-leak-kinds=all"
 VORTEX="../vortex"
 
-echo no
-exit 1
-
 VALIDATE=0
 if [ $1 == "-v" ]; then
   VALIDATE=1

@@ -5,6 +5,7 @@ VORTEX="../vortex"
 DIFF="diff"
 
 VERBOSE=0
+AUDIT=0
 
 for arg in "$@"
 do
@@ -13,6 +14,11 @@ do
     VERBOSE=1
   fi
   if [ "$arg" == "-f" ]; then
+    VALGRIND=
+  fi
+  if [ "$arg" == "-a" ]; then
+    AUDIT=1
+    VERBOSE=1
     VALGRIND=
   fi
 done
@@ -87,6 +93,21 @@ function run_tests() {
     OUTPUT="tmp/${FILE}.output"
     DIFFOUT="tmp/${FILE}.diff"
     tail -n +$(($DIVIDER + 1)) "$FILE" &> $EXPECTED
+    # run again?
+    if [ $AUDIT -eq 1 ]; then
+      echo -n "${YELLOW}Begin test? (Y/n): ${WHITE}"
+      read -e CONFIRM
+      if [[ $CONFIRM == [nN] || $CONFIRM == [nN][oO] ]]; then
+        break
+      fi
+      echo "\n"
+      echo "-----------------------------"
+      echo "Input: $INPUT"
+      echo "Brief: $BRIEF"
+      echo "Args: $ARGS"
+      echo "Test: $TESTNUM"
+      echo "-----------------------------"
+    fi
     $VALGRIND $VORTEX $ARGS --no-timestep --hex <<< $INPUT &> $OUTPUT
     $DIFF --brief $EXPECTED $OUTPUT &> $DIFFOUT
     RESULT=$?
