@@ -1,5 +1,5 @@
-Input=mc2l4c4lw300q
-Brief=enter color select select both bulbs select first slot select first rainbow select return to rainbow
+Input=mc2lcl3c4lw300q
+Brief=enter color select select front bulb select first slot select first rainbow select return to rainbow
 Args=
 --------------------------------------------------------------------------------
 000000000000
@@ -7,7 +7,8 @@ Args=
 000000000000
 000000000000
 000000000000
-007000007000
+007000000000
+007000000000
 000000000000
 601F00553300
 FF0000101010
@@ -16,7 +17,6 @@ B04F00101010
 AB7700101010
 101010100000
 5F2000553200
-5F2000553200
 5E2100553200
 5E2100553200
 5E2100553100
@@ -313,6 +313,7 @@ AB7700101010
 5629007E0000
 5629007E0000
 5629007E0000
+5727007E0000
 5727007E0000
 5727007E0000
 5727007E0000
