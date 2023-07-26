@@ -4,9 +4,13 @@ VALGRIND="valgrind --quiet --leak-check=full --show-leak-kinds=all"
 VORTEX="../vortex"
 
 VALIDATE=0
-if [ $1 == "-v" ]; then
-  VALIDATE=1
-fi
+
+for arg in "$@"
+do
+    if [ "$arg" == "-v" ]; then
+        VALIDATE=1
+    fi
+done
 
 REPOS=(
   "core"
