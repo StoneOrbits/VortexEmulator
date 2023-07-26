@@ -100,7 +100,7 @@ function run_tests() {
       if [[ $CONFIRM == [nN] || $CONFIRM == [nN][oO] ]]; then
         break
       fi
-      echo "\n"
+      echo ""
       echo "-----------------------------"
       echo "Input: $INPUT"
       echo "Brief: $BRIEF"
