@@ -33,7 +33,7 @@
 #include "Modes/Mode.h"
 
 #include "Patterns/Pattern.h"
-#include "Patterns/single/SingleLedPattern.h"
+#include "Patterns/Single/SingleLedPattern.h"
 
 #define RECORD_FILE "recorded_input.txt"
 
