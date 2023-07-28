@@ -149,6 +149,7 @@ function run_tests() {
       $DIFF $EXPECTED $OUTPUT
     else
       echo -e "\e[31m== FAILURE ==\e[0m"
+      exit 1
     fi
   fi
 }
@@ -157,11 +158,11 @@ echo -e -n "\e[33mBuilding Vortex...\e[0m"
 make -C ../ &> /dev/null
 if [ $? -ne 0 ]; then
   echo -e "\e[31mFailed to build Vortex!\e[0m"
-  exit
+  exit 1
 fi
 if [ ! -x "$VORTEX" ]; then
   echo -e "\e[31mCould not find Vortex!\e[0m"
-  exit
+  exit 1
 fi
 echo -e "\e[32mSuccess\e[0m"
 
