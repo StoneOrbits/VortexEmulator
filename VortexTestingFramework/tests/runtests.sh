@@ -4,8 +4,19 @@ VALGRIND="valgrind --quiet --leak-check=full --show-leak-kinds=all"
 VORTEX="../vortex"
 DIFF="diff"
 
+# select the target repo to create a test for
+TARGETREPO=
 VERBOSE=0
 AUDIT=0
+
+REPOS=(
+  "core"
+  "gloves"
+  "orbit"
+  "handle"
+  "duo"
+  "duo_basicpattern"
+)
 
 for arg in "$@"
 do
@@ -21,16 +32,14 @@ do
     VERBOSE=1
     VALGRIND=
   fi
+  for repo in "${REPOS[@]}"; do
+    if [ "--${repo}" == "$arg" ]; then
+      echo "Repo = $repo"
+      TARGETREPO="$repo"
+      break
+    fi
+  done
 done
-
-REPOS=(
-  "core"
-  "gloves"
-  "orbit"
-  "handle"
-  "duo"
-  "duo_basicpattern"
-)
 
 select_repo() {
   local original_PS3=$PS3
@@ -48,6 +57,10 @@ select_repo() {
 
   echo $repo
 }
+
+if [ -z "$TARGETREPO" ]; then
+  TARGETREPO=$(select_repo)
+fi
 
 function run_tests() {
   PROJECT=$1
@@ -119,7 +132,9 @@ function run_tests() {
     else
       echo -e "\e[31mFAILURE\e[0m"
       ALLSUCCES=0
-      break
+      if [ "$VERBOSE" -eq 1 ]; then
+        break
+      fi
     fi
   done
 
@@ -129,13 +144,14 @@ function run_tests() {
     # if so clear the tmp folder
     rm -rf tmp/$PROJECT
   else
-    # otherwise cat the last diff
-    $DIFF $EXPECTED $OUTPUT
+    if [ "$VERBOSE" -eq 1 ]; then
+      # otherwise cat the last diff
+      $DIFF $EXPECTED $OUTPUT
+    else
+      echo -e "\e[31m== FAILURE ==\e[0m"
+    fi
   fi
 }
-
-# select the target repo to create a test for
-TARGETREPO=$(select_repo)
 
 echo -e -n "\e[33mBuilding Vortex...\e[0m"
 make -C ../ &> /dev/null
