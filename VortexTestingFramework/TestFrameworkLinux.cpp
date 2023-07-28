@@ -16,7 +16,6 @@
 #include <stdio.h>
 
 #include "TestFrameworkLinux.h"
-#include "Arduino.h"
 
 #include "Log/Log.h"
 
@@ -565,9 +564,9 @@ long TestFramework::TestFrameworkCallbacks::checkPinHook(uint32_t pin)
 {
   if (pin == 20) {
     // orbit button 2
-    return Vortex::isButtonPressed(1) ? LOW : HIGH;
+    return Vortex::isButtonPressed(1) ? 0 : 1;
   }
-  return Vortex::isButtonPressed(0) ? LOW : HIGH;
+  return Vortex::isButtonPressed(0) ? 0 : 1;
 }
 
 void TestFramework::TestFrameworkCallbacks::ledsInit(void *cl, int count)

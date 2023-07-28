@@ -12,7 +12,6 @@
 #include "IRSimulator.h"
 #include "EditorPipe.h"
 #include "VortexLib.h"
-#include "EngineDependencies/Arduino.h"
 
 #include "Log/Log.h"
 
@@ -858,9 +857,9 @@ long TestFramework::TestFrameworkCallbacks::checkPinHook(uint32_t pin)
 {
   if (pin == 20) {
     // orbit button 2
-    return Vortex::isButtonPressed(1) ? LOW : HIGH;
+    return Vortex::isButtonPressed(1) ? 0 : 1;
   }
-  return Vortex::isButtonPressed(0) ? LOW : HIGH;
+  return Vortex::isButtonPressed(0) ? 0 : 1;
 #if 0
   // old code, this filtered by the LED_COUNT of the engine to avoid
   // pin collisions where one engine is using a pin that another engine
@@ -869,26 +868,26 @@ long TestFramework::TestFrameworkCallbacks::checkPinHook(uint32_t pin)
   switch (LED_COUNT) {
   case 28: // orbit
     if (pin == 19 && Vortex::isButtonPressed(0)) {
-      return LOW;
+      return 0;
     }
     if (pin == 20 && Vortex::isButtonPressed(1)) {
-      return LOW;
+      return 0;
     }
     break;
   case 10: // glove
   case 3:  // handle
     if (pin == 1 && Vortex::isButtonPressed()) {
-      return LOW;
+      return 0;
     }
     break;
   case 2:  // finger
     if (pin == 9 && Vortex::isButtonPressed()) {
-      return LOW;
+      return 0;
     }
   default:
     break;
   }
-  return HIGH;
+  return 1;
 #endif
 }
 
