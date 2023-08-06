@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VALGRIND="valgrind --quiet --leak-check=full --show-leak-kinds=all"
+VALGRIND=
 VORTEX="../vortex"
 DIFF="diff"
 
@@ -8,6 +8,7 @@ DIFF="diff"
 TARGETREPO=
 VERBOSE=0
 AUDIT=0
+TODO=
 
 REPOS=(
   "core"
@@ -25,12 +26,15 @@ do
     VERBOSE=1
   fi
   if [ "$arg" == "-f" ]; then
-    VALGRIND=
+    VALGRIND="valgrind --quiet --leak-check=full --show-leak-kinds=all"
   fi
   if [ "$arg" == "-a" ]; then
     AUDIT=1
     VERBOSE=1
     VALGRIND=
+  fi
+  if [[ $arg =~ ^-t=([0-9]*)$ ]]; then
+    TODO="${BASH_REMATCH[1]}"
   fi
   for repo in "${REPOS[@]}"; do
     if [ "--${repo}" == "$arg" ]; then
@@ -95,8 +99,14 @@ function run_tests() {
     INPUT="$(grep "Input=" $FILE | cut -d= -f2)"
     BRIEF="$(grep "Brief=" $FILE | cut -d= -f2)"
     ARGS="$(grep "Args=" $FILE | cut -d= -f2)"
-    TESTNUM="$(echo $FILE | cut -d_ -f1)"
-    echo -e -n "\e[33mTesting $TESTNUM [\e[97m$BRIEF\e[33m] "
+    TESTNUM="$(echo $FILE | cut -d_ -f1 | cut -d/ -f2)"
+    TESTNUM=$((10#$TESTNUM))
+    if [ "$TODO" != "" ]; then
+      if [ $TODO -ne $TESTNUM ]; then
+        continue
+      fi
+    fi
+    echo -e -n "\e[33mTesting $PROJECT $TESTNUM/$NUMFILES [\e[97m$BRIEF\e[33m] "
     if [ "$ARGS" != "" ]; then
       echo -e -n "[\e[97m$ARGS\e[33m] "
     fi
