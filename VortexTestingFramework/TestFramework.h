@@ -140,7 +140,7 @@ private:
 
   // how many times the length of the pattern strip is extended
   // in order to simulate the scrolling effect
-  static const uint32_t patternStripExtensionMultiplier = 256;
+  static const uint32_t patternStripExtensionMultiplier = 32;
 
   // new stuff
   VWindow m_window;

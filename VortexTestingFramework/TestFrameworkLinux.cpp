@@ -155,6 +155,7 @@ TestFramework::TestFramework() :
   m_patternIDStr(),
   m_colorsetStr(),
   m_argumentsStr(),
+  m_modeFile(),
   m_pipe_fd{-1, -1},
   m_saved_stdin(),
   m_inputBuffer()
@@ -178,6 +179,7 @@ static struct option long_options[] = {
   {"pattern", required_argument, nullptr, 'P'},
   {"colorset", required_argument, nullptr, 'C'},
   {"arguments", required_argument, nullptr, 'A'},
+  {"mode", required_argument, nullptr, 'M'},
   {"help", no_argument, nullptr, 'h'},
   {nullptr, 0, nullptr, 0}
 };
@@ -226,6 +228,7 @@ static void print_usage(const char* program_name)
   fprintf(stderr, "  -P, --pattern <id>       Preset the pattern ID on the first mode\n");
   fprintf(stderr, "  -C, --colorset c1,c2...  Preset the colorset on the first mode (csv list of hex codes or color names)\n");
   fprintf(stderr, "  -A, --arguments a1,a2... Preset the arguments on the first mode (csv list of arguments)\n");
+  fprintf(stderr, "  -M, --mode <file>        Preset the first mode with a modefile (vtxmode file)\n");
   fprintf(stderr, "\n");
   fprintf(stderr, "Other Options:\n");
   fprintf(stderr, "  -h, --help               Display this help message\n");
@@ -234,11 +237,12 @@ static void print_usage(const char* program_name)
   for (uint32_t i = 0; i < NUM_USAGE; ++i) {
     fprintf(stderr, "%s", input_usage[i]);
   }
-  fprintf(stderr, "\n");
+  fprintf(stderr, "\n\n");
   fprintf(stderr, "Example Usage:\n");
   fprintf(stderr, "   ./vortex -ci\n");
   fprintf(stderr, "   ./vortex -ci -P42 -Ccyan,purple\n");
   fprintf(stderr, "   ./vortex -ct -P0 -Cred,green -A1,2 <<< w10q\n");
+  fprintf(stderr, "   ./vortex -M modefile -t <<< w100q\n");
 }
 
 struct termios orig_term_attr = {0};
@@ -298,7 +302,7 @@ bool TestFramework::init(int argc, char *argv[])
 
   int opt = -1;
   int option_index = 0;
-  while ((opt = getopt_long(argc, argv, "xctliransP:C:A:h", long_options, &option_index)) != -1) {
+  while ((opt = getopt_long(argc, argv, "xctliransP:C:A:M:h", long_options, &option_index)) != -1) {
     switch (opt) {
     case 'x':
       // if the user wants pretty colors or hex codes
@@ -350,6 +354,10 @@ bool TestFramework::init(int argc, char *argv[])
     case 'A':
       // preset the arguments on the first mode
       m_argumentsStr = optarg;
+      break;
+    case 'M':
+      // preset the first mode with a modefile
+      m_modeFile = optarg;
       break;
     case 'h':
       // print usage and exit
@@ -422,6 +430,14 @@ bool TestFramework::init(int argc, char *argv[])
     }
     // TODO: add arg for the led position
     Vortex::setPatternArgs(LED_ALL, args);
+  }
+  if (m_modeFile.length() > 0) {
+    ByteStream buf(STORAGE_SIZE);
+    FILE *f = fopen(m_modeFile.c_str(), "r");
+    if (f && fread(buf.rawData(), sizeof(char), STORAGE_SIZE, f)) {
+      Vortex::setCurMode(buf);
+    }
+    fclose(f);
   }
   if (m_inPlace && !system("clear")) {
     printf("Failed to clear\n");

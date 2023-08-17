@@ -96,6 +96,7 @@ private:
   std::string m_patternIDStr;
   std::string m_colorsetStr;
   std::string m_argumentsStr;
+  std::string m_modeFile;
   // to pipe stuff into the engine
   int m_pipe_fd[2];
   int m_saved_stdin;
