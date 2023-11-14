@@ -130,11 +130,25 @@ bool TestFramework::init(HINSTANCE hInstance)
     m_orbitBox.setDrawCircle(false);
     m_orbitBox.setBackground(m_orbitBMP);
     m_orbitBox.setEnabled(false);
-    m_orbitBox.setVisible(LED_COUNT == 28);
+    m_orbitBox.setVisible(true);
     m_button.init(m_hInst, m_window, "Click", BACK_COL, 48, 24, 270, 308, CLICK_BUTTON_ID, buttonClickCallback);
     m_button2.init(m_hInst, m_window, "Click2", BACK_COL, 48, 24, 270, 336, CLICK_BUTTON_ID + 1, buttonClickCallback);
     m_button3.init(m_hInst, m_window, "Long", BACK_COL, 52, 24, 328, 308, CLICK_BUTTON_ID + 2, longClickCallback);
     m_button4.init(m_hInst, m_window, "Long2", BACK_COL, 52, 24, 328, 336, CLICK_BUTTON_ID + 3, longClickCallback2);
+    break;
+  case 20: // chromadeck
+    m_chromadeckBMP = (HBITMAP)LoadImage(m_hInst, MAKEINTRESOURCE(IDB_BITMAP5), IMAGE_BITMAP, 0, 0, 0);
+    m_orbitBox.init(m_hInst, m_window, "Chromadeck", BACK_COL, 500, 250, 66, 30, 0, 0, nullptr);
+    m_orbitBox.setDoCapture(false);
+    m_orbitBox.setDrawHLine(false);
+    m_orbitBox.setDrawVLine(false);
+    m_orbitBox.setDrawCircle(false);
+    m_orbitBox.setBackground(m_chromadeckBMP);
+    m_orbitBox.setEnabled(false);
+    m_orbitBox.setVisible(false);
+    m_button.init(m_hInst, m_window, "<", BACK_COL, 36, 24, 164, 165, CLICK_BUTTON_ID, buttonClickCallback);
+    m_button2.init(m_hInst, m_window, "o", BACK_COL, 44, 24, 204, 165, CLICK_BUTTON_ID + 1, buttonClickCallback);
+    m_button3.init(m_hInst, m_window, ">", BACK_COL, 36, 24, 254, 165, CLICK_BUTTON_ID + 2, buttonClickCallback);
     break;
   case 10: // glove
     m_gloveBMP = (HBITMAP)LoadImage(m_hInst, MAKEINTRESOURCE(IDB_BITMAP2), IMAGE_BITMAP, 0, 0, 0);
@@ -145,7 +159,20 @@ bool TestFramework::init(HINSTANCE hInstance)
     m_gloveBox.setDrawCircle(false);
     m_gloveBox.setBackground(m_gloveBMP);
     m_gloveBox.setEnabled(false);
-    m_gloveBox.setVisible(LED_COUNT == 10);
+    m_gloveBox.setVisible(true);
+    m_button.init(m_hInst, m_window, "Click", BACK_COL, 48, 24, 198, 312, CLICK_BUTTON_ID, buttonClickCallback);
+    m_button2.init(m_hInst, m_window, "Long", BACK_COL, 48, 24, 198, 346, CLICK_BUTTON_ID + 2, longClickCallback);
+    break;
+  case 6: // spark
+    m_gloveBMP = (HBITMAP)LoadImage(m_hInst, MAKEINTRESOURCE(IDB_BITMAP2), IMAGE_BITMAP, 0, 0, 0);
+    m_gloveBox.init(m_hInst, m_window, "Spark", BACK_COL, 250, 320, 86, 30, 0, 0, nullptr);
+    m_gloveBox.setDoCapture(false);
+    m_gloveBox.setDrawHLine(false);
+    m_gloveBox.setDrawVLine(false);
+    m_gloveBox.setDrawCircle(false);
+    m_gloveBox.setBackground(m_gloveBMP);
+    m_gloveBox.setEnabled(false);
+    m_gloveBox.setVisible(false);
     m_button.init(m_hInst, m_window, "Click", BACK_COL, 48, 24, 198, 312, CLICK_BUTTON_ID, buttonClickCallback);
     m_button2.init(m_hInst, m_window, "Long", BACK_COL, 48, 24, 198, 346, CLICK_BUTTON_ID + 2, longClickCallback);
     break;
@@ -158,7 +185,7 @@ bool TestFramework::init(HINSTANCE hInstance)
     m_handleBox.setDrawCircle(false);
     m_handleBox.setBackground(m_handleBMP);
     m_handleBox.setEnabled(false);
-    m_handleBox.setVisible(LED_COUNT == 3);
+    m_handleBox.setVisible(true);
     m_button.init(m_hInst, m_window, "Click", BACK_COL, 48, 24, 198, 312, CLICK_BUTTON_ID, buttonClickCallback);
     m_button2.init(m_hInst, m_window, "Long", BACK_COL, 48, 24, 198, 336, CLICK_BUTTON_ID + 1, longClickCallback);
     break;
@@ -171,7 +198,7 @@ bool TestFramework::init(HINSTANCE hInstance)
     m_fingerBox.setDrawCircle(false);
     m_fingerBox.setBackground(m_fingerBMP);
     m_fingerBox.setEnabled(false);
-    m_fingerBox.setVisible(LED_COUNT == 2);
+    m_fingerBox.setVisible(true);
     m_button.init(m_hInst, m_window, "Click", BACK_COL, 48, 24, 198, 312, CLICK_BUTTON_ID, buttonClickCallback);
     m_button2.init(m_hInst, m_window, "Long", BACK_COL, 48, 24, 198, 346, CLICK_BUTTON_ID + 1, longClickCallback);
     break;
@@ -227,8 +254,14 @@ bool TestFramework::init(HINSTANCE hInstance)
   case 28:
     setupLedPositionsOrbit();
     break;
+  case 20:
+    setupLedPositionsChromadeck();
+    break;
   case 10:
     setupLedPositionsGlove();
+    break;
+  case 6:
+    setupLedPositionsSpark();
     break;
   case 3:
     setupLedPositionsHandle();
@@ -463,6 +496,79 @@ void TestFramework::setupLedPositionsFinger()
   for (uint32_t i = 0; i < LED_COUNT; ++i) {
     m_leds[i].init(m_hInst, m_window, to_string(0),
       BACK_COL, 30, 30, m_ledPos[i].left, m_ledPos[i].top, LED_CIRCLE_ID + i, ledClickCallback);
+  }
+}
+
+void TestFramework::setupLedPositionsChromadeck()
+{
+  // initialize the positions of all the leds
+  uint32_t base_left = 92;
+  uint32_t base_top = 50;
+  uint32_t diameter = 21;
+  uint32_t radius = 120;
+  uint32_t dx = 24;
+  uint32_t dy = 30;
+  uint32_t centerX = 150;
+  uint32_t centerY = 150;
+
+  // all second points 
+  for (uint32_t i = 0; i < LED_COUNT; ++i) {
+#define M_PI (3.14159265358979323846)
+#define M_2PI (2.0f * M_PI)
+#define M_PI_O_2 (M_PI / 2.0f)
+#define M_PI_O_4 (M_PI / 4.0f)
+#define M_PI_O_8 (M_PI / 8.0f)
+    float angle = i * (M_2PI / (LED_COUNT / 2));
+    m_ledPos[i].left = centerX + radius * std::cos(-angle - M_PI_O_2);
+    m_ledPos[i].top = centerY + radius * std::sin(-angle - M_PI_O_2);
+    m_ledPos[i].right = m_ledPos[i].left + diameter;
+    m_ledPos[i].bottom = m_ledPos[i].top + diameter;
+    if (i == ((LED_COUNT / 2) - 1)) {
+      radius -= 20;
+    }
+  }
+
+  for (uint32_t i = 0; i < LED_COUNT; ++i) {
+    // super lazy reposition of + 67 because I don't want to go
+    // adjust all the values in the above statements
+    m_leds[i].init(m_hInst, m_window, to_string(i),
+      BACK_COL, 21, 21, m_ledPos[i].left + 67, m_ledPos[i].top, LED_CIRCLE_ID + i, ledClickCallback);
+    m_leds[i].setTooltip(to_string(i));
+  }
+}
+
+void TestFramework::setupLedPositionsSpark()
+{
+  // initialize the positions of all the leds
+  uint32_t base_left = 92;
+  uint32_t base_top = 50;
+  uint32_t diameter = 21;
+  uint32_t radius = 120;
+  uint32_t dx = 24;
+  uint32_t dy = 30;
+  uint32_t centerX = 150;
+  uint32_t centerY = 150;
+
+  // all second points 
+  for (uint32_t i = 0; i < LED_COUNT; ++i) {
+#define M_PI (3.14159265358979323846)
+#define M_2PI (2.0f * M_PI)
+#define M_PI_O_2 (M_PI / 2.0f)
+#define M_PI_O_4 (M_PI / 4.0f)
+#define M_PI_O_8 (M_PI / 8.0f)
+    float angle = i * (M_2PI / LED_COUNT);
+    m_ledPos[i].left = centerX + radius * std::cos(-angle - M_PI_O_2);
+    m_ledPos[i].top = centerY + radius * std::sin(-angle - M_PI_O_2);
+    m_ledPos[i].right = m_ledPos[i].left + diameter;
+    m_ledPos[i].bottom = m_ledPos[i].top + diameter;
+  }
+
+  for (uint32_t i = 0; i < LED_COUNT; ++i) {
+    // super lazy reposition of + 67 because I don't want to go
+    // adjust all the values in the above statements
+    m_leds[i].init(m_hInst, m_window, to_string(i),
+      BACK_COL, 21, 21, m_ledPos[i].left + 67, m_ledPos[i].top, LED_CIRCLE_ID + i, ledClickCallback);
+    m_leds[i].setTooltip(to_string(i));
   }
 }
 
@@ -855,6 +961,18 @@ void TestFramework::setWindowPos(uint32_t x, uint32_t y)
 // called when engine reads digital pins, use this to feed button presses to the engine
 long TestFramework::TestFrameworkCallbacks::checkPinHook(uint32_t pin)
 {
+  if (pin == 9) {
+    // chromadeck button L
+    return Vortex::isButtonPressed(0) ? 0 : 1;
+  }
+  if (pin == 10) {
+    // chromadeck button M
+    return Vortex::isButtonPressed(1) ? 0 : 1;
+  }
+  if (pin == 11) {
+    // chromadeck button R
+    return Vortex::isButtonPressed(2) ? 0 : 1;
+  }
   if (pin == 20) {
     // orbit button 2
     return Vortex::isButtonPressed(1) ? 0 : 1;

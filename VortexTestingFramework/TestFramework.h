@@ -70,6 +70,8 @@ private:
   void setupLedPositionsGlove();
   void setupLedPositionsHandle();
   void setupLedPositionsFinger();
+  void setupLedPositionsChromadeck();
+  void setupLedPositionsSpark();
 
   class TestFrameworkCallbacks : public VortexCallbacks
   {
@@ -167,6 +169,7 @@ private:
   HBITMAP m_gloveBMP;
   HBITMAP m_handleBMP;
   HBITMAP m_fingerBMP;
+  HBITMAP m_chromadeckBMP;
   HICON m_hIcon;
   HANDLE m_loopThread;
 

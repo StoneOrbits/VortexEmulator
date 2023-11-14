@@ -7,6 +7,7 @@
 #define IDB_BITMAP2                     105
 #define IDB_BITMAP3                     106
 #define IDB_BITMAP4                     107
+#define IDB_BITMAP5                     108
 
 // Next default values for new objects
 // 

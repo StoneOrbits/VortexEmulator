@@ -58,6 +58,8 @@ IDB_BITMAP3             BITMAP                  "handle.bmp"
 
 IDB_BITMAP4             BITMAP                  "finger.bmp"
 
+IDB_BITMAP5             BITMAP                  "chromadeck.bmp"
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
