@@ -46,6 +46,7 @@ using namespace std;
 TestFramework::TestFramework() :
   m_pCallbacks(nullptr),
   m_vortex(),
+  m_engine(m_vortex.engine()),
   m_window(),
   m_orbitBox(),
   m_gloveBox(),
@@ -113,6 +114,9 @@ bool TestFramework::init(HINSTANCE hInstance)
   if (!m_pauseMutex) {
     //return false;
   }
+
+  // update width
+  width = (LED_COUNT == 28) ? 610 : 460;
 
   // load the main window
   m_window.init(m_hInst, "Vortex Emulator", BACK_COL, width, height, this, "VortexTestFramework");
@@ -250,6 +254,9 @@ bool TestFramework::init(HINSTANCE hInstance)
   //}
   m_vortex.setSleepEnabled(true);
   m_vortex.setLockEnabled(true);
+
+  m_ledPos.resize(LED_COUNT);
+  m_leds.resize(LED_COUNT);
 
   // hardcoded switch optimizes to a single call based on engine led count
   switch (LED_COUNT) {
@@ -843,8 +850,9 @@ bool TestFramework::handlePatternChange(bool force)
   m_curMode = *targetMode;
   m_curMode.init();
   // backup the led colors
-  RGBColor backupCols[LED_COUNT];
-  memcpy(backupCols, m_ledList, sizeof(RGBColor) * LED_COUNT);
+  vector<RGBColor> backupCols;
+  backupCols.reserve(m_vortex.engine().leds().ledCount());
+  memcpy(backupCols.data(), m_ledList, sizeof(RGBColor) * LED_COUNT);
   // begin the time simulation so we can tick forward
   m_vortex.engine().time().startSimulation();
   // the actual strip is twice the width of the window to allow scrolling
@@ -874,7 +882,7 @@ bool TestFramework::handlePatternChange(bool force)
   // back to where it was before starting the sim
   m_vortex.engine().time().endSimulation();
   // restore original color on the target led
-  memcpy(m_ledList, backupCols, sizeof(RGBColor) * LED_COUNT);
+  memcpy(m_ledList, backupCols.data(), sizeof(RGBColor) * LED_COUNT);
   // redraw this led because it was written to generate pattern strip
   m_leds[m_curSelectedLed].redraw();
   // update the background of the pattern strip
@@ -923,7 +931,7 @@ DWORD __stdcall TestFramework::main_loop_thread(void *arg)
     vortex.engine().tick();
     // backup the colors
     if (framework->m_lastLedColor && framework->m_ledList) {
-      memcpy(framework->m_lastLedColor, framework->m_ledList, sizeof(RGBColor) * LED_COUNT);
+      memcpy(framework->m_lastLedColor, framework->m_ledList, sizeof(RGBColor) * vortex.engine().leds().ledCount());
     }
     // handle any tickrate changes
     uint32_t newTickrate = framework->m_tickrate > 10 ? framework->m_tickrate : 10;
