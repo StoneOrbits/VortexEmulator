@@ -140,7 +140,14 @@ void VCircle::releaseButton(WPARAM wParam, LPARAM lParam)
 
 void VCircle::setColor(uint32_t col, bool doredraw)
 {
-  m_col = col;
+  if (col == 0) {
+    m_col = (((m_col & 0xFF000000) >> 1) & 0xFF000000) |
+            (((m_col & 0x00FF0000) >> 1) & 0x00FF0000) |
+            (((m_col & 0x0000FF00) >> 1) & 0x0000FF00) |
+            (((m_col & 0x000000FF) >> 1) & 0x000000FF);
+  } else {
+    m_col = col;
+  }
   if (doredraw) {
     redraw();
   }
