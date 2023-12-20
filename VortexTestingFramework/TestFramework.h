@@ -64,6 +64,9 @@ public:
   // loop that runs arduino code
   static DWORD __stdcall main_loop_thread(void *arg);
 
+  // reference to vortex lib
+  Vortex &vortex() { return m_vortex; }
+
 private:
   // initializes the led positions for various devices
   void setupLedPositionsOrbit();
@@ -76,7 +79,7 @@ private:
   class TestFrameworkCallbacks : public VortexCallbacks
   {
   public:
-    TestFrameworkCallbacks() {}
+    TestFrameworkCallbacks(Vortex &vortex) : VortexCallbacks(vortex) {}
     virtual ~TestFrameworkCallbacks() {}
     virtual long checkPinHook(uint32_t pin) override;
     virtual void infraredWrite(bool mark, uint32_t amount) override;
@@ -143,6 +146,9 @@ private:
   // how many times the length of the pattern strip is extended
   // in order to simulate the scrolling effect
   static const uint32_t patternStripExtensionMultiplier = 16;
+
+  // vortex lib
+  Vortex m_vortex;
 
   // new stuff
   VWindow m_window;

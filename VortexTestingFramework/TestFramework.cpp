@@ -45,6 +45,7 @@ using namespace std;
 
 TestFramework::TestFramework() :
   m_pCallbacks(nullptr),
+  m_vortex(),
   m_window(),
   m_orbitBox(),
   m_gloveBox(),
@@ -63,6 +64,7 @@ TestFramework::TestFramework() :
   m_gloveBMP(nullptr),
   m_handleBMP(nullptr),
   m_fingerBMP(nullptr),
+  m_chromadeckBMP(nullptr),
   m_hIcon(nullptr),
   m_loopThread(nullptr),
   m_tickrate(150),
@@ -76,7 +78,7 @@ TestFramework::TestFramework() :
   m_buttonPressed2(false),
   m_keepGoing(true),
   m_isPaused(false),
-  m_curMode(),
+  m_curMode(m_vortex.engine()),
   m_brushmap(),
   m_accelTable()
 {
@@ -229,7 +231,7 @@ bool TestFramework::init(HINSTANCE hInstance)
   HBITMAP bitmap = CreateBitmap(tickrateSliderWidth, tickrateSliderHeight, 1, 32, cols);
   m_tickrateSlider.setBackground(bitmap);
   m_tickrateSlider.setSelection(0, 240);
-  Vortex::setTickrate(150);
+  m_vortex.setTickrate(150);
 
   // the generate patterns button
   m_generatePats.init(m_hInst, m_window, "Make Art", BACK_COL, 80, 24,
@@ -240,14 +242,14 @@ bool TestFramework::init(HINSTANCE hInstance)
     350 + ((LED_COUNT == 28) * 150), 340, LAUNCH_IR_ID, launchIRCallback);
 
   // TODO: storage enabled tickbox?
-  //Vortex::enableStorage(true);
-  //Vortex::setStorageFilename(m_storageFile);
+  //m_vortex.enableStorage(true);
+  //m_vortex.setStorageFilename(m_storageFile);
   //if (access(m_storageFile.c_str(), F_OK) == 0) {
   //  // load storage if the file exists
-  //  Vortex::loadStorage();
+  //  m_vortex.loadStorage();
   //}
-  Vortex::setSleepEnabled(true);
-  Vortex::setLockEnabled(true);
+  m_vortex.setSleepEnabled(true);
+  m_vortex.setLockEnabled(true);
 
   // hardcoded switch optimizes to a single call based on engine led count
   switch (LED_COUNT) {
@@ -392,6 +394,7 @@ void TestFramework::setupLedPositionsOrbit()
     // adjust all the values in the above statements
     m_leds[i].init(m_hInst, m_window, to_string(0),
       BACK_COL, 21, 21, m_ledPos[i].left + 67, m_ledPos[i].top, LED_CIRCLE_ID + i, ledClickCallback);
+    m_leds[i].setTooltip(std::to_string(i));
   }
 }
 
@@ -518,11 +521,11 @@ void TestFramework::setupLedPositionsChromadeck()
 #define M_PI_O_2 (M_PI / 2.0f)
 #define M_PI_O_4 (M_PI / 4.0f)
 #define M_PI_O_8 (M_PI / 8.0f)
-    float angle = i * (M_2PI / (LED_COUNT / 2));
-    m_ledPos[i].left = centerX + radius * std::cos(-angle - M_PI_O_2);
-    m_ledPos[i].top = centerY + radius * std::sin(-angle - M_PI_O_2);
-    m_ledPos[i].right = m_ledPos[i].left + diameter;
-    m_ledPos[i].bottom = m_ledPos[i].top + diameter;
+    float angle = (float)(i * (M_2PI / (LED_COUNT / 2)));
+    m_ledPos[i].left = (LONG)(centerX + radius * std::cos(-angle - M_PI_O_2));
+    m_ledPos[i].top = (LONG)(centerY + radius * std::sin(-angle - M_PI_O_2));
+    m_ledPos[i].right = (LONG)(m_ledPos[i].left + diameter);
+    m_ledPos[i].bottom = (LONG)(m_ledPos[i].top + diameter);
     if (i == ((LED_COUNT / 2) - 1)) {
       radius -= 20;
     }
@@ -556,11 +559,11 @@ void TestFramework::setupLedPositionsSpark()
 #define M_PI_O_2 (M_PI / 2.0f)
 #define M_PI_O_4 (M_PI / 4.0f)
 #define M_PI_O_8 (M_PI / 8.0f)
-    float angle = i * (M_2PI / LED_COUNT);
-    m_ledPos[i].left = centerX + radius * std::cos(-angle - M_PI_O_2);
-    m_ledPos[i].top = centerY + radius * std::sin(-angle - M_PI_O_2);
-    m_ledPos[i].right = m_ledPos[i].left + diameter;
-    m_ledPos[i].bottom = m_ledPos[i].top + diameter;
+    float angle = (float)(i * (M_2PI / LED_COUNT));
+    m_ledPos[i].left = (LONG)(centerX + radius * std::cos(-angle - M_PI_O_2));
+    m_ledPos[i].top = (LONG)(centerY + radius * std::sin(-angle - M_PI_O_2));
+    m_ledPos[i].right = (LONG)(m_ledPos[i].left + diameter);
+    m_ledPos[i].bottom = (LONG)(m_ledPos[i].top + diameter);
   }
 
   for (uint32_t i = 0; i < LED_COUNT; ++i) {
@@ -588,10 +591,10 @@ void TestFramework::buttonClick(VButton *button, VButton::ButtonEvent type)
   case VButton::ButtonEvent::BUTTON_EVENT_CLICK:
     break;
   case VButton::ButtonEvent::BUTTON_EVENT_PRESS:
-    Vortex::pressButton(buttonID);
+    m_vortex.pressButton(buttonID);
     break;
   case VButton::ButtonEvent::BUTTON_EVENT_RELEASE:
-    Vortex::releaseButton(buttonID);
+    m_vortex.releaseButton(buttonID);
     break;
   default:
     break;
@@ -600,7 +603,7 @@ void TestFramework::buttonClick(VButton *button, VButton::ButtonEvent type)
 
 void TestFramework::longClick(VButton *window, uint32_t buttonIndex)
 {
-  Vortex::longClick(buttonIndex);
+  m_vortex.longClick(buttonIndex);
 }
 
 void TestFramework::launchIR(VButton *window, VButton::ButtonEvent type)
@@ -610,7 +613,7 @@ void TestFramework::launchIR(VButton *window, VButton::ButtonEvent type)
   }
   IRSimulator::startServer();
   m_IRLaunchButton.setEnabled(false);
-  Vortex::openModeSharing();
+  m_vortex.openModeSharing();
 }
 
 void TestFramework::genPats(VButton *window, VButton::ButtonEvent type)
@@ -641,7 +644,7 @@ void TestFramework::genPats(VButton *window, VButton::ButtonEvent type)
 
 bool TestFramework::generatePatternBMP(const string &filename, uint32_t numStrips)
 {
-  if (!Menus::checkInMenu()) {
+  if (!m_vortex.engine().menus().checkInMenu()) {
     MessageBox(NULL, "Please enter the randomizer to generate art", "Error", 0);
     return false;
   }
@@ -650,7 +653,7 @@ bool TestFramework::generatePatternBMP(const string &filename, uint32_t numStrip
   // The height of the bitmap is 100 times the height of a single pattern strip
   uint32_t bitmapHeight = patternStripHeight * numStrips;  // 100 pattern strips
   // the current mode of the randomizer menu
-  Mode *menuMode = Vortex::getMenuDemoMode();
+  Mode *menuMode = m_vortex.getMenuDemoMode();
   if (!menuMode) {
     return false;
   }
@@ -663,15 +666,15 @@ bool TestFramework::generatePatternBMP(const string &filename, uint32_t numStrip
     // reset the mode
     menuMode->init();
     // Begin the time simulation so we can tick forward
-    Time::startSimulation();
+    m_vortex.engine().time().startSimulation();
     for (uint32_t x = 0; x < bitmapWidth; ++x) {
       // Run the current mode like normal
       menuMode->play();
       // Tick the virtual time forward so that next play()
       // the engine will think a tick has passed
-      Time::tickSimulation();
+      m_vortex.engine().time().tickSimulation();
       // Sample the color for the selected LED
-      COLORREF col = Leds::getLed(m_curSelectedLed).raw();
+      COLORREF col = m_vortex.engine().leds().getLed(m_curSelectedLed).raw();
       // Fill the entire column of the bitmap with this color
       for (uint32_t y = 0; y < patternStripHeight; ++y) {
         cols[((i * patternStripHeight + y) * bitmapWidth) + x] = col;
@@ -679,9 +682,9 @@ bool TestFramework::generatePatternBMP(const string &filename, uint32_t numStrip
     }
     // End the time simulation, this snaps the tickcount
     // back to where it was before starting the sim
-    Time::endSimulation();
+    m_vortex.engine().time().endSimulation();
     // force randomizer to randomize lol
-    ((Randomizer *)Menus::curMenu())->reRoll();
+    ((Randomizer *)m_vortex.engine().menus().curMenu())->reRoll();
   }
   bool rv = writeBMPtoFile(filename, bitmapWidth, bitmapHeight, cols);
   delete[] cols;
@@ -802,7 +805,7 @@ void TestFramework::setBrightness(int brightness)
 // when the glove framework calls 'FastLED.show'
 void TestFramework::show()
 {
-  if (!m_initialized || !m_ledList || Time::isSimulation()) {
+  if (!m_initialized || !m_ledList || m_vortex.engine().time().isSimulation()) {
     return;
   }
   // update the colors with the colors in the led list
@@ -816,18 +819,18 @@ void TestFramework::show()
 
 bool TestFramework::handlePatternChange(bool force)
 {
-  if (!VortexEngine::curMode()) {
+  if (!m_vortex.engine().curMode()) {
     return false;
   }
   // don't want to create a callback mechanism just for the test framework to be
   // notified of pattern changes, I'll just watch the patternID each tick
-  Mode *targetMode = VortexEngine::curMode();
+  Mode *targetMode = m_vortex.engine().curMode();
   if (!targetMode) {
     return false;
   }
   // this causes lag in editor when the tickrate is low
   // TODO: Find a way to detach this
-  Mode *menuMode = Vortex::getMenuDemoMode();
+  Mode *menuMode = m_vortex.getMenuDemoMode();
   if (menuMode) {
     targetMode = menuMode;
   }
@@ -843,7 +846,7 @@ bool TestFramework::handlePatternChange(bool force)
   RGBColor backupCols[LED_COUNT];
   memcpy(backupCols, m_ledList, sizeof(RGBColor) * LED_COUNT);
   // begin the time simulation so we can tick forward
-  Time::startSimulation();
+  m_vortex.engine().time().startSimulation();
   // the actual strip is twice the width of the window to allow scrolling
   uint32_t patternStripWidth = width * patternStripExtensionMultiplier;
   COLORREF *cols = new COLORREF[patternStripWidth * patternStripHeight];
@@ -856,9 +859,9 @@ bool TestFramework::handlePatternChange(bool force)
     m_curMode.play();
     // tick the virtual time forward so that next play()
     // the engine will think a tick has passed
-    Time::tickSimulation();
+    m_vortex.engine().time().tickSimulation();
     // sample the color for the selected LED
-    COLORREF col = Leds::getLed(m_curSelectedLed).raw();
+    COLORREF col = m_vortex.engine().leds().getLed(m_curSelectedLed).raw();
     // fill the entire column of the bitmap with this color
     for (uint32_t y = 0; y < patternStripHeight; ++y) {
       cols[(y * patternStripWidth) + x] = col;
@@ -869,7 +872,7 @@ bool TestFramework::handlePatternChange(bool force)
   delete[] cols;
   // end the time simulation, this snaps the tickcount
   // back to where it was before starting the sim
-  Time::endSimulation();
+  m_vortex.engine().time().endSimulation();
   // restore original color on the target led
   memcpy(m_ledList, backupCols, sizeof(RGBColor) * LED_COUNT);
   // redraw this led because it was written to generate pattern strip
@@ -895,15 +898,19 @@ HBRUSH TestFramework::getBrushCol(RGBColor rgbcol)
 DWORD __stdcall TestFramework::main_loop_thread(void *arg)
 {
   TestFramework *framework = (TestFramework *)arg;
+  if (!framework) {
+    return 0;
+  }
+  Vortex &vortex = framework->vortex();
   // init the vortex engine
-  framework->m_pCallbacks = Vortex::init<TestFrameworkCallbacks>();
+  framework->m_pCallbacks = vortex.initEx<TestFrameworkCallbacks>();
   if (!framework->m_pCallbacks) {
     // failed to init, error
     return 0;
   }
   if (IRSimulator::isConnected()) {
     framework->m_IRLaunchButton.setEnabled(false);
-    Vortex::openModeSharing();
+    vortex.openModeSharing();
   }
   // init tickrate and time offset to match the sliders
   while (framework->m_initialized && framework->m_keepGoing) {
@@ -913,18 +920,18 @@ DWORD __stdcall TestFramework::main_loop_thread(void *arg)
       continue;
     }
     // run the tick
-    Vortex::tick();
+    vortex.engine().tick();
     // backup the colors
     if (framework->m_lastLedColor && framework->m_ledList) {
       memcpy(framework->m_lastLedColor, framework->m_ledList, sizeof(RGBColor) * LED_COUNT);
     }
     // handle any tickrate changes
     uint32_t newTickrate = framework->m_tickrate > 10 ? framework->m_tickrate : 10;
-    if (newTickrate != Vortex::getTickrate()) {
-      Vortex::setTickrate(newTickrate);
+    if (newTickrate != vortex.getTickrate()) {
+      vortex.setTickrate(newTickrate);
     }
     // scroll the background a little
-    if (newTickrate > 10 && !Vortex::isSleeping()) {
+    if (newTickrate > 10 && !vortex.isSleeping()) {
       framework->m_patternStrip.addBackgroundOffset(1, 0, patternStripExtensionMultiplier - 1);
     }
     // if pattern changes we need to reload the pattern strip
@@ -932,7 +939,7 @@ DWORD __stdcall TestFramework::main_loop_thread(void *arg)
     ReleaseMutex(framework->m_pauseMutex);
   }
   // cleanup
-  Vortex::cleanup();
+  vortex.cleanup();
   return 0;
 }
 
@@ -963,21 +970,21 @@ long TestFramework::TestFrameworkCallbacks::checkPinHook(uint32_t pin)
 {
   if (pin == 9) {
     // chromadeck button L
-    return Vortex::isButtonPressed(0) ? 0 : 1;
+    return m_vortex.isButtonPressed(0) ? 0 : 1;
   }
   if (pin == 10) {
     // chromadeck button M
-    return Vortex::isButtonPressed(1) ? 0 : 1;
+    return m_vortex.isButtonPressed(1) ? 0 : 1;
   }
   if (pin == 11) {
     // chromadeck button R
-    return Vortex::isButtonPressed(2) ? 0 : 1;
+    return m_vortex.isButtonPressed(2) ? 0 : 1;
   }
   if (pin == 20) {
     // orbit button 2
-    return Vortex::isButtonPressed(1) ? 0 : 1;
+    return m_vortex.isButtonPressed(1) ? 0 : 1;
   }
-  return Vortex::isButtonPressed(0) ? 0 : 1;
+  return m_vortex.isButtonPressed(0) ? 0 : 1;
 #if 0
   // old code, this filtered by the LED_COUNT of the engine to avoid
   // pin collisions where one engine is using a pin that another engine
@@ -985,21 +992,21 @@ long TestFramework::TestFrameworkCallbacks::checkPinHook(uint32_t pin)
   // to filter on pin number so that the button always work
   switch (LED_COUNT) {
   case 28: // orbit
-    if (pin == 19 && Vortex::isButtonPressed(0)) {
+    if (pin == 19 && m_vortex.isButtonPressed(0)) {
       return 0;
     }
-    if (pin == 20 && Vortex::isButtonPressed(1)) {
+    if (pin == 20 && m_vortex.isButtonPressed(1)) {
       return 0;
     }
     break;
   case 10: // glove
   case 3:  // handle
-    if (pin == 1 && Vortex::isButtonPressed()) {
+    if (pin == 1 && m_vortex.isButtonPressed()) {
       return 0;
     }
     break;
   case 2:  // finger
-    if (pin == 9 && Vortex::isButtonPressed()) {
+    if (pin == 9 && m_vortex.isButtonPressed()) {
       return 0;
     }
   default:
@@ -1011,7 +1018,7 @@ long TestFramework::TestFrameworkCallbacks::checkPinHook(uint32_t pin)
 
 // called when engine writes to ir, use this to read data from the vortex engine
 // the data received will be in timings of milliseconds
-// NOTE: to send data to IR use Vortex::IRDeliver at any time
+// NOTE: to send data to IR use m_vortex.IRDeliver at any time
 void TestFramework::TestFrameworkCallbacks::infraredWrite(bool mark, uint32_t amount)
 {
   IRSimulator::send_message(amount);

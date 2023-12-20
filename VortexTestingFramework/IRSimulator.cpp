@@ -113,7 +113,7 @@ void IRSimulator::process_incoming_messages()
     }
     bool is_mark = (message & (1 << 31)) != 0;
     message &= ~(1 << 31);
-    Vortex::IRDeliver(message);
+    g_pTestFramework->vortex().IRDeliver(message);
   }
 }
 
