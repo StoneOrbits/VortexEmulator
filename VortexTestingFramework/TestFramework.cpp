@@ -115,6 +115,15 @@ bool TestFramework::init(HINSTANCE hInstance)
     //return false;
   }
 
+  // init the vortex engine
+  m_pCallbacks = m_vortex.initEx<TestFrameworkCallbacks>();
+  if (!m_pCallbacks) {
+    // failed to init, error
+    return false;
+  }
+
+  m_vortex.setLedCount(2);
+
   // update width
   width = (LED_COUNT == 28) ? 610 : 460;
 
@@ -910,12 +919,6 @@ DWORD __stdcall TestFramework::main_loop_thread(void *arg)
     return 0;
   }
   Vortex &vortex = framework->vortex();
-  // init the vortex engine
-  framework->m_pCallbacks = vortex.initEx<TestFrameworkCallbacks>();
-  if (!framework->m_pCallbacks) {
-    // failed to init, error
-    return 0;
-  }
   if (IRSimulator::isConnected()) {
     framework->m_IRLaunchButton.setEnabled(false);
     vortex.openModeSharing();
