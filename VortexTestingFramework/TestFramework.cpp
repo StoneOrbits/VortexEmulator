@@ -122,7 +122,8 @@ bool TestFramework::init(HINSTANCE hInstance)
     return false;
   }
 
-  m_vortex.setLedCount(2);
+  // adjust led count here and the test framework will react accordingly
+  //m_vortex.setLedCount(2);
 
   // update width
   width = (LED_COUNT == 28) ? 610 : 460;
