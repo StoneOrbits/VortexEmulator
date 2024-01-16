@@ -22,7 +22,7 @@ jobs:
     - name: Build
       run: msbuild VortexTestingFramework.sln /p:Configuration=Release /p:Platform=x64
     - name: Rename Binary
-      run: Rename-Item x64/Release/VortexTestingFramework.exe x64/Release/VortexEmulatorGloves.exe
+      run: Rename-Item x64/Release/VortexTestingFramework.exe -NewName VortexEmulatorGloves.exe
     - name: Upload Artifacts
       uses: actions/upload-artifact@v2
       with:
@@ -44,7 +44,7 @@ jobs:
     - name: Build
       run: msbuild VortexTestingFramework.sln /p:Configuration=Release /p:Platform=x64
     - name: Rename Binary
-      run: Rename-Item x64/Release/VortexTestingFramework.exe x64/Release/VortexEmulatorOrbit.exe
+      run: Rename-Item x64/Release/VortexTestingFramework.exe -NewName VortexEmulatorOrbit.exe
     - name: Upload Artifacts
       uses: actions/upload-artifact@v2
       with:
@@ -66,7 +66,7 @@ jobs:
     - name: Build
       run: msbuild VortexTestingFramework.sln /p:Configuration=Release /p:Platform=x64
     - name: Rename Binary
-      run: Rename-Item x64/Release/VortexTestingFramework.exe x64/Release/VortexEmulatorHandle.exe
+      run: Rename-Item x64/Release/VortexTestingFramework.exe -NewName VortexEmulatorHandle.exe
     - name: Upload Artifacts
       uses: actions/upload-artifact@v2
       with:
@@ -88,7 +88,7 @@ jobs:
     - name: Build
       run: msbuild VortexTestingFramework.sln /p:Configuration=Release /p:Platform=x64
     - name: Rename Binary
-      run: Rename-Item x64/Release/VortexTestingFramework.exe x64/Release/VortexEmulatorDuo.exe
+      run: Rename-Item x64/Release/VortexTestingFramework.exe -NewName VortexEmulatorDuo.exe
     - name: Upload Artifacts
       uses: actions/upload-artifact@v2
       with:
@@ -110,7 +110,7 @@ jobs:
     - name: Build
       run: msbuild VortexTestingFramework.sln /p:Configuration=Release /p:Platform=x64
     - name: Rename Binary
-      run: Rename-Item x64/Release/VortexTestingFramework.exe x64/Release/VortexEmulatorChromadeck.exe
+      run: Rename-Item x64/Release/VortexTestingFramework.exe -NewName VortexEmulatorChromadeck.exe
     - name: Upload Artifacts
       uses: actions/upload-artifact@v2
       with:
@@ -132,7 +132,7 @@ jobs:
     - name: Build
       run: msbuild VortexTestingFramework.sln /p:Configuration=Release /p:Platform=x64
     - name: Rename Binary
-      run: Rename-Item x64/Release/VortexTestingFramework.exe x64/Release/VortexEmulatorSpark.exe
+      run: Rename-Item x64/Release/VortexTestingFramework.exe -NewName VortexEmulatorSpark.exe
     - name: Upload Artifacts
       uses: actions/upload-artifact@v2
       with:
@@ -156,7 +156,7 @@ jobs:
     - name: Build
       run: msbuild VortexTestingFramework.sln /p:Configuration=Release /p:Platform=x64
     - name: Rename Binary
-      run: Rename-Item x64/Release/VortexTestingFramework.exe x64/Release/VortexEmulatorDesktop.exe
+      run: Rename-Item x64/Release/VortexTestingFramework.exe -NewName VortexEmulatorDesktop.exe
     - name: Upload Artifacts
       uses: actions/upload-artifact@v2
       with:
