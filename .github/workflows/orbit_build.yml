@@ -1,0 +1,30 @@
+name: Orbit Emulator Build
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build-orbit-emulator:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Checkout Vortex Engine
+      uses: actions/checkout@v3
+      with:
+        repository: 'StoneOrbits/VortexEngine'
+        path: 'VortexTestingFramework/VortexEngine'
+        ref: 'orbit'
+    - name: Set up MSBuild path
+      uses: microsoft/setup-msbuild@v1
+    - name: Build
+      run: msbuild VortexTestingFramework.sln /p:Configuration=Release /p:Platform=x64
+    - name: Rename Binary
+      run: Rename-Item x64/Release/VortexTestingFramework.exe -NewName VortexEmulatorOrbit.exe
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: Binaries
+        path: x64/Release/VortexEmulatorOrbit.exe
