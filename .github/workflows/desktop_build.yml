@@ -10,7 +10,8 @@ jobs:
   build-desktop-emulator:
     runs-on: windows-latest
     steps:
-    - uses: actions/checkout@v3
+    - name: Checkout Editor
+      uses: actions/checkout@v3
       with:
         ref: 'daniel/engine_desktop_build'
     - name: Checkout Vortex Engine
