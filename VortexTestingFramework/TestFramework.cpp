@@ -162,9 +162,9 @@ bool TestFramework::init(HINSTANCE hInstance)
     m_orbitBox.setBackground(m_chromadeckBMP);
     m_orbitBox.setEnabled(false);
     m_orbitBox.setVisible(false);
-    m_button.init(m_hInst, m_window, "<", BACK_COL, 36, 24, 164, 165, CLICK_BUTTON_ID, buttonClickCallback);
-    m_button2.init(m_hInst, m_window, "o", BACK_COL, 44, 24, 204, 165, CLICK_BUTTON_ID + 1, buttonClickCallback);
-    m_button3.init(m_hInst, m_window, ">", BACK_COL, 36, 24, 254, 165, CLICK_BUTTON_ID + 2, buttonClickCallback);
+    m_button.init(m_hInst, m_window, "<", BACK_COL, 36, 24, 164, 175, CLICK_BUTTON_ID, buttonClickCallback);
+    m_button2.init(m_hInst, m_window, "o", BACK_COL, 44, 24, 204, 175, CLICK_BUTTON_ID + 1, buttonClickCallback);
+    m_button3.init(m_hInst, m_window, ">", BACK_COL, 36, 24, 254, 175, CLICK_BUTTON_ID + 2, buttonClickCallback);
     break;
   case 10: // glove
     m_gloveBMP = (HBITMAP)LoadImage(m_hInst, MAKEINTRESOURCE(IDB_BITMAP2), IMAGE_BITMAP, 0, 0, 0);
@@ -525,11 +525,11 @@ void TestFramework::setupLedPositionsChromadeck()
   uint32_t base_left = 92;
   uint32_t base_top = 50;
   uint32_t diameter = 21;
-  uint32_t radius = 120;
+  uint32_t radius = 140;
   uint32_t dx = 24;
   uint32_t dy = 30;
   uint32_t centerX = 150;
-  uint32_t centerY = 150;
+  uint32_t centerY = 170;
 
   // all second points 
   for (uint32_t i = 0; i < LED_COUNT; ++i) {
@@ -544,7 +544,7 @@ void TestFramework::setupLedPositionsChromadeck()
     m_ledPos[i].right = (LONG)(m_ledPos[i].left + diameter);
     m_ledPos[i].bottom = (LONG)(m_ledPos[i].top + diameter);
     if (i == ((LED_COUNT / 2) - 1)) {
-      radius -= 20;
+      radius -= 30;
     }
   }
 
