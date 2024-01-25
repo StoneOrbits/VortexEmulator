@@ -63,6 +63,7 @@ TestFramework::TestFramework() :
   m_gloveBMP(nullptr),
   m_handleBMP(nullptr),
   m_fingerBMP(nullptr),
+  m_chromadeckBMP(nullptr),
   m_hIcon(nullptr),
   m_loopThread(nullptr),
   m_tickrate(150),
@@ -519,8 +520,8 @@ void TestFramework::setupLedPositionsChromadeck()
 #define M_PI_O_4 (M_PI / 4.0f)
 #define M_PI_O_8 (M_PI / 8.0f)
     float angle = i * (M_2PI / (LED_COUNT / 2));
-    m_ledPos[i].left = centerX + radius * std::cos(-angle - M_PI_O_2);
-    m_ledPos[i].top = centerY + radius * std::sin(-angle - M_PI_O_2);
+    m_ledPos[i].left = centerX + radius * std::cos(angle - M_PI_O_2);
+    m_ledPos[i].top = centerY + radius * std::sin(angle - M_PI_O_2);
     m_ledPos[i].right = m_ledPos[i].left + diameter;
     m_ledPos[i].bottom = m_ledPos[i].top + diameter;
     if (i == ((LED_COUNT / 2) - 1)) {
@@ -961,15 +962,15 @@ void TestFramework::setWindowPos(uint32_t x, uint32_t y)
 // called when engine reads digital pins, use this to feed button presses to the engine
 long TestFramework::TestFrameworkCallbacks::checkPinHook(uint32_t pin)
 {
-  if (pin == 9) {
+  if (pin == 5) {
     // chromadeck button L
     return Vortex::isButtonPressed(0) ? 0 : 1;
   }
-  if (pin == 10) {
+  if (pin == 6) {
     // chromadeck button M
     return Vortex::isButtonPressed(1) ? 0 : 1;
   }
-  if (pin == 11) {
+  if (pin == 7) {
     // chromadeck button R
     return Vortex::isButtonPressed(2) ? 0 : 1;
   }
