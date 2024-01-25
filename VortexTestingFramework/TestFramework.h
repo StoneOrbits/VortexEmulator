@@ -64,6 +64,10 @@ public:
   // loop that runs arduino code
   static DWORD __stdcall main_loop_thread(void *arg);
 
+  // reference to vortex lib
+  Vortex &vortex() { return m_vortex; }
+  VortexEngine &engine() { return m_vortex.engine(); }
+
 private:
   // initializes the led positions for various devices
   void setupLedPositionsOrbit();
@@ -76,7 +80,7 @@ private:
   class TestFrameworkCallbacks : public VortexCallbacks
   {
   public:
-    TestFrameworkCallbacks() {}
+    TestFrameworkCallbacks(Vortex &vortex) : VortexCallbacks(vortex) {}
     virtual ~TestFrameworkCallbacks() {}
     virtual long checkPinHook(uint32_t pin) override;
     virtual void infraredWrite(bool mark, uint32_t amount) override;
@@ -132,8 +136,8 @@ private:
   bool generatePatternBMP(const std::string &filename, uint32_t numStrips = 100);
   bool writeBMPtoFile(const std::string &filename, uint32_t bitmapWidth, uint32_t bitmapHeight, COLORREF *cols);
 
-  static const uint32_t width = LED_COUNT == 28 ? 610 : 460;
-  static const uint32_t height = 460;
+  uint32_t width = 610;
+  uint32_t height = 460;
 
   static const uint32_t patternStripHeight = 30;
 
@@ -143,6 +147,11 @@ private:
   // how many times the length of the pattern strip is extended
   // in order to simulate the scrolling effect
   static const uint32_t patternStripExtensionMultiplier = 16;
+
+  // vortex lib
+  Vortex m_vortex;
+  // reference to engine so LED macros can be used
+  VortexEngine &m_engine;
 
   // new stuff
   VWindow m_window;
@@ -158,8 +167,8 @@ private:
   VButton m_button4;
   VButton m_IRLaunchButton;
   VButton m_generatePats;
-  VCircle m_leds[LED_COUNT];
-  RECT m_ledPos[LED_COUNT];
+  std::vector<VCircle> m_leds;
+  std::vector<RECT> m_ledPos;
 
   HANDLE m_pauseMutex;
 
