@@ -897,7 +897,7 @@ DWORD __stdcall TestFramework::main_loop_thread(void *arg)
 {
   TestFramework *framework = (TestFramework *)arg;
   // init the vortex engine
-  framework->m_pCallbacks = Vortex::init<TestFrameworkCallbacks>();
+  framework->m_pCallbacks = Vortex::initEx<TestFrameworkCallbacks>();
   if (!framework->m_pCallbacks) {
     // failed to init, error
     return 0;
