@@ -99,5 +99,11 @@
     <Image Include="icon.ico">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="spark.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="chromadeck.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

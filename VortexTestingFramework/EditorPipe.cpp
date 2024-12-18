@@ -38,7 +38,7 @@ bool EditorPipe::connect()
   // create a global pipe
   if (!ConnectNamedPipe(hPipe, NULL)) {
     int err = GetLastError();
-    if (err != ERROR_PIPE_CONNECTED && err != ERROR_PIPE_LISTENING) {
+    if (err != ERROR_PIPE_CONNECTED) { // && err != ERROR_PIPE_LISTENING) {
       return false;
     }
   }

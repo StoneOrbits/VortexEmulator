@@ -178,11 +178,13 @@
     <ResourceCompile Include="VortexTestingFramework.rc" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="chromadeck.bmp" />
     <Image Include="finger.bmp" />
     <Image Include="glove.bmp" />
     <Image Include="handle.bmp" />
     <Image Include="orbit.bmp" />
     <Image Include="icon.ico" />
+    <Image Include="spark.bmp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

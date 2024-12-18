@@ -50,6 +50,8 @@ TestFramework::TestFramework() :
   m_gloveBox(),
   m_handleBox(),
   m_fingerBox(),
+  m_chromadeckBox(),
+  m_sparkBox(),
   m_patternStrip(),
   m_tickrateSlider(),
   m_button(),
@@ -139,14 +141,14 @@ bool TestFramework::init(HINSTANCE hInstance)
     break;
   case 20: // chromadeck
     m_chromadeckBMP = (HBITMAP)LoadImage(m_hInst, MAKEINTRESOURCE(IDB_BITMAP5), IMAGE_BITMAP, 0, 0, 0);
-    m_orbitBox.init(m_hInst, m_window, "Chromadeck", BACK_COL, 500, 250, 66, 30, 0, 0, nullptr);
-    m_orbitBox.setDoCapture(false);
-    m_orbitBox.setDrawHLine(false);
-    m_orbitBox.setDrawVLine(false);
-    m_orbitBox.setDrawCircle(false);
-    m_orbitBox.setBackground(m_chromadeckBMP);
-    m_orbitBox.setEnabled(false);
-    m_orbitBox.setVisible(false);
+    m_chromadeckBox.init(m_hInst, m_window, "Chromadeck", BACK_COL, 500, 250, 66, 30, 0, 0, nullptr);
+    m_chromadeckBox.setDoCapture(false);
+    m_chromadeckBox.setDrawHLine(false);
+    m_chromadeckBox.setDrawVLine(false);
+    m_chromadeckBox.setDrawCircle(false);
+    m_chromadeckBox.setBackground(m_chromadeckBMP);
+    m_chromadeckBox.setEnabled(false);
+    m_chromadeckBox.setVisible(false);
     m_button.init(m_hInst, m_window, "<", BACK_COL, 36, 24, 164, 175, CLICK_BUTTON_ID, buttonClickCallback);
     m_button2.init(m_hInst, m_window, "o", BACK_COL, 44, 24, 204, 175, CLICK_BUTTON_ID + 1, buttonClickCallback);
     m_button3.init(m_hInst, m_window, ">", BACK_COL, 36, 24, 254, 175, CLICK_BUTTON_ID + 2, buttonClickCallback);
@@ -165,15 +167,15 @@ bool TestFramework::init(HINSTANCE hInstance)
     m_button2.init(m_hInst, m_window, "Long", BACK_COL, 48, 24, 198, 346, CLICK_BUTTON_ID + 2, longClickCallback);
     break;
   case 6: // spark
-    m_gloveBMP = (HBITMAP)LoadImage(m_hInst, MAKEINTRESOURCE(IDB_BITMAP2), IMAGE_BITMAP, 0, 0, 0);
-    m_gloveBox.init(m_hInst, m_window, "Spark", BACK_COL, 250, 320, 86, 30, 0, 0, nullptr);
-    m_gloveBox.setDoCapture(false);
-    m_gloveBox.setDrawHLine(false);
-    m_gloveBox.setDrawVLine(false);
-    m_gloveBox.setDrawCircle(false);
-    m_gloveBox.setBackground(m_gloveBMP);
-    m_gloveBox.setEnabled(false);
-    m_gloveBox.setVisible(false);
+    m_sparkBMP = (HBITMAP)LoadImage(m_hInst, MAKEINTRESOURCE(IDB_BITMAP6), IMAGE_BITMAP, 0, 0, 0);
+    m_sparkBox.init(m_hInst, m_window, "Spark", BACK_COL, 200, 200, 30, 30, 0, 0, nullptr);
+    m_sparkBox.setDoCapture(false);
+    m_sparkBox.setDrawHLine(false);
+    m_sparkBox.setDrawVLine(false);
+    m_sparkBox.setDrawCircle(false);
+    m_sparkBox.setBackground(m_sparkBMP);
+    m_sparkBox.setEnabled(false);
+    m_sparkBox.setVisible(false);
     m_button.init(m_hInst, m_window, "Click", BACK_COL, 48, 24, 198, 312, CLICK_BUTTON_ID, buttonClickCallback);
     m_button2.init(m_hInst, m_window, "Long", BACK_COL, 48, 24, 198, 346, CLICK_BUTTON_ID + 2, longClickCallback);
     break;
@@ -241,7 +243,7 @@ bool TestFramework::init(HINSTANCE hInstance)
     350 + ((LED_COUNT == 28) * 150), 340, LAUNCH_IR_ID, launchIRCallback);
 
   // TODO: storage enabled tickbox?
-  //Vortex::enableStorage(true);
+  Vortex::enableStorage(true);
   //Vortex::setStorageFilename(m_storageFile);
   //if (access(m_storageFile.c_str(), F_OK) == 0) {
   //  // load storage if the file exists
