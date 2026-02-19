@@ -521,7 +521,7 @@ void TestFramework::setupLedPositionsChromadeck()
 #define M_PI_O_2 (M_PI / 2.0f)
 #define M_PI_O_4 (M_PI / 4.0f)
 #define M_PI_O_8 (M_PI / 8.0f)
-    float angle = i * (M_2PI / (LED_COUNT / 2));
+    float angle = (float)(i * (M_2PI / (LED_COUNT / 2)));
     m_ledPos[i].left = centerX + radius * std::cos(angle - M_PI_O_2);
     m_ledPos[i].top = centerY + radius * std::sin(angle - M_PI_O_2);
     m_ledPos[i].right = m_ledPos[i].left + diameter;
