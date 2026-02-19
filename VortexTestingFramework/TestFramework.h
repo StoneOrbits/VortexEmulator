@@ -159,6 +159,8 @@ private:
   VSelectBox m_gloveBox;
   VSelectBox m_handleBox;
   VSelectBox m_fingerBox;
+  VSelectBox m_chromadeckBox;
+  VSelectBox m_sparkBox;
   VSelectBox m_patternStrip;
   VSelectBox m_tickrateSlider;
   VButton m_button;
@@ -179,6 +181,7 @@ private:
   HBITMAP m_handleBMP;
   HBITMAP m_fingerBMP;
   HBITMAP m_chromadeckBMP;
+  HBITMAP m_sparkBMP;
   HICON m_hIcon;
   HANDLE m_loopThread;
 

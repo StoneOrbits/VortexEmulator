@@ -60,6 +60,8 @@ IDB_BITMAP4             BITMAP                  "finger.bmp"
 
 IDB_BITMAP5             BITMAP                  "chromadeck.bmp"
 
+IDB_BITMAP6             BITMAP                  "spark.bmp"
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
