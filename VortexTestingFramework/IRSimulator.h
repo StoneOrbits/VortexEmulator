@@ -6,6 +6,8 @@
 // This is a network connection that simulates the IR connection between
 // two vortex engines so that mode sharing can be tested
 
+class VortexEngine;
+
 class IRSimulator
 {
 public:

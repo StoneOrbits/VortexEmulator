@@ -5,6 +5,8 @@
 #include "IRSimulator.h"
 #include "VortexLib.h"
 
+#include "VortexEngine.h"
+
 #include <stdio.h>
 
 #define DEFAULT_PORT "33456"
@@ -113,7 +115,7 @@ void IRSimulator::process_incoming_messages()
     }
     bool is_mark = (message & (1 << 31)) != 0;
     message &= ~(1 << 31);
-    Vortex::IRDeliver(message);
+    g_pTestFramework->vortex().IRDeliver(message);
   }
 }
 
@@ -159,7 +161,7 @@ bool IRSimulator::startServer()
   printf("Success listening on *:8080\n");
   m_isServer = true;
   g_pTestFramework->setWindowTitle(g_pTestFramework->getWindowTitle() + " Receiver");
-  g_pTestFramework->setWindowPos(LED_COUNT == 28 ? 975 : 900, 350);
+  g_pTestFramework->setWindowPos(g_pTestFramework->engine().leds().ledCount() == 28 ? 975 : 900, 350);
 
   // launch another instance of the test framwork to act as the sender
   if (m_isServer) {
@@ -231,7 +233,7 @@ bool IRSimulator::startClient()
   }
   CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)process_incoming_messages, NULL, 0, NULL);
   g_pTestFramework->setWindowTitle(g_pTestFramework->getWindowTitle() + " Sender");
-  g_pTestFramework->setWindowPos(LED_COUNT == 28 ? 300 : 250, 350);
+  g_pTestFramework->setWindowPos(g_pTestFramework->engine().leds().ledCount() == 28 ? 300 : 250, 350);
   return true;
 }
 
