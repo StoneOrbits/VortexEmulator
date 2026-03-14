@@ -29,13 +29,16 @@ private:
 
   void draw(HDC dc);
   void onMouseDown(int x, int y);
-  void onMouseUp();
+  void onMouseUp(int x, int y);
   void onMouseMove(int x, int y);
-  void showContextMenu(int x, int y);
+  int findOutputSocket(int x, int y);
+  void showContextMenu(int screenX, int screenY, int clientX, int clientY);
   int findNodeAt(int x, int y);
 
+  static const char *nodeTypeName(Behaviours::NodeType t);
+  static COLORREF nodeColor(Behaviours::NodeType t);
+
 private:
-  static const char* nodeTypeName(Behaviours::NodeType t);
 
   HINSTANCE m_inst;
   HWND m_hwnd;
@@ -47,6 +50,11 @@ private:
   int m_dragNode;
   int m_dragOffsetX;
   int m_dragOffsetY;
+
+  bool m_linking;
+  int m_linkNode;
+  int m_linkMouseX;
+  int m_linkMouseY;
 };
 
 #endif
