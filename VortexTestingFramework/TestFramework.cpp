@@ -299,6 +299,15 @@ bool TestFramework::init(HINSTANCE hInstance)
     }
   }
 
+  m_behaviourEditor.init(
+    m_hInst,
+    m_window.hwnd(),
+    10,
+    10,
+    300,
+    300
+  );
+
   // launch the 'loop' thread
   m_loopThread = CreateThread(NULL, 0, TestFramework::main_loop_thread, this, 0, NULL);
   if (!m_loopThread) {

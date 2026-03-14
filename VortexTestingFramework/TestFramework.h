@@ -14,6 +14,8 @@
 #include "GUI/VSelectBox.h"
 #include "GUI/VCircle.h"
 
+#include "BehaviourEditor.h"
+
 #include "Colors/ColorTypes.h"
 #include "Colors/Colorset.h"
 #include "Leds/LedTypes.h"
@@ -199,6 +201,9 @@ private:
   std::map<COLORREF, HBRUSH> m_brushmap;
 
   HACCEL m_accelTable;
+
+  // behaviour node editor window
+  BehaviourEditor m_behaviourEditor;
 };
 
 extern TestFramework *g_pTestFramework;

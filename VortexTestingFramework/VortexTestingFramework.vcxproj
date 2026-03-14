@@ -153,6 +153,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BehaviourEditor.cpp" />
     <ClCompile Include="EditorPipe.cpp" />
     <ClCompile Include="GUI\VButton.cpp" />
     <ClCompile Include="GUI\VLabel.cpp" />
@@ -164,6 +165,7 @@
     <ClCompile Include="WinMain.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BehaviourEditor.h" />
     <ClInclude Include="EditorPipe.h" />
     <ClInclude Include="GUI\VButton.h" />
     <ClInclude Include="GUI\VLabel.h" />
