@@ -299,12 +299,13 @@ bool TestFramework::init(HINSTANCE hInstance)
     }
   }
 
+  // initialize the behaviour editor window
   m_behaviourEditor.init(
     m_hInst,
     m_window.hwnd(),
     10,
     10,
-    300,
+    700,
     300
   );
 
@@ -913,6 +914,8 @@ DWORD __stdcall TestFramework::main_loop_thread(void *arg)
     // failed to init, error
     return 0;
   }
+  // populate behaviour editor window
+  framework->m_behaviourEditor.populateFromBehaviours();
   if (IRSimulator::isConnected()) {
     framework->m_IRLaunchButton.setEnabled(false);
     Vortex::openModeSharing();

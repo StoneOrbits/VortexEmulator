@@ -10,14 +10,14 @@
 class BehaviourEditor
 {
 public:
-
   BehaviourEditor();
   bool init(HINSTANCE inst, HWND parent, int x, int y, int w, int h);
   HWND hwnd();
   void redraw();
 
-private:
+  void populateFromBehaviours();
 
+private:
   struct EditorNode
   {
     uint8_t behaviourIndex;
@@ -32,14 +32,18 @@ private:
   void onMouseUp(int x, int y);
   void onMouseMove(int x, int y);
   int findOutputSocket(int x, int y);
+  int findInputSocket(int x, int y, int &socketIndex);
   void showContextMenu(int screenX, int screenY, int clientX, int clientY);
   int findNodeAt(int x, int y);
+
+  int findParamHit(int x, int y, int &paramIndex);
+
+  void beginParamEdit(int nodeIndex, int paramIndex);
 
   static const char *nodeTypeName(Behaviours::NodeType t);
   static COLORREF nodeColor(Behaviours::NodeType t);
 
 private:
-
   HINSTANCE m_inst;
   HWND m_hwnd;
 
@@ -55,6 +59,10 @@ private:
   int m_linkNode;
   int m_linkMouseX;
   int m_linkMouseY;
+
+  HWND m_edit;
+  int m_editNode;
+  int m_editParam;
 };
 
 #endif
